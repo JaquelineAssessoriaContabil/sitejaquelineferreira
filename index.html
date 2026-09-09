@@ -1447,13 +1447,14 @@
 
 <script>
 (function(){
-  const STORAGE_PREFIX = "noticias:";
   const REGIMES = ["Simples Nacional", "MEI", "Lucro Presumido", "Geral"];
 
   // Dados de demonstração (usados apenas se ainda não houver nada salvo).
   const seedData = {
     "2026-09-07": [],
     "2026-09-06": [],
+    "2026-09-05": [],
+    "2026-09-04": [],
     "2026-09-08": [
       {
         titulo: "NFS-e nacional do Simples Nacional é adiada para 1º de novembro",
@@ -1525,52 +1526,30 @@
 
   async function loadReadState(){
     try{
-      const r = await window.storage.get("noticias-lidas", false);
-      readState = r ? JSON.parse(r.value) : {};
+      const raw = localStorage.getItem("ncw-noticias-lidas");
+      readState = raw ? JSON.parse(raw) : {};
     }catch(e){ readState = {}; }
   }
   async function saveReadState(){
     try{
-      await window.storage.set("noticias-lidas", JSON.stringify(readState), false);
-    }catch(e){ console.error("Erro ao salvar estado de leitura", e); }
+      localStorage.setItem("ncw-noticias-lidas", JSON.stringify(readState));
+    }catch(e){ /* localStorage indisponível (ex: modo privado) — segue sem persistir */ }
   }
 
   async function loadAllDates(){
-    let keys = [];
-    try{
-      const r = await window.storage.list(STORAGE_PREFIX, false);
-      keys = (r && r.keys) ? r.keys : [];
-    }catch(e){ keys = []; }
-
-    // Mescla: qualquer data do seedData que ainda não esteja salva é gravada agora.
-    // Isso permite que a skill "publique" um novo dia só editando o seedData no HTML —
-    // não precisa mais que o storage esteja totalmente vazio (isso só rodava uma vez,
-    // na primeiríssima abertura, e nunca mais atualizava o histórico de verdade).
-    const existingDates = new Set(keys.map(k => k.replace(STORAGE_PREFIX,"")));
+    // As notícias vêm direto do seedData embutido no arquivo — sem depender de
+    // nenhum sistema externo de armazenamento. Isso garante que funcione igual
+    // dentro do Claude e no site publicado de verdade (GitHub Pages, etc.),
+    // já que window.storage só existe dentro do Claude e nunca vai funcionar
+    // num domínio publicado. Toda vez que a skill rodar, a notícia do dia entra
+    // como uma nova chave no próprio seedData (no topo do objeto).
     for(const date in seedData){
-      if(!existingDates.has(date)){
-        try{
-          await window.storage.set(STORAGE_PREFIX+date, JSON.stringify(seedData[date]), false);
-          existingDates.add(date);
-        }catch(e){}
-      }
-    }
-    keys = Array.from(existingDates).map(d => STORAGE_PREFIX+d);
-
-    const dates = keys.map(k => k.replace(STORAGE_PREFIX,"")).sort().reverse();
-    for(const date of dates){
-      try{
-        const r = await window.storage.get(STORAGE_PREFIX+date, false);
-        dataByDate[date] = r ? JSON.parse(r.value) : (seedData[date] || []);
-      }catch(e){ dataByDate[date] = seedData[date] || []; }
-      // Corrige dados salvos antes do filtro por regime existir (sem isso, a notícia
-      // some pra sempre ao filtrar, porque nunca bate com nenhum regime específico).
-      dataByDate[date] = (dataByDate[date] || []).map(item => ({
+      dataByDate[date] = (seedData[date] || []).map(item => ({
         ...item,
         regimes: (item.regimes && item.regimes.length) ? item.regimes : ["Geral"]
       }));
     }
-    allDates = dates;
+    allDates = Object.keys(seedData).sort().reverse();
   }
 
   function itemId(date, idx){ return date+"__"+idx; }
