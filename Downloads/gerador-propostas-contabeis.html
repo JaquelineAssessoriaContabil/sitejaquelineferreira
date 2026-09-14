@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Propostas Contábeis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --ink:#1C2B33;
+  --paper:#FBF8F2;
+  --app-bg:#EEEBE3;
+  --accent:#3B6E5E;
+  --accent-dark:#2C5347;
+  --brass:#A8763E;
+  --line:#DAD4C6;
+  --muted:#6B6459;
+  --radius:2px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  color:var(--ink);
+  background:var(--app-bg);
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.serif{font-family:'Source Serif 4', Georgia, serif; font-weight:600;}
+button{font-family:inherit;}
+a{color:inherit;}
+
+.app-shell{display:flex; min-height:100vh;}
+.rail{
+  width:230px; flex-shrink:0; background:var(--ink); color:#EFEAE0;
+  padding:28px 22px; display:flex; flex-direction:column; gap:26px;
+}
+.brand{font-family:'Source Serif 4',serif; font-size:19px; line-height:1.3;}
+.brand small{display:block; font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.02em; color:#B9C4BE; margin-top:4px; font-weight:500;}
+.rail-nav{display:flex; flex-direction:column; gap:4px;}
+.rail-btn{text-align:left; background:none; border:none; color:#D9D3C6; padding:10px 12px; border-radius:var(--radius); cursor:pointer; font-size:14px;}
+.rail-btn:hover{background:rgba(255,255,255,.07);}
+.rail-btn.active{background:var(--accent); color:#fff;}
+.rail-block-title{font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#8B9691; margin-bottom:8px;}
+.rail-saved{display:flex; flex-direction:column; gap:2px; max-height:220px; overflow:auto;}
+.saved-item{padding:8px 10px; border-radius:var(--radius); cursor:pointer; color:#D9D3C6; font-size:13px; line-height:1.4;}
+.saved-item:hover{background:rgba(255,255,255,.07);}
+.saved-item small{display:block; color:#8B9691; font-size:11px;}
+.rail-cta{margin-top:auto; background:var(--accent); color:#fff; border:none; padding:12px 16px; border-radius:var(--radius); font-size:14px; font-weight:600; cursor:pointer;}
+.rail-cta:hover{background:var(--accent-dark);}
+
+.main{flex:1; padding:46px 50px; max-width:1000px;}
+
+.hero h1{font-size:32px; line-height:1.28; max-width:520px; margin:0 0 14px;}
+.hero p{color:var(--muted); font-size:15px; max-width:480px; line-height:1.65; margin:0 0 28px;}
+.btn-primary{background:var(--accent); color:#fff; border:none; padding:13px 22px; font-size:15px; font-weight:600; border-radius:var(--radius); cursor:pointer;}
+.btn-primary:hover{background:var(--accent-dark);}
+.btn-secondary{background:transparent; color:var(--ink); border:1px solid var(--line); padding:12px 20px; font-size:14px; font-weight:500; border-radius:var(--radius); cursor:pointer;}
+.btn-secondary:hover{border-color:var(--ink);}
+
+.hero-meta{display:flex; gap:40px; margin-top:38px; padding-top:26px; border-top:1px solid var(--line); max-width:640px;}
+.hero-meta div span{display:block; font-family:'Source Serif 4',serif; font-size:26px;}
+.hero-meta div small{color:var(--muted); font-size:12.5px;}
+
+.stepper{display:flex; gap:22px; margin-bottom:34px; max-width:640px;}
+.step{padding-bottom:12px; border-bottom:2px solid var(--line); font-size:12.5px; color:var(--muted);}
+.step.active{border-bottom-color:var(--accent); color:var(--ink); font-weight:600;}
+.step.done{border-bottom-color:var(--accent);}
+
+.field-group{margin-bottom:24px; max-width:640px;}
+.field-group label.q{display:block; font-size:14.5px; font-weight:600; margin-bottom:10px;}
+.field-group input[type=text], .field-group input[type=number], .field-group select{
+  width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:var(--radius); font-size:14px; font-family:inherit; background:#fff;
+}
+.field-group input:focus, .field-group select:focus{outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent);}
+.opt-row{display:flex; flex-direction:column; gap:8px;}
+.opt{display:flex; align-items:flex-start; gap:10px; border:1px solid var(--line); border-radius:var(--radius); padding:11px 13px; cursor:pointer; font-size:14px; background:#fff;}
+.opt:hover{border-color:var(--accent);}
+.opt input{margin-top:2px;}
+.opt.checked{border-color:var(--accent); background:#F2F6F4;}
+
+.card-select{display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:780px;}
+.svc-card{border:1px solid var(--line); border-radius:var(--radius); padding:18px; cursor:pointer; background:#fff;}
+.svc-card:hover{border-color:var(--accent);}
+.svc-card .cat{font-size:11.5px; color:var(--accent); font-weight:600; text-transform:uppercase; letter-spacing:.03em; margin-bottom:6px;}
+.svc-card h3{font-size:17px; margin:0 0 8px;}
+.svc-card p{font-size:13.5px; color:var(--muted); line-height:1.5; margin:0;}
+.svc-card.natureza-recorrente{border-left:3px solid var(--brass);}
+
+.wizard-actions{display:flex; justify-content:space-between; margin-top:32px; max-width:640px;}
+
+.alert-box{background:#EFF4F2; border:1px solid #BFD6CC; color:#254A3D; padding:14px 16px; border-radius:var(--radius); font-size:13.5px; margin-bottom:12px; line-height:1.55; max-width:640px;}
+
+.proposal-wrap{display:flex; flex-direction:column; align-items:center;}
+.proposal-toolbar{display:flex; gap:10px; margin-bottom:22px; max-width:680px; width:100%; justify-content:flex-end;}
+.sheet{background:var(--paper); width:100%; max-width:680px; padding:54px 50px; border:1px solid var(--line); box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.sheet-header{border-bottom:2px solid var(--ink); padding-bottom:18px; margin-bottom:26px;}
+.sheet-header .kicker{font-size:12px; color:var(--muted); letter-spacing:.02em;}
+.sheet-header h1{font-size:25px; margin:6px 0 4px;}
+.sheet-header .client{font-size:14.5px; color:var(--muted);}
+.sheet section{margin-bottom:24px;}
+.sheet h4{font-size:12.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:0 0 10px; font-weight:600;}
+.sheet ul{margin:0; padding-left:18px; font-size:14px; line-height:1.7;}
+.sheet .desc{font-size:14.5px; line-height:1.7;}
+.price-block{background:#F2F6F4; border:1px solid #CFE0D8; padding:20px 22px; border-radius:var(--radius); display:flex; justify-content:space-between; align-items:center; gap:16px;}
+.price-block .value{font-family:'Source Serif 4',serif; font-size:27px; color:var(--accent-dark); white-space:nowrap;}
+.price-block.manual{background:#FBF3E7; border-color:#E7CE9E;}
+.price-block.manual .value{color:var(--brass); font-size:15px; font-family:'Inter',sans-serif; font-weight:700;}
+.sheet .note{font-size:12.5px; color:var(--muted); margin-top:4px;}
+.sheet footer{border-top:1px solid var(--line); padding-top:16px; margin-top:30px; font-size:11.5px; color:var(--muted);}
+
+@media print{
+  .rail, .proposal-toolbar{display:none !important;}
+  .main{padding:0; max-width:none;}
+  .sheet{box-shadow:none; border:none; max-width:none; padding:0;}
+  body{background:#fff;}
+}
+@media (max-width:760px){
+  .app-shell{flex-direction:column;}
+  .rail{width:100%; flex-direction:row; align-items:center; padding:16px 20px; gap:16px;}
+  .rail-nav, .rail-saved, .rail-block-title{display:none;}
+  .main{padding:26px 20px;}
+  .card-select{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ===================== HELPERS ===================== */
+function escapeHtml(str){
+  return String(str==null?'':str).replace(/[&<>"']/g, function(s){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s];
+  });
+}
+function formatBRL(n){
+  return 'R$ ' + Number(n).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function uid(){ return 'p_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+/* ===================== FICHAS OFICIAIS (MOTOR DE REGRAS) ===================== */
+const SERVICOS = {
+  reg_mei: {
+    id:'reg_mei',
+    nome:'Regularização de MEI',
+    categoria:'Fiscal / Tributário',
+    natureza:'pontual',
+    resumo:'Regulariza pendências de um MEI ativo (DAS, declarações, débitos), sem incluir o encerramento.',
+    objetivoGeral:'Regularizar pendências fiscais e declaratórias de um MEI ativo, mantendo-o operante. Não abrange o encerramento do CNPJ.',
+    perguntas:[
+      {id:'meiAtivo', label:'O MEI está atualmente ativo?', type:'radio', options:[['sim','Sim'],['nao','Não, já foi baixado']]},
+      {id:'desenquadramento', label:'Há indício de que o MEI ultrapassou os limites de faturamento ou de atividade (possível desenquadramento)?', type:'radio', options:[['sim','Sim'],['nao','Não'],['naosei','Não sei / a verificar']]},
+      {id:'pendencias', label:'Quais pendências foram identificadas? (marque as que se aplicam)', type:'checkbox', options:[['das','DAS em atraso'],['declaracoes','Declarações não entregues'],['debitos','Débitos na Receita Federal'],['dividaAtiva','Débitos em dívida ativa'],['semMovimento','MEI sem movimentação / esquecido']]},
+      {id:'objetivo', label:'Qual é o objetivo principal do cliente?', type:'radio', options:[['regularizar','Regularizar e continuar ativo'],['entender','Entender a situação antes de decidir'],['encerrar','Encerrar o MEI']]}
+    ],
+    calcular(r){
+      if(r.desenquadramento === 'sim'){
+        return {
+          alertas:[{texto:'Há indício de desenquadramento do MEI. A situação deve ser tratada pela Regularização de MEI Desenquadrado, que separa o período em que a empresa era MEI do período posterior.', servicoId:'reg_mei_desenq'}],
+          escopo:[], exclusoes:[], condicoes:[],
+          preco:{tipo:'redirecionado'}
+        };
+      }
+      if(r.objetivo === 'encerrar'){
+        const pend = r.pendencias || [];
+        const alertas = [{texto:'O objetivo principal do cliente é encerrar o MEI. O encerramento é tratado pelo serviço de Baixa de MEI, e não pela Regularização de MEI.', servicoId:'baixa_mei'}];
+        if(pend.length){
+          alertas.push('Foram identificadas pendências do período em que a empresa era MEI. A Regularização de MEI pode ser apresentada como serviço adicional e separado, com escopo e investimento próprios — nunca somada automaticamente ao valor da baixa.');
+        }
+        return { alertas, escopo:[], exclusoes:[], condicoes:[], preco:{tipo:'redirecionado'} };
+      }
+      const pend = r.pendencias || [];
+      const escopo = [
+        'Consulta do CNPJ','Consulta de Optantes','Consulta da Situação Fiscal',
+        'Levantamento de DAS','Levantamento de declarações','Emissão de DAS, quando necessário',
+        'Entrega de declarações pendentes','Regularização das obrigações próprias do período MEI','Análise de débitos'
+      ];
+      if(pend.indexOf('debitos')>=0 || pend.indexOf('dividaAtiva')>=0){
+        escopo.push('Parcelamento de débitos, quando contratado');
+        escopo.push('Procedimentos relacionados à dívida ativa/Regularize, quando contratados');
+      }
+      escopo.push('Orientação sobre os próximos passos');
+      const exclusoes = [
+        'Baixa de MEI','Obrigações posteriores a um eventual desenquadramento',
+        'Obrigações de Simples Nacional, Lucro Presumido ou Lucro Real',
+        'Alteração de regime tributário','Contabilidade recorrente','Demais serviços não contratados'
+      ];
+      return {
+        alertas:[], escopo, exclusoes, condicoes:[],
+        preco:{tipo:'manual', motivo:'Não há valor de referência oficial cadastrado para este serviço. O investimento deve ser definido pelo profissional após o diagnóstico completo, considerando quantidade de pendências, períodos e eventual necessidade de parcelamento.'}
+      };
+    }
+  },
+
+  baixa_mei: {
+    id:'baixa_mei',
+    nome:'Baixa de MEI',
+    categoria:'Societário / Legalização',
+    natureza:'pontual',
+    resumo:'Encerramento formal do CNPJ enquadrado como MEI, independente da regularização de pendências.',
+    objetivoGeral:'Realizar o encerramento formal do CNPJ enquadrado como MEI junto aos órgãos competentes.',
+    perguntas:[
+      {id:'objetivo', label:'Qual é o objetivo do cliente?', type:'radio', options:[['encerrar','Encerrar o MEI'],['regularizar','Apenas regularizar, sem encerrar']]},
+      {id:'pendencias', label:'Há pendências fiscais ou declaratórias que possam impedir a baixa?', type:'radio', options:[['sim','Sim'],['nao','Não'],['naosei','Não sei / a verificar']]}
+    ],
+    calcular(r){
+      if(r.objetivo === 'regularizar'){
+        return {
+          alertas:[{texto:'O cliente deseja apenas regularizar, sem encerrar. Esse caso é tratado pela Regularização de MEI, não pela Baixa de MEI.', servicoId:'reg_mei'}],
+          escopo:[], exclusoes:[], condicoes:[], preco:{tipo:'redirecionado'}
+        };
+      }
+      const escopo = [
+        'Consulta da situação cadastral e fiscal do CNPJ','Verificação de pendências que possam impedir a baixa',
+        'Protocolo do pedido de baixa/encerramento','Acompanhamento do processo de baixa',
+        'Emissão de declaração de encerramento (DASN-SIMEI final), quando exigida',
+        'Orientação sobre efeitos da baixa','Orientação sobre próximos passos'
+      ];
+      const exclusoes = [
+        'Regularização de pendências fiscais/declaratórias anteriores','Parcelamento de débitos',
+        'Procedimentos de dívida ativa/Regularize','Regularização de CPF do titular','IRPF do titular',
+        'Abertura de novo CNPJ ou novo enquadramento'
+      ];
+      const alertas = [];
+      if(r.pendencias === 'sim' || r.pendencias === 'naosei'){
+        alertas.push({texto:'Podem existir pendências do período em que a empresa era MEI. Nesse caso, a Regularização de MEI é apresentada como serviço adicional e separado, com escopo e investimento próprios — nunca somada automaticamente ao valor da baixa.', servicoId:'reg_mei'});
+      }
+      return {
+        alertas, escopo, exclusoes, condicoes:[],
+        preco:{tipo:'manual', motivo:'Não há valor de referência oficial cadastrado para este serviço. O investimento deve ser definido pelo profissional após o diagnóstico.'}
+      };
+    }
+  },
+
+  reg_mei_desenq: {
+    id:'reg_mei_desenq',
+    nome:'Regularização de MEI Desenquadrado',
+    categoria:'Fiscal / Tributário',
+    natureza:'pontual',
+    resumo:'Regulariza exclusivamente o período em que a empresa era MEI, antes do desenquadramento.',
+    objetivoGeral:'Diagnosticar a transição de MEI para outro enquadramento e regularizar exclusivamente as obrigações referentes ao período em que a empresa esteve enquadrada como MEI.',
+    perguntas:[
+      {id:'motivoConhecido', label:'O motivo do desenquadramento já foi identificado?', type:'radio', options:[['sim','Sim'],['nao','Não, ainda a apurar']]},
+      {id:'dataConhecida', label:'A data do desenquadramento já foi identificada?', type:'radio', options:[['sim','Sim'],['nao','Não, ainda a apurar']]},
+      {id:'pendenciasMei', label:'Há pendências referentes ao período em que a empresa era MEI (DASN-SIMEI, DAS, declarações, débitos, dívida ativa)?', type:'radio', options:[['sim','Sim'],['nao','Não'],['naosei','Não sei / a verificar']]},
+      {id:'pendenciasPos', label:'Há pendências referentes ao período posterior ao desenquadramento?', type:'radio', options:[['sim','Sim'],['nao','Não'],['naosei','Não sei / a verificar']]},
+      {id:'objetivo', label:'Qual é o objetivo do cliente?', type:'radio', options:[['continuar','Continuar a empresa regularizada'],['transformar','Transformar em LTDA'],['encerrar','Encerrar a empresa']]}
+    ],
+    calcular(r){
+      const escopo = [
+        'Verificação do motivo do desenquadramento, quando disponível','Verificação da data do desenquadramento',
+        'Verificação da situação da empresa durante o período em que ainda era MEI',
+        'Entrega da DASN-SIMEI, quando aplicável','Cálculo/regularização de DAS referentes ao período MEI',
+        'Elaboração e entrega de declarações referentes ao período MEI',
+        'Verificação de débitos e de situação em dívida ativa referentes ao período MEI',
+        'Parcelamentos na Receita Federal e/ou Regularize, referentes ao período MEI, quando contratados',
+        'Orientação sobre os serviços aplicáveis às demais frentes identificadas','Orientação sobre próximos passos'
+      ];
+      const exclusoes = [
+        'Regularização de obrigações do período posterior ao desenquadramento','Transformação de MEI para LTDA',
+        'Contabilidade mensal / cadastro no sistema de contabilidade','Baixa/encerramento da empresa',
+        'Alteração de regime tributário','Demais serviços não contratados'
+      ];
+      const alertas = [];
+      if(r.pendenciasPos === 'sim' || r.pendenciasPos === 'naosei'){
+        alertas.push('Podem existir pendências do período posterior ao desenquadramento. Esse período não é resolvido por este serviço — é necessário um serviço de regularização da empresa/CNPJ pós-MEI, apresentado separadamente (ainda não disponível neste Gerador).');
+      }
+      if(r.objetivo === 'transformar'){
+        alertas.push({texto:'O cliente deseja transformar a empresa em LTDA. Esse é um serviço separado, que pode ser apresentado em conjunto — sem soma automática de valores.', servicoId:'transf_ltda'});
+      }
+      if(r.objetivo === 'encerrar'){
+        alertas.push('O cliente deseja encerrar a empresa. Como ela não está mais enquadrada como MEI, o encerramento não deve ser tratado como "Baixa de MEI" — é necessário um serviço de baixa/encerramento aplicável à situação atual (ainda não fichado neste Gerador).');
+      }
+      return {
+        alertas, escopo, exclusoes, condicoes:[],
+        preco:{tipo:'manual', motivo:'Não há valor de referência oficial cadastrado para este serviço. O investimento deve ser definido pelo profissional após o diagnóstico completo.'}
+      };
+    }
+  },
+
+  transf_ltda: {
+    id:'transf_ltda',
+    nome:'Transformação de MEI para LTDA',
+    categoria:'Societário / Legalização',
+    natureza:'pontual',
+    resumo:'Altera o registro societário de MEI para Sociedade Limitada, com a legalização cadastral correspondente.',
+    objetivoGeral:'Alterar o registro/enquadramento jurídico da empresa de MEI para Sociedade Limitada (LTDA), permitindo a continuidade da atividade em nova estrutura societária, incluindo a legalização cadastral correspondente.',
+    perguntas:[
+      {id:'situacaoAtual', label:'Qual é a situação atual da empresa?', type:'radio', options:[['mei','Ainda é MEI'],['desenquadrado','Já está desenquadrado']]},
+      {id:'pendenciasCondicionantes', label:'Há pendências do período MEI que precisam ser regularizadas antes da transformação?', type:'radio', options:[['sim','Sim'],['nao','Não'],['naosei','Não sei / a verificar']]},
+      {id:'socios', label:'Quantos sócios terá a nova estrutura (LTDA)?', type:'number', min:1, placeholder:'Ex.: 1'},
+      {id:'atividade', label:'Atividade exercida pela empresa', type:'text', placeholder:'Ex.: Comércio varejista de roupas'},
+      {id:'endereco', label:'Endereço / local de funcionamento', type:'text', placeholder:'Cidade / bairro'},
+      {id:'alteracoes', label:'Serão necessárias alterações associadas? (marque as que se aplicam)', type:'checkbox', options:[['atividade','Atividade'],['endereco','Endereço'],['nome','Nome empresarial'],['capital','Capital social'],['cnae','CNAEs']]},
+      {id:'complexidade', label:'Há indícios de complexidade fora do padrão (ex.: múltiplas licenças, alterações combinadas, situação societária incomum)?', type:'radio', options:[['sim','Sim'],['nao','Não']]}
+    ],
+    calcular(r){
+      const escopo = [
+        'Consulta de Viabilidade','Elaboração/transmissão do DBE, quando aplicável',
+        'Emissão da guia/taxa de alteração, quando gerada (encaminhada ao cliente para pagamento)',
+        'Registro do Ato de Transformação/Contrato Social na JUCESC, incluindo REGIN e requerimento eletrônico',
+        'Acompanhamento do processo de registro'
+      ];
+      const alteracoesMap = {atividade:'Alteração de atividade', endereco:'Alteração de endereço', nome:'Alteração de nome empresarial', capital:'Alteração de capital social', cnae:'Alteração/ajuste de CNAEs'};
+      (r.alteracoes||[]).forEach(function(a){ if(alteracoesMap[a]) escopo.push(alteracoesMap[a] + ' (incluída no próprio escopo, sem cobrança adicional)'); });
+      escopo.push('Providências junto à Prefeitura, Corpo de Bombeiros, Vigilância Sanitária, Alvarás e demais licenciamentos — a confirmar na viabilidade, conforme atividade e endereço informados');
+
+      const exclusoes = [
+        'Regularização de pendências do período MEI','Regularização de obrigações do período pós-desenquadramento',
+        'Contabilidade mensal','Cadastro no sistema de contabilidade','Baixa/encerramento da empresa',
+        'Alteração de regime tributário como serviço isolado','Demais serviços não contratados'
+      ];
+
+      const condicoes = [
+        'Taxas, emolumentos e despesas cobradas por órgãos competentes não estão incluídos no honorário e são de responsabilidade do cliente.',
+        'Prazo variável conforme a situação da empresa, a atividade exercida e os procedimentos necessários.'
+      ];
+
+      const alertas = [];
+      if(r.pendenciasCondicionantes === 'sim' || r.pendenciasCondicionantes === 'naosei'){
+        const servicoPrereq = r.situacaoAtual === 'desenquadrado' ? 'reg_mei_desenq' : 'reg_mei';
+        alertas.push({
+          texto:'Há pendências do período MEI que podem condicionar a transformação. A regularização correspondente deve ser contratada e executada primeiro, como serviço separado — a transformação é retomada somente depois, nunca simultaneamente.',
+          servicoId: servicoPrereq
+        });
+      }
+
+      if(r.complexidade === 'sim'){
+        return {
+          alertas, escopo, exclusoes, condicoes,
+          preco:{tipo:'manual', motivo:'Foi identificado indício de complexidade fora do fluxo padrão. O investimento deve ser avaliado manualmente pelo profissional, sem cálculo automático.'}
+        };
+      }
+      const socios = Math.max(1, parseInt(r.socios,10) || 1);
+      const valor = 1300 + (socios - 1) * 300;
+      return {
+        alertas, escopo, exclusoes, condicoes,
+        preco:{tipo:'fixo', valor:valor, detalhe:['Valor-base para 1 sócio: R$ 1.300,00. Acréscimo de R$ 300,00 por sócio adicional (' + socios + (socios>1?' sócios':' sócio') + ' no total).']}
+      };
+    }
+  },
+
+  contab_mensal: {
+    id:'contab_mensal',
+    nome:'Contabilidade Mensal',
+    categoria:'Contábil',
+    natureza:'recorrente',
+    resumo:'Acompanhamento contábil, fiscal e de departamento pessoal de forma contínua e recorrente.',
+    objetivoGeral:'Prestar acompanhamento contábil, fiscal e de departamento pessoal de forma contínua, mantendo a empresa em dia com suas obrigações e rotinas necessárias, de acordo com seu regime tributário, atividade e situação cadastral.',
+    perguntas:[
+      {id:'regime', label:'Qual é o regime tributário da empresa?', type:'select', options:[['mei','MEI'],['prestador','Prestador de Serviços'],['comercio','Comércio'],['presumido','Lucro Presumido'],['real','Lucro Real'],['outro','Outro']]},
+      {id:'notas', label:'Quantas notas fiscais são emitidas por mês, em média?', type:'number', min:0, showIf:function(r){return r.regime==='mei';}},
+      {id:'socios', label:'Quantos sócios recebem pró-labore?', type:'number', min:0, showIf:function(r){return r.regime==='prestador';}},
+      {id:'funcionarios', label:'A empresa possui funcionários?', type:'radio', options:[['nao','Não'],['sim','Sim']], showIf:function(r){return r.regime==='prestador';}},
+      {id:'origem', label:'Qual é a origem desta contratação?', type:'radio', options:[['direta','Cliente novo, contratação direta'],['continuidade','Continuidade após um serviço pontual já concluído'],['troca','Troca de contador']]},
+      {id:'pendenciasTroca', label:'Foram identificadas pendências, escrituração não realizada ou obrigações não entregues pelo contador anterior?', type:'radio', options:[['sim','Sim'],['nao','Não'],['naosei','Ainda não verificado']], showIf:function(r){return r.origem==='troca';}}
+    ],
+    calcular(r){
+      const escopo = [
+        'Departamento Fiscal: emissão de notas, apuração de tributos, cálculo e envio de guias, escrituração e rotinas fiscais, obrigações acessórias aplicáveis',
+        'Departamento Contábil: escrituração, registro de receitas/despesas, conciliação bancária, fechamento contábil periódico (sem entrega mensal padronizada de balancete e DRE, neste momento)',
+        'Departamento Pessoal, conforme necessidade: folha de pagamento, pró-labore, admissões, demissões, férias, 13º salário',
+        'Guias decorrentes das obrigações normais (DAS, DAS-MEI, INSS, FGTS, IRRF, TLL, Alvarás e demais), quando aplicáveis',
+        'Implantação e transferência de informações do contador anterior, quando aplicável',
+        'Atendimento ordinário sobre a rotina normal da empresa'
+      ];
+      const exclusoes = [
+        'Consultorias especializadas e planejamento tributário','Estudos específicos e projetos extraordinários','Defesas administrativas',
+        'Regularização ou recuperação de períodos anteriores','Regularização de MEI / MEI Desenquadrado / pós-MEI',
+        'Transformação de MEI para LTDA','Alteração contratual','Baixa de empresa',
+        'Recuperação de tributos, compensações e restituições extraordinárias'
+      ];
+      const condicoes = [
+        'Documentos mensais enviados preferencialmente até o dia 05.',
+        'Honorário de Encerramento Anual equivalente a 1 mensalidade vigente, em 2 parcelas, junto aos honorários de novembro e dezembro.',
+        'Reajuste anual pelo IPCA acumulado, ou índice oficial substituto.',
+        'Rescisão mediante aviso prévio de 60 dias por qualquer das partes (multa rescisória ainda não definida).',
+        'Cadastro no sistema de contabilidade do escritório ocorre após a efetiva contratação da recorrência.'
+      ];
+
+      const alertas = [];
+      if(r.origem === 'troca' && (r.pendenciasTroca === 'sim' || r.pendenciasTroca === 'naosei')){
+        alertas.push('Foram indicadas possíveis pendências do contador anterior. Esses trabalhos (escrituração, regularização, retificações) são avaliados e apresentados em orçamento separado, informado previamente ao cliente — nunca incluídos automaticamente na mensalidade.');
+      }
+      if(r.origem === 'continuidade'){
+        alertas.push('Como esta contratação é continuidade de um serviço pontual, a data de início da responsabilidade contábil deve considerar a competência em que a empresa passou a estar sob responsabilidade do escritório. Essa data é diferente da data de cobrança da mensalidade.');
+      }
+
+      if(r.regime === 'mei'){
+        const notas = Math.max(0, parseInt(r.notas,10) || 0);
+        const excedente = Math.max(0, notas - 3);
+        const adicional = excedente * 15;
+        const total = 147 + adicional;
+        const detalhe = ['Mensalidade base (MEI — Plano Básico): R$ 147,00'];
+        detalhe.push(excedente>0
+          ? (excedente + ' nota(s) fiscal(is) excedente(s) além das 3 incluídas, a R$ 15,00 cada: ' + formatBRL(adicional))
+          : 'Até 3 notas fiscais mensais incluídas na mensalidade.');
+        return { alertas, escopo, exclusoes, condicoes, preco:{tipo:'fixo', valor:total, detalhe:detalhe} };
+      }
+
+      if(r.regime === 'prestador' && parseInt(r.socios,10) === 1 && r.funcionarios === 'nao'){
+        return { alertas, escopo, exclusoes, condicoes, preco:{tipo:'fixo', valor:450, detalhe:['Referência oficial para prestador de serviços com 1 sócio recebendo pró-labore, sem funcionários.']} };
+      }
+
+      return {
+        alertas, escopo, exclusoes, condicoes,
+        preco:{tipo:'manual', motivo:'Este perfil (regime tributário, número de sócios ou presença de funcionários) não corresponde exatamente a nenhum dos perfis com preço oficial definido (MEI Básico ou Prestador de Serviços com 1 pró-labore, sem funcionários). O investimento deve ser definido manualmente pelo profissional.'}
+      };
+    }
+  }
+};
+
+/* ===================== ESTADO ===================== */
+let state = {
+  screen:'home',
+  cliente:{nome:'',empresa:'',contato:''},
+  servicoId:null,
+  respostas:{},
+  resultado:null,
+  currentId:null,
+  savedList:[]
+};
+
+const STEP_ORDER = ['cliente','servico','diagnostico','preview'];
+const STEP_LABELS = {cliente:'Cliente', servico:'Serviço', diagnostico:'Diagnóstico', preview:'Proposta'};
+
+/* ===================== NAVEGAÇÃO ===================== */
+function goHome(){ state.screen='home'; renderApp(); }
+function startNewProposal(){
+  state.cliente = {nome:'', empresa:'', contato:''};
+  state.servicoId = null;
+  state.respostas = {};
+  state.resultado = null;
+  state.currentId = uid();
+  state.screen = 'cliente';
+  renderApp();
+}
+function goStep(step){ state.screen = step; renderApp(); }
+function confirmCliente(){
+  if(!state.cliente.empresa || !state.cliente.empresa.trim()){
+    alert('Informe o nome da empresa ou do cliente para continuar.');
+    return;
+  }
+  state.screen = 'servico';
+  renderApp();
+}
+function selectServico(id){
+  state.servicoId = id;
+  state.respostas = {};
+  state.screen = 'diagnostico';
+  renderApp();
+}
+function irParaServicoSugerido(id){
+  if(!SERVICOS[id]){ alert('Este serviço ainda não está disponível neste Gerador.'); return; }
+  state.servicoId = id;
+  state.respostas = {};
+  state.screen = 'diagnostico';
+  renderApp();
+}
+function gerarProposta(){
+  const servico = SERVICOS[state.servicoId];
+  state.resultado = servico.calcular(state.respostas);
+  state.screen = 'preview';
+  renderApp();
+  document.title = 'Proposta - ' + (state.cliente.empresa||'Cliente') + ' - ' + servico.nome;
+}
+
+/* ===================== RESPOSTAS ===================== */
+function onRadioChange(id, value){ state.respostas[id] = value; renderApp(); }
+function onSelectChange(id, value){ state.respostas[id] = value; renderApp(); }
+function onCheckboxToggle(id, value){
+  let arr = Array.isArray(state.respostas[id]) ? state.respostas[id].slice() : [];
+  const idx = arr.indexOf(value);
+  if(idx>=0) arr.splice(idx,1); else arr.push(value);
+  state.respostas[id] = arr;
+  renderApp();
+}
+
+/* ===================== PERSISTÊNCIA (opcional, quando disponível) ===================== */
+async function carregarListaSalva(){
+  if(typeof window.storage === 'undefined'){ return; }
+  try{
+    const res = await window.storage.get('lista-propostas', false);
+    state.savedList = res ? JSON.parse(res.value) : [];
+  }catch(e){
+    state.savedList = [];
+  }
+}
+async function salvarPropostaAtual(){
+  if(typeof window.storage === 'undefined'){ alert('Salvamento não disponível neste ambiente.'); return; }
+  const servico = SERVICOS[state.servicoId];
+  const id = state.currentId || uid();
+  state.currentId = id;
+  const payload = {
+    id: id, cliente: state.cliente, servicoId: state.servicoId, servicoNome: servico.nome,
+    respostas: state.respostas, resultado: state.resultado, dataCriacao: new Date().toISOString()
+  };
+  try{
+    await window.storage.set('proposta-'+id, JSON.stringify(payload), false);
+    const entry = {id:id, cliente: state.cliente.empresa || 'Sem nome', servico: servico.nome, data: payload.dataCriacao};
+    const newList = [entry].concat(state.savedList.filter(function(x){ return x.id!==id; }));
+    await window.storage.set('lista-propostas', JSON.stringify(newList), false);
+    state.savedList = newList;
+    renderApp();
+    alert('Proposta salva.');
+  }catch(e){
+    console.error(e);
+    alert('Não foi possível salvar a proposta agora.');
+  }
+}
+async function abrirSalva(id){
+  if(typeof window.storage === 'undefined'){ return; }
+  try{
+    const res = await window.storage.get('proposta-'+id, false);
+    if(!res){ alert('Proposta não encontrada.'); return; }
+    const payload = JSON.parse(res.value);
+    state.cliente = payload.cliente;
+    state.servicoId = payload.servicoId;
+    state.respostas = payload.respostas;
+    state.resultado = payload.resultado;
+    state.currentId = payload.id;
+    state.screen = 'preview';
+    renderApp();
+  }catch(e){
+    alert('Não foi possível abrir esta proposta.');
+  }
+}
+
+/* ===================== RENDER: PEÇAS ===================== */
+function renderRail(){
+  const savedHtml = (state.savedList||[]).slice(0,8).map(function(s){
+    return '<div class="saved-item" onclick="abrirSalva(\'' + s.id + '\')">' + escapeHtml(s.cliente) + '<small>' + escapeHtml(s.servico) + '</small></div>';
+  }).join('');
+  return '' +
+    '<div class="rail">' +
+      '<div class="brand">Gerador de Propostas<small>Escritório contábil</small></div>' +
+      '<div class="rail-nav">' +
+        '<button class="rail-btn ' + (state.screen==='home'?'active':'') + '" onclick="goHome()">Início</button>' +
+      '</div>' +
+      '<div>' +
+        '<div class="rail-block-title">Propostas recentes</div>' +
+        '<div class="rail-saved">' + (savedHtml || '<div style="color:#8B9691; font-size:13px;">Nenhuma ainda</div>') + '</div>' +
+      '</div>' +
+      '<button class="rail-cta" onclick="startNewProposal()">+ Nova proposta</button>' +
+    '</div>';
+}
+
+function renderStepper(current){
+  const idx = STEP_ORDER.indexOf(current);
+  return '<div class="stepper">' + STEP_ORDER.map(function(s,i){
+    return '<div class="step ' + (i===idx?'active':(i<idx?'done':'')) + '">' + (i+1) + '. ' + STEP_LABELS[s] + '</div>';
+  }).join('') + '</div>';
+}
+
+function renderHome(){
+  const n = Object.keys(SERVICOS).length;
+  return '' +
+    '<div class="hero">' +
+      '<h1>Monte propostas comerciais no tempo de uma conversa com o cliente.</h1>' +
+      '<p>Escolha o serviço, responda ao diagnóstico e receba uma proposta organizada, pronta para revisar e enviar — seguindo exatamente as regras das Fichas Oficiais do escritório.</p>' +
+      '<button class="btn-primary" onclick="startNewProposal()">+ Nova proposta</button>' +
+      '<div class="hero-meta">' +
+        '<div><span>' + n + '</span><small>serviços cadastrados</small></div>' +
+        '<div><span>' + (state.savedList||[]).length + '</span><small>propostas salvas</small></div>' +
+      '</div>' +
+    '</div>';
+}
+
+function renderStepCliente(){
+  const c = state.cliente;
+  return '' +
+    renderStepper('cliente') +
+    '<h2 style="margin-top:0">Dados do cliente</h2>' +
+    '<p style="color:var(--muted); font-size:14px; max-width:520px; margin-top:-6px;">Essas informações aparecem no cabeçalho da proposta.</p>' +
+    '<div class="field-group">' +
+      '<label class="q">Nome da empresa ou do cliente</label>' +
+      '<input type="text" value="' + escapeHtml(c.empresa) + '" oninput="state.cliente.empresa=this.value" placeholder="Ex.: Padaria Bom Pão LTDA">' +
+    '</div>' +
+    '<div class="field-group">' +
+      '<label class="q">Pessoa de contato (opcional)</label>' +
+      '<input type="text" value="' + escapeHtml(c.nome) + '" oninput="state.cliente.nome=this.value" placeholder="Ex.: Maria Silva">' +
+    '</div>' +
+    '<div class="field-group">' +
+      '<label class="q">Telefone ou e-mail (opcional)</label>' +
+      '<input type="text" value="' + escapeHtml(c.contato) + '" oninput="state.cliente.contato=this.value" placeholder="Ex.: (48) 99999-0000">' +
+    '</div>' +
+    '<div class="wizard-actions">' +
+      '<button class="btn-secondary" onclick="goHome()">Cancelar</button>' +
+      '<button class="btn-primary" onclick="confirmCliente()">Continuar</button>' +
+    '</div>';
+}
+
+function renderStepServico(){
+  const cards = Object.values(SERVICOS).map(function(s){
+    return '' +
+      '<div class="svc-card ' + (s.natureza==='recorrente'?'natureza-recorrente':'') + '" onclick="selectServico(\'' + s.id + '\')">' +
+        '<div class="cat">' + escapeHtml(s.categoria) + (s.natureza==='recorrente'?' · Recorrente':'') + '</div>' +
+        '<h3>' + escapeHtml(s.nome) + '</h3>' +
+        '<p>' + escapeHtml(s.resumo) + '</p>' +
+      '</div>';
+  }).join('');
+  return '' +
+    renderStepper('servico') +
+    '<h2 style="margin-top:0">Qual serviço o cliente procura?</h2>' +
+    '<div class="card-select">' + cards + '</div>' +
+    '<div class="wizard-actions">' +
+      '<button class="btn-secondary" onclick="goStep(\'cliente\')">Voltar</button>' +
+      '<span></span>' +
+    '</div>';
+}
+
+function renderQuestion(q, r){
+  if(q.showIf && !q.showIf(r)) return '';
+  const val = r[q.id];
+  let input = '';
+  if(q.type === 'radio'){
+    input = '<div class="opt-row">' + q.options.map(function(opt){
+      const v=opt[0], l=opt[1];
+      return '<label class="opt ' + (val===v?'checked':'') + '">' +
+        '<input type="radio" name="' + q.id + '" ' + (val===v?'checked':'') + ' onclick="onRadioChange(\'' + q.id + '\',\'' + v + '\')">' +
+        '<span>' + escapeHtml(l) + '</span></label>';
+    }).join('') + '</div>';
+  } else if(q.type === 'checkbox'){
+    const arr = Array.isArray(val) ? val : [];
+    input = '<div class="opt-row">' + q.options.map(function(opt){
+      const v=opt[0], l=opt[1];
+      return '<label class="opt ' + (arr.indexOf(v)>=0?'checked':'') + '">' +
+        '<input type="checkbox" ' + (arr.indexOf(v)>=0?'checked':'') + ' onclick="onCheckboxToggle(\'' + q.id + '\',\'' + v + '\')">' +
+        '<span>' + escapeHtml(l) + '</span></label>';
+    }).join('') + '</div>';
+  } else if(q.type === 'select'){
+    input = '<select onchange="onSelectChange(\'' + q.id + '\', this.value)">' +
+      '<option value="">Selecione...</option>' +
+      q.options.map(function(opt){
+        const v=opt[0], l=opt[1];
+        return '<option value="' + v + '" ' + (val===v?'selected':'') + '>' + escapeHtml(l) + '</option>';
+      }).join('') +
+      '</select>';
+  } else if(q.type === 'number'){
+    input = '<input type="number" min="' + (q.min!=null?q.min:0) + '" value="' + (val!=null?val:'') + '" placeholder="' + (q.placeholder||'') + '" oninput="state.respostas[\'' + q.id + '\']=this.value">';
+  } else {
+    input = '<input type="text" value="' + escapeHtml(val||'') + '" placeholder="' + (q.placeholder||'') + '" oninput="state.respostas[\'' + q.id + '\']=this.value">';
+  }
+  return '<div class="field-group"><label class="q">' + escapeHtml(q.label) + '</label>' + input + '</div>';
+}
+
+function renderStepDiagnostico(){
+  const servico = SERVICOS[state.servicoId];
+  const perguntas = servico.perguntas.map(function(q){ return renderQuestion(q, state.respostas); }).join('');
+  return '' +
+    renderStepper('diagnostico') +
+    '<h2 style="margin-top:0">' + escapeHtml(servico.nome) + '</h2>' +
+    '<p style="color:var(--muted); font-size:14px; max-width:560px; margin-top:-6px;">Responda conforme a situação real do cliente. As perguntas seguem a Ficha Oficial deste serviço.</p>' +
+    perguntas +
+    '<div class="wizard-actions">' +
+      '<button class="btn-secondary" onclick="goStep(\'servico\')">Voltar</button>' +
+      '<button class="btn-primary" onclick="gerarProposta()">Gerar proposta</button>' +
+    '</div>';
+}
+
+function renderAlertas(alertas){
+  return (alertas||[]).map(function(a){
+    if(typeof a === 'string'){
+      return '<div class="alert-box">' + escapeHtml(a) + '</div>';
+    }
+    const temBotao = a.servicoId && SERVICOS[a.servicoId];
+    const btn = temBotao ? ('<div style="margin-top:8px;"><button class="btn-secondary" onclick="irParaServicoSugerido(\'' + a.servicoId + '\')">Iniciar: ' + escapeHtml(SERVICOS[a.servicoId].nome) + '</button></div>') : '';
+    return '<div class="alert-box">' + escapeHtml(a.texto) + btn + '</div>';
+  }).join('');
+}
+
+function renderPreview(){
+  const servico = SERVICOS[state.servicoId];
+  const r = state.resultado;
+  const dataStr = new Date().toLocaleDateString('pt-BR');
+  const c = state.cliente;
+
+  let precoHtml = '';
+  if(r.preco.tipo === 'fixo'){
+    precoHtml = '' +
+      '<div class="price-block">' +
+        '<div>' +
+          '<div style="font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;">Investimento</div>' +
+          (r.preco.detalhe||[]).map(function(d){ return '<div class="note">' + escapeHtml(d) + '</div>'; }).join('') +
+        '</div>' +
+        '<div class="value">' + formatBRL(r.preco.valor) + (servico.natureza==='recorrente'?'<span style="font-size:14px;color:var(--muted)">/mês</span>':'') + '</div>' +
+      '</div>';
+  } else if(r.preco.tipo === 'manual'){
+    precoHtml = '' +
+      '<div class="price-block manual">' +
+        '<div>' +
+          '<div style="font-size:12.5px;color:#6E4E1E;text-transform:uppercase;letter-spacing:.03em;">Investimento</div>' +
+          '<div class="note" style="color:#6E4E1E;">' + escapeHtml(r.preco.motivo) + '</div>' +
+        '</div>' +
+        '<div class="value">Avaliação manual</div>' +
+      '</div>';
+  }
+
+  const escopoHtml = (r.escopo && r.escopo.length) ? (
+    '<section><h4>O que está incluído</h4><ul>' + r.escopo.map(function(i){ return '<li>' + escapeHtml(i) + '</li>'; }).join('') + '</ul></section>'
+  ) : '';
+  const exclusoesHtml = (r.exclusoes && r.exclusoes.length) ? (
+    '<section><h4>O que não está incluído</h4><ul>' + r.exclusoes.map(function(i){ return '<li>' + escapeHtml(i) + '</li>'; }).join('') + '</ul></section>'
+  ) : '';
+  const condicoesHtml = (r.condicoes && r.condicoes.length) ? (
+    '<section><h4>Condições comerciais</h4><ul>' + r.condicoes.map(function(i){ return '<li>' + escapeHtml(i) + '</li>'; }).join('') + '</ul></section>'
+  ) : '';
+
+  return '' +
+    renderStepper('preview') +
+    '<div class="proposal-wrap">' +
+      '<div class="proposal-toolbar">' +
+        '<button class="btn-secondary" onclick="goStep(\'diagnostico\')">Editar respostas</button>' +
+        (typeof window.storage !== 'undefined' ? '<button class="btn-secondary" onclick="salvarPropostaAtual()">Salvar</button>' : '') +
+        '<button class="btn-primary" onclick="window.print()">Gerar PDF / Imprimir</button>' +
+      '</div>' +
+      '<div class="sheet">' +
+        '<div class="sheet-header">' +
+          '<div class="kicker">Proposta comercial · ' + dataStr + '</div>' +
+          '<h1>' + escapeHtml(servico.nome) + '</h1>' +
+          '<div class="client">Para: ' + escapeHtml(c.empresa) + (c.nome ? ' · ' + escapeHtml(c.nome) : '') + '</div>' +
+        '</div>' +
+        renderAlertas(r.alertas) +
+        '<section><h4>Sobre o serviço</h4><p class="desc">' + escapeHtml(servico.objetivoGeral) + '</p></section>' +
+        escopoHtml + exclusoesHtml + precoHtml + condicoesHtml +
+        '<footer>Proposta gerada a partir da Ficha Oficial de ' + escapeHtml(servico.nome) + '. Valores e condições sujeitos a confirmação final do escritório.</footer>' +
+      '</div>' +
+    '</div>';
+}
+
+/* ===================== RENDER: RAIZ ===================== */
+function renderScreen(){
+  switch(state.screen){
+    case 'home': return renderHome();
+    case 'cliente': return renderStepCliente();
+    case 'servico': return renderStepServico();
+    case 'diagnostico': return renderStepDiagnostico();
+    case 'preview': return renderPreview();
+    default: return renderHome();
+  }
+}
+function renderApp(){
+  const app = document.getElementById('app');
+  app.innerHTML = '<div class="app-shell">' + renderRail() + '<div class="main">' + renderScreen() + '</div></div>';
+}
+
+/* ===================== INIT ===================== */
+async function init(){
+  await carregarListaSalva();
+  renderApp();
+}
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+﻿<!doctype html>
+
+<html lang="en" style="height:100%;">
+<head>
+    <meta charset="utf-8">
+    <title>Microsoft OneDrive</title>
+    <meta name="description" content="Main Content">
+    <meta name="author" content="Microsoft Corporation">
+    <link rel="stylesheet" type="text/css" href="https://support.office.com/SocContent/topicCssWithNewLandingPage" />
+    <style>
+        body, #f1Body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .syncOneShellFull {
+            width: 100%;
+            height: 100%;
+            margin-top: -5px;
+        }
+    </style>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
+    <script>(window.jQuery) || document.write('<script src="https://support.office.com/socbundles/jquery"><\/script>');</script>
+</head>
+
+<body class="">
+    <div id="f1Body" class="" data-bi-area="content">
+        <iframe id="oneShell" class="syncOneShellFull" src="" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        setOneShellUrl();
+
+        if (typeof jQuery != 'undefined') {
+            $('#oneShell').on('load', function () {
+                $("div#ocSearchForm #ocSearchBox").keypress(function (n) {
+                    var t = n.keyCode ? n.keyCode : n.which;
+                    t === 13 && (n.preventDefault(),
+                        $("#ocSearchButton").trigger("click"))
+                });
+            });
+        }
+        else
+        {
+            window.external.Log("jQuery at aspnetcdn and SOC failed to load");
+        }
+
+        window.onload = function () {
+            updateRTL();
+            window.external.PageFinishedLoading();
+        }
+
+        function setOneShellUrl() {
+            if (typeof window.external.OneShellUrl === 'string') {
+                document.getElementById("oneShell").src = window.external.OneShellUrl;
+            }
+        }
+
+        function updateRTL() {
+            if (window.external.IsRTL === true) {
+                document.getElementsByTagName("html")[0].dir = "rtl";
+            }
+        }
+
+    </script>
+</body>
+</html>

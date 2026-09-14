@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Fiscal - TRANS JN</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --rose-500: #D98BA4;
+            --rose-600: #C6577A;
+            --gold-500: #D4AF37;
+            --gray-900: #0F172A;
+            --gray-800: #1E293B;
+            --gray-700: #334155;
+            --gray-600: #475569;
+            --gray-400: #94A3B8;
+            --gray-200: #E2E8F0;
+            --gray-100: #F1F5F9;
+            --green-500: #10B981;
+            --green-600: #059669;
+            --yellow-500: #F59E0B;
+            --yellow-600: #D97706;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: var(--gray-900);
+            --bg-secondary: var(--gray-800);
+            --bg-tertiary: var(--gray-700);
+            --text-primary: #F8FAFC;
+            --text-secondary: var(--gray-400);
+            --border-color: var(--gray-700);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #FFFFFF;
+            --bg-secondary: var(--gray-100);
+            --bg-tertiary: var(--gray-200);
+            --text-primary: var(--gray-900);
+            --text-secondary: var(--gray-600);
+            --border-color: var(--gray-200);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .header-info h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--rose-500);
+        }
+
+        .header-info p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 4px 0;
+        }
+
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border-color);
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rose-500), var(--gold-500));
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--rose-500);
+            margin-bottom: 8px;
+        }
+
+        .kpi-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .kpi-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .badge-positive {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--green-600);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--yellow-600);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .chart-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .status-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            grid-column: 1 / -1;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .status-icon {
+            font-size: 20px;
+        }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .status-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .status-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .progress-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .progress-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--rose-500), var(--gold-500));
+            width: 51.5%;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .comparison {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .comparison-item {
+            flex: 1;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .comparison-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .comparison-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .variation-badge {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+            color: var(--green-600);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-value {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="container">
+        <div class="header">
+            <div class="header-info">
+                <h1>Dashboard Fiscal</h1>
+                <p><strong>Empresa:</strong> TRANS JN TRANSPORTE ESCOLAR LTDA</p>
+                <p><strong>CNPJ:</strong> 26.481.883/0001-92</p>
+                <p><strong>Competência:</strong> Agosto/2026 | <strong>Regime:</strong> Simples Nacional</p>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Escuro</button>
+        </div>
+
+        <!-- KPIs Principais -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">📊 Faturamento</div>
+                <div class="kpi-value">R$ 9.750,00</div>
+                <div class="kpi-subtitle">Mês de agosto</div>
+                <div class="kpi-badge badge-positive">↑ +39,29% vs julho</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-label">💰 DAS - Simples Nacional</div>
+                <div class="kpi-value">R$ 585,01</div>
+                <div class="kpi-subtitle">Vencimento: 21/09/2026</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-label">📈 RBT12</div>
+                <div class="kpi-value">R$ 92.696,30</div>
+                <div class="kpi-subtitle">Receita acumulada 2026: R$ 65.649,00</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-label">💾 Carga Tributária</div>
+                <div class="kpi-value">6,00%</div>
+                <div class="kpi-subtitle">Alíquota efetiva do mês</div>
+            </div>
+        </div>
+
+        <!-- Comparação e Progresso -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-title">📊 Faturamento vs Mês Anterior</div>
+                <div class="comparison">
+                    <div class="comparison-item">
+                        <div class="comparison-label">Julho/2026</div>
+                        <div class="comparison-value">R$ 7.000,00</div>
+                    </div>
+                    <div style="font-size: 24px; color: var(--rose-500);">→</div>
+                    <div class="comparison-item">
+                        <div class="comparison-label">Agosto/2026</div>
+                        <div class="comparison-value">R$ 9.750,00</div>
+                        <div class="variation-badge">↑ +39,29%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-card">
+                <div class="progress-label">📍 Situação na Faixa do Simples Nacional</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span>RBT12: R$ 92.696,30</span>
+                    <span>Limite: R$ 180.000,00</span>
+                </div>
+                <div style="margin-top: 12px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; font-size: 13px;">
+                    ✓ <strong>Regular:</strong> Dentro do limite da 1ª Faixa (até R$ 180.000,00)
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-title">💵 Composição do DAS - R$ 585,01</div>
+                <div class="chart-container">
+                    <canvas id="dasChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-title">📉 Faturamento vs Despesas</div>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Fiscal -->
+        <div class="status-card">
+            <div class="chart-title">✅ Acompanhamento Fiscal</div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-icon">📤</div>
+                    <div class="status-text">
+                        <div class="status-label">PGDAS-D</div>
+                        <div class="status-value">Transmitido</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon">🧮</div>
+                    <div class="status-text">
+                        <div class="status-label">Apuração do DAS</div>
+                        <div class="status-value">Realizada</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon">📋</div>
+                    <div class="status-text">
+                        <div class="status-label">Notas Fiscais</div>
+                        <div class="status-value">Conferidas</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon">📄</div>
+                    <div class="status-text">
+                        <div class="status-label">Documentos Fiscais</div>
+                        <div class="status-value">Lançados</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon">🛒</div>
+                    <div class="status-text">
+                        <div class="status-label">Compras</div>
+                        <div class="status-value">Conferidas</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon">⚖️</div>
+                    <div class="status-text">
+                        <div class="status-label">Obrigações Fiscais</div>
+                        <div class="status-value">Em dia</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Situação das Certidões -->
+        <div class="status-card" style="margin-top: 24px;">
+            <div class="chart-title">🏛️ Situação das Certidões</div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-icon">🏢</div>
+                    <div class="status-text">
+                        <div class="status-label">Federal</div>
+                        <div class="status-value" style="color: var(--green-600);">✓ Regular</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon">🏛️</div>
+                    <div class="status-text">
+                        <div class="status-label">Estadual</div>
+                        <div class="status-value" style="color: var(--green-600);">✓ Regular</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon">🏘️</div>
+                    <div class="status-text">
+                        <div class="status-label">Municipal</div>
+                        <div class="status-value" style="color: var(--green-600);">✓ Regular</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon">💼</div>
+                    <div class="status-text">
+                        <div class="status-label">FGTS</div>
+                        <div class="status-value" style="color: var(--green-600);">✓ Regular</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon">👥</div>
+                    <div class="status-text">
+                        <div class="status-label">Trabalhista</div>
+                        <div class="status-value" style="color: var(--green-600);">✓ Regular</div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon">⚖️</div>
+                    <div class="status-text">
+                        <div class="status-label">Falência/Concordata</div>
+                        <div class="status-value" style="color: var(--green-600);">✓ Regular</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle tema
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+
+            const button = document.querySelector('.theme-toggle');
+            button.textContent = newTheme === 'light' ? '🌙 Escuro' : '☀️ Claro';
+
+            localStorage.setItem('theme', newTheme);
+            updateCharts();
+        }
+
+        // Restaurar tema salvo
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        const button = document.querySelector('.theme-toggle');
+        button.textContent = savedTheme === 'light' ? '🌙 Escuro' : '☀️ Claro';
+
+        const getTextColor = () => {
+            return document.documentElement.getAttribute('data-theme') === 'light'
+                ? '#0F172A'
+                : '#F8FAFC';
+        };
+
+        const getGridColor = () => {
+            return document.documentElement.getAttribute('data-theme') === 'light'
+                ? '#E2E8F0'
+                : '#334155';
+        };
+
+        // Gráfico de Composição do DAS
+        const dasCtx = document.getElementById('dasChart').getContext('2d');
+        const dasChart = new Chart(dasCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['CPP', 'ISS', 'Cofins', 'PIS/Pasep', 'CSLL', 'IRPJ'],
+                datasets: [{
+                    data: [14325, 253.89, 75, 16.26, 20.48, 23.40],
+                    backgroundColor: [
+                        '#D98BA4',
+                        '#D4AF37',
+                        '#E879C4',
+                        '#D6A87C',
+                        '#B0A8C1',
+                        '#A89B8B'
+                    ],
+                    borderColor: getTextColor(),
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: getTextColor(),
+                            font: { size: 12, weight: '600' },
+                            padding: 12
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Faturamento vs Despesas
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Faturamento', 'Despesas'],
+                datasets: [{
+                    label: 'Agosto/2026 (R$)',
+                    data: [9750, 3325.53],
+                    backgroundColor: [
+                        '#D98BA4',
+                        '#E879C4'
+                    ],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: getTextColor(),
+                            font: { size: 12 }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: getGridColor() },
+                        ticks: { color: getTextColor() }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: getTextColor() }
+                    }
+                }
+            }
+        });
+
+        function updateCharts() {
+            const textColor = getTextColor();
+            const gridColor = getGridColor();
+
+            // Update DAS Chart
+            dasChart.options.plugins.legend.labels.color = textColor;
+            dasChart.update();
+
+            // Update Revenue Chart
+            revenueChart.options.plugins.legend.labels.color = textColor;
+            revenueChart.options.scales.x.grid.color = gridColor;
+            revenueChart.options.scales.x.ticks.color = textColor;
+            revenueChart.options.scales.y.ticks.color = textColor;
+            revenueChart.update();
+        }
+    </script>
+</body>
+</html>

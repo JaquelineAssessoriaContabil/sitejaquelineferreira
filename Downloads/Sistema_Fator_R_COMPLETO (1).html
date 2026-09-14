@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Fator R - Família TributáriAI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+:root{--bg:#030604;--card:#0b0f0d;--card2:#111713;--gold:#d4af37;--gold2:#f5d86e;--green:#1fbf75;--red:#d85c5c;--muted:#aaa;--border:rgba(212,175,55,.25)}
+body{background:linear-gradient(135deg,#020403,#0b1f14);color:#fff;padding:20px;min-height:100vh}
+.container{max-width:1350px;margin:auto}
+header{background:linear-gradient(135deg,#063d25,#050505);border:1px solid rgba(212,175,55,.35);border-radius:22px;padding:30px;text-align:center;margin-bottom:20px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+header h1{color:var(--gold);font-size:34px;margin-bottom:10px}
+header p{color:#ddd;line-height:1.5}
+.card{background:rgba(11,15,13,.95);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:20px;box-shadow:0 14px 35px rgba(0,0,0,.25)}
+h2{color:var(--gold);margin-bottom:15px;font-size:21px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.dashboard{display:grid;grid-template-columns:repeat(6,1fr);gap:15px}
+label{display:block;margin-bottom:6px;font-weight:bold;color:#eee;font-size:14px}
+input,select{width:100%;padding:13px;border-radius:10px;border:1px solid #2f4137;background:#070907;color:#fff;font-size:15px;outline:none}
+input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.12)}
+button{border:0;border-radius:10px;padding:13px 18px;font-weight:bold;cursor:pointer;margin-top:10px;transition:.2s}
+button:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
+.btn-dark{background:#1f2b24;color:#fff;border:1px solid #34483c}
+.btn-danger{background:#5c1d1d;color:#fff}
+.btn-green{background:linear-gradient(135deg,#138751,#28d486);color:#00190d}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.box{background:#070907;border:1px solid var(--border);border-radius:15px;padding:18px;min-height:92px}
+.box span{color:var(--muted);font-size:13px}
+.box strong{display:block;margin-top:8px;font-size:21px;color:var(--gold);word-break:break-word}
+.success{color:#4dffad!important}.warning{color:#ffd86b!important}.danger{color:#ff8080!important}
+.months{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.month-card{background:var(--card2);border:1px solid rgba(212,175,55,.18);border-radius:14px;padding:15px}
+.month-card label{margin-top:8px}
+.progress{height:20px;background:#1d2a22;border-radius:999px;overflow:hidden;margin-top:15px;position:relative}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#8f1d1d,var(--gold),var(--green));transition:.3s}
+.marker{position:absolute;left:56%;top:0;height:100%;width:2px;background:white;opacity:.9}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{padding:12px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;font-size:14px}
+th{color:var(--gold)}
+.alert{display:none;padding:14px;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.35);border-radius:12px;margin-bottom:20px;color:var(--gold2)}
+.small{color:#ccc;line-height:1.6;margin-bottom:15px}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid var(--border);color:var(--gold);font-size:12px;margin-top:8px}
+footer{text-align:center;color:var(--gold);padding:20px;font-weight:bold}
+.no-print{}
+@media(max-width:1050px){.dashboard{grid-template-columns:repeat(2,1fr)}.months{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){body{padding:12px}.grid,.grid-3,.dashboard,.months{grid-template-columns:1fr}header h1{font-size:26px}.card{padding:16px}.actions button{width:100%}}
+@media print{body{background:#fff;color:#000}.no-print,button,input,select{display:none!important}.card,header{box-shadow:none;border:1px solid #ccc;background:#fff;color:#000}.box,.month-card{border:1px solid #ccc;background:#fff}h1,h2,.box strong,th,footer{color:#000!important}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>Sistema de Gestão do Fator R</h1>
+  <p>Controle mensal, acumulado móvel de 12 meses, múltiplos clientes, backup e simulação de enquadramento.</p>
+  <span class="badge">Família TributáriAI | Franklim Paixão</span>
+</header>
+
+<div id="alerta" class="alert"></div>
+
+<section class="card no-print">
+  <h2>Gerenciar Cliente</h2>
+  <div class="grid">
+    <div><label>Selecionar cliente</label><select id="clienteSelecionado" onchange="selecionarCliente()"></select></div>
+    <div><label>Pesquisar cliente</label><input id="pesquisaCliente" placeholder="Digite razão, fantasia ou CNPJ" oninput="carregarListaClientes()"></div>
+    <div><label>Razão Social</label><input id="razao" placeholder="Empresa Modelo LTDA"></div>
+    <div><label>Nome Fantasia</label><input id="fantasia" placeholder="Empresa Modelo"></div>
+    <div><label>CNPJ</label><input id="cnpj" placeholder="00.000.000/0000-00" maxlength="18"></div>
+    <div><label>Responsável / Observação</label><input id="obs" placeholder="Ex: cliente de serviços médicos"></div>
+  </div>
+  <div class="actions">
+    <button class="btn-gold" onclick="salvarCliente()">Salvar Cliente</button>
+    <button class="btn-dark" onclick="novoCliente()">Novo Cliente</button>
+    <button class="btn-danger" onclick="excluirCliente()">Excluir Cliente</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Dashboard</h2>
+  <div class="dashboard">
+    <div class="box"><span>Cliente</span><strong id="dashCliente">---</strong></div>
+    <div class="box"><span>Receita 12 meses</span><strong id="dashReceita">R$ 0,00</strong></div>
+    <div class="box"><span>Folha 12 meses</span><strong id="dashFolha">R$ 0,00</strong></div>
+    <div class="box"><span>Fator R</span><strong id="dashFator">0,00%</strong></div>
+    <div class="box"><span>Anexo</span><strong id="dashAnexo">---</strong></div>
+    <div class="box"><span>Folha faltante para 28%</span><strong id="dashFalta">R$ 0,00</strong></div>
+  </div>
+  <div class="progress"><div class="progress-bar" id="barra"></div><div class="marker" title="Meta 28%"></div></div>
+</section>
+
+<section class="card no-print">
+  <h2>Base Inicial dos Últimos 12 Meses</h2>
+  <p class="small">Preencha a base inicial apenas uma vez. Depois, atualize somente o mês novo. O sistema mantém automaticamente as últimas 12 competências.</p>
+  <div id="baseInicial" class="months"></div>
+  <button class="btn-gold" onclick="salvarBaseInicial()">Salvar Base Inicial</button>
+</section>
+
+<section class="card no-print">
+  <h2>Atualização Mensal</h2>
+  <div class="grid-3">
+    <div><label>Competência</label><input id="competencia" placeholder="Ex: Jul/2026"></div>
+    <div><label>Receita do mês</label><input id="receitaMes" placeholder="R$ 0,00"></div>
+    <div><label>Folha do mês</label><input id="folhaMes" placeholder="R$ 0,00"></div>
+  </div>
+  <button class="btn-gold" onclick="atualizarMes()">Atualizar Competência</button>
+</section>
+
+<section class="card no-print">
+  <h2>Simulador de Folha / Pró-labore</h2>
+  <div class="grid">
+    <div><label>Valor adicional de folha</label><input id="simulacao" placeholder="R$ 0,00"></div>
+    <div class="box"><span>Novo Fator R Simulado</span><strong id="resultadoSimulacao">0,00%</strong></div>
+  </div>
+  <button class="btn-gold" onclick="simular()">Simular</button>
+</section>
+
+<section class="card">
+  <h2>Histórico das 12 Competências Consideradas</h2>
+  <table>
+    <thead><tr><th>Competência</th><th>Receita</th><th>Folha</th><th>Fator mensal</th></tr></thead>
+    <tbody id="historico"></tbody>
+  </table>
+</section>
+
+<section class="card no-print">
+  <h2>Ferramentas</h2>
+  <div class="actions">
+    <button class="btn-green" onclick="exportarCSV()">Exportar Excel/CSV</button>
+    <button class="btn-dark" onclick="exportarBackup()">Exportar Backup JSON</button>
+    <button class="btn-dark" onclick="document.getElementById('importarJson').click()">Importar Backup JSON</button>
+    <button class="btn-gold" onclick="window.print()">Imprimir / Salvar PDF</button>
+    <button class="btn-danger" onclick="limparTudo()">Limpar todos os dados</button>
+    <input type="file" id="importarJson" accept=".json" style="display:none" onchange="importarBackup(event)">
+  </div>
+</section>
+
+<section class="card">
+  <h2>Resumo Técnico</h2>
+  <p class="small">O Fator R é calculado pela relação entre folha de pagamento dos últimos 12 meses e receita bruta dos últimos 12 meses. Quando o percentual for igual ou superior a 28%, a indicação é Anexo III. Quando for inferior a 28%, a indicação é Anexo V.</p>
+</section>
+
+<footer>Família TributáriAI | Franklim Paixão</footer>
+</div>
+
+<script>
+let clientes = JSON.parse(localStorage.getItem("clientes_fator_r_v2")) || [];
+let clienteAtual = null;
+const mesesPadrao = ["Mês 01","Mês 02","Mês 03","Mês 04","Mês 05","Mês 06","Mês 07","Mês 08","Mês 09","Mês 10","Mês 11","Mês 12"];
+
+function salvarLocal(){localStorage.setItem("clientes_fator_r_v2",JSON.stringify(clientes))}
+function mostrarAlerta(msg){const a=document.getElementById("alerta");a.innerText=msg;a.style.display="block";setTimeout(()=>a.style.display="none",3500)}
+function moedaParaNumero(valor){if(!valor)return 0;return Number(String(valor).replace("R$","").replace(/\./g,"").replace(",",".").trim())||0}
+function numeroParaMoeda(valor){return Number(valor||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function pct(v){return Number(v||0).toFixed(2).replace(".",",")+"%"}
+function escapeHTML(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+
+function aplicarMascaraMoeda(id){
+ const input=document.getElementById(id); if(!input) return;
+ input.addEventListener("input",()=>{let v=input.value.replace(/\D/g,"");input.value=(Number(v)/100).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})})
+}
+function mascaraCNPJ(){
+ const input=document.getElementById("cnpj");
+ input.addEventListener("input",()=>{let v=input.value.replace(/\D/g,"").slice(0,14);
+ v=v.replace(/^(\d{2})(\d)/,"$1.$2").replace(/^(\d{2})\.(\d{3})(\d)/,"$1.$2.$3").replace(/\.(\d{3})(\d)/,".$1/$2").replace(/(\d{4})(\d)/,"$1-$2");
+ input.value=v})
+}
+["receitaMes","folhaMes","simulacao"].forEach(aplicarMascaraMoeda); mascaraCNPJ();
+
+function criarBaseInicial(){
+ const div=document.getElementById("baseInicial"); div.innerHTML="";
+ mesesPadrao.forEach((mes,i)=>{div.innerHTML+=`<div class="month-card"><label>Competência</label><input id="comp_${i}" placeholder="Ex: Jul/2025"><label>Receita</label><input id="rec_${i}" placeholder="R$ 0,00"><label>Folha</label><input id="fol_${i}" placeholder="R$ 0,00"></div>`});
+ for(let i=0;i<12;i++){aplicarMascaraMoeda("rec_"+i);aplicarMascaraMoeda("fol_"+i)}
+}
+
+function carregarListaClientes(){
+ const select=document.getElementById("clienteSelecionado");
+ const termo=(document.getElementById("pesquisaCliente")?.value||"").toLowerCase();
+ select.innerHTML=`<option value="">Selecione um cliente</option>`;
+ clientes.forEach((c,i)=>{
+  const texto=`${c.razao||""} ${c.fantasia||""} ${c.cnpj||""}`.toLowerCase();
+  if(!termo || texto.includes(termo)) select.innerHTML+=`<option value="${i}">${escapeHTML(c.razao||c.fantasia||"Cliente sem nome")}</option>`;
+ });
+ if(clienteAtual!==null) select.value=clienteAtual;
+}
+
+function salvarCliente(){
+ const cliente={razao:razao.value.trim(),fantasia:fantasia.value.trim(),cnpj:cnpj.value.trim(),obs:obs.value.trim(),competencias:clienteAtual!==null?(clientes[clienteAtual].competencias||[]):[]};
+ if(!cliente.razao && !cliente.fantasia){mostrarAlerta("Informe ao menos a razão social ou nome fantasia.");return}
+ if(clienteAtual===null){clientes.push(cliente);clienteAtual=clientes.length-1}else{clientes[clienteAtual]=cliente}
+ salvarLocal();carregarListaClientes();clienteSelecionado.value=clienteAtual;atualizarTela();mostrarAlerta("Cliente salvo com sucesso.")
+}
+
+function novoCliente(){
+ clienteAtual=null;clienteSelecionado.value="";razao.value="";fantasia.value="";cnpj.value="";obs.value="";limparBaseInputs();atualizarTela()
+}
+
+function selecionarCliente(){
+ const index=clienteSelecionado.value;
+ if(index===""){novoCliente();return}
+ clienteAtual=Number(index); const c=clientes[clienteAtual];
+ razao.value=c.razao||"";fantasia.value=c.fantasia||"";cnpj.value=c.cnpj||"";obs.value=c.obs||"";
+ carregarBaseInicial();atualizarTela()
+}
+
+function excluirCliente(){
+ if(clienteAtual===null){mostrarAlerta("Selecione um cliente para excluir.");return}
+ if(confirm("Deseja excluir este cliente?")){clientes.splice(clienteAtual,1);clienteAtual=null;salvarLocal();carregarListaClientes();novoCliente();mostrarAlerta("Cliente excluído.")}
+}
+
+function salvarBaseInicial(){
+ if(clienteAtual===null){mostrarAlerta("Cadastre ou selecione um cliente primeiro.");return}
+ let competencias=[];
+ for(let i=0;i<12;i++){competencias.push({competencia:document.getElementById("comp_"+i).value||mesesPadrao[i],receita:moedaParaNumero(document.getElementById("rec_"+i).value),folha:moedaParaNumero(document.getElementById("fol_"+i).value)})}
+ clientes[clienteAtual].competencias=competencias;salvarLocal();atualizarTela();mostrarAlerta("Base inicial salva com sucesso.")
+}
+
+function carregarBaseInicial(){
+ limparBaseInputs(); if(clienteAtual===null)return;
+ (clientes[clienteAtual].competencias||[]).forEach((item,i)=>{if(i<12){document.getElementById("comp_"+i).value=item.competencia||"";document.getElementById("rec_"+i).value=numeroParaMoeda(item.receita);document.getElementById("fol_"+i).value=numeroParaMoeda(item.folha)}})
+}
+function limparBaseInputs(){for(let i=0;i<12;i++){document.getElementById("comp_"+i).value="";document.getElementById("rec_"+i).value="";document.getElementById("fol_"+i).value=""}}
+
+function atualizarMes(){
+ if(clienteAtual===null){mostrarAlerta("Selecione um cliente primeiro.");return}
+ const comp=competencia.value.trim(), rec=moedaParaNumero(receitaMes.value), fol=moedaParaNumero(folhaMes.value);
+ if(!comp){mostrarAlerta("Informe a competência.");return}
+ clientes[clienteAtual].competencias=clientes[clienteAtual].competencias||[];
+ clientes[clienteAtual].competencias.push({competencia:comp,receita:rec,folha:fol});
+ while(clientes[clienteAtual].competencias.length>12) clientes[clienteAtual].competencias.shift();
+ competencia.value="";receitaMes.value="";folhaMes.value="";
+ salvarLocal();carregarBaseInicial();atualizarTela();mostrarAlerta("Competência atualizada. Mantidas somente as últimas 12 competências.")
+}
+
+function calcular(){
+ if(clienteAtual===null)return{receita:0,folha:0,fator:0,anexo:"---",diferenca:0};
+ const comps=clientes[clienteAtual].competencias||[];
+ const receita=comps.reduce((t,m)=>t+Number(m.receita||0),0);
+ const folha=comps.reduce((t,m)=>t+Number(m.folha||0),0);
+ const fator=receita>0?(folha/receita)*100:0;
+ const anexo=receita<=0?"---":fator>=28?"Anexo III":"Anexo V";
+ const diferenca=fator>=28?0:(receita*.28)-folha;
+ return{receita,folha,fator,anexo,diferenca}
+}
+
+function atualizarTela(){
+ const r=calcular(); const nome=clienteAtual!==null?(clientes[clienteAtual].razao||clientes[clienteAtual].fantasia):"---";
+ dashCliente.innerText=nome||"---"; dashReceita.innerText=numeroParaMoeda(r.receita); dashFolha.innerText=numeroParaMoeda(r.folha); dashFator.innerText=pct(r.fator);
+ dashAnexo.innerText=r.anexo; dashAnexo.className=r.anexo==="Anexo III"?"success":r.anexo==="Anexo V"?"warning":"";
+ dashFalta.innerText=r.diferenca>0?numeroParaMoeda(r.diferenca):r.receita>0?"Já atingiu 28%":"R$ 0,00";
+ dashFalta.className=r.diferenca>0?"warning":"success";
+ barra.style.width=Math.min(r.fator,50)*2+"%"; montarHistorico()
+}
+
+function montarHistorico(){
+ historico.innerHTML=""; if(clienteAtual===null)return;
+ (clientes[clienteAtual].competencias||[]).forEach(item=>{const fm=item.receita>0?(item.folha/item.receita)*100:0;historico.innerHTML+=`<tr><td>${escapeHTML(item.competencia)}</td><td>${numeroParaMoeda(item.receita)}</td><td>${numeroParaMoeda(item.folha)}</td><td>${pct(fm)}</td></tr>`})
+}
+
+function simular(){
+ const r=calcular(), add=moedaParaNumero(simulacao.value);
+ if(r.receita<=0){mostrarAlerta("Informe uma base com receita para simular.");return}
+ const nf=((r.folha+add)/r.receita)*100;
+ resultadoSimulacao.innerText=pct(nf); resultadoSimulacao.className=nf>=28?"success":"warning"
+}
+
+function exportarCSV(){
+ if(clienteAtual===null){mostrarAlerta("Selecione um cliente para exportar.");return}
+ const c=clientes[clienteAtual], r=calcular();
+ let csv="Cliente;CNPJ;Competencia;Receita;Folha;Fator Mensal\n";
+ (c.competencias||[]).forEach(m=>{let fm=m.receita>0?(m.folha/m.receita)*100:0;csv+=`"${c.razao||c.fantasia}";"${c.cnpj||""}";"${m.competencia}";${m.receita};${m.folha};${fm.toFixed(2)}%\n`});
+ csv+=`\nResumo;;;;;\nReceita 12 meses;${r.receita}\nFolha 12 meses;${r.folha}\nFator R;${r.fator.toFixed(2)}%\nAnexo;${r.anexo}\nFolha faltante;${r.diferenca}\n`;
+ baixarArquivo(csv,"fator_r_"+(c.razao||"cliente").replace(/\W+/g,"_")+".csv","text/csv;charset=utf-8")
+}
+function exportarBackup(){baixarArquivo(JSON.stringify(clientes,null,2),"backup_fator_r.json","application/json")}
+function importarBackup(e){
+ const file=e.target.files[0]; if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{try{const data=JSON.parse(reader.result);if(!Array.isArray(data))throw new Error();clientes=data;clienteAtual=null;salvarLocal();carregarListaClientes();novoCliente();mostrarAlerta("Backup importado com sucesso.")}catch{mostrarAlerta("Arquivo inválido.")}};
+ reader.readAsText(file)
+}
+function baixarArquivo(conteudo,nome,tipo){
+ const blob=new Blob([conteudo],{type:tipo}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=nome; a.click(); URL.revokeObjectURL(a.href)
+}
+function limparTudo(){
+ if(confirm("Isso apagará todos os clientes salvos neste navegador. Confirmar?")){clientes=[];clienteAtual=null;salvarLocal();carregarListaClientes();novoCliente();mostrarAlerta("Todos os dados foram apagados.")}
+}
+
+criarBaseInicial();carregarListaClientes();atualizarTela();
+</script>
+</body>
+</html>

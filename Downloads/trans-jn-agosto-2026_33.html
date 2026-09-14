@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Fiscal - TRANS JN TRANSPORTE ESCOLAR LTDA</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FAF7F7;
+            color: #000;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        .header {
+            background: #FFFFFF;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .header-logo {
+            width: 120px;
+            height: 120px;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #C58A94;
+            margin-bottom: 12px;
+        }
+
+        .header-company {
+            font-size: 16px;
+            color: #000000;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .header-info {
+            font-size: 13px;
+            color: #666;
+            margin: 6px 0;
+            line-height: 1.5;
+        }
+
+        /* KPIs */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: left;
+            border-top: 4px solid #C58A94;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .kpi-card:nth-child(2) { border-top-color: #F59E0B; }
+        .kpi-card:nth-child(3) { border-top-color: #8B5CF6; }
+        .kpi-card:nth-child(4) { border-top-color: #6366F1; }
+        .kpi-card:nth-child(5) { border-top-color: #10B981; }
+
+        .kpi-label {
+            font-size: 11px;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .kpi-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #C58A94;
+            margin-bottom: 8px;
+        }
+
+        .kpi-detail {
+            font-size: 12px;
+            color: #10B981;
+        }
+
+        /* Seções */
+        section {
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .section-title {
+            background: transparent;
+            color: #000000;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-bottom: 1px solid #EFE6E6;
+        }
+
+        .section-content {
+            padding: 20px;
+        }
+
+        /* Gráficos */
+        .charts-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Grid de status */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+        }
+
+        .status-item {
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #E5E7EB;
+            background: #FFFFFF;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .status-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .status-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 6px;
+        }
+
+        .status-value {
+            font-size: 12px;
+            font-weight: 500;
+            color: #10B981;
+        }
+
+        /* Footer */
+        .footer {
+            background: #000;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
+            border-radius: 8px;
+        }
+
+        .footer p {
+            font-size: 12px;
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+
+        /* Responsivo */
+        @media (max-width: 1024px) {
+            .kpi-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .charts-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+            }
+            .header-logo {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .status-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            .status-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <div class="header-title">Dashboard Fiscal</div>
+                <div class="header-company">TRANS JN TRANSPORTE ESCOLAR LTDA</div>
+                <div class="header-info">CNPJ: 26.481.883/0001-92 | Competência: Agosto/2026</div>
+                <div class="header-info">Regime: Simples Nacional (Anexo III)</div>
+            </div>
+            <div class="header-logo">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAKvUExURQAAAMWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinsWinv////GkKFgAAADjdFJOUwAACAUCAQc+WDIEe1IDOBQTJkMwEZZOjg4kjYwYBjQxpkwjZ0tHhUljkYSQX149HhCXi1aHCi1gK2VtEkWcfnIXFQ1XQIZucHd0KgxceZ5ECxtVYT+CiYAdoV1UTRwWbC6nIkEffIMoJXWuemRKO1ti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" alt="Logo Jaqueline Ferreira" />
+            </div>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">🚌 Faturamento</div>
+                <div class="kpi-value">R$ 9.750,00</div>
+                <div class="kpi-detail">Mês de agosto (+39,29% vs julho)</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">💰 DAS - Simples Nacional</div>
+                <div class="kpi-value">R$ 585,01</div>
+                <div class="kpi-detail">Vencimento 21/09/2026</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">📊 RBTIZ</div>
+                <div class="kpi-value">R$ 92.696,30</div>
+                <div class="kpi-detail">51,5% do limite</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">📋 Carga Tributária</div>
+                <div class="kpi-value">6,00%</div>
+                <div class="kpi-detail">Alíquota efetiva do mês</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">✅ Resultado Operacional</div>
+                <div class="kpi-value">R$ 5.839,46</div>
+                <div class="kpi-detail">Margem: 59,89%</div>
+            </div>
+        </div>
+
+        <!-- Comparativo Faturamento -->
+        <section>
+            <div class="section-title">Faturamento - Comparativo Mensal</div>
+            <div class="section-content">
+                <div class="charts-wrapper">
+                    <div>
+                        <h4 style="margin-bottom: 15px; text-align: center; color: #666;">MÊS ANTERIOR (JULHO)</h4>
+                        <div class="kpi-card" style="border: none; box-shadow: none; padding: 15px; text-align: center; background: #F5F5F5;">
+                            <div style="font-size: 32px; color: #C58A94; font-weight: bold;">R$ 7.000,00</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 15px; text-align: center; color: #666;">MÊS ATUAL (AGOSTO)</h4>
+                        <div class="kpi-card" style="border: none; box-shadow: none; padding: 15px; text-align: center; background: #F5F5F5;">
+                            <div style="font-size: 32px; color: #C58A94; font-weight: bold;">R$ 9.750,00</div>
+                            <div style="font-size: 12px; color: #10B981; margin-top: 8px; background: #E8F5E9; padding: 6px 12px; border-radius: 4px; display: inline-block;">+39,29%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Situação Faixa -->
+        <section>
+            <div class="section-title">Situação na Faixa do Simples Nacional</div>
+            <div class="section-content">
+                <div style="margin-bottom: 20px;">
+                    <div style="background: linear-gradient(to right, #C58A94 51.5%, #e5e7eb 51.5%); height: 30px; border-radius: 8px; margin-bottom: 10px;"></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span>Utilizado: R$ 92.696,30</span>
+                        <span>Limite: R$ 180.000,00</span>
+                        <span>Disponível: R$ 87.303,70</span>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #EFE6E6; font-size: 13px; font-weight: 600;">
+                    Folha Acumulada (12M): R$ 11.347,00
+                </div>
+            </div>
+        </section>
+
+        <!-- Despesas -->
+        <section>
+            <div class="section-title">Detalhamento de Despesas - Total: R$ 3.325,53</div>
+            <div class="section-content">
+                <div class="status-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="status-item">
+                        <div class="status-icon">⛽</div>
+                        <div class="status-name">COMBUSTÍVEL/LUBRIFICANTES</div>
+                        <div class="status-value">R$ 2.710,54</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">🔧</div>
+                        <div class="status-name">SERVIÇOS TOMADOS</div>
+                        <div class="status-value">R$ 540,00</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">🔩</div>
+                        <div class="status-name">PEÇAS/MANUTENÇÃO</div>
+                        <div class="status-value">R$ 74,99</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gráficos -->
+        <section>
+            <div class="section-content">
+                <div class="charts-wrapper">
+                    <div>
+                        <h4 style="margin-bottom: 15px; text-align: center;">Composição do DAS - R$ 585,01</h4>
+                        <div class="chart-container">
+                            <canvas id="dasComposicao"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 15px; text-align: center;">Faturamento vs Despesas</h4>
+                        <div class="chart-container">
+                            <canvas id="faturamentoVsDespesas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Acompanhamento Fiscal -->
+        <section>
+            <div class="section-title">✅ Acompanhamento Fiscal</div>
+            <div class="section-content">
+                <div class="status-grid">
+                    <div class="status-item">
+                        <div class="status-icon">📋</div>
+                        <div class="status-name">PGDAS-D</div>
+                        <div class="status-value">Transmitido</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">💰</div>
+                        <div class="status-name">Apuração DAS</div>
+                        <div class="status-value">Realizada</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">📄</div>
+                        <div class="status-name">Notas Fiscais</div>
+                        <div class="status-value">Conferidas</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">📑</div>
+                        <div class="status-name">Documentos</div>
+                        <div class="status-value">Lançados</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">🛒</div>
+                        <div class="status-name">Compras</div>
+                        <div class="status-value">Conferidas</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">⚖️</div>
+                        <div class="status-name">Obrigações</div>
+                        <div class="status-value">Em dia</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certidões -->
+        <section>
+            <div class="section-title">Situação das Certidões</div>
+            <div class="section-content">
+                <div class="status-grid" style="grid-template-columns: repeat(5, 1fr);">
+                    <div class="status-item">
+                        <div class="status-icon">🏛️</div>
+                        <div class="status-name">FEDERAL</div>
+                        <div class="status-value" style="color: #10B981;">Regular</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">🏢</div>
+                        <div class="status-name">ESTADUAL</div>
+                        <div class="status-value" style="color: #10B981;">Regular</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">💼</div>
+                        <div class="status-name">MUNICIPAL</div>
+                        <div class="status-value" style="color: #10B981;">Regular</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">💰</div>
+                        <div class="status-name">FGTS</div>
+                        <div class="status-value" style="color: #10B981;">Regular</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon">⚖️</div>
+                        <div class="status-name">TRABALHISTA</div>
+                        <div class="status-value" style="color: #10B981;">Regular</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>Jaqueline Ferreira Assessoria Contábil Ltda</strong> CRC SC-013019/O-4</p>
+            <p>Responsável Técnica: Jaqueline do Prado Ferreira CRC SC-048028/O-0</p>
+            <p>📍 Videira - SC | 📧 contato@jaquelineferreiracontadora.com.br</p>
+            <p>📱 WhatsApp (49) 9.9980-3552</p>
+            <p style="margin-top: 12px; font-size: 11px; opacity: 0.9;">Dashboard Fiscal Confidencial - Uso Exclusivo do Cliente</p>
+        </div>
+    </div>
+
+    <script>
+        // Gráfico Composição do DAS
+        const ctxDAS = document.getElementById('dasComposicao').getContext('2d');
+        new Chart(ctxDAS, {
+            type: 'doughnut',
+            data: {
+                labels: ['INSS/CPP (R$ 253,89)', 'ISS (R$ 195,98)', 'COFINS (R$ 75,00)', 'CSLL (R$ 20,48)', 'IRPJ (R$ 23,40)', 'PIS/Pasep (R$ 16,26)'],
+                datasets: [{
+                    data: [253.89, 195.98, 75.00, 20.48, 23.40, 16.26],
+                    backgroundColor: [
+                        '#C58A94',
+                        '#D4AF37',
+                        '#8B5CF6',
+                        '#6366F1',
+                        '#10B981',
+                        '#F59E0B'
+                    ],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 11 },
+                            padding: 15
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico Faturamento vs Despesas
+        const ctxComparacao = document.getElementById('faturamentoVsDespesas').getContext('2d');
+        new Chart(ctxComparacao, {
+            type: 'bar',
+            data: {
+                labels: ['Faturamento', 'Despesas'],
+                datasets: [{
+                    label: 'Valores',
+                    data: [9750.00, 3325.53],
+                    backgroundColor: ['#C58A94', '#D4AF37'],
+                    borderRadius: 4,
+                    barThickness: 60
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'R$ ' + value.toLocaleString('pt-BR');
+                            },
+                            font: { size: 11 }
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: { size: 12 }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

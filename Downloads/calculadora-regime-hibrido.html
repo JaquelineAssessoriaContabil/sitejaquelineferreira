@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador Simples Hibrido - Reforma Tributaria</title>
+<style>
+:root{--azul:#073b74;--claro:#eef6ff;--verde:#087443;--borda:#d8e1ea;--texto:#1f2a36}*{box-sizing:border-box}body{margin:0;padding:28px 14px;background:#f3f6fa;color:var(--texto);font-family:Arial,sans-serif}main{max-width:1040px;margin:auto}h1{color:var(--azul);margin:0 0 8px;font-size:clamp(1.55rem,4vw,2.2rem)}.sub{margin:0;color:#586979;line-height:1.5}.aviso{margin:18px 0;padding:14px 16px;background:var(--claro);border-left:4px solid var(--azul);line-height:1.5}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:21px;box-shadow:0 2px 8px #19324b10}.card h2{margin:0 0 14px;color:var(--azul);font-size:1.12rem}h3{margin:21px 0 8px;padding-bottom:7px;border-bottom:1px solid #e1e9f1;color:#4c6073;font-size:.94rem}label{display:block;margin:12px 0 5px;font-weight:bold;font-size:.88rem}input{width:100%;padding:10px;border:1px solid #b9c9d9;border-radius:7px;font-size:1rem}input:focus{outline:3px solid #c7e2ff;border-color:var(--azul)}small{display:block;color:#66788a;line-height:1.35;font-size:.76rem;margin-top:4px}button{width:100%;margin-top:20px;padding:12px;border:0;border-radius:7px;background:var(--azul);color:#fff;font-size:1rem;font-weight:bold;cursor:pointer}.linha{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #dce8f2}.linha span{color:#4c6073}.linha strong{text-align:right}.total{margin-top:11px;padding:14px;border:0;border-radius:8px;background:var(--verde);color:#fff}.total span{color:#dff9eb}.comparacao{margin-top:17px;padding:14px;background:#fff9e8;border:1px solid #f0da8f;border-radius:8px}.nota{margin:12px 0 0;color:#675018;font-size:.83rem;line-height:1.45}.positivo{color:var(--verde)!important}.negativo{color:#b42318!important}footer{margin-top:18px;color:#637589;font-size:.8rem;line-height:1.5}a{color:#075da6}@media(max-width:760px){body{padding:18px 10px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<h1>Simulador do Simples Nacional H&iacute;brido</h1>
+<p class="sub">Reforma Tribut&aacute;ria do Consumo: compara&ccedil;&atilde;o entre o Simples integral e a op&ccedil;&atilde;o de apurar CBS/IBS pelo regime regular.</p>
+<p class="aviso"><strong>Regra do modelo h&iacute;brido:</strong> a empresa permanece no Simples Nacional para os demais tributos, mas recolhe CBS e IBS fora do DAS. O DAS informado deve excluir as parcelas de CBS e IBS; estes tributos s&atilde;o apurados por d&eacute;bitos menos cr&eacute;ditos, separadamente.</p>
+<section class="grid">
+<section class="card">
+<h2>Dados mensais</h2>
+<label for="receita">Receita tribut&aacute;vel do m&ecirc;s (R$)</label>
+<input id="receita" type="text" inputmode="decimal" value="100.000,00">
+<small>Base simplificada usada para calcular os d&eacute;bitos de CBS e IBS.</small>
+<h3>Refer&ecirc;ncia: Simples integral</h3>
+<label for="aliquotaIntegral">Al&iacute;quota efetiva total do Simples (%)</label>
+<input id="aliquotaIntegral" type="text" inputmode="decimal" value="10,00">
+<small>Use a al&iacute;quota efetiva projetada/apurada da atividade e do RBT12.</small>
+<h3>Op&ccedil;&atilde;o h&iacute;brida</h3>
+<label for="aliquotaDAS">Al&iacute;quota efetiva do DAS sem CBS/IBS (%)</label>
+<input id="aliquotaDAS" type="text" inputmode="decimal" value="6,00">
+<small>Somente as parcelas que continuam no DAS.</small>
+<label for="aliquotaCBS">Al&iacute;quota CBS nas sa&iacute;das (%)</label>
+<input id="aliquotaCBS" type="text" inputmode="decimal" value="0,00">
+<label for="aliquotaIBS">Al&iacute;quota IBS nas sa&iacute;das (%)</label>
+<input id="aliquotaIBS" type="text" inputmode="decimal" value="0,00">
+<small>Preencha a al&iacute;quota aplic&aacute;vel ao per&iacute;odo e &agrave; opera&ccedil;&atilde;o.</small>
+<h3>Compras com direito a cr&eacute;dito</h3>
+<label for="compras">Valor das compras com cr&eacute;dito (R$)</label>
+<input id="compras" type="text" inputmode="decimal" value="0,00">
+<small>Informe somente compras com direito a cr&eacute;dito. O sistema usa as mesmas al&iacute;quotas de CBS e IBS das sa&iacute;das para calcular os cr&eacute;ditos.</small>
+<button type="button" id="calcular">Calcular cen&aacute;rio</button>
+</section>
+<section class="card" aria-live="polite">
+<h2>Resultado estimado</h2>
+<h3>Sem op&ccedil;&atilde;o h&iacute;brida</h3>
+<div class="linha"><span>DAS do Simples integral</span><strong id="dasIntegral"></strong></div>
+<h3>Com op&ccedil;&atilde;o h&iacute;brida</h3>
+<div class="linha"><span>DAS sem CBS/IBS</span><strong id="dasParcial"></strong></div>
+<div class="linha"><span>D&eacute;bito de CBS</span><strong id="debitoCBS"></strong></div>
+<div class="linha"><span>Cr&eacute;dito de CBS calculado</span><strong id="creditoCBS"></strong></div>
+<div class="linha"><span>CBS a recolher</span><strong id="cbs"></strong></div>
+<div class="linha"><span>D&eacute;bito de IBS</span><strong id="debitoIBS"></strong></div>
+<div class="linha"><span>Cr&eacute;dito de IBS calculado</span><strong id="creditoIBS"></strong></div>
+<div class="linha"><span>IBS a recolher</span><strong id="ibs"></strong></div>
+<div class="linha total"><span>Total estimado no h&iacute;brido</span><strong id="total"></strong></div>
+<div class="comparacao"><div class="linha"><span>Diferen&ccedil;a frente ao Simples integral</span><strong id="diferenca"></strong></div><p class="nota">Cr&eacute;dito = compras com direito a cr&eacute;dito &times; al&iacute;quota de CBS ou IBS da sa&iacute;da. Cr&eacute;ditos n&atilde;o compensam um ao outro.</p></div>
+</section></section>
+<footer>Base legal: <a href="https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-214-16-janeiro-2025-796905-publicacaooriginal-174141-pl.html" target="_blank" rel="noopener">LC 214/2025, arts. 41, 45 e 47</a>; <a href="https://www2.camara.leg.br/legin/fed/leicom/2026/leicomplementar-227-13-janeiro-2026-798657-normaatualizada-pl.html" target="_blank" rel="noopener">LC 227/2026</a>. Simula&ccedil;&atilde;o informativa; valide a apura&ccedil;&atilde;o com o contador.</footer>
+</main>
+<script>
+const brl=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+const moeda=new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const percentual=new Intl.NumberFormat('pt-BR',{maximumFractionDigits:4});
+function ler(id){const t=document.getElementById(id).value.trim();if(!t)return 0;const n=t.includes(',')?Number(t.replace(/\./g,'').replace(',','.')):Number(t);return Math.max(0,n||0)}
+function mostrar(id,n){document.getElementById(id).textContent=brl.format(n)}
+function formatar(){['receita','compras'].forEach(id=>document.getElementById(id).value=moeda.format(ler(id)));['aliquotaIntegral','aliquotaDAS','aliquotaCBS','aliquotaIBS'].forEach(id=>document.getElementById(id).value=percentual.format(ler(id)))}
+function calcular(){const receita=ler('receita'),compras=ler('compras'),ai=ler('aliquotaIntegral'),ad=ler('aliquotaDAS'),ac=ler('aliquotaCBS'),ab=ler('aliquotaIBS');const integral=receita*ai/100,das=receita*ad/100,debitoCBS=receita*ac/100,debitoIBS=receita*ab/100,creditoCBS=Math.min(debitoCBS,compras*ac/100),creditoIBS=Math.min(debitoIBS,compras*ab/100),cbs=debitoCBS-creditoCBS,ibs=debitoIBS-creditoIBS,total=das+cbs+ibs,diferenca=integral-total;mostrar('dasIntegral',integral);mostrar('dasParcial',das);mostrar('debitoCBS',debitoCBS);mostrar('creditoCBS',creditoCBS);mostrar('cbs',cbs);mostrar('debitoIBS',debitoIBS);mostrar('creditoIBS',creditoIBS);mostrar('ibs',ibs);mostrar('total',total);const e=document.getElementById('diferenca');e.className=diferenca>=0?'positivo':'negativo';e.textContent=(diferenca>=0?'Economia de ':'Acréscimo de ')+brl.format(Math.abs(diferenca))}
+document.getElementById('calcular').onclick=()=>{formatar();calcular()};document.querySelectorAll('input').forEach(i=>{i.oninput=calcular;i.onblur=()=>{formatar();calcular()}});formatar();calcular();
+</script>
+</body></html>

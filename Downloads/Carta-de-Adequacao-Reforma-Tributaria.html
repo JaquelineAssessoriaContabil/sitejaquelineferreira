@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta de Adequação à Reforma Tributária · Família TributárIA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --musgo: #2E4033;
+  --musgo-2: #3E5546;
+  --lima: #B7D96A;
+  --cream: #F4F2E9;
+  --ink: #23281F;
+  --muted: #6B7264;
+  --paper: #FFFFFF;
+  --linha: #E0DED2;
+  --risco: #8C3B2E;
+  --risco-bg: #F7E9E5;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Archivo', sans-serif; background:var(--cream); color:var(--ink); }
+
+/* ===== TOPO ===== */
+.topo {
+  background: var(--musgo);
+  color: #fff;
+  padding: 26px 28px 22px;
+}
+.topo-inner { max-width: 1240px; margin: 0 auto; display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; }
+.topo h1 { font-family:'Lora', serif; font-size: 26px; font-weight:700; line-height:1.2; }
+.topo h1 em { font-style: italic; color: var(--lima); }
+.topo .sub { margin-top:6px; font-size:13px; color:#D8DACF; max-width:640px; line-height:1.5; }
+.topo .assina { text-align:right; font-size:12px; color:#C9CCBF; }
+.topo .assina b { color:#fff; display:block; font-size:13px; }
+.topo .assina i { font-family:'Lora', serif; color: var(--lima); }
+
+/* ===== LAYOUT ===== */
+.wrap { max-width: 1240px; margin: 26px auto 60px; padding: 0 28px; display:grid; grid-template-columns: 400px 1fr; gap: 26px; align-items:start; }
+@media (max-width: 980px){ .wrap { grid-template-columns: 1fr; } }
+
+/* ===== EDITOR ===== */
+.editor { display:flex; flex-direction:column; gap:14px; }
+.bloco {
+  background:#fff;
+  border:1px solid var(--linha);
+  border-radius:10px;
+  padding:18px;
+}
+.bloco h2 {
+  font-family:'Lora', serif;
+  font-size:15px; font-weight:700; color:var(--musgo);
+  padding-bottom:8px; margin-bottom:12px;
+  border-bottom: 2px solid var(--lima);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.campo { margin-bottom:10px; }
+.campo label { display:block; font-size:11px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.campo input[type=text], .campo input[type=date], .campo textarea {
+  width:100%; padding:9px 11px;
+  border:1px solid var(--linha); border-radius:7px;
+  font-family:'Archivo', sans-serif; font-size:14px; color:var(--ink);
+  background:#FCFBF7;
+}
+.campo input:focus, .campo textarea:focus { outline:2px solid var(--lima); outline-offset:1px; border-color:var(--musgo-2); }
+.linha2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+/* logo */
+.logo-drop {
+  border: 2px dashed var(--linha);
+  border-radius: 9px;
+  padding: 14px;
+  text-align:center;
+  cursor:pointer;
+  transition: border-color .15s, background .15s;
+  background:#FCFBF7;
+}
+.logo-drop:hover { border-color: var(--musgo-2); background:#F6F8EE; }
+.logo-drop p { font-size:12.5px; color:var(--muted); }
+.logo-drop b { color:var(--musgo); }
+.logo-drop img { max-height:56px; max-width:200px; display:block; margin:0 auto 6px; }
+.logo-drop .tirar { font-size:11px; color:var(--risco); text-decoration:underline; cursor:pointer; }
+#logoInput { display:none; }
+
+/* itens */
+.contador-itens { font-size:11px; font-weight:700; color:var(--muted); letter-spacing:.4px; }
+.item {
+  border:1px solid var(--linha);
+  border-radius:8px;
+  padding:10px 12px;
+  margin-bottom:8px;
+  display:flex; gap:10px; align-items:flex-start;
+  cursor:pointer;
+  transition: border-color .15s, background .15s;
+  background:#FCFBF7;
+}
+.item:hover { border-color: var(--musgo-2); }
+.item.on { background:#F1F6E3; border-color: var(--musgo); }
+.item input { margin-top:3px; accent-color: var(--musgo); width:15px; height:15px; flex-shrink:0; }
+.item .tit { font-size:13px; font-weight:700; color:var(--musgo); line-height:1.3; }
+.item .des { font-size:11.5px; color:var(--muted); margin-top:2px; line-height:1.4; }
+
+.acoes { display:flex; gap:10px; }
+.btn {
+  flex:1;
+  padding:13px 16px;
+  border:none; border-radius:9px;
+  font-family:'Archivo', sans-serif; font-size:14px; font-weight:700;
+  cursor:pointer;
+  transition: transform .1s, opacity .15s;
+}
+.btn:active { transform: scale(.98); }
+.btn-print { background: var(--musgo); color: var(--lima); }
+.btn-print:hover { opacity:.92; }
+.btn-limpar { background:#fff; color:var(--muted); border:1px solid var(--linha); flex:0 0 auto; }
+.rodape-tool { text-align:center; font-size:11.5px; color:var(--muted); margin-top:4px; line-height:1.5; }
+.rodape-tool i { font-family:'Lora', serif; }
+
+/* ===== PREVIEW / CARTA ===== */
+.preview-area { position:sticky; top:20px; }
+.folha {
+  background: var(--paper);
+  width: 100%;
+  max-width: 210mm;
+  min-height: 280mm;
+  margin: 0 auto;
+  box-shadow: 0 8px 40px rgba(35,40,31,.14);
+  padding: 20mm 18mm;
+  font-family: 'Lora', serif;
+  color: #262B22;
+  position: relative;
+}
+
+.carta-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; border-bottom: 2.5px solid #262B22; padding-bottom:14px; margin-bottom:6px; }
+.carta-head .esc { }
+.carta-head .esc .nome-esc { font-family:'Archivo', sans-serif; font-weight:800; font-size:17px; letter-spacing:.2px; color:#1E241C; }
+.carta-head .esc .crc-esc { font-family:'Archivo', sans-serif; font-size:11px; color:#6B7264; margin-top:2px; letter-spacing:.4px; }
+.carta-head img { max-height: 58px; max-width: 170px; object-fit:contain; }
+
+.carta-selo {
+  display:inline-block;
+  font-family:'Archivo', sans-serif;
+  font-size:10px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase;
+  color:#6B7264;
+  margin: 14px 0 4px;
+}
+.carta-titulo { font-size:23px; font-weight:700; line-height:1.25; color:#1E241C; }
+.carta-titulo em { font-style:italic; }
+.carta-data { font-family:'Archivo', sans-serif; font-size:12px; color:#6B7264; margin-top:8px; }
+
+.carta-body { margin-top:18px; font-size:13.5px; line-height:1.75; }
+.carta-body p { margin-bottom:12px; text-align:justify; }
+.carta-body .dest { font-weight:600; }
+
+.carta-itens { margin: 6px 0 4px; }
+.c-item { margin-bottom:14px; break-inside: avoid; }
+.c-item .c-tit {
+  font-family:'Archivo', sans-serif;
+  font-size:13.5px; font-weight:800; color:#1E241C;
+  display:flex; align-items:baseline; gap:8px;
+}
+.c-item .c-num {
+  font-family:'Lora', serif; font-style:italic; font-weight:600;
+  color:#6B7264; font-size:13px; flex-shrink:0;
+}
+.c-item .c-txt { font-size:13px; line-height:1.7; margin-top:3px; text-align:justify; }
+.c-item .c-risco {
+  margin-top:5px;
+  background: var(--risco-bg);
+  border-left: 3px solid var(--risco);
+  padding: 6px 10px;
+  font-family:'Archivo', sans-serif;
+  font-size:11.5px; line-height:1.55; color:#5F2E25;
+}
+.c-item .c-risco b { color: var(--risco); }
+
+.carta-fecho { margin-top:16px; }
+.carta-ass { margin-top:34px; }
+.carta-ass .tra { width:220px; border-top:1px solid #262B22; padding-top:6px; }
+.carta-ass .an { font-weight:700; font-size:14px; }
+.carta-ass .ac { font-family:'Archivo', sans-serif; font-size:11.5px; color:#6B7264; margin-top:2px; }
+
+.carta-rodape {
+  margin-top:26px;
+  border-top:1px solid #D8D5C8;
+  padding-top:8px;
+  font-family:'Archivo', sans-serif;
+  font-size:9.5px; color:#9AA091;
+  display:flex; justify-content:space-between;
+}
+
+.tag-urg {
+  display:inline-block;
+  font-family:'Archivo', sans-serif;
+  font-size:9.5px; font-weight:800; letter-spacing:.6px;
+  color:#fff; background: var(--risco);
+  border-radius: 4px; padding: 2px 7px;
+  margin-left: 6px; vertical-align: middle;
+  text-transform: uppercase;
+}
+.c-urg {
+  font-family:'Archivo', sans-serif;
+  display:inline-block;
+  font-size:10px; font-weight:800; letter-spacing:.8px; text-transform:uppercase;
+  color:#fff; background: var(--risco);
+  border:1.5px solid var(--risco);
+  border-radius:4px; padding:3px 9px;
+  margin-bottom:4px;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.vazio-aviso {
+  font-family:'Archivo', sans-serif;
+  background:#FDF8E7; border:1px solid #E8DFB8; color:#5A5133;
+  border-radius:8px; padding:10px 14px; font-size:12.5px; margin-bottom:10px;
+}
+
+/* ===== IMPRESSÃO ===== */
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background:#fff; }
+  .c-urg { background: var(--risco) !important; color:#fff !important; }
+  .tag-urg { background: var(--risco) !important; color:#fff !important; }
+  .c-risco { background: var(--risco-bg) !important; border-left-color: var(--risco) !important; }
+  .topo, .editor, .rodape-tool, .vazio-aviso { display:none !important; }
+  .wrap { display:block; margin:0; padding:0; max-width:none; }
+  .preview-area { position:static; }
+  .folha { box-shadow:none; max-width:none; width:100%; min-height:auto; padding: 0; }
+  .c-item { page-break-inside: avoid; }
+  .c-risco { page-break-inside: avoid; }
+  .carta-head { page-break-after: avoid; }
+  .carta-body p { orphans: 3; widows: 3; }
+  .carta-ass { page-break-inside: avoid; }
+  @page { size: A4; margin: 20mm 17mm 18mm 17mm; }
+}
+</style>
+</head>
+<body>
+
+<div class="topo">
+  <div class="topo-inner">
+    <div>
+      <h1>Carta de Adequação à <em>Reforma Tributária</em></h1>
+      <div class="sub">Preencha os dados, selecione os pontos de adequação e entregue ao seu cliente um documento formal sobre os riscos de chegar em 2027 sem preparação. Imprima ou salve em PDF direto do navegador.</div>
+    </div>
+    <div class="assina"><b>Família TributárIA</b><i>o contador que prepara contadores</i><br>@franklim.contador</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ===== EDITOR ===== -->
+  <div class="editor">
+
+    <div class="bloco">
+      <h2>Seu escritório</h2>
+      <div class="campo">
+        <label>Nome do contador ou escritório</label>
+        <input type="text" id="inContador" placeholder="Ex.: Franklim Paixão Contabilidade" oninput="render()">
+      </div>
+      <div class="linha2">
+        <div class="campo">
+          <label>CRC</label>
+          <input type="text" id="inCrc" placeholder="CRC GO-000000/O" oninput="render()">
+        </div>
+        <div class="campo">
+          <label>Cidade / UF</label>
+          <input type="text" id="inCidade" placeholder="Aparecida de Goiânia, GO" oninput="render()">
+        </div>
+      </div>
+      <div class="campo">
+        <label>Logo do escritório (opcional)</label>
+        <div class="logo-drop" id="logoDrop" onclick="document.getElementById('logoInput').click()">
+          <p id="logoVazio"><b>Clique para subir a logo</b><br>PNG ou JPG, fundo claro fica melhor</p>
+          <img id="logoImg" style="display:none" alt="Logo do escritório">
+          <span class="tirar" id="logoTirar" style="display:none" onclick="event.stopPropagation(); tirarLogo()">remover logo</span>
+        </div>
+        <input type="file" id="logoInput" accept="image/*" onchange="carregarLogo(this)">
+      </div>
+    </div>
+
+    <div class="bloco">
+      <h2>Cliente</h2>
+      <div class="campo">
+        <label>Nome da empresa</label>
+        <input type="text" id="inEmpresa" placeholder="Ex.: Supermercado Bom Preço Ltda" oninput="render()">
+      </div>
+      <div class="campo">
+        <label>Regime tributário</label>
+        <select id="inRegime" onchange="mudouRegime()" style="width:100%;padding:9px 11px;border:1px solid var(--linha);border-radius:7px;font-family:'Archivo',sans-serif;font-size:14px;color:var(--ink);background:#FCFBF7;">
+          <option value="">Selecione...</option>
+          <option value="simples">Simples Nacional</option>
+          <option value="presumido">Lucro Presumido (regime normal)</option>
+          <option value="real">Lucro Real (regime normal)</option>
+        </select>
+      </div>
+      <div class="linha2">
+        <div class="campo">
+          <label>Responsável (opcional)</label>
+          <input type="text" id="inResp" placeholder="Ex.: Sr. João Silva" oninput="render()">
+        </div>
+        <div class="campo">
+          <label>Data da carta</label>
+          <input type="date" id="inData" oninput="render()">
+        </div>
+      </div>
+    </div>
+
+    <div class="bloco">
+      <h2>Pontos de adequação <span class="contador-itens" id="contaItens">0 selecionados</span></h2>
+      <div id="listaItens"></div>
+    </div>
+
+    <div class="acoes">
+      <button class="btn btn-print" id="btnPrint" type="button">Imprimir ou salvar em PDF</button>
+      <button class="btn btn-limpar" onclick="limpar()">Limpar</button>
+    </div>
+    <div class="rodape-tool">Ferramenta gratuita da <b>Família TributárIA</b> · <i>Saber antes vale mais que correr atrás depois.</i><br>Conteúdo baseado na LC 214/2025. Revise o texto final antes de enviar ao cliente.</div>
+  </div>
+
+  <!-- ===== PREVIEW ===== -->
+  <div class="preview-area">
+    <div class="vazio-aviso" id="avisoVazio">A carta se monta sozinha conforme você preenche. Selecione ao menos um ponto de adequação para o corpo aparecer completo.</div>
+    <div class="folha" id="folha"></div>
+  </div>
+
+</div>
+
+<script>
+const ITENS = [
+  {
+    id:'cadastro',
+    tit:'Cadastro fiscal de produtos e serviços',
+    des:'NCM, CST e cClassTrib revisados item a item',
+    txt:'Todo produto e serviço da empresa precisa estar classificado com NCM ou NBS correto e com o código de classificação tributária (cClassTrib) do novo sistema. É essa classificação que define alíquota cheia, redução ou alíquota zero de IBS e CBS em cada item vendido.',
+    risco:'Cadastro errado em 2027 significa imposto calculado errado em cada nota emitida: ou a empresa paga a mais e perde margem, ou paga a menos e acumula passivo com multa.'
+  },
+  {
+    id:'emissor',
+    tit:'Sistema emissor e ERP adequados ao novo leiaute',
+    des:'Grupos de IBS/CBS no XML da nota fiscal',
+    txt:'As notas fiscais eletrônicas passaram a carregar grupos específicos de IBS e CBS, com novos campos e validações. O sistema emissor e o ERP da empresa precisam estar atualizados e parametrizados para preencher essas informações corretamente.',
+    risco:'Sistema desatualizado em 2027 pode significar nota rejeitada e faturamento parado, além de notas emitidas com dados fiscais inconsistentes que viram malha depois.'
+  },
+  {
+    id:'precificacao',
+    tit:'Revisão de precificação',
+    des:'Fim de PIS/COFINS, entrada da CBS, crédito na cadeia',
+    txt:'A partir de 2027, PIS e COFINS deixam de existir e a CBS entra em alíquota cheia, com lógica de crédito diferente. O preço de venda que fazia sentido no sistema antigo pode destruir a margem no novo, para mais ou para menos.',
+    risco:'Quem não recalcular preços pode perder competitividade (preço alto demais) ou vender no prejuízo sem perceber (preço que não cobre o novo imposto por fora).'
+  },
+  {
+    id:'creditos',
+    tit:'Mapeamento de créditos e fornecedores',
+    des:'Não cumulatividade ampla: crédito vira dinheiro',
+    txt:'No novo sistema, praticamente toda aquisição com IBS/CBS destacado gera crédito. Comprar de fornecedor que não destaca imposto corretamente passa a ter custo real. É preciso mapear a cadeia de fornecedores e o potencial de créditos da operação.',
+    risco:'Cada compra mal documentada em 2027 é crédito perdido. No acumulado do ano, isso pode representar um aumento silencioso e relevante da carga tributária efetiva.'
+  },
+  {
+    id:'regime',
+    tit:'Análise do regime tributário',
+    des:'Permanência, mudança ou regime híbrido',
+    txt:'A transição muda a conta de qual regime é mais vantajoso. Empresas do Simples Nacional, por exemplo, passam a poder recolher IBS/CBS por fora do DAS (regime híbrido), o que pode ser excelente ou péssimo dependendo de quem são os clientes e fornecedores.',
+    risco:'Ficar no regime errado em 2027 pode significar pagar mais imposto que o necessário durante um ano inteiro, já que boa parte das opções só pode ser revista na virada do exercício.'
+  },
+  {
+    id:'contratos',
+    tit:'Revisão de contratos de longo prazo',
+    des:'Cláusulas de reajuste e repasse tributário',
+    txt:'Contratos de fornecimento, prestação de serviços e locação firmados no sistema antigo precisam de cláusulas que tratem da mudança de tributos. Sem isso, o repasse do novo imposto vira disputa entre as partes.',
+    risco:'Contrato omisso em 2027 pode travar a empresa em preço que não comporta a nova carga, ou gerar litígio com cliente e fornecedor no meio da transição.'
+  },
+  {
+    id:'caixa',
+    tit:'Fluxo de caixa e split payment',
+    des:'O imposto pode sair do caixa no momento do recebimento',
+    txt:'Com o split payment, o valor do imposto pode ser separado no próprio pagamento e ir direto para o Fisco, sem passar pelo caixa da empresa. Isso muda o capital de giro disponível e exige replanejamento financeiro.',
+    risco:'Empresa que hoje usa o valor do imposto como capital de giro entre a venda e o recolhimento pode simplesmente ficar sem esse fôlego, e descobrir isso com o caixa apertado.'
+  },
+  {
+    id:'beneficios',
+    tit:'Benefícios fiscais em transição',
+    des:'Incentivos de ICMS e regimes especiais mudam de figura',
+    txt:'Benefícios fiscais estaduais e regimes especiais construídos sobre o ICMS entram em transição e perdem efeito gradualmente. Operações e centros de distribuição desenhados em função desses incentivos precisam ser reavaliados.',
+    risco:'Estrutura montada só por causa de benefício que vai encolher pode virar custo logístico puro. Quanto antes a conta for refeita, mais barata é a correção de rota.'
+  },
+  {
+    id:'obrigacoes',
+    tit:'Obrigações acessórias e apuração assistida',
+    des:'Novo modelo de apuração e cruzamento de dados',
+    txt:'A apuração do IBS/CBS nasce assistida: o Fisco monta o cálculo a partir dos documentos fiscais eletrônicos e a empresa confere. Isso exige documentos fiscais impecáveis, porque a apuração passa a ser espelho direto do que foi emitido e recebido.',
+    risco:'Erro na emissão deixa de ser detalhe: em 2027 ele aparece direto na apuração montada pelo Fisco, e divergência recorrente é convite à fiscalização.'
+  },
+  {
+    id:'equipe',
+    tit:'Capacitação da equipe',
+    des:'Fiscal, financeiro e comercial falando a mesma língua',
+    txt:'A Reforma não é assunto só do contador: quem emite nota, quem compra, quem precifica e quem negocia contrato precisa entender o básico do novo sistema para não gerar problema na ponta.',
+    risco:'Equipe despreparada em 2027 multiplica erros pequenos todos os dias: item mal classificado, nota mal emitida, compra sem crédito. O custo aparece meses depois, somado.'
+  }
+];
+
+const sel = new Set();
+
+// Itens que ficam URGENTES com prazo 03/08/2026 quando o regime é normal (Presumido/Real)
+const ITENS_URGENTES_REGIME_NORMAL = ['cadastro', 'emissor'];
+const PRAZO_URGENTE = '03/08/2026';
+
+function regimeNormal(){
+  const r = document.getElementById('inRegime').value;
+  return r === 'presumido' || r === 'real';
+}
+
+function mudouRegime(){
+  if(regimeNormal()){
+    // auto-seleciona os itens críticos
+    ITENS_URGENTES_REGIME_NORMAL.forEach(id => {
+      if(!sel.has(id)){
+        sel.add(id);
+        const box = document.querySelector('#item-'+id+' input');
+        if(box) box.checked = true;
+        document.getElementById('item-'+id).classList.add('on');
+      }
+    });
+  }
+  atualizarTagsUrgencia();
+  render();
+}
+
+function atualizarTagsUrgencia(){
+  ITENS.forEach(i => {
+    const el = document.querySelector('#item-'+i.id+' .tit');
+    if(!el) return;
+    const jaTem = el.querySelector('.tag-urg');
+    const deveTer = regimeNormal() && ITENS_URGENTES_REGIME_NORMAL.includes(i.id);
+    if(deveTer && !jaTem){
+      const s = document.createElement('span');
+      s.className = 'tag-urg';
+      s.textContent = 'Urgente · ' + PRAZO_URGENTE;
+      el.appendChild(s);
+    }
+    if(!deveTer && jaTem){ jaTem.remove(); }
+  });
+}
+
+function montarLista(){
+  const el = document.getElementById('listaItens');
+  el.innerHTML = ITENS.map(i => `
+    <label class="item" id="item-${i.id}">
+      <input type="checkbox" onchange="toggleItem('${i.id}', this.checked)">
+      <span><span class="tit">${i.tit}</span><span class="des" style="display:block">${i.des}</span></span>
+    </label>`).join('');
+}
+
+function toggleItem(id, on){
+  on ? sel.add(id) : sel.delete(id);
+  document.getElementById('item-'+id).classList.toggle('on', on);
+  render();
+}
+
+function carregarLogo(input){
+  const f = input.files && input.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    window._logo = e.target.result;
+    const img = document.getElementById('logoImg');
+    img.src = window._logo; img.style.display='block';
+    document.getElementById('logoVazio').style.display='none';
+    document.getElementById('logoTirar').style.display='inline';
+    render();
+  };
+  r.readAsDataURL(f);
+}
+function tirarLogo(){
+  window._logo = null;
+  document.getElementById('logoImg').style.display='none';
+  document.getElementById('logoVazio').style.display='block';
+  document.getElementById('logoTirar').style.display='none';
+  document.getElementById('logoInput').value='';
+  render();
+}
+
+function fdata(v){
+  if(!v) return '';
+  const [a,m,d] = v.split('-');
+  const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  return `${parseInt(d)} de ${meses[parseInt(m)-1]} de ${a}`;
+}
+
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function render(){
+  const contador = document.getElementById('inContador').value.trim();
+  const crc = document.getElementById('inCrc').value.trim();
+  const cidade = document.getElementById('inCidade').value.trim();
+  const empresa = document.getElementById('inEmpresa').value.trim();
+  const resp = document.getElementById('inResp').value.trim();
+  const data = document.getElementById('inData').value;
+  const regimeSel = document.getElementById('inRegime').value;
+  const regimeNome = {simples:'Simples Nacional', presumido:'Lucro Presumido', real:'Lucro Real'}[regimeSel] || '';
+
+  const escolhidos = ITENS.filter(i => sel.has(i.id));
+  document.getElementById('contaItens').textContent =
+    escolhidos.length + (escolhidos.length === 1 ? ' selecionado' : ' selecionados');
+  document.getElementById('avisoVazio').style.display = escolhidos.length ? 'none' : 'block';
+
+  const saud = resp ? `A/C ${esc(resp)}` : '';
+  const dataLinha = [cidade ? esc(cidade) : '', data ? fdata(data) : ''].filter(Boolean).join(', ');
+
+  const urgente = id => regimeNormal() && ITENS_URGENTES_REGIME_NORMAL.includes(id);
+  // itens urgentes primeiro
+  const ordenados = [...escolhidos].sort((a,b) => (urgente(b.id)?1:0) - (urgente(a.id)?1:0));
+  const itensHtml = ordenados.map((i, idx) => `
+    <div class="c-item">
+      ${urgente(i.id) ? `<div class="c-urg">Urgente · prazo ${PRAZO_URGENTE}</div>` : ''}
+      <div class="c-tit"><span class="c-num">${String(idx+1).padStart(2,'0')}.</span> ${esc(i.tit)}</div>
+      <div class="c-txt">${esc(i.txt)}</div>
+      <div class="c-risco"><b>Risco de não agir:</b> ${esc(i.risco)}</div>
+    </div>`).join('');
+
+  document.getElementById('folha').innerHTML = `
+    <div class="carta-head">
+      <div class="esc">
+        <div class="nome-esc">${esc(contador) || 'Seu escritório contábil'}</div>
+        ${crc ? `<div class="crc-esc">${esc(crc)}</div>` : ''}
+      </div>
+      ${window._logo ? `<img src="${window._logo}" alt="Logo">` : ''}
+    </div>
+
+    <div class="carta-selo">Documento de orientação preventiva · Reforma Tributária · LC 214/2025</div>
+    <div class="carta-titulo">Carta de Adequação à Reforma Tributária: <em>o que precisa estar pronto antes de 2027</em></div>
+    ${dataLinha ? `<div class="carta-data">${dataLinha}</div>` : ''}
+
+    <div class="carta-body">
+      <p class="dest">À ${esc(empresa) || '(nome da empresa)'}${saud ? ` · ${saud}` : ''}</p>
+
+      <p>A Reforma Tributária deixou de ser assunto para o futuro. Em <b>1º de janeiro de 2027</b>, a CBS entra em vigor em alíquota cheia, PIS e COFINS deixam de existir, o Imposto Seletivo começa a ser cobrado e a lógica de créditos que sustenta o preço de tudo o que a empresa compra e vende muda de base. O ano de 2026 é o período de teste, e é exatamente agora que a adequação precisa acontecer.</p>
+
+      ${regimeNome ? `<p>A sua empresa é tributada pelo <b>${regimeNome}</b>${regimeNormal() ? `, regime normal de apuração. Para empresas nesse regime, a adequação do cadastro de produtos e do sistema emissor tem <b>prazo crítico: ${PRAZO_URGENTE}</b>, data a partir da qual as regras de validação dos novos campos passam a rejeitar documentos fiscais em desacordo. Os pontos marcados como urgentes abaixo devem ser tratados de imediato` : `. Mesmo dentro do Simples, a transição altera a relação com clientes e fornecedores do regime normal, e os pontos abaixo definem o quanto a empresa chega preparada`}.</p>` : ''}
+
+      <p>Como responsáveis pela contabilidade da sua empresa, listamos abaixo os pontos de adequação que consideramos prioritários para a sua operação, com o risco concreto de chegar em 2027 sem cada um deles resolvido:</p>
+
+      <div class="carta-itens">${itensHtml || '<p style="font-family:Archivo,sans-serif;font-size:12px;color:#9AA091;">(selecione os pontos de adequação no painel ao lado)</p>'}</div>
+
+      <p class="carta-fecho">Nenhum desses pontos se resolve na virada do ano. Todos exigem levantamento, decisão e implantação ao longo dos próximos meses. Nosso escritório está à disposição para conduzir esse processo em conjunto com a sua equipe, e recomendamos agendarmos uma reunião de planejamento o quanto antes.</p>
+
+      <p>Saber antes vale mais que correr atrás depois.</p>
+    </div>
+
+    <div class="carta-ass">
+      <div class="tra">
+        <div class="an">${esc(contador) || 'Nome do contador'}</div>
+        ${crc ? `<div class="ac">${esc(crc)}</div>` : '<div class="ac">CRC</div>'}
+      </div>
+    </div>
+
+    <div class="carta-rodape">
+      <span>Documento orientativo. Não substitui análise individualizada.</span>
+      <span>Base legal: EC 132/2023 e LC 214/2025</span>
+    </div>`;
+}
+
+function limpar(){
+  ['inContador','inCrc','inCidade','inEmpresa','inResp','inData'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('inRegime').value='';
+  atualizarTagsUrgencia();
+  sel.clear();
+  document.querySelectorAll('.item input').forEach(c => c.checked=false);
+  document.querySelectorAll('.item').forEach(e => e.classList.remove('on'));
+  tirarLogo();
+}
+
+// impressão robusta: tenta direto, senão abre janela dedicada com a carta
+function imprimirCarta(){
+  try {
+    window.print();
+    return;
+  } catch(e) { /* bloqueado, tenta janela dedicada */ }
+  janelaDeImpressao();
+}
+
+function janelaDeImpressao(){
+  const folha = document.getElementById('folha').outerHTML;
+  const css = Array.from(document.querySelectorAll('style')).map(s => s.textContent).join('\n');
+  const w = window.open('', '_blank');
+  if(!w){
+    alert('O navegador bloqueou a janela de impressão. Use o atalho Ctrl+P (ou Cmd+P no Mac) para imprimir ou salvar em PDF.');
+    return;
+  }
+  w.document.write('<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Carta de Adequação</title>' +
+    '<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Archivo:wght@400;600;700;800&display=swap" rel="stylesheet">' +
+    '<style>' + css + ' body{background:#fff;} .folha{box-shadow:none;max-width:none;min-height:auto;padding:0;} *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;} .c-urg{background:#8C3B2E !important;color:#fff !important;} .c-risco{background:#F7E9E5 !important;} @page{size:A4;margin:20mm 17mm 18mm 17mm;}</style>' +
+    '</head><body>' + folha + '</body></html>');
+  w.document.close();
+  w.focus();
+  setTimeout(() => { w.print(); }, 600);
+}
+
+// alguns ambientes (visualizadores embutidos) bloqueiam window.print silenciosamente:
+// detecta e usa a janela dedicada direto quando estiver dentro de iframe
+document.addEventListener('DOMContentLoaded', function(){
+  const btn = document.getElementById('btnPrint');
+  if(btn){
+    btn.addEventListener('click', function(){
+      const dentroDeIframe = (window.self !== window.top);
+      if(dentroDeIframe){ janelaDeImpressao(); } else { imprimirCarta(); }
+    });
+  }
+});
+
+// init
+montarLista();
+const hoje = new Date();
+document.getElementById('inData').value = hoje.toISOString().slice(0,10);
+render();
+</script>
+</body>
+</html>

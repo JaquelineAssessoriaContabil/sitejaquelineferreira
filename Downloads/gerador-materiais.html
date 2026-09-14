@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  GERADOR DE MATERIAIS DO ESCRITÓRIO
+  Criado por Franklim Paixão · o contador que prepara contadores
+  @franklim.contador
+  "Saber antes vale mais que correr atrás depois."
+  Ferramenta liberada para a comunidade. Use no seu escritório.
+  ============================================================
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="author" content="Franklim Paixão · @franklim.contador">
+<meta name="description" content="Gerador de comunicados, informativos, jornais e avisos para clientes de escritórios contábeis. Criado por Franklim Paixão.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gerador de materiais do escritório</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style id="css-pagina">@page{size:210mm 297mm;margin:0}</style>
+<style>
+  :root{
+    --grafite:#1C1E21; --grafite-2:#26292D; --linha:#3A3E44;
+    --tinta-clara:#E9E6E1; --tinta-fraca:#9AA0A8; --acao:#4A7FA5; --alerta:#C0563E; --ok:#5B8C5A;
+    --marca:#172B5B; --destaque:#DB8319; --papel:#F7F4EF; --texto:#14203D;
+    --pw:210mm; --ph:297mm;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--grafite);color:var(--tinta-clara);font-family:'Inter',system-ui,sans-serif;display:flex}
+
+  .painel{width:344px;flex:none;height:100vh;overflow-y:auto;background:var(--grafite-2);border-right:1px solid var(--linha);padding:20px 18px 40px}
+  .painel h1{font-size:15px;font-weight:700;color:#fff;line-height:1.3}
+  .painel .sub{font-size:11.5px;color:var(--tinta-fraca);margin-top:5px;line-height:1.5}
+  .bloco-p{margin-top:20px;padding-top:16px;border-top:1px solid var(--linha)}
+  .rotulo{font-size:9.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--acao);margin-bottom:10px;display:block}
+  .passo{display:inline-block;background:var(--acao);color:#fff;border-radius:20px;width:17px;height:17px;line-height:17px;text-align:center;font-size:10px;font-weight:700;margin-right:6px}
+  .campo{margin-bottom:10px}
+  .campo label{display:block;font-size:11px;color:var(--tinta-fraca);margin-bottom:5px}
+  .campo .ajuda{font-size:10px;color:var(--tinta-fraca);opacity:.8;margin-top:4px;line-height:1.45}
+  .campo input,.campo select,.campo textarea{width:100%;background:var(--grafite);border:1px solid var(--linha);color:var(--tinta-clara);border-radius:6px;padding:8px 10px;font-size:12.5px;font-family:inherit}
+  .campo textarea{resize:vertical;line-height:1.5}
+  .campo input:focus,.campo select:focus,.campo textarea:focus{outline:2px solid var(--acao);outline-offset:1px}
+  .abas{display:flex;gap:4px;background:var(--grafite);border:1px solid var(--linha);border-radius:7px;padding:3px;margin-bottom:12px}
+  .abas button{flex:1;background:transparent;border:0;color:var(--tinta-fraca);font-family:inherit;font-size:11px;font-weight:600;padding:8px 4px;border-radius:5px;cursor:pointer;line-height:1.25}
+  .abas button.on{background:var(--acao);color:#fff}
+  .modo{display:none}
+  body[data-modo="perguntas"] #modo-perguntas,
+  body[data-modo="texto"] #modo-texto,
+  body[data-modo="modelo"] #modo-modelo{display:block}
+  .cores{display:flex;gap:10px}
+  .cores>div{flex:1}
+  .cores input[type=color]{width:100%;height:34px;background:var(--grafite);border:1px solid var(--linha);border-radius:6px;padding:3px;cursor:pointer}
+  .arquivo{display:block;border:1px dashed var(--linha);border-radius:6px;padding:10px;text-align:center;font-size:11.5px;color:var(--tinta-fraca);cursor:pointer}
+  .arquivo:hover{border-color:var(--acao);color:var(--tinta-clara)}
+  .arquivo input{display:none}
+  .btn{width:100%;border:0;border-radius:7px;padding:11px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;margin-top:7px}
+  .btn-1{background:var(--acao);color:#fff}
+  .btn-1:hover:not(:disabled){filter:brightness(1.12)}
+  .btn-1:disabled{opacity:.55;cursor:progress}
+  .btn-2{background:transparent;color:var(--tinta-fraca);border:1px solid var(--linha)}
+  .btn-2:hover{color:var(--tinta-clara);border-color:var(--tinta-fraca)}
+  .dica{font-size:10.5px;color:var(--tinta-fraca);line-height:1.55;margin-top:9px}
+  .dica b{color:var(--tinta-clara);font-weight:600}
+  .estado{font-size:11px;line-height:1.5;margin-top:9px;padding:8px 10px;border-radius:6px;display:none}
+  .estado.on{display:block}
+  .estado.erro{background:rgba(192,86,62,.15);border:1px solid var(--alerta);color:#F0C5B9}
+  .estado.bom{background:rgba(91,140,90,.15);border:1px solid var(--ok);color:#CFE3CE}
+  details summary{font-size:11px;color:var(--tinta-fraca);cursor:pointer;padding:4px 0}
+  details summary:hover{color:var(--tinta-clara)}
+
+  .creditos{text-align:center;margin-top:26px;padding-top:18px;border-top:1px solid var(--linha)}
+  .creditos .selo-cred{font-size:8.5px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--tinta-fraca);opacity:.75}
+  .creditos .cred-nome{font-size:13px;font-weight:700;letter-spacing:2.6px;color:#fff;margin-top:8px}
+  .creditos .cred-tag{font-size:9.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--tinta-fraca);margin-top:4px}
+  .creditos .cred-arroba{font-size:11.5px;font-weight:600;color:var(--acao);margin-top:5px}
+  .creditos .cred-frase{font-family:'Lora',Georgia,serif;font-style:italic;font-size:12px;color:var(--tinta-clara);line-height:1.5;margin-top:11px}
+  .creditos .cred-obs{font-size:10px;color:var(--tinta-fraca);line-height:1.5;margin-top:10px;opacity:.85}
+
+  .mesa{flex:1;height:100vh;overflow-y:auto;padding:24px 20px 80px;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .aviso{max-width:var(--pw);width:100%;font-size:11.5px;color:var(--tinta-fraca);background:var(--grafite-2);border:1px solid var(--linha);border-radius:8px;padding:11px 14px;line-height:1.55}
+  .aviso b{color:var(--tinta-clara)}
+  .vazio{max-width:var(--pw);width:100%;border:1px dashed var(--linha);border-radius:10px;padding:56px 30px;text-align:center;color:var(--tinta-fraca);font-size:13px;line-height:1.6}
+  .vazio b{color:var(--tinta-clara);display:block;font-size:15px;margin-bottom:6px}
+  .barra-pag{max-width:var(--pw);width:100%;display:flex;align-items:center;gap:8px;margin-top:16px}
+  .barra-pag .cont{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tinta-fraca);font-weight:600}
+  .barra-pag .esticar{flex:1}
+  .mini-btn{background:var(--grafite-2);border:1px solid var(--linha);color:var(--tinta-fraca);border-radius:5px;padding:5px 9px;font-size:10.5px;font-family:inherit;cursor:pointer}
+  .mini-btn:hover{color:var(--tinta-clara);border-color:var(--acao)}
+  .mini-btn.perigo:hover{color:#fff;background:var(--alerta);border-color:var(--alerta)}
+  .selo-estouro{display:none;background:var(--alerta);color:#fff;border-radius:5px;padding:5px 9px;font-size:10.5px;font-weight:600}
+  .barra-pag.estourou .selo-estouro{display:inline-block}
+
+  .page{width:var(--pw);height:var(--ph);flex:none;background:var(--papel);color:var(--texto);font-family:'Lora',Georgia,serif;position:relative;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.45);padding:14mm 14mm 20mm}
+  .page.sem-rodape{padding-bottom:14mm}
+  .conteudo{height:100%;overflow:hidden}
+  [contenteditable]{outline:0}
+  [contenteditable]:hover{background:rgba(74,127,165,.10);border-radius:2px}
+  [contenteditable]:focus{background:rgba(74,127,165,.16);border-radius:2px}
+
+  .kicker{font-family:'Inter',sans-serif;font-weight:700;font-size:7.5pt;letter-spacing:2.4px;text-transform:uppercase;color:var(--destaque)}
+  .cab-doc{display:flex;align-items:center;gap:4mm;border-bottom:2pt solid var(--marca);padding-bottom:3mm;margin-bottom:6mm}
+  .cab-doc img{max-height:13mm;max-width:44mm;object-fit:contain}
+  .cab-doc .marca-nome{font-family:'Inter',sans-serif;font-weight:700;font-size:13pt;letter-spacing:1.4px;color:var(--marca);line-height:1.2}
+  .cab-doc .meta{margin-left:auto;text-align:right;font-family:'Inter',sans-serif;font-size:7pt;letter-spacing:1.4px;text-transform:uppercase;color:var(--marca);line-height:1.7}
+  .cab-doc .selo-tipo{color:var(--destaque);font-weight:700}
+  .manchete{font-size:21pt;font-weight:700;line-height:1.12;color:var(--marca)}
+  .apoio{font-size:10.5pt;line-height:1.55;margin-top:3.5mm;padding-left:4.5mm;border-left:3pt solid var(--destaque)}
+  .colunas{column-count:2;column-gap:7mm;column-rule:.5pt solid rgba(0,0,0,.18)}
+  .colunas p{font-size:9.6pt;line-height:1.55;text-align:justify;margin-bottom:3mm}
+  .colunas b,.corrido b{color:var(--marca)}
+  .corrido p{font-size:10pt;line-height:1.6;margin-bottom:3.2mm}
+  .par{display:flex;gap:5mm}
+  .par>div{flex:1}
+  .cx-clara{background:#fff;border:1pt solid var(--marca);border-radius:2mm;padding:4.5mm 5mm}
+  .cx-clara h3{color:var(--marca);font-size:11.5pt;margin-bottom:2.5mm}
+  .cx-escura{background:var(--marca);color:var(--papel);border-radius:2mm;padding:4.5mm 5mm}
+  .cx-escura h3{font-size:11.5pt;margin-bottom:2.5mm}
+  .cx-escura b{color:var(--destaque)}
+  .cx-clara p,.cx-escura p,.cx-clara li,.cx-escura li{font-size:8.7pt;line-height:1.5}
+  .cx-clara ul,.cx-escura ul{list-style:none}
+  .cx-clara li,.cx-escura li{padding-left:4.5mm;position:relative;margin-bottom:1.8mm}
+  .cx-clara li::before,.cx-escura li::before{content:"▸";color:var(--destaque);position:absolute;left:0}
+  .prazo{display:flex;gap:5mm;align-items:center;background:#fff;border:1pt solid var(--marca);border-left:4mm solid var(--destaque);border-radius:2mm;padding:4.5mm 5mm}
+  .prazo .data{font-family:'Inter',sans-serif;font-weight:700;font-size:18pt;color:var(--marca);line-height:1.08}
+  .prazo .rot{font-family:'Inter',sans-serif;font-size:6.8pt;letter-spacing:1.6px;text-transform:uppercase;color:var(--destaque);font-weight:700;display:block;margin-bottom:1mm}
+  .prazo h4{font-size:11pt;color:var(--marca);margin-bottom:1.5mm}
+  .prazo p{font-size:9pt;line-height:1.5}
+  .checklist h3{color:var(--marca);font-size:12pt;margin-bottom:3mm}
+  .checklist ul{list-style:none}
+  .checklist li{padding-left:7.5mm;position:relative;margin-bottom:2.6mm;font-size:9.6pt;line-height:1.45}
+  .checklist li::before{content:"";position:absolute;left:0;top:.9mm;width:4.2mm;height:4.2mm;border:1pt solid var(--marca);border-radius:.8mm;background:#fff}
+  .faq .q{font-family:'Inter',sans-serif;font-weight:700;font-size:9.6pt;color:var(--marca);margin-top:3.5mm}
+  .faq .q:first-child{margin-top:0}
+  .faq .a{font-size:9.4pt;line-height:1.55;margin-top:1.2mm}
+  .chamada{background:var(--marca);color:var(--papel);border-radius:2.5mm;padding:7mm;text-align:center}
+  .chamada h3{font-size:15pt;line-height:1.2;margin:2mm 0 3mm}
+  .chamada p{font-size:9.4pt;line-height:1.55;max-width:150mm;margin:0 auto}
+  .chamada .selo{display:inline-block;background:var(--destaque);color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:10pt;letter-spacing:1px;text-transform:uppercase;padding:3.5mm 9mm;border-radius:10mm;margin-top:4.5mm}
+  .contatos{display:flex;gap:5mm;border-top:2pt solid var(--marca);padding-top:3.5mm}
+  .contatos>div{flex:1}
+  .contatos .rot{font-family:'Inter',sans-serif;font-size:6.5pt;letter-spacing:1.5px;text-transform:uppercase;color:var(--destaque);font-weight:700}
+  .contatos .val{font-size:9pt;line-height:1.4;margin-top:1mm}
+  .rodape{position:absolute;bottom:8mm;left:14mm;right:14mm;display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-top:.6pt solid var(--marca);padding-top:2mm;font-family:'Inter',sans-serif;font-size:6.8pt;letter-spacing:1.3px;text-transform:uppercase;color:var(--marca)}
+  .page.card{padding:16mm}
+  .page.card .manchete{font-size:27pt}
+  .page.card .apoio{font-size:12.5pt}
+  .page.card .colunas{column-count:1;column-rule:0}
+  .page.card .colunas p,.page.card .corrido p{font-size:12pt;text-align:left;line-height:1.5}
+  .page.card .checklist li{font-size:12pt}
+  .page.card .contatos .val{font-size:10.5pt}
+
+  .bl{position:relative;margin-bottom:5mm}
+  .bl-ctrl{position:absolute;top:-4mm;right:0;display:none;gap:3px;z-index:5}
+  .bl:hover>.bl-ctrl{display:flex}
+  .bl-ctrl button{background:var(--grafite-2);color:var(--tinta-clara);border:1px solid var(--linha);border-radius:4px;width:22px;height:20px;font-size:11px;line-height:1;cursor:pointer;font-family:inherit}
+  .bl-ctrl button:hover{background:var(--acao);border-color:var(--acao);color:#fff}
+  .bl-ctrl button.x:hover{background:var(--alerta);border-color:var(--alerta)}
+  .addbar{border:1px dashed rgba(0,0,0,.28);border-radius:2mm;padding:3mm;text-align:center;color:rgba(0,0,0,.45);font-family:'Inter',sans-serif;font-size:9pt;cursor:pointer}
+  .addbar:hover{border-color:var(--acao);color:var(--acao)}
+  .menu{position:fixed;background:var(--grafite-2);border:1px solid var(--linha);border-radius:8px;padding:6px;display:none;z-index:50;box-shadow:0 12px 30px rgba(0,0,0,.5);width:232px;max-height:70vh;overflow-y:auto}
+  .menu.aberto{display:block}
+  .menu button{display:block;width:100%;text-align:left;background:transparent;border:0;color:var(--tinta-clara);font-family:inherit;font-size:12px;padding:7px 10px;border-radius:5px;cursor:pointer}
+  .menu button:hover{background:var(--acao);color:#fff}
+
+  @media (max-width:1100px){
+    body{flex-direction:column}
+    .painel{width:100%;height:auto;border-right:0;border-bottom:1px solid var(--linha)}
+    .mesa{height:auto;overflow:visible}
+    .page{transform:scale(.62);transform-origin:top center;margin-bottom:-108mm}
+  }
+  @media print{
+    body{display:block;background:#fff}
+    .painel,.aviso,.barra-pag,.addbar,.bl-ctrl,.menu,.vazio{display:none !important}
+    .mesa{display:block;height:auto;overflow:visible;padding:0;gap:0}
+    .page{box-shadow:none;margin:0;transform:none;page-break-after:always;break-after:page}
+    .page:last-child{page-break-after:auto;break-after:auto}
+    [contenteditable]:hover,[contenteditable]:focus{background:transparent}
+  }
+</style>
+</head>
+<body data-modo="perguntas" data-modelo="comunicado">
+
+<aside class="painel">
+  <h1>Gerador de materiais</h1>
+  <p class="sub">Cria comunicado, informativo, jornal, checklist e aviso para os seus clientes. Funciona no navegador, sem instalar nada e sem depender de internet para gerar.</p>
+
+  <div class="bloco-p" style="border-top:0;margin-top:16px;padding-top:0">
+    <span class="rotulo"><span class="passo">1</span> Como você quer criar</span>
+    <div class="abas">
+      <button data-modo="perguntas" class="on">Respondendo<br>perguntas</button>
+      <button data-modo="modelo">Modelo<br>pronto</button>
+      <button data-modo="texto">Colando<br>um texto</button>
+    </div>
+
+    <div class="modo" id="modo-perguntas">
+      <div class="campo"><label for="q-assunto">Qual é o assunto</label>
+        <input type="text" id="q-assunto" placeholder="Nota fiscal com campos novos">
+      </div>
+      <div class="campo"><label for="q-muda">O que mudou, em duas ou três frases</label>
+        <textarea id="q-muda" rows="4" placeholder="A partir de agosto a nota fiscal passa a ter campos novos por causa da Reforma Tributária. Os valores ainda são de teste, mas a nota precisa sair preenchida corretamente."></textarea>
+      </div>
+      <div class="campo"><label for="q-quem">Quem é afetado</label>
+        <input type="text" id="q-quem" placeholder="empresas do Lucro Real e do Lucro Presumido">
+      </div>
+      <div class="campo"><label for="q-data">Data ou prazo</label>
+        <input type="text" id="q-data" placeholder="03/08/2026">
+        <div class="ajuda">Deixe em branco se não houver data.</div>
+      </div>
+      <div class="campo"><label for="q-fazer">O que o cliente precisa fazer, uma ação por linha</label>
+        <textarea id="q-fazer" rows="4" placeholder="Confirmar com a empresa do sistema se ele já está atualizado&#10;Avisar quem emite nota no dia a dia&#10;Conferir as primeiras notas depois da virada"></textarea>
+      </div>
+      <div class="campo"><label for="q-risco">O que acontece se não fizer nada</label>
+        <input type="text" id="q-risco" placeholder="a nota pode ser recusada e a venda não sai">
+      </div>
+    </div>
+
+    <div class="modo" id="modo-modelo">
+      <div class="campo"><label for="q-modelo">Escolha um assunto pronto</label>
+        <select id="q-modelo"></select>
+        <div class="ajuda">O modelo preenche as perguntas com um texto base. Você ajusta o que quiser antes de gerar.</div>
+      </div>
+      <button class="btn btn-2" id="b-usar-modelo">Usar este modelo</button>
+    </div>
+
+    <div class="modo" id="modo-texto">
+      <div class="campo">
+        <textarea id="q-texto" rows="9" placeholder="Cole aqui o texto da norma, da notícia ou o seu rascunho.
+
+A ferramenta identifica sozinha: título, datas, listas, perguntas e citações de lei, e organiza tudo no layout."></textarea>
+      </div>
+      <div class="dica">Este modo <b>organiza</b> o texto que você colou, mas não reescreve. Depois de gerar, passe o olho e troque o que estiver difícil para o cliente entender.</div>
+    </div>
+
+    <div class="campo" style="margin-top:12px"><label for="f-modelo">Formato do material</label>
+      <select id="f-modelo">
+        <option value="comunicado">Comunicado · 1 página, direto ao ponto</option>
+        <option value="informativo">Informativo · explica o tema</option>
+        <option value="jornal">Jornal · 2 páginas, editorial</option>
+        <option value="checklist">Checklist · lista de tarefas</option>
+        <option value="card">Aviso quadrado · WhatsApp</option>
+      </select>
+    </div>
+    <button class="btn btn-1" id="b-gerar">Gerar material</button>
+    <div class="estado" id="estado"></div>
+  </div>
+
+  <div class="bloco-p">
+    <span class="rotulo"><span class="passo">2</span> Sua marca</span>
+    <div class="campo"><label for="f-nome">Nome do escritório</label><input type="text" id="f-nome" value="SEU ESCRITÓRIO"></div>
+    <div class="campo"><label for="f-complemento">Complemento</label><input type="text" id="f-complemento" value="Contabilidade"></div>
+    <div class="campo"><label for="f-cidade">Cidade e UF</label><input type="text" id="f-cidade" value="Sua cidade · UF"></div>
+    <div class="campo"><label for="f-data">Data do material</label><input type="text" id="f-data" value="Julho de 2026"></div>
+    <div class="cores">
+      <div><label style="font-size:11px;color:var(--tinta-fraca);display:block;margin-bottom:5px" for="f-cor1">Principal</label><input type="color" id="f-cor1" value="#172B5B"></div>
+      <div><label style="font-size:11px;color:var(--tinta-fraca);display:block;margin-bottom:5px" for="f-cor2">Destaque</label><input type="color" id="f-cor2" value="#DB8319"></div>
+    </div>
+    <label class="arquivo" style="margin-top:11px">Enviar logo<input type="file" id="f-logo" accept="image/*"></label>
+  </div>
+
+  <div class="bloco-p">
+    <span class="rotulo">Contato no rodapé</span>
+    <div class="campo"><label for="f-tel">Telefone ou WhatsApp</label><input type="text" id="f-tel" value="(00) 00000-0000"></div>
+    <div class="campo"><label for="f-email">E-mail</label><input type="text" id="f-email" value="contato@escritorio.com.br"></div>
+    <div class="campo"><label for="f-site">Site ou Instagram</label><input type="text" id="f-site" value="@seuescritorio"></div>
+  </div>
+
+  <div class="bloco-p">
+    <span class="rotulo"><span class="passo">3</span> Finalizar</span>
+    <button class="btn btn-1" id="b-imprimir">Salvar em PDF ou imprimir</button>
+    <button class="btn btn-2" id="b-baixar">Baixar meu arquivo editável</button>
+    <p class="dica">Na impressão escolha margens <b>nenhuma</b> e marque <b>gráficos de fundo</b>. O arquivo editável guarda a sua marca para a próxima vez.</p>
+  </div>
+
+  <div class="bloco-p">
+    <details>
+      <summary>Extra: melhorar com IA (opcional)</summary>
+      <p class="dica" style="margin-top:8px">A ferramenta funciona sem isto. Se você tiver uma chave da API da Anthropic, ela reescreve o material em linguagem mais simples.</p>
+      <div class="campo" style="margin-top:8px">
+        <input type="password" id="f-chave" placeholder="sk-ant-...">
+      </div>
+      <button class="btn btn-2" id="b-ia">Reescrever com IA</button>
+      <p class="dica">A chave nunca é gravada no arquivo que você baixa.</p>
+    </details>
+  </div>
+  <div class="creditos">
+    <div class="selo-cred">Ferramenta criada por</div>
+    <div class="cred-nome">FRANKLIM PAIXÃO</div>
+    <div class="cred-tag">o contador que prepara contadores</div>
+    <div class="cred-arroba">@franklim.contador</div>
+    <div class="cred-frase">"Saber antes vale mais<br>que correr atrás depois."</div>
+    <div class="cred-obs">Liberada para a comunidade. Use à vontade no seu escritório: os materiais saem com a <b>sua</b> marca.</div>
+  </div>
+</aside>
+
+<main class="mesa" id="mesa">
+  <div class="aviso"><b>Como funciona:</b> responda as perguntas do painel (ou escolha um modelo pronto), clique em <b>Gerar material</b> e ajuste o que quiser clicando direto na página. Depois é só salvar em PDF.</div>
+  <div class="vazio" id="vazio"><b>Nada gerado ainda</b>Responda as perguntas ao lado e clique em "Gerar material".</div>
+</main>
+
+<div class="menu" id="menu"></div>
+
+<script>
+(function(){
+  const raiz=document.documentElement, mesa=document.getElementById('mesa'), menu=document.getElementById('menu'),
+        cssPagina=document.getElementById('css-pagina'), estado=document.getElementById('estado'), vazio=document.getElementById('vazio');
+  const val=id=>{const e=document.getElementById(id);return e?e.value:'';};
+  const pintar=(c,t)=>document.querySelectorAll('.'+c).forEach(e=>e.textContent=t);
+  const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const linhas=s=>String(s||'').split('\n').map(x=>x.trim()).filter(Boolean);
+  const frases=s=>String(s||'').split(/(?<=[.!?])\s+/).map(x=>x.trim()).filter(Boolean);
+  const maiuscula=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
+  const semPonto=s=>String(s||'').trim().replace(/[.;]+$/,'');
+  let logoSrc='';
+
+  const TIPOS={
+    comunicado:{pw:'210mm',ph:'297mm',rodape:false,card:false,selo:'Comunicado'},
+    informativo:{pw:'210mm',ph:'297mm',rodape:true,card:false,selo:'Informativo'},
+    jornal:{pw:'210mm',ph:'297mm',rodape:true,card:false,selo:'Jornal'},
+    checklist:{pw:'210mm',ph:'297mm',rodape:true,card:false,selo:'Checklist'},
+    card:{pw:'200mm',ph:'200mm',rodape:false,card:true,selo:'Aviso'}
+  };
+
+  /* ================= MODELOS PRONTOS ================= */
+  const PRONTOS = {
+    'nfe': {
+      nome:'Reforma: nota fiscal com campos novos',
+      assunto:'A sua nota fiscal vai mudar',
+      muda:'A Reforma Tributária começou a aparecer nos documentos fiscais. A nota passa a ter campos novos, com os impostos que estão nascendo. Neste primeiro momento os valores são simbólicos, quase zero: é um período de teste para os sistemas se ajustarem.',
+      quem:'empresas fora do Simples Nacional, ou seja, Lucro Real e Lucro Presumido',
+      data:'03/08/2026',
+      fazer:'Confirmar com a empresa do seu sistema se ele já está atualizado\nAvisar quem emite nota no dia a dia sobre a mudança\nConferir as primeiras notas emitidas depois da virada\nFalar com a gente se aparecer qualquer recusa',
+      risco:'a nota pode ser recusada, e nota recusada é venda que não sai'
+    },
+    'retiradas': {
+      nome:'Retiradas do sócio: aviso mensal',
+      assunto:'Precisamos saber quanto você retirou da empresa',
+      muda:'Quando o dinheiro sai da empresa e vai para o seu bolso, ele precisa ter nome: pró-labore, que é a sua remuneração pelo trabalho, ou distribuição de lucro, que só pode sair se a empresa realmente apurou lucro. Sem essa informação, a contabilidade não consegue registrar corretamente e o valor fica pendurado como saldo em aberto do sócio.',
+      quem:'todos os sócios que retiram dinheiro da empresa',
+      data:'Todo dia 5',
+      fazer:'Somar o que foi retirado no mês anterior\nSeparar quanto foi pró-labore e quanto foi lucro\nEnviar os valores para o escritório até o dia 5\nAvisar antes de fazer qualquer retirada fora do normal',
+      risco:'a retirada pode ser tributada, virar salário disfarçado ou travar a sua declaração'
+    },
+    'documentos': {
+      nome:'Prazo de envio dos documentos do mês',
+      assunto:'Envio dos documentos do mês',
+      muda:'Para entregar as obrigações da sua empresa no prazo e sem correria, precisamos receber os documentos do mês dentro da data combinada. Documento que chega atrasado atrasa tudo que vem depois.',
+      quem:'todos os nossos clientes',
+      data:'Todo dia 5',
+      fazer:'Separar as notas de compra e de venda do mês\nEnviar os extratos bancários completos\nInformar as movimentações de funcionários\nMandar tudo pelo canal combinado com o escritório',
+      risco:'a entrega pode atrasar e gerar multa por obrigação fora do prazo'
+    },
+    'obrigacao': {
+      nome:'Nova obrigação com prazo',
+      assunto:'Nova obrigação para a sua empresa',
+      muda:'Foi criada uma obrigação nova que alcança a sua empresa. Ela exige informação adicional dentro de um prazo determinado, e o não cumprimento gera penalidade.',
+      quem:'as empresas alcançadas pela nova regra',
+      data:'',
+      fazer:'Reunir as informações que serão exigidas\nConferir com o escritório se a sua empresa está alcançada\nGarantir o envio dentro do prazo',
+      risco:'a empresa fica sujeita a multa'
+    },
+    'honorarios': {
+      nome:'Reajuste de honorários',
+      assunto:'Reajuste anual dos honorários',
+      muda:'Como acontece uma vez por ano, os honorários serão reajustados para acompanhar os custos e continuar sustentando o nível de atendimento que a sua empresa recebe. O reajuste segue o que está previsto no contrato.',
+      quem:'todos os clientes do escritório',
+      data:'',
+      fazer:'Conferir o novo valor informado\nAtualizar o pagamento a partir da próxima competência\nFalar com a gente em caso de dúvida',
+      risco:''
+    },
+    'recesso': {
+      nome:'Recesso ou feriado do escritório',
+      assunto:'Nosso funcionamento no período',
+      muda:'O escritório terá horário diferente no período informado. As entregas com prazo continuam garantidas, e organizamos a agenda para que nada da sua empresa fique parado.',
+      quem:'todos os nossos clientes',
+      data:'',
+      fazer:'Antecipar o envio dos documentos do período\nDeixar registrado qualquer pedido urgente antes da data\nUsar o canal de plantão se for algo que não pode esperar',
+      risco:''
+    }
+  };
+
+  const selModelo=document.getElementById('q-modelo');
+  Object.entries(PRONTOS).forEach(([k,v])=>{
+    const o=document.createElement('option'); o.value=k; o.textContent=v.nome; selModelo.appendChild(o);
+  });
+  document.getElementById('b-usar-modelo').addEventListener('click',()=>{
+    const m=PRONTOS[selModelo.value]; if(!m) return;
+    document.getElementById('q-assunto').value=m.assunto;
+    document.getElementById('q-muda').value=m.muda;
+    document.getElementById('q-quem').value=m.quem;
+    document.getElementById('q-data').value=m.data;
+    document.getElementById('q-fazer').value=m.fazer;
+    document.getElementById('q-risco').value=m.risco;
+    trocarModo('perguntas');
+    aviso('Modelo carregado nas perguntas. Ajuste o que quiser e clique em Gerar material.','bom');
+  });
+
+  /* ================= 1. PERGUNTAS -> CONTEÚDO ================= */
+  function porPerguntas(){
+    const assunto=semPonto(val('q-assunto')), muda=val('q-muda').trim(),
+          quem=semPonto(val('q-quem')), data=semPonto(val('q-data')),
+          acoes=linhas(val('q-fazer')), risco=semPonto(val('q-risco'));
+    if(!assunto && !muda) return null;
+
+    const ps=[];
+    if(muda) frases(muda).forEach((f,i)=> i<2 ? ps.push(f) : ps[ps.length-1]+=' '+f);
+    if(quem) ps.push('Isso vale para ' + quem + '. Se a sua empresa está nesse grupo, vale a pena ler até o fim e guardar este material.');
+    if(acoes.length) ps.push('O que a sua empresa precisa fazer: ' + acoes.map(a=>a.toLowerCase().replace(/\.$/,'')).join('; ') + '.');
+    if(risco) ps.push('E se nada for feito? ' + maiuscula(risco) + '. É justamente isso que a gente quer evitar, e por isso estamos avisando com antecedência.');
+
+    return {
+      chapeu: data ? 'Aviso com prazo' : 'Aviso do escritório',
+      titulo: assunto || 'Comunicado ao cliente',
+      linhaFina: data
+        ? ('A partir de ' + data + ', a mudança passa a valer' + (quem ? ' para ' + quem : '') + '. Veja abaixo o que fazer.')
+        : (quem ? ('Este aviso é para ' + quem + '. Veja o que muda e o que fazer.') : 'Veja o que muda e o que a sua empresa precisa fazer.'),
+      paragrafos: ps,
+      prazo: data ? {data:data, titulo:(assunto||'Fique atento a esta data'), texto: acoes[0] ? ('Antes desta data: ' + acoes[0].toLowerCase().replace(/\.$/,'') + '.') : 'Guarde esta data na agenda da empresa.'} : null,
+      caixaClara: acoes.length ? {titulo:'O que fazer', itens:acoes} : null,
+      caixaEscura: risco ? {titulo:'Por que isso importa', texto: maiuscula(risco) + '. Resolver agora custa muito menos do que corrigir depois.'} : null,
+      checklist: acoes.length ? {titulo:'Sua lista de tarefas', itens:acoes} : null,
+      faq: montarFaq(assunto, quem, data, risco),
+      chamada: {titulo:'Conte com a gente', texto:'Ficou com dúvida sobre este assunto? Fale com o escritório. A gente explica quantas vezes for preciso, do jeito que você entende.', botao:'Fale com a gente'}
+    };
+  }
+
+  function montarFaq(assunto, quem, data, risco){
+    const f=[];
+    if(quem) f.push({p:'Isso vale para a minha empresa?', r:'Vale para ' + quem + '. Se ficou em dúvida sobre o seu caso, fale com a gente que confirmamos.'});
+    if(data) f.push({p:'Até quando eu tenho?', r:'A data é ' + data + '. Quanto antes resolver, menor a chance de correria.'});
+    if(risco) f.push({p:'O que acontece se eu não fizer nada?', r: maiuscula(risco) + '.'});
+    f.push({p:'Preciso fazer alguma coisa sozinho?', r:'Não. A parte técnica é com o escritório. De você, precisamos apenas dos itens listados neste material.'});
+    return f.slice(0,4);
+  }
+
+  /* ================= 2. TEXTO COLADO -> CONTEÚDO ================= */
+  function porTexto(){
+    const bruto=val('q-texto').trim();
+    if(bruto.length<40) return null;
+    const ls=linhas(bruto);
+    const ehLista=l=>/^([-–—•*]|\d+[.)]|[a-z][.)])\s+/i.test(l);
+    const limpaLista=l=>l.replace(/^([-–—•*]|\d+[.)]|[a-z][.)])\s+/i,'');
+
+    const itens=[], perguntas=[], paras=[];
+    let titulo='';
+    ls.forEach((l,i)=>{
+      if(ehLista(l)) return itens.push(limpaLista(l));
+      if(/\?\s*$/.test(l) && l.length<160) return perguntas.push(l);
+      if(!titulo && l.length<=120 && i<3) { titulo=semPonto(l); return; }
+      if(l.length>50) paras.push(l);
+    });
+    if(!titulo) titulo = semPonto((paras[0]||ls[0]||'').split(/(?<=[.!?])\s/)[0]).slice(0,90);
+
+    const meses='janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro';
+    const reData=new RegExp('\\b(\\d{1,2}\\s?º?\\s+de\\s+(?:'+meses+')\\s+de\\s+\\d{4}|\\d{1,2}\\/\\d{1,2}(?:\\/\\d{2,4})?)\\b','i');
+    const achouData=bruto.match(reData);
+
+    const reLei=/\b(?:Lei\s+Complementar|Lei|Decreto|Instru[çc][ãa]o\s+Normativa|IN|Resolu[çc][ãa]o|Portaria|Medida\s+Provis[óo]ria)\s*n?º?\s*[\d.]+(?:\/\d{2,4})?/gi;
+    const leis=[...new Set((bruto.match(reLei)||[]).map(s=>s.replace(/\s+/g,' ').trim()))].slice(0,4);
+
+    return {
+      chapeu: achouData ? 'Aviso com prazo' : 'Informação importante',
+      titulo: titulo || 'Comunicado',
+      linhaFina: paras[0] ? paras[0].slice(0,190) : '',
+      paragrafos: (paras.length ? paras : ls).slice(0,6),
+      prazo: achouData ? {data:achouData[1], titulo:'Data encontrada no texto', texto:'Confirme o que vence nesta data e ajuste este texto antes de enviar.'} : null,
+      caixaClara: itens.length ? {titulo:'Pontos do texto', itens:itens.slice(0,5)} : null,
+      caixaEscura: leis.length ? {titulo:'Base legal citada', texto: leis.join(' · ') + '. Explique em uma frase o que isso significa para o cliente.'} : null,
+      checklist: itens.length ? {titulo:'Lista de tarefas', itens:itens.slice(0,6)} : null,
+      faq: perguntas.length ? perguntas.slice(0,4).map(p=>({p:p, r:'Escreva aqui a resposta.'})) : null,
+      chamada: {titulo:'Conte com a gente', texto:'Ficou com dúvida sobre este assunto? Fale com o escritório.', botao:'Fale com a gente'}
+    };
+  }
+
+  /* ================= RENDERIZAÇÃO ================= */
+  const B={
+    cabecalho:t=>`<div class="cab-doc"><img class="logo-doc" alt="" style="display:none">
+      <div class="marca-nome"><span class="v-marca-completa"></span></div>
+      <div class="meta"><span class="selo-tipo">${esc(t.selo)}</span><br><span class="v-data"></span></div></div>`,
+    titulo:d=>`<div><span class="kicker" contenteditable>${esc(d.chapeu||'Aviso')}</span>
+      <div class="manchete" style="margin-top:1.5mm" contenteditable>${esc(d.titulo||'')}</div>
+      ${d.linhaFina?`<div class="apoio" contenteditable>${esc(d.linhaFina)}</div>`:''}</div>`,
+    texto:(ps,duas)=>`<div class="${duas?'colunas':'corrido'}" contenteditable>${(ps||[]).map(p=>'<p>'+esc(p)+'</p>').join('')}</div>`,
+    prazo:p=>`<div class="prazo"><div class="data" contenteditable>${esc(p.data)}</div>
+      <div><span class="rot">Prazo</span><h4 contenteditable>${esc(p.titulo)}</h4><p contenteditable>${esc(p.texto)}</p></div></div>`,
+    clara:c=>`<div class="cx-clara"><h3 contenteditable>${esc(c.titulo)}</h3>
+      <ul contenteditable>${(c.itens||[]).map(i=>'<li>'+esc(i)+'</li>').join('')}</ul></div>`,
+    escura:c=>`<div class="cx-escura"><h3 contenteditable>${esc(c.titulo)}</h3><p contenteditable>${esc(c.texto)}</p></div>`,
+    par:(a,b)=>`<div class="par">${B.clara(a)}${B.escura(b)}</div>`,
+    checklist:c=>`<div class="checklist"><h3 contenteditable>${esc(c.titulo)}</h3>
+      <ul contenteditable>${(c.itens||[]).map(i=>'<li>'+esc(i)+'</li>').join('')}</ul></div>`,
+    faq:f=>`<div class="faq" contenteditable>${(f||[]).map(x=>'<div class="q">'+esc(x.p)+'</div><div class="a">'+esc(x.r)+'</div>').join('')}</div>`,
+    chamada:c=>`<div class="chamada"><span class="kicker">Conte com a gente</span>
+      <h3 contenteditable>${esc(c.titulo)}</h3><p contenteditable>${esc(c.texto)}</p>
+      <div class="selo" contenteditable>${esc(c.botao)}</div></div>`,
+    contatos:()=>`<div class="contatos">
+      <div><div class="rot">Telefone</div><div class="val v-tel"></div></div>
+      <div><div class="rot">E-mail</div><div class="val v-email"></div></div>
+      <div><div class="rot">Onde nos achar</div><div class="val v-site"></div></div>
+      <div><div class="rot">Cidade</div><div class="val v-cidade"></div></div></div>`
+  };
+
+  function receita(d,tipo,t){
+    const p1=[B.cabecalho(t), B.titulo(d)], paginas=[p1];
+    const duas=(tipo==='jornal'||tipo==='informativo');
+    if(tipo==='card'){
+      if(d.paragrafos) p1.push(B.texto(d.paragrafos.slice(0,2),false));
+      if(d.prazo) p1.push(B.prazo(d.prazo));
+      p1.push(B.contatos()); return paginas;
+    }
+    if(tipo==='checklist'){
+      if(d.paragrafos) p1.push(B.texto(d.paragrafos.slice(0,2),false));
+      if(d.checklist) p1.push(B.checklist(d.checklist));
+      if(d.prazo) p1.push(B.prazo(d.prazo));
+      p1.push(B.contatos()); return paginas;
+    }
+    if(d.paragrafos) p1.push(B.texto(d.paragrafos.slice(0,duas?4:3),duas));
+    if(d.prazo) p1.push(B.prazo(d.prazo));
+    if(d.caixaClara&&d.caixaEscura) p1.push(B.par(d.caixaClara,d.caixaEscura));
+    else if(d.caixaClara) p1.push(B.clara(d.caixaClara));
+    else if(d.caixaEscura) p1.push(B.escura(d.caixaEscura));
+    if(tipo==='jornal'){
+      const p2=[];
+      if(d.paragrafos&&d.paragrafos.length>4) p2.push(B.texto(d.paragrafos.slice(4),true));
+      if(d.checklist) p2.push(B.checklist(d.checklist));
+      if(d.faq&&d.faq.length) p2.push(B.faq(d.faq));
+      if(d.chamada) p2.push(B.chamada(d.chamada));
+      p2.push(B.contatos()); paginas.push(p2);
+    }else{
+      if(d.faq&&d.faq.length&&tipo==='informativo') p1.push(B.faq(d.faq));
+      if(d.chamada) p1.push(B.chamada(d.chamada));
+      p1.push(B.contatos());
+    }
+    return paginas;
+  }
+
+  function construir(d,tipo){
+    const t=TIPOS[tipo];
+    document.body.dataset.modelo=tipo;
+    raiz.style.setProperty('--pw',t.pw); raiz.style.setProperty('--ph',t.ph);
+    cssPagina.textContent=`@page{size:${t.pw} ${t.ph};margin:0}`;
+    mesa.querySelectorAll('.barra-pag,.page').forEach(el=>el.remove());
+    if(vazio) vazio.style.display='none';
+    receita(d,tipo,t).forEach(blocos=>{
+      const cls='page'+(t.card?' card':'')+(t.rodape?'':' sem-rodape');
+      const rod=t.rodape?`<div class="rodape"><span class="v-marca-completa"></span><span class="v-cidade"></span><span class="pg"></span></div>`:'';
+      const tmp=document.createElement('div');
+      tmp.innerHTML=`<section class="${cls}"><div class="conteudo"></div>${rod}</section>`;
+      const secao=tmp.firstElementChild, c=secao.querySelector('.conteudo');
+      mesa.appendChild(barra(secao)); mesa.appendChild(secao);
+      addBar(c);
+      const bar=c.querySelector('.addbar');
+      blocos.forEach(h=>inserirBloco(c,bar,h));
+    });
+    aplicarMarca(); aplicarLogo(); atualizar();
+  }
+
+  /* ================= edição ================= */
+  const EXTRAS={
+    'Título e chamada':B.titulo({chapeu:'Chapéu',titulo:'Escreva o título',linhaFina:'Linha de apoio.'}),
+    'Texto em duas colunas':B.texto(['Primeiro parágrafo.','Segundo parágrafo.'],true),
+    'Texto em uma coluna':B.texto(['Escreva aqui o seu texto.'],false),
+    'Destaque de prazo':B.prazo({data:'00/00',titulo:'O que vence',texto:'O que fazer antes.'}),
+    'Caixa clara com lista':B.clara({titulo:'Título',itens:['Primeiro ponto','Segundo ponto']}),
+    'Caixa escura de recado':B.escura({titulo:'Título',texto:'Recado importante.'}),
+    'Checklist':B.checklist({titulo:'Título',itens:['Primeira tarefa','Segunda tarefa']}),
+    'Perguntas e respostas':B.faq([{p:'Pergunta?',r:'Resposta.'}]),
+    'Chamada final':B.chamada({titulo:'Conte com a gente',texto:'Como o escritório ajuda.',botao:'Fale com a gente'}),
+    'Contatos':B.contatos()
+  };
+  function barra(secao){
+    const b=document.createElement('div'); b.className='barra-pag';
+    b.innerHTML=`<span class="cont"></span><span class="selo-estouro">Passou do limite da folha</span><span class="esticar"></span>
+      <button class="mini-btn" data-acao="nova">+ Página depois</button>
+      <button class="mini-btn perigo" data-acao="apagar">Apagar página</button>`;
+    b.addEventListener('click',e=>{
+      const a=e.target.dataset.acao; if(!a) return;
+      if(a==='nova') novaPagina(secao);
+      if(a==='apagar'&&confirm('Apagar esta página?')){ b.remove(); secao.remove(); atualizar(); }
+    });
+    return b;
+  }
+  const pares=()=>Array.from(mesa.querySelectorAll('.barra-pag')).map(x=>({barra:x,secao:x.nextElementSibling}));
+  function novaPagina(depoisDe){
+    const t=TIPOS[document.body.dataset.modelo]||TIPOS.comunicado;
+    const cls='page'+(t.card?' card':'')+(t.rodape?'':' sem-rodape');
+    const rod=t.rodape?`<div class="rodape"><span class="v-marca-completa"></span><span class="v-cidade"></span><span class="pg"></span></div>`:'';
+    const tmp=document.createElement('div'); tmp.innerHTML=`<section class="${cls}"><div class="conteudo"></div>${rod}</section>`;
+    const secao=tmp.firstElementChild, ref=depoisDe.nextElementSibling;
+    mesa.insertBefore(barra(secao),ref); mesa.insertBefore(secao,ref);
+    addBar(secao.querySelector('.conteudo')); aplicarMarca(); atualizar();
+  }
+  function addBar(conteudo){
+    const bar=document.createElement('div'); bar.className='addbar'; bar.textContent='+ bloco';
+    bar.addEventListener('click',e=>{
+      menu.innerHTML='';
+      Object.keys(EXTRAS).forEach(n=>{
+        const b=document.createElement('button'); b.textContent=n;
+        b.addEventListener('click',()=>{ inserirBloco(conteudo,bar,EXTRAS[n]); aplicarMarca(); aplicarLogo(); atualizar(); menu.classList.remove('aberto'); });
+        menu.appendChild(b);
+      });
+      const r=e.target.getBoundingClientRect();
+      menu.style.left=Math.min(r.left,window.innerWidth-246)+'px';
+      menu.style.top=Math.max(12,Math.min(r.top-6,window.innerHeight-380))+'px';
+      menu.classList.add('aberto');
+    });
+    conteudo.appendChild(bar);
+  }
+  document.addEventListener('click',e=>{ if(!menu.contains(e.target)&&!e.target.classList.contains('addbar')) menu.classList.remove('aberto'); });
+  function equipar(bl){
+    if(!bl.querySelector('.bl-ctrl')){
+      const c=document.createElement('div'); c.className='bl-ctrl';
+      c.innerHTML=`<button data-b="up">↑</button><button data-b="down">↓</button><button class="x" data-b="del">✕</button>`;
+      bl.appendChild(c);
+    }
+    if(bl.__ligado) return; bl.__ligado=true;
+    bl.addEventListener('click',e=>{
+      const a=e.target.dataset.b; if(!a) return;
+      const bar=bl.parentNode.querySelector('.addbar');
+      if(a==='del') bl.remove();
+      if(a==='up'&&bl.previousElementSibling) bl.parentNode.insertBefore(bl,bl.previousElementSibling);
+      if(a==='down'&&bl.nextElementSibling&&bl.nextElementSibling!==bar) bl.parentNode.insertBefore(bl.nextElementSibling,bl);
+      atualizar();
+    });
+  }
+  function inserirBloco(conteudo,bar,html){
+    const bl=document.createElement('div'); bl.className='bl'; bl.innerHTML=html;
+    conteudo.insertBefore(bl,bar); equipar(bl); return bl;
+  }
+  function aplicarMarca(){
+    const nome=val('f-nome').trim()||'SEU ESCRITÓRIO', compl=val('f-complemento').trim();
+    pintar('v-marca-completa',(nome+' '+compl).trim());
+    pintar('v-cidade',val('f-cidade')); pintar('v-data',val('f-data'));
+    pintar('v-tel',val('f-tel')); pintar('v-email',val('f-email')); pintar('v-site',val('f-site'));
+  }
+  function aplicarLogo(){ if(logoSrc) document.querySelectorAll('.logo-doc').forEach(i=>{i.src=logoSrc;i.style.display='block';}); }
+  function atualizar(){
+    const l=pares(), total=l.length;
+    l.forEach((p,i)=>{
+      p.barra.querySelector('.cont').textContent='Página '+(i+1)+' de '+total;
+      const pg=p.secao.querySelector('.pg'); if(pg) pg.textContent='Página '+(i+1)+' de '+total;
+      const c=p.secao.querySelector('.conteudo');
+      p.barra.classList.toggle('estourou', c?c.scrollHeight>c.clientHeight+2:false);
+    });
+  }
+  function aviso(txt,tipo){ estado.className='estado on '+(tipo||''); estado.textContent=txt; }
+
+  /* ================= painel ================= */
+  function trocarModo(m){
+    document.body.dataset.modo=m;
+    document.querySelectorAll('.abas button').forEach(b=>b.classList.toggle('on',b.dataset.modo===m));
+  }
+  document.querySelectorAll('.abas button').forEach(b=>b.addEventListener('click',()=>trocarModo(b.dataset.modo)));
+
+  document.getElementById('b-gerar').addEventListener('click',()=>{
+    const modo=document.body.dataset.modo;
+    const d = (modo==='texto') ? porTexto() : porPerguntas();
+    if(!d) return aviso(modo==='texto'?'Cole um texto um pouco maior.':'Preencha pelo menos o assunto e o que mudou.','erro');
+    construir(d, val('f-modelo'));
+    aviso('Pronto. Ajuste o que quiser clicando no texto e salve em PDF.','bom');
+  });
+
+  ['f-nome','f-complemento','f-cidade','f-data','f-tel','f-email','f-site']
+    .forEach(id=>document.getElementById(id).addEventListener('input',aplicarMarca));
+  document.getElementById('f-cor1').addEventListener('input',e=>{
+    raiz.style.setProperty('--marca',e.target.value); raiz.style.setProperty('--texto',e.target.value);
+  });
+  document.getElementById('f-cor2').addEventListener('input',e=>raiz.style.setProperty('--destaque',e.target.value));
+  document.getElementById('f-logo').addEventListener('change',function(){
+    const a=this.files&&this.files[0]; if(!a) return;
+    const fr=new FileReader(); fr.onload=ev=>{logoSrc=ev.target.result;aplicarLogo();}; fr.readAsDataURL(a);
+  });
+  document.getElementById('b-imprimir').addEventListener('click',()=>window.print());
+  document.getElementById('b-baixar').addEventListener('click',()=>{
+    document.querySelectorAll('.painel input[type=text],.painel input[type=color]').forEach(i=>i.setAttribute('value',i.value));
+    document.querySelectorAll('.painel textarea').forEach(t=>t.textContent=t.value);
+    document.querySelectorAll('.painel select').forEach(s=>Array.from(s.options).forEach(o=>o.selected?o.setAttribute('selected','selected'):o.removeAttribute('selected')));
+    const c=document.documentElement.cloneNode(true);
+    c.querySelectorAll('.barra-pag,.addbar,.bl-ctrl').forEach(e=>e.remove());
+    const m=c.querySelector('#menu'); if(m) m.innerHTML='';
+    const ch=c.querySelector('#f-chave'); if(ch) ch.removeAttribute('value');
+    c.querySelectorAll('input[type=file]').forEach(i=>i.removeAttribute('value'));
+    const blob=new Blob(['<!DOCTYPE html>\n'+c.outerHTML],{type:'text/html'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download=(document.body.dataset.modelo||'material')+'-'+(val('f-nome')||'escritorio').toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.html';
+    a.click(); URL.revokeObjectURL(a.href);
+  });
+
+  /* extra opcional: reescrever com IA */
+  document.getElementById('b-ia').addEventListener('click',async()=>{
+    const paras=[...document.querySelectorAll('.page .corrido p,.page .colunas p')].map(p=>p.textContent).join('\n');
+    if(!paras) return aviso('Gere um material primeiro.','erro');
+    const btn=document.getElementById('b-ia'); btn.disabled=true; btn.textContent='Reescrevendo...';
+    aviso('Pedindo à IA uma versão em linguagem mais simples...');
+    try{
+      const chave=val('f-chave').trim();
+      const cab={'Content-Type':'application/json'};
+      if(chave){cab['x-api-key']=chave;cab['anthropic-version']='2023-06-01';cab['anthropic-dangerous-direct-browser-access']='true';}
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:cab,
+        body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:
+          'Reescreva os parágrafos abaixo para donos de pequenas empresas: frases curtas, voz ativa, zero juridiquês, sem inventar informação. Responda só com os parágrafos reescritos, um por linha, sem numerar.\n\n'+paras}]})});
+      if(!r.ok) throw new Error('A IA respondeu com erro '+r.status+'. Confira a chave.');
+      const dd=await r.json();
+      const txt=(dd.content||[]).filter(i=>i.type==='text').map(i=>i.text).join('\n');
+      const novos=linhas(txt);
+      const alvos=[...document.querySelectorAll('.page .corrido p,.page .colunas p')];
+      alvos.forEach((p,i)=>{ if(novos[i]) p.textContent=novos[i]; });
+      aviso('Texto reescrito. Revise antes de enviar.','bom');
+    }catch(err){ aviso(err.message||'Não foi possível usar a IA agora. O material continua válido.','erro'); }
+    finally{ btn.disabled=false; btn.textContent='Reescrever com IA'; }
+  });
+
+  document.addEventListener('paste',e=>{
+    if(!e.target.closest('[contenteditable]')) return;
+    e.preventDefault();
+    document.execCommand('insertText',false,(e.clipboardData||window.clipboardData).getData('text/plain'));
+  });
+  document.addEventListener('input',atualizar);
+
+  if(mesa.querySelector('.page')){
+    if(vazio) vazio.style.display='none';
+    const t=TIPOS[document.body.dataset.modelo]||TIPOS.comunicado;
+    raiz.style.setProperty('--pw',t.pw); raiz.style.setProperty('--ph',t.ph);
+    cssPagina.textContent=`@page{size:${t.pw} ${t.ph};margin:0}`;
+    Array.from(mesa.querySelectorAll('.page')).forEach(sec=>{
+      mesa.insertBefore(barra(sec),sec);
+      const c=sec.querySelector('.conteudo');
+      if(c){ c.querySelectorAll('.addbar').forEach(x=>x.remove()); addBar(c); c.querySelectorAll('.bl').forEach(equipar); }
+    });
+    const l=document.querySelector('.logo-doc[src]'); if(l) logoSrc=l.getAttribute('src');
+    aplicarMarca(); aplicarLogo(); atualizar();
+  }
+})();
+</script>
+</body>
+</html>

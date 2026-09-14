@@ -1,0 +1,649 @@
+<style>
+:root{--c1:#1A1A1A;--c2:#4A5D23}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f1f1ef;color:#1A1A1A;padding:16px}
+.wrap{max-width:1000px;margin:0 auto}
+.head{background:var(--c1);color:#fff;border-radius:14px 14px 0 0;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.head h1{font-size:20px}
+.head .marca{color:#C8FF00;font-weight:700;font-size:13px}
+.head .tot{text-align:right}
+.head .tot small{color:#aaa;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.head .tot b{font-size:24px;display:block}
+.card{background:#fff;border-radius:0 0 14px 14px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.tabs{display:flex;gap:4px;background:#f1f1ef;padding:4px;border-radius:10px;margin-bottom:20px;overflow-x:auto}
+.tabs button{flex:1;padding:9px 12px;border:0;background:transparent;border-radius:7px;font-weight:600;font-size:13px;color:#777;cursor:pointer;white-space:nowrap}
+.tabs button.on{background:#fff;color:#1A1A1A;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:4px}
+input,select,textarea{width:100%;padding:9px 11px;border:1px solid #d5d5d0;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:#1A1A1A}
+input[type=color]{padding:3px;height:38px;cursor:pointer}
+input:focus,select:focus{outline:0;border-color:var(--c2);box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.btn{padding:11px 16px;border:0;border-radius:9px;font-weight:700;font-size:14px;cursor:pointer;width:100%}
+.btn-dark{background:var(--c1);color:#fff}
+.btn-acc{background:var(--c2);color:#fff}
+.btn-lime{background:#C8FF00;color:#1A1A1A}
+.btn-out{background:#fff;border:1px solid #d5d5d0;color:#555}
+.mini{width:auto;padding:6px 10px;font-size:12px}
+.sep{border:0;border-top:1px solid #eee;margin:18px 0}
+.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f2f2f2;font-size:14px}
+.row span{color:#666}.row b{color:#1A1A1A}
+.row.tot{border:0;border-top:2px solid var(--c1);margin-top:6px;padding-top:12px;font-size:17px}
+.box{border:1px solid #e6e6e2;border-radius:12px;padding:16px}
+.info{background:#f7f8f4;border-left:3px solid var(--c2);border-radius:8px;padding:14px 16px;font-size:13px;line-height:1.6;color:#444}
+.info h3{font-size:14px;margin-bottom:6px;color:#1A1A1A}
+.info li{margin-left:16px;margin-top:3px}
+.alert{border-radius:10px;padding:14px;font-size:13px;line-height:1.5}
+.ok{background:#f2f7e8;border:1px solid #cfe0a8}
+.warn{background:#fdf6e3;border:1px solid #f0dda0}
+.pac{border:2px solid #e6e6e2;border-radius:12px;padding:14px}
+.pac.dest{border-color:var(--c2)}
+.pac .price{font-size:24px;font-weight:800;margin:8px 0 2px;color:var(--c1)}
+.item{display:flex;gap:6px;margin-bottom:5px}
+.item input{font-size:12px;padding:6px 8px}
+.x{background:#fff;border:1px solid #e0e0dc;color:#bbb;border-radius:6px;cursor:pointer;padding:2px 9px;font-weight:700;font-size:12px}
+.x:hover{color:#c00;border-color:#c00}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#f7f7f5;text-align:left;padding:9px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#777}
+td{padding:9px;border-top:1px solid #f0f0ee}
+.bar{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.bar .m{font-size:11px;color:#999;width:30px}
+.bar .track{flex:1;background:#f0f0ee;border-radius:5px;height:22px;overflow:hidden}
+.bar .fill{background:var(--c1);height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;color:#fff;font-size:10px;font-weight:700;white-space:nowrap}
+.bar .n{font-size:10px;color:#aaa;width:90px;text-align:right}
+.foot{text-align:center;font-size:11px;color:#999;margin-top:14px}
+.logo-prev{max-height:56px;max-width:200px;margin-top:8px;display:block}
+#print{display:none;background:#fff;padding:34px}
+.pbar{display:flex;gap:10px;margin-bottom:24px}
+.phead{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid var(--c2);padding-bottom:12px;margin-bottom:20px}
+.phead h1{font-size:22px;color:var(--c1)}.phead .sl{font-size:12px;color:#888;font-style:italic}
+.phead .dt{font-size:11px;color:#888;text-align:right}
+.phead img{max-height:60px;max-width:220px;margin-bottom:6px;display:block}
+.pgrid{display:grid;gap:14px;margin:22px 0}
+.pcard{border:2px solid #e6e6e2;border-radius:12px;padding:14px}
+.pcard.dest{border-color:var(--c2)}
+.pcard .tag{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--c2)}
+.pcard h3{font-size:16px;margin:2px 0;color:var(--c1)}
+.pcard .rs{font-size:11px;color:#888;min-height:30px}
+.pcard .pr{font-size:22px;font-weight:800;margin-top:6px;color:var(--c1)}
+.pcard .an{font-size:11px;color:var(--c2);margin-bottom:8px}
+.pcard ul{list-style:none}
+.pcard li{font-size:11px;line-height:1.45;margin-bottom:5px;padding-left:14px;position:relative;color:#444}
+.pcard li:before{content:"\2713";position:absolute;left:0;color:var(--c2);font-weight:700}
+.cond{background:#f7f8f4;border-radius:9px;padding:14px;font-size:11.5px;line-height:1.6;color:#555}
+.sign{border-top:1px solid #e6e6e2;margin-top:20px;padding-top:12px;font-size:13px}
+@media print{.no-print{display:none!important}body{background:#fff;padding:0}#print{padding:0}}
+@media(max-width:760px){.g2,.g3,.g4{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap" id="app">
+  <div class="head">
+    <div><h1>PRECIFICACONT</h1><div class="marca">Precificação e propostas contábeis, distribuição gratuita</div></div>
+    <div class="tot"><small>Honorário mensal</small><b id="hTotal">R$ 0,00</b></div>
+  </div>
+  <div class="card">
+    <div class="tabs">
+      <button data-tab="calculo" class="on">Cálculo</button>
+      <button data-tab="proposta">Proposta</button>
+      <button data-tab="historico">Histórico</button>
+      <button data-tab="cenarios">Cenários</button>
+      <button data-tab="projecao">Projeção</button>
+      <button data-tab="parametros">Parâmetros</button>
+      <button data-tab="marca">Marca</button>
+      <button data-tab="manual">Manual</button>
+    </div>
+
+    <div id="t-manual" style="display:none;font-size:13.5px;line-height:1.7;color:#444">
+      <div class="info" style="margin-bottom:18px">
+        <h3>PRECIFICACONT</h3>
+        Ferramenta de precificação de honorários e geração de propostas contábeis.
+        Distribuição gratuita: pode usar, copiar e repassar para outros contadores.
+      </div>
+
+      <h3 style="font-size:15px;color:var(--c1);margin-bottom:6px">1. A conta por trás de tudo</h3>
+      <p>A ferramenta resolve uma fórmula só, nesta ordem:</p>
+      <ol style="margin:8px 0 12px 20px">
+        <li>Valor base multiplicado pelo fator do regime</li>
+        <li>Mais o adicional da atividade</li>
+        <li>Mais o adicional de notas fiscais</li>
+        <li>Mais o adicional de funcionários</li>
+        <li>Sobre esse subtotal, aplica o ajuste comercial em percentual</li>
+      </ol>
+      <p>Exemplo com os valores padrão: Lucro Presumido, comércio, 60 notas por mês, 6 funcionários e base de R$ 1.000,00.</p>
+      <table style="margin:10px 0 12px">
+        <tr><th>Etapa</th><th>Conta</th><th>Valor</th></tr>
+        <tr><td>Base</td><td>informada</td><td>R$ 1.000,00</td></tr>
+        <tr><td>Regime Presumido</td><td>1.000,00 × 1,20</td><td>R$ 1.200,00</td></tr>
+        <tr><td>Atividade comércio</td><td>fixo</td><td>+ R$ 150,00</td></tr>
+        <tr><td>Notas, faixa de 21 a 100</td><td>fixo</td><td>+ R$ 200,00</td></tr>
+        <tr><td>Funcionários, 3 excedentes</td><td>3 × 50,00</td><td>+ R$ 150,00</td></tr>
+        <tr><td><b>Honorário mensal</b></td><td></td><td><b>R$ 1.700,00</b></td></tr>
+      </table>
+      <p>A regra de notas fiscais é degrau, não proporcional: 100 notas e 101 notas separam R$ 200,00.
+      Se isso incomodar na hora de justificar, mude as faixas na aba Parâmetros.</p>
+
+      <h3 style="font-size:15px;color:var(--c1);margin:18px 0 6px">2. Aba Cálculo</h3>
+      <p><b>Valor base</b> é o seu piso: quanto custa manter qualquer cliente na carteira, mesmo o mais simples.
+      <b>Regime, atividade, notas e funcionários</b> disparam os adicionais.
+      <b>Ajuste comercial</b> entra por último, negativo para desconto de negociação, positivo para cliente que dá mais trabalho que o perfil sugere.</p>
+      <p><b>Horas por mês e custo hora alvo</b> formam o teste de margem. A ferramenta divide o honorário pelas horas e compara com o alvo.
+      Verde significa que o contrato paga o custo. Amarelo mostra quanto o honorário precisaria ser para pagar.
+      É o campo que mais dói e mais ensina.</p>
+      <p>O PDF gerado aqui é de uso interno. Não envie ao cliente: ele mostra como o preço foi montado.</p>
+
+      <h3 style="font-size:15px;color:var(--c1);margin:18px 0 6px">3. Aba Proposta</h3>
+      <p>Cada pacote é o honorário multiplicado por um fator: 1,00 no plano de entrada, 1,30 no do meio e 1,70 no de cima.
+      Essa escada faz o cliente comparar três opções suas, e não a sua contra a do concorrente.
+      O plano do meio é onde a maioria fecha, por isso vem marcado como mais contratado.</p>
+      <p>Nome, fator, frase de posicionamento e cada linha de escopo são editáveis. O botão <b>+ item</b> acrescenta linha,
+      o <b>x</b> apaga, e dá para criar ou excluir pacotes inteiros.</p>
+      <p><b>Meses bonificados</b>: em vez de anunciar desconto percentual, a proposta mostra doze meses pelo preço de onze.
+      Fecha melhor e protege seu valor de tabela na renovação.</p>
+      <p><b>Honorário de encerramento</b>: marcado, insere na proposta um bloco explicando ao cliente o que é.
+      O texto trata o item como serviço final, não como multa, e lista o que está incluído: obrigações do período da saída,
+      balanço de encerramento, arquivos digitais e transferência do acervo. Explicar na assinatura evita a briga na saída.</p>
+
+      <h3 style="font-size:15px;color:var(--c1);margin:18px 0 6px">4. Aba Histórico</h3>
+      <p>Salvar tira uma fotografia completa do momento: cliente, parâmetros, pacotes com cada item de escopo e o valor calculado.
+      Reabrir devolve tudo para as abas como estava. Guarda até sessenta registros.
+      Serve para refazer proposta de quem sumiu e voltou, comparar o que você cobrava seis meses atrás e reaproveitar escopo de cliente parecido.</p>
+
+      <h3 style="font-size:15px;color:var(--c1);margin:18px 0 6px">5. Cenários e Projeção</h3>
+      <p><b>Cenários</b> mostra variações lado a lado, com o maior valor destacado. Use antes de sentar com o cliente,
+      para decidir onde parar na negociação.</p>
+      <p><b>Projeção</b> aplica crescimento composto sobre notas e funcionários e recalcula mês a mês.
+      O uso real é a renovação: transforma "vou reajustar" em "seu movimento cresceu tantos por cento e o trabalho acompanhou".</p>
+
+      <h3 style="font-size:15px;color:var(--c1);margin:18px 0 6px">6. Parâmetros e Marca</h3>
+      <p>Nenhuma regra fica presa no código. Em <b>Parâmetros</b> você edita multiplicadores, adicionais, faixas de nota fiscal,
+      quantos funcionários são isentos e o valor por excedente. Restaurar o padrão não apaga clientes, histórico nem marca.</p>
+      <p>Em <b>Marca</b> entram nome, slogan, assinatura, contato, as duas cores e a logo.
+      A logo é reduzida para 360 pixels de largura e gravada dentro do próprio arquivo, o que mantém tudo funcionando offline.
+      As cores valem para a tela e para os PDFs ao mesmo tempo. Os PDFs saem só com a identidade de quem estiver usando.</p>
+
+      <h3 style="font-size:15px;color:var(--c1);margin:18px 0 6px">7. Armazenamento e backup</h3>
+      <p>Os dados ficam no navegador, gravados a cada digitação. Não sobe nada para servidor nenhum.
+      A consequência é que limpar o navegador apaga tudo, e cada navegador guarda a sua própria cópia.</p>
+      <ul style="margin:8px 0 0 20px">
+        <li><b>Baixar HTML</b>: salva a ferramenta para rodar no computador, sem internet</li>
+        <li><b>Exportar backup</b>: gera um arquivo com tudo, inclusive logo e histórico</li>
+        <li><b>Importar backup</b>: restaura, com confirmação antes de sobrescrever</li>
+        <li><b>Limpar tudo</b>: zera, com confirmação</li>
+      </ul>
+      <p style="margin-top:8px">Rotina saudável: exportar o backup uma vez por mês e guardar junto dos arquivos do escritório.</p>
+
+      <h3 style="font-size:15px;color:var(--c1);margin:18px 0 6px">8. Limites conhecidos</h3>
+      <ul style="margin:8px 0 0 20px">
+        <li>Chrome e Edge funcionam bem. O Firefox às vezes restringe o armazenamento em arquivo aberto direto do disco</li>
+        <li>O PDF depende da impressão do navegador. Na janela de impressão, desmarque cabeçalho e rodapé para o documento sair limpo</li>
+        <li>A projeção usa crescimento composto uniforme, ou seja, é estimativa e não previsão</li>
+      </ul>
+    </div>
+
+    <div id="t-calculo">
+      <div class="info" style="margin-bottom:18px">
+        <h3>Como funciona</h3>
+        Informe um valor base e o sistema soma os adicionais conforme o perfil do cliente. Nada é fixo no código:
+        os fatores ficam na aba Parâmetros e a identidade visual na aba Marca.
+        <ul>
+          <li><b>Cálculo</b>: perfil do cliente, memória do valor e teste de margem por hora.</li>
+          <li><b>Proposta</b>: pacotes montados sobre o valor calculado, com itens que você adiciona ou apaga.</li>
+          <li><b>Histórico</b>: cada proposta salva pode ser reaberta, alterada e gerada de novo.</li>
+          <li><b>Cenários</b> e <b>Projeção</b>: comparação de variações e evolução do honorário no tempo.</li>
+        </ul>
+        Use <b>Exportar backup</b> antes de trocar de computador ou limpar o navegador.
+      </div>
+      <div class="grid g4">
+        <div style="grid-column:span 2"><label>Cliente</label><input data-f="cliente" placeholder="Razão social"></div>
+        <div><label>Valor base</label><input data-f="base" data-money></div>
+        <div><label>Regime</label><select data-f="regime"><option value="s">Simples Nacional</option><option value="p">Lucro Presumido</option><option value="r">Lucro Real</option></select></div>
+        <div><label>Atividade</label><select data-f="ativ"><option value="s">Serviços</option><option value="c">Comércio</option><option value="i">Indústria</option></select></div>
+        <div><label>Notas por mês</label><input data-f="nf" type="number" min="0"></div>
+        <div><label>Funcionários</label><input data-f="fn" type="number" min="0"></div>
+        <div><label>Ajuste comercial %</label><input data-f="aj" data-dec></div>
+      </div>
+      <hr class="sep">
+      <div class="grid g2">
+        <div><label>Horas por mês estimadas</label><input data-f="hr" data-dec></div>
+        <div><label>Custo hora alvo</label><input data-f="alvo" data-money></div>
+      </div>
+      <div id="margem" style="margin-top:14px"></div>
+      <div class="box" id="memoria" style="margin-top:14px"></div>
+      <button class="btn btn-dark" style="margin-top:14px" onclick="abrir('memoria')">Gerar PDF da memória de cálculo</button>
+    </div>
+
+    <div id="t-proposta" style="display:none">
+      <div class="info" style="margin-bottom:16px">
+        Cada pacote multiplica o honorário pelo fator ao lado do nome. <b>+ item</b> acrescenta linha de escopo,
+        <b>x</b> apaga. Dá para criar e remover pacotes inteiros.
+      </div>
+      <div class="grid g3" id="pacotes"></div>
+      <button class="btn btn-out mini" style="margin-top:12px" onclick="addPacote()">+ Adicionar pacote</button>
+      <hr class="sep">
+      <div class="box" style="margin-bottom:12px">
+        <label style="text-transform:none;letter-spacing:0;font-size:14px;color:#1A1A1A;font-weight:600;margin:0">
+          <input type="checkbox" id="ckEnc" onchange="S.enc=this.checked?1:0;render()" style="width:auto;margin-right:8px">
+          Cobro honorário de encerramento
+        </label>
+        <div id="encBox" style="display:none;margin-top:12px">
+          <div class="grid g2">
+            <div><label>Equivale a quantos honorários mensais</label><input data-f="encQtd" data-dec></div>
+            <div style="font-size:12px;color:#777;line-height:1.5;padding-top:16px">
+              Marcado, entra na proposta um bloco explicando ao cliente o que é esse honorário e quando é devido.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid g3">
+        <div><label>Meses bonificados no anual</label><input data-f="bonus" type="number" min="0" max="6"></div>
+        <div><label>Validade da proposta, dias</label><input data-f="validade" type="number" min="1"></div>
+        <div style="display:flex;align-items:flex-end"><button class="btn btn-lime" onclick="abrir('proposta')">Gerar PDF da proposta</button></div>
+      </div>
+      <button class="btn btn-acc" style="margin-top:12px" onclick="salvarProposta()">Salvar proposta no histórico</button>
+    </div>
+
+    <div id="t-historico" style="display:none">
+      <div class="info" style="margin-bottom:14px">
+        Cada proposta salva guarda o cliente, os parâmetros, os pacotes e o valor daquele dia.
+        <b>Reabrir</b> devolve tudo para as abas, pronto para alterar e gerar de novo.
+      </div>
+      <div id="listaHist"></div>
+    </div>
+
+    <div id="t-cenarios" style="display:none">
+      <button class="btn btn-dark" onclick="salvarCenario()">Salvar cenário atual</button>
+      <div id="tabCen" style="margin-top:14px"></div>
+    </div>
+
+    <div id="t-projecao" style="display:none">
+      <div class="grid g3">
+        <div><label>Meses</label><input data-f="meses" type="number" min="1" max="48"></div>
+        <div><label>Crescimento notas % ao mês</label><input data-f="cn" data-dec></div>
+        <div><label>Crescimento funcionários % ao mês</label><input data-f="cf" data-dec></div>
+      </div>
+      <div id="proj" style="margin-top:16px"></div>
+    </div>
+
+    <div id="t-parametros" style="display:none">
+      <div class="info" style="margin-bottom:16px">Ajuste para a realidade do seu escritório. A mudança vale para todas as abas.</div>
+      <b style="font-size:13px">Multiplicador por regime</b>
+      <div class="grid g3" style="margin:8px 0 18px">
+        <div><label>Simples Nacional</label><input data-p="ms" data-dec></div>
+        <div><label>Lucro Presumido</label><input data-p="mp" data-dec></div>
+        <div><label>Lucro Real</label><input data-p="mr" data-dec></div>
+      </div>
+      <b style="font-size:13px">Adicional por atividade</b>
+      <div class="grid g3" style="margin:8px 0 18px">
+        <div><label>Serviços</label><input data-p="as" data-money></div>
+        <div><label>Comércio</label><input data-p="ac" data-money></div>
+        <div><label>Indústria</label><input data-p="ai" data-money></div>
+      </div>
+      <b style="font-size:13px">Notas fiscais</b>
+      <div class="grid g4" style="margin:8px 0 18px">
+        <div><label>Isento até</label><input data-p="nf1" type="number"></div>
+        <div><label>Faixa 2 até</label><input data-p="nf2" type="number"></div>
+        <div><label>Valor faixa 2</label><input data-p="v2" data-money></div>
+        <div><label>Valor acima da faixa 2</label><input data-p="v3" data-money></div>
+      </div>
+      <b style="font-size:13px">Funcionários</b>
+      <div class="grid g2" style="margin:8px 0 18px">
+        <div><label>Isento até quantos</label><input data-p="fi" type="number"></div>
+        <div><label>Valor por funcionário excedente</label><input data-p="fv" data-money></div>
+      </div>
+      <button class="btn btn-out" onclick="restaurar()">Restaurar valores padrão</button>
+    </div>
+
+    <div id="t-marca" style="display:none">
+      <div class="grid g2">
+        <div><label>Nome ou escritório</label><input data-f="mNome"></div>
+        <div><label>Slogan</label><input data-f="mSlogan"></div>
+        <div><label>Assinatura da proposta</label><input data-f="mAss"></div>
+        <div><label>Contato</label><input data-f="mCont"></div>
+      </div>
+      <hr class="sep">
+      <div class="grid g3">
+        <div><label>Cor principal</label><input type="color" id="cor1" onchange="S.cor1=this.value;aplicarCores();save()"></div>
+        <div><label>Cor de destaque</label><input type="color" id="cor2" onchange="S.cor2=this.value;aplicarCores();save()"></div>
+        <div><label>Logo, PNG ou JPG</label><input type="file" accept="image/*" onchange="subirLogo(this)"></div>
+      </div>
+      <div id="logoBox"></div>
+      <div class="info" style="margin-top:16px">
+        A logo é reduzida e guardada dentro do próprio arquivo, então continua funcionando offline.
+        As cores valem para a tela e para os dois PDFs. Nada disso sai do seu computador.
+      </div>
+    </div>
+
+    <hr class="sep">
+    <div class="grid g4">
+      <button class="btn btn-out" onclick="baixarHTML()">Baixar HTML</button>
+      <button class="btn btn-out" onclick="exportar()">Exportar backup</button>
+      <button class="btn btn-out" onclick="document.getElementById('imp').click()">Importar backup</button>
+      <button class="btn btn-out" onclick="limpar()">Limpar tudo</button>
+    </div>
+    <input type="file" id="imp" accept="application/json" style="display:none" onchange="importar(this)">
+  </div>
+  <div class="foot">Siga @franklim.contador</div>
+</div>
+
+<div id="print"></div>
+
+<script>
+var mem={};
+var store={
+  get:function(k){try{return localStorage.getItem(k)}catch(e){return mem[k]||null}},
+  set:function(k,v){try{localStorage.setItem(k,v)}catch(e){mem[k]=v}}
+};
+var PAD={ms:1,mp:1.2,mr:1.4,as:200,ac:150,ai:300,nf1:20,nf2:100,v2:200,v3:400,fi:3,fv:50};
+var PACPAD=[
+ {n:"Essencial",f:1,d:0,r:"Para quem precisa da obrigação em dia, sem surpresa.",i:["Escrituração contábil e fiscal completa","Apuração de impostos e emissão de guias","Folha de pagamento e obrigações trabalhistas","Entrega de todas as acessórias no prazo","Atendimento por e-mail, retorno em até 48 horas"]},
+ {n:"Completo",f:1.3,d:1,r:"Para quem usa o número da contabilidade para decidir.",i:["Tudo do plano Essencial","Atendimento por WhatsApp, retorno em até 24 horas","Balancete mensal comentado em linguagem de dono","Reunião trimestral de resultados","Revisão anual do enquadramento tributário"]},
+ {n:"Estratégico",f:1.7,d:0,r:"Para quem quer contador dentro da mesa de decisão.",i:["Tudo do plano Completo","Reunião mensal de resultados","Planejamento tributário anual documentado","Acompanhamento da Reforma Tributária com simulação de IBS e CBS","Painel de indicadores atualizado","Atendimento prioritário no mesmo dia"]}
+];
+var S={cliente:"",base:1000,regime:"s",ativ:"s",nf:50,fn:5,aj:0,hr:8,alvo:120,bonus:1,validade:15,
+ enc:0,encQtd:1,meses:12,cn:5,cf:3,mNome:"Seu Escritório Contábil",mSlogan:"",
+ mAss:"Nome do contador responsável",mCont:"E-mail e telefone de contato",
+ cor1:"#1A1A1A",cor2:"#4A5D23",logo:"",
+ p:Object.assign({},PAD),pac:JSON.parse(JSON.stringify(PACPAD)),cen:[],hist:[]};
+
+var sv=store.get("honorarios_v1");
+if(sv){try{var o=JSON.parse(sv);for(var k in o)S[k]=o[k];}catch(e){}}
+function save(){try{store.set("honorarios_v1",JSON.stringify(S))}catch(e){alert("Não foi possível salvar. A logo pode estar grande demais.")}}
+
+function fmt(n){return (n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function num(n,c){return (n||0).toLocaleString("pt-BR",{minimumFractionDigits:c===undefined?2:c,maximumFractionDigits:c===undefined?2:c})}
+function pdec(v){return parseFloat(String(v).replace(/\./g,"").replace(",","."))||0}
+function esc(s){return String(s).replace(/"/g,"&quot;")}
+
+function calc(nf,fn){
+ var p=S.p;
+ nf=nf===undefined?S.nf:nf; fn=fn===undefined?S.fn:fn;
+ var mult=S.regime=="s"?p.ms:S.regime=="p"?p.mp:p.mr;
+ var vReg=S.base*mult, addA=S.ativ=="s"?p.as:S.ativ=="c"?p.ac:p.ai;
+ var addN=nf<=p.nf1?0:nf<=p.nf2?p.v2:p.v3;
+ var addF=fn>p.fi?(fn-p.fi)*p.fv:0;
+ var sub=vReg+addA+addN+addF, vAj=sub*(S.aj/100);
+ return{mult:mult,vReg:vReg,addR:vReg-S.base,addA:addA,addN:addN,addF:addF,sub:sub,vAj:vAj,total:sub+vAj,nf:nf,fn:fn};
+}
+function nomeReg(){return S.regime=="s"?"Simples Nacional":S.regime=="p"?"Lucro Presumido":"Lucro Real"}
+function nomeAtiv(){return S.ativ=="s"?"Serviços":S.ativ=="c"?"Comércio":"Indústria"}
+
+function aplicarCores(){
+ document.documentElement.style.setProperty("--c1",S.cor1);
+ document.documentElement.style.setProperty("--c2",S.cor2);
+ document.getElementById("cor1").value=S.cor1;
+ document.getElementById("cor2").value=S.cor2;
+ document.getElementById("logoBox").innerHTML=S.logo?'<img src="'+S.logo+'" class="logo-prev"><button class="x" style="margin-top:6px" onclick="S.logo=\'\';aplicarCores();save()">Remover logo</button>':'';
+}
+function subirLogo(el){
+ var f=el.files[0]; if(!f)return;
+ var r=new FileReader();
+ r.onload=function(ev){
+  var img=new Image();
+  img.onload=function(){
+   var mx=360,sc=Math.min(1,mx/img.width),cv=document.createElement("canvas");
+   cv.width=img.width*sc;cv.height=img.height*sc;
+   cv.getContext("2d").drawImage(img,0,0,cv.width,cv.height);
+   S.logo=cv.toDataURL("image/png");
+   if(S.logo.length>700000){alert("Logo muito pesada. Use uma imagem menor.");S.logo=""}
+   aplicarCores();save();
+  };
+  img.src=ev.target.result;
+ };
+ r.readAsDataURL(f);
+}
+
+function render(){
+ var c=calc();
+ document.getElementById("hTotal").textContent=fmt(c.total);
+ document.getElementById("ckEnc").checked=!!S.enc;
+ document.getElementById("encBox").style.display=S.enc?"block":"none";
+ var l=[["Valor base informado",fmt(S.base)],
+  ["Regime "+nomeReg()+", fator "+num(c.mult,1),"+ "+fmt(c.addR)],
+  ["Atividade "+nomeAtiv(),"+ "+fmt(c.addA)],
+  ["Notas fiscais, "+c.nf+" por mês","+ "+fmt(c.addN)],
+  ["Funcionários, "+c.fn,"+ "+fmt(c.addF)]];
+ if(S.aj!=0)l.push(["Ajuste comercial de "+num(S.aj,1)+"%",fmt(c.vAj)]);
+ var h="";
+ l.forEach(function(x){h+='<div class="row"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>'});
+ h+='<div class="row tot"><b>Honorário mensal</b><b>'+fmt(c.total)+'</b></div>';
+ h+='<div class="grid g2" style="margin-top:14px"><div class="box" style="padding:11px"><label>Anual em 12 vezes</label><b>'+fmt(c.total*12)+'</b></div>'
+  +'<div class="box" style="padding:11px"><label>Anual com '+S.bonus+' bonificado</label><b style="color:var(--c2)">'+fmt(c.total*(12-S.bonus))+'</b></div></div>';
+ document.getElementById("memoria").innerHTML=h;
+
+ var m=document.getElementById("margem");
+ if(S.hr>0&&S.alvo>0){var vh=c.total/S.hr,ok=vh>=S.alvo;
+  m.innerHTML='<div class="alert '+(ok?"ok":"warn")+'"><b>Valor hora do contrato: '+fmt(vh)+'</b><br>'+
+  (ok?"Acima do alvo de "+fmt(S.alvo)+". Contrato saudável.":"Abaixo do alvo de "+fmt(S.alvo)+". Para chegar lá o honorário precisaria ser de "+fmt(S.alvo*S.hr)+".")+'</div>';
+ } else m.innerHTML="";
+ renderPacotesPreco(); renderCen(); renderProj(); renderHist(); save();
+}
+
+function renderPacotes(){
+ var h="";
+ S.pac.forEach(function(p,i){
+  h+='<div class="pac'+(p.d?" dest":"")+'">'
+   +'<div style="display:flex;gap:6px"><input value="'+esc(p.n)+'" oninput="setPac('+i+',\'n\',this.value)" style="font-weight:700">'
+   +'<input value="'+num(p.f,2)+'" onchange="setPac('+i+',\'f\',pdec(this.value));renderPacotes()" style="width:74px;text-align:center"></div>'
+   +'<div class="price" data-price="'+i+'"></div>'
+   +'<input value="'+esc(p.r)+'" oninput="setPac('+i+',\'r\',this.value)" style="font-size:12px;margin-bottom:10px">';
+  p.i.forEach(function(it,k){
+   h+='<div class="item"><input value="'+esc(it)+'" oninput="setItem('+i+','+k+',this.value)"><button class="x" onclick="delItem('+i+','+k+')">&times;</button></div>';
+  });
+  h+='<button class="btn btn-out mini" style="margin-top:6px" onclick="addItem('+i+')">+ item</button>'
+   +'<div style="margin-top:10px;font-size:12px;display:flex;justify-content:space-between;align-items:center">'
+   +'<label style="text-transform:none;letter-spacing:0;font-size:12px;color:#555;margin:0"><input type="radio" name="dest" '+(p.d?"checked":"")+' onclick="destaque('+i+')" style="width:auto;margin-right:5px">Mais contratado</label>'
+   +'<button class="x" onclick="delPacote('+i+')">Excluir</button></div></div>';
+ });
+ document.getElementById("pacotes").innerHTML=h;
+ renderPacotesPreco();
+}
+function renderPacotesPreco(){
+ var t=calc().total;
+ document.querySelectorAll("[data-price]").forEach(function(el){el.textContent=fmt(t*S.pac[+el.dataset.price].f)});
+}
+function setPac(i,k,v){S.pac[i][k]=v;renderPacotesPreco();save()}
+function setItem(i,k,v){S.pac[i].i[k]=v;save()}
+function addItem(i){S.pac[i].i.push("Novo item do escopo");renderPacotes();save()}
+function delItem(i,k){S.pac[i].i.splice(k,1);renderPacotes();save()}
+function destaque(i){S.pac.forEach(function(p,k){p.d=k==i?1:0});renderPacotes();save()}
+function addPacote(){S.pac.push({n:"Novo pacote",f:1,d:0,r:"Descreva para quem é este plano.",i:["Primeiro item"]});renderPacotes();save()}
+function delPacote(i){if(S.pac.length<2)return alert("Mantenha ao menos um pacote.");S.pac.splice(i,1);renderPacotes();save()}
+
+/* historico */
+var CAMPOS=["cliente","base","regime","ativ","nf","fn","aj","hr","alvo","bonus","validade","enc","encQtd"];
+function salvarProposta(){
+ var snap={pac:JSON.parse(JSON.stringify(S.pac)),p:Object.assign({},S.p)};
+ CAMPOS.forEach(function(k){snap[k]=S[k]});
+ S.hist.unshift({id:Date.now(),dt:new Date().toLocaleDateString("pt-BR"),cliente:S.cliente||"Sem nome",total:calc().total,snap:snap});
+ if(S.hist.length>60)S.hist.pop();
+ save();renderHist();alert("Proposta salva no histórico.");
+}
+function reabrir(id){
+ var h=S.hist.filter(function(x){return x.id==id})[0]; if(!h)return;
+ CAMPOS.forEach(function(k){S[k]=h.snap[k]});
+ S.pac=JSON.parse(JSON.stringify(h.snap.pac)); S.p=Object.assign({},h.snap.p);
+ preencher();renderPacotes();render();
+ document.querySelector('.tabs button[data-tab="proposta"]').click();
+}
+function delHist(id){if(!confirm("Excluir esta proposta do histórico?"))return;S.hist=S.hist.filter(function(x){return x.id!=id});save();renderHist()}
+function renderHist(){
+ var el=document.getElementById("listaHist"); if(!el)return;
+ if(!S.hist.length){el.innerHTML='<p style="text-align:center;color:#aaa;font-size:13px;padding:22px 0">Nenhuma proposta salva. Gere uma na aba Proposta e clique em salvar.</p>';return}
+ var h='<table><tr><th>Data</th><th>Cliente</th><th>Regime</th><th>Mensal</th><th></th></tr>';
+ S.hist.forEach(function(x){
+  var rg=x.snap.regime=="s"?"Simples":x.snap.regime=="p"?"Presumido":"Real";
+  h+='<tr><td>'+x.dt+'</td><td><b>'+x.cliente+'</b></td><td>'+rg+'</td><td><b>'+fmt(x.total)+'</b></td>'
+   +'<td style="text-align:right;white-space:nowrap"><button class="x" style="color:var(--c2);border-color:var(--c2)" onclick="reabrir('+x.id+')">Reabrir</button> '
+   +'<button class="x" onclick="delHist('+x.id+')">&times;</button></td></tr>';
+ });
+ el.innerHTML=h+'</table>';
+}
+
+/* cenarios e projecao */
+function salvarCenario(){
+ var c=calc();
+ S.cen.push({id:Date.now(),n:S.cliente||"Cenário "+(S.cen.length+1),reg:nomeReg(),nf:c.nf,fn:c.fn,t:c.total});
+ renderCen();save();
+}
+function delCen(id){S.cen=S.cen.filter(function(x){return x.id!=id});renderCen();save()}
+function renderCen(){
+ var el=document.getElementById("tabCen"); if(!el)return;
+ if(!S.cen.length){el.innerHTML='<p style="text-align:center;color:#aaa;font-size:13px;padding:22px 0">Altere os parâmetros e salve cada variação para comparar.</p>';return}
+ var h='<table><tr><th>Cenário</th><th>Regime</th><th>NF</th><th>Func.</th><th>Mensal</th><th>Anual</th><th></th></tr>';
+ var mx=Math.max.apply(null,S.cen.map(function(c){return c.t}));
+ S.cen.forEach(function(c){
+  h+='<tr><td><b>'+c.n+'</b></td><td>'+c.reg+'</td><td>'+c.nf+'</td><td>'+c.fn+'</td><td><b style="color:'+(c.t==mx?"var(--c2)":"#1A1A1A")+'">'+fmt(c.t)+'</b></td><td>'+fmt(c.t*12)+'</td><td><button class="x" onclick="delCen('+c.id+')">&times;</button></td></tr>';
+ });
+ el.innerHTML=h+'</table>';
+}
+function renderProj(){
+ var el=document.getElementById("proj"); if(!el)return;
+ var m=Math.min(S.meses||12,48),L=[];
+ for(var i=0;i<=m;i++){
+  var n=Math.round(S.nf*Math.pow(1+S.cn/100,i)),f=Math.round(S.fn*Math.pow(1+S.cf/100,i));
+  L.push({m:i,n:n,f:f,v:calc(n,f).total});
+ }
+ var ini=L[0].v,fim=L[L.length-1].v,mx=Math.max.apply(null,L.map(function(x){return x.v}));
+ var ac=L.slice(1).reduce(function(a,x){return a+x.v},0);
+ var h='<div class="grid g4">'+cardv("Hoje",fmt(ini))+cardv("Mês "+m,fmt(fim))
+  +cardv("Crescimento",num(ini?((fim-ini)/ini)*100:0,1)+"%")+cardv("Receita do período",fmt(ac))+'</div><div class="box" style="margin-top:14px">';
+ L.forEach(function(x){
+  h+='<div class="bar"><span class="m">M'+x.m+'</span><div class="track"><div class="fill" style="width:'+(x.v/mx*100)+'%">'+fmt(x.v)+'</div></div><span class="n">'+x.n+' NF, '+x.f+' func.</span></div>';
+ });
+ el.innerHTML=h+'</div>';
+}
+function cardv(l,v){return '<div class="box" style="padding:11px"><label>'+l+'</label><b>'+v+'</b></div>'}
+
+/* PDFs */
+function abrir(tipo){
+ var c=calc(),hoje=new Date().toLocaleDateString("pt-BR");
+ var h='<div class="pbar no-print"><button class="btn btn-dark" onclick="window.print()">Imprimir ou salvar em PDF</button>'
+  +'<button class="btn btn-out" onclick="voltar()">Voltar</button></div>';
+ h+='<div class="phead"><div>'+(S.logo?'<img src="'+S.logo+'">':'')+'<h1>'+S.mNome+'</h1>'
+  +(S.mSlogan?'<div class="sl">'+S.mSlogan+'</div>':'')+'</div>'
+  +'<div class="dt">Emitido em '+hoje+(tipo=="proposta"?'<br>Validade: '+S.validade+' dias':'')+'</div></div>';
+ if(tipo=="proposta"){
+  h+='<div style="font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#999">Proposta de honorários contábeis</div>'
+   +'<h2 style="font-size:19px">'+(S.cliente||"Prezado empresário")+'</h2>'
+   +'<p style="font-size:12.5px;color:#666;margin-top:4px">'+nomeReg()+', atividade de '+nomeAtiv().toLowerCase()+', cerca de '+c.nf+' notas fiscais por mês e '+c.fn+' funcionários.</p>'
+   +'<div class="pgrid" style="grid-template-columns:repeat('+Math.min(S.pac.length,3)+',1fr)">';
+  S.pac.forEach(function(p){
+   h+='<div class="pcard'+(p.d?" dest":"")+'">'+(p.d?'<div class="tag">Mais contratado</div>':'')
+    +'<h3>'+p.n+'</h3><div class="rs">'+p.r+'</div>'
+    +'<div class="pr">'+fmt(c.total*p.f)+'</div><div style="font-size:11px;color:#888">por mês</div>'
+    +'<div class="an">Anual: '+fmt(c.total*p.f*(12-S.bonus))+'</div><ul>';
+   p.i.forEach(function(it){h+='<li>'+it+'</li>'});
+   h+='</ul></div>';
+  });
+  h+='</div>';
+  if(S.enc){
+   var q=S.encQtd||1;
+   h+='<div class="cond" style="margin-bottom:12px;border-left:3px solid var(--c2)"><b>Honorário de encerramento</b><br>'
+    +'Se o contrato for encerrado, é devido um honorário de encerramento equivalente a '
+    +(q==1?"um honorário mensal":num(q,1)+" honorários mensais")+' do plano contratado. '
+    +'Ele não é multa. Remunera o serviço final, que existe mesmo quando a prestação acaba: apuração e entrega das '
+    +'obrigações do período da saída, levantamento do balanço de encerramento, geração dos arquivos digitais e '
+    +'transferência organizada de todo o acervo contábil ao novo responsável, dentro do prazo legal de guarda.</div>';
+  }
+  h+='<div class="cond"><b>Condições</b><br>Vencimento todo dia 10, com revisão anual acompanhando a variação do movimento fiscal.<br>'
+   +'No plano anual à vista, '+S.bonus+' '+(S.bonus==1?"mês bonificado":"meses bonificados")+'.<br>'
+   +'Migração e recuperação de dados do contador anterior sem custo adicional.</div>'
+   +'<div class="sign"><b>'+S.mAss+'</b><br><span style="color:#888;font-size:12px">'+S.mCont+'</span></div>';
+ }else{
+  h+='<h2 style="font-size:17px">Memória de cálculo</h2><p style="font-size:12.5px;color:#666;margin-bottom:14px">'+(S.cliente||"Sem cliente informado")+'</p>';
+  var l=[["Valor base informado",fmt(S.base)],["Regime "+nomeReg()+", fator "+num(c.mult,1),"+ "+fmt(c.addR)],
+   ["Atividade "+nomeAtiv(),"+ "+fmt(c.addA)],["Notas fiscais, "+c.nf+" por mês","+ "+fmt(c.addN)],
+   ["Funcionários, "+c.fn,"+ "+fmt(c.addF)],["Subtotal",fmt(c.sub)]];
+  if(S.aj!=0)l.push(["Ajuste comercial de "+num(S.aj,1)+"%",fmt(c.vAj)]);
+  l.forEach(function(x){h+='<div class="row"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>'});
+  h+='<div class="row tot"><b>Honorário mensal</b><b>'+fmt(c.total)+'</b></div>';
+  if(S.hr>0)h+='<p style="font-size:11.5px;color:#888;margin-top:14px">Custo interno estimado de '+num(S.hr,1)+' horas por mês, valor hora de '+fmt(c.total/S.hr)+'. Documento de uso interno.</p>';
+ }
+ document.getElementById("print").innerHTML=h;
+ document.getElementById("print").style.display="block";
+ document.getElementById("app").style.display="none";
+ window.scrollTo(0,0);
+}
+function voltar(){document.getElementById("print").style.display="none";document.getElementById("app").style.display="block"}
+
+/* backup e arquivo */
+function baixar(nome,conteudo,tipo){
+ var b=new Blob([conteudo],{type:tipo}),a=document.createElement("a");
+ a.href=URL.createObjectURL(b);a.download=nome;a.click();
+}
+function exportar(){
+ baixar("backup-honorarios-"+new Date().toISOString().slice(0,10)+".json",JSON.stringify(S),"application/json");
+}
+function importar(el){
+ var f=el.files[0]; if(!f)return;
+ var r=new FileReader();
+ r.onload=function(ev){
+  try{
+   var o=JSON.parse(ev.target.result);
+   if(!o.p||!o.pac)throw 0;
+   if(!confirm("Isso substitui a configuração atual. Continuar?"))return;
+   for(var k in o)S[k]=o[k];
+   preencher();aplicarCores();renderPacotes();render();
+   alert("Backup restaurado.");
+  }catch(e){alert("Arquivo inválido. Use um backup gerado por esta ferramenta.")}
+  el.value="";
+ };
+ r.readAsText(f);
+}
+function baixarHTML(){
+ baixar("precificacont.html","<!DOCTYPE html><html lang='pt-BR'><head><meta charset='utf-8'><title>PRECIFICACONT</title></head><body>"+document.documentElement.innerHTML+"</body></html>","text/html");
+}
+function limpar(){if(confirm("Apagar todos os dados salvos, inclusive histórico e logo?")){store.set("honorarios_v1","");location.reload()}}
+function restaurar(){S.p=Object.assign({},PAD);preencher();render()}
+
+/* binds */
+function money(el){
+ var d=el.value.replace(/\D/g,"");
+ if(!d){el.value="";return 0}
+ var v=parseInt(d,10)/100; el.value=num(v); return v;
+}
+function preencher(){
+ document.querySelectorAll("[data-f]").forEach(function(el){
+  var k=el.dataset.f,v=S[k];
+  if(el.hasAttribute("data-money"))el.value=num(v);
+  else if(el.hasAttribute("data-dec"))el.value=num(v,2);
+  else el.value=v;
+ });
+ document.querySelectorAll("[data-p]").forEach(function(el){
+  var k=el.dataset.p,v=S.p[k];
+  if(el.hasAttribute("data-money"))el.value=num(v);
+  else if(el.hasAttribute("data-dec"))el.value=num(v,2);
+  else el.value=v;
+ });
+}
+document.addEventListener("input",function(e){
+ var el=e.target;
+ if(el.dataset.f){
+  var k=el.dataset.f;
+  if(el.hasAttribute("data-money"))S[k]=money(el);
+  else if(el.hasAttribute("data-dec"))S[k]=pdec(el.value);
+  else if(el.type=="number")S[k]=parseFloat(el.value)||0;
+  else S[k]=el.value;
+  render();
+ } else if(el.dataset.p){
+  var p=el.dataset.p;
+  if(el.hasAttribute("data-money"))S.p[p]=money(el);
+  else if(el.hasAttribute("data-dec"))S.p[p]=pdec(el.value);
+  else S.p[p]=parseFloat(el.value)||0;
+  render();
+ }
+});
+document.addEventListener("change",function(e){
+ if(e.target.tagName=="SELECT"&&e.target.dataset.f){S[e.target.dataset.f]=e.target.value;render()}
+});
+document.querySelectorAll(".tabs button").forEach(function(b){
+ b.onclick=function(){
+  document.querySelectorAll(".tabs button").forEach(function(x){x.classList.remove("on")});
+  b.classList.add("on");
+  ["calculo","proposta","historico","cenarios","projecao","parametros","marca","manual"].forEach(function(t){
+   document.getElementById("t-"+t).style.display=t==b.dataset.tab?"block":"none";
+  });
+ };
+});
+preencher();aplicarCores();renderPacotes();render();
+</script>

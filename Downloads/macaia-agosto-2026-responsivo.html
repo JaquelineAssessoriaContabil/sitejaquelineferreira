@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Fiscal - MACAIA GESTAO LTDA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #D98BA4;
+            padding-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #D98BA4;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .company-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #D98BA4;
+        }
+
+        .company-info p {
+            color: #555;
+            font-size: 13px;
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+
+        .company-info strong {
+            color: #333;
+        }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 4px solid #D98BA4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .kpi-card.das {
+            border-top-color: #D4AF37;
+        }
+
+        .kpi-card.resultado {
+            border-top-color: #28a745;
+        }
+
+        .kpi-label {
+            color: #666;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            color: #D98BA4;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .kpi-card.das .kpi-value {
+            color: #D4AF37;
+        }
+
+        .kpi-card.resultado .kpi-value {
+            color: #28a745;
+        }
+
+        .kpi-detail {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .chart-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+
+        .chart-card h3 {
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-placeholder {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        .status-bar {
+            height: 12px;
+            background: linear-gradient(90deg, #D98BA4 45%, #D4AF37 45%, #D4AF37 90%, #ddd 90%);
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .status-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .status-item {
+            text-align: center;
+        }
+
+        .status-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* RESPONSIVO PARA CELULAR */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            .company-info {
+                padding: 15px;
+            }
+
+            .company-info p {
+                font-size: 12px;
+            }
+
+            /* IMPORTANTE: Cards em 1 coluna no celular */
+            .kpis {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-bottom: 30px;
+            }
+
+            .kpi-card {
+                padding: 16px;
+            }
+
+            .kpi-value {
+                font-size: 24px;
+            }
+
+            .kpi-label {
+                font-size: 11px;
+            }
+
+            .kpi-detail {
+                font-size: 11px;
+            }
+
+            /* Gráficos: 1 coluna no celular */
+            .charts-section {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .chart-placeholder {
+                min-height: 200px;
+            }
+
+            .chart-card h3 {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px 10px;
+                border-radius: 8px;
+            }
+
+            .header {
+                margin-bottom: 25px;
+                padding-bottom: 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .company-info {
+                margin-bottom: 20px;
+            }
+
+            .kpi-value {
+                font-size: 20px;
+            }
+
+            .kpi-card {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>📊 Dashboard Fiscal</h1>
+            <p>MACAIA GESTAO LTDA</p>
+        </div>
+
+        <!-- INFORMAÇÕES DA EMPRESA -->
+        <div class="company-info">
+            <p><strong>CNPJ:</strong> 33.075.903/0001-92</p>
+            <p><strong>Competência:</strong> Agosto/2026</p>
+            <p><strong>Regime:</strong> Simples Nacional</p>
+            <p><strong>Responsável Técnica:</strong> Jaqueline do Prado Ferreira CRCSC 048028/O-0</p>
+            <p><strong>Escritório:</strong> Jaqueline Ferreira Assessoria Contábil Ltda CRCSC 013019/O-4</p>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpis">
+            <!-- FATURAMENTO -->
+            <div class="kpi-card">
+                <div class="kpi-label">💰 Faturamento</div>
+                <div class="kpi-value">R$ 25.250,00</div>
+                <div class="kpi-detail">Mês de agosto</div>
+            </div>
+
+            <!-- DAS -->
+            <div class="kpi-card das">
+                <div class="kpi-label">🔴 DAS - Simples Nacional</div>
+                <div class="kpi-value">R$ 1.515,01</div>
+                <div class="kpi-detail">Vencimento: 21/09/2026</div>
+            </div>
+
+            <!-- RBT12 -->
+            <div class="kpi-card">
+                <div class="kpi-label">📈 RBT12</div>
+                <div class="kpi-value">R$ 82.610,00</div>
+                <div class="kpi-detail">45.9% do limite</div>
+            </div>
+
+            <!-- CARGA TRIBUTÁRIA -->
+            <div class="kpi-card">
+                <div class="kpi-label">📊 Carga Tributária</div>
+                <div class="kpi-value">6,00%</div>
+                <div class="kpi-detail">Alíquota de mês</div>
+            </div>
+
+            <!-- RESULTADO OPERACIONAL -->
+            <div class="kpi-card resultado">
+                <div class="kpi-label">✅ Resultado Operacional</div>
+                <div class="kpi-value">R$ 17.750,00</div>
+                <div class="kpi-detail">Margem: 70.30%</div>
+            </div>
+
+            <!-- DESPESAS -->
+            <div class="kpi-card">
+                <div class="kpi-label">💸 Despesas</div>
+                <div class="kpi-value">R$ 7.500,00</div>
+                <div class="kpi-detail">29.70% do faturamento</div>
+            </div>
+        </div>
+
+        <!-- GRÁFICOS -->
+        <div class="charts-section">
+            <!-- COMPARATIVO DE FATURAMENTO -->
+            <div class="chart-card">
+                <h3>📈 Faturamento vs Mês Anterior</h3>
+                <div class="status-bar"></div>
+                <div class="status-info">
+                    <div class="status-item">
+                        <div class="status-value">Mês Anterior</div>
+                        <div>R$ 14.325,00</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-value">Faturamento</div>
+                        <div>R$ 25.250,00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STATUS SIMPLES NACIONAL -->
+            <div class="chart-card">
+                <h3>⚖️ Situação na Faixa do Simples Nacional</h3>
+                <div class="status-bar"></div>
+                <div class="status-info">
+                    <div class="status-item">
+                        <div class="status-value">RBT 12</div>
+                        <div>R$ 82.610,00</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-value">Limite</div>
+                        <div>R$ 180.000,00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RODAPÉ -->
+        <div class="footer">
+            <p><strong>Jaqueline Ferreira Assessoria Contábil Ltda</strong></p>
+            <p>CRC SC-048028/O-0 | CRC SC-013019/O-4</p>
+            <p>Videira - SC | contato@jaquelineferreiracontadora.com.br</p>
+        </div>
+    </div>
+</body>
+</html>
