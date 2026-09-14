@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Fiscal - FACHIM PSICOLOGIA LTDA</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Ensure charts load properly
+        if (!window.Chart) {
+            console.error("Chart.js failed to load");
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #F9FAFB; color: #1F2937; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        .header {
+            background: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 24px;
+            margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .header-left h1 { font-size: 18px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+        .header-left p { font-size: 13px; color: #6B7280; margin: 2px 0; }
+        .header-right { font-size: 40px; font-weight: 700; color: #E5E7EB; text-align: center; min-width: 80px; }
+
+        .kpis-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
+            margin-bottom: 24px;
+        }
+        .kpi-card {
+            background: white; border: 1px solid #E5E7EB; border-left: 5px solid;
+            border-radius: 6px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .kpi-card.fat { border-left-color: #C58A94; }
+        .kpi-card.iss { border-left-color: #F59E0B; }
+        .kpi-card.ret { border-left-color: #8B5CF6; }
+        .kpi-card.carga { border-left-color: #6366F1; }
+        .kpi-card.resultado { border-left-color: #10B981; }
+        .kpi-label { font-size: 11px; color: #6B7280; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+        .kpi-value { font-size: 22px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+        .kpi-sub { font-size: 12px; color: #6B7280; }
+        .kpi-sub.pos { color: #10B981; }
+        .kpi-sub.warn { color: #F59E0B; }
+
+        .panel {
+            background: white; border: 1px solid #E5E7EB; border-radius: 8px;
+            padding: 24px; margin-bottom: 24px;
+        }
+        .panel-title {
+            font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .competencia-badge {
+            background: #FEF3C7; color: #92400E; padding: 4px 12px;
+            border-radius: 16px; font-size: 11px; font-weight: 600;
+        }
+        .payment-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
+        }
+        .payment-item {
+            border: 1px solid #E5E7EB; border-radius: 6px; padding: 16px;
+            background: #F9FAFB;
+        }
+        .payment-type { font-size: 13px; color: #6B7280; font-weight: 600; margin-bottom: 12px; }
+        .payment-value { font-size: 24px; font-weight: 700; color: #111827; margin-bottom: 8px; }
+        .payment-info { font-size: 12px; color: #6B7280; margin-bottom: 10px; line-height: 1.4; }
+        .payment-code { font-size: 11px; background: #F3F4F6; padding: 8px; border-radius: 4px;
+            color: #374151; margin-bottom: 12px; word-break: break-all; font-family: monospace; }
+        .btn-copy {
+            width: 100%; padding: 10px; border: none; border-radius: 6px; cursor: pointer;
+            font-size: 12px; font-weight: 600; transition: all 0.2s;
+        }
+        .btn-copy.iss { background: #F59E0B; color: white; }
+        .btn-copy.iss:hover { background: #D97706; }
+        .btn-copy.inss { background: #0D9488; color: white; }
+        .btn-copy.inss:hover { background: #0A7A6E; }
+
+        .caixa-apuracao {
+            background: #FEF3C7; border-left: 4px solid #F59E0B;
+            border-radius: 6px; padding: 12px; margin-bottom: 16px; font-size: 12px;
+            color: #92400E; line-height: 1.5;
+        }
+
+        .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+        .chart-container { background: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 20px; position: relative; height: 280px; min-height: 280px; }
+        .chart-title { font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 12px; }
+        canvas { max-height: none; display: block; width: 100% !important; height: 240px !important; }
+
+        .fiscal-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px;
+        }
+        .fiscal-card {
+            background: white; border: 1px solid #E5E7EB; border-radius: 6px;
+            padding: 16px; text-align: center;
+        }
+        .fiscal-icon { font-size: 24px; margin-bottom: 8px; }
+        .fiscal-label { font-size: 12px; font-weight: 600; color: #111827; }
+        .fiscal-status { font-size: 11px; color: #6B7280; margin-top: 4px; }
+
+        .certidoes-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px;
+        }
+        .cert-card {
+            background: white; border: 1px solid #E5E7EB; border-radius: 6px;
+            padding: 14px; text-align: center;
+        }
+        .cert-icon { font-size: 28px; margin-bottom: 6px; }
+        .cert-label { font-size: 11px; font-weight: 600; color: #111827; }
+        .cert-status { font-size: 10px; color: #6B7280; margin-top: 4px; }
+
+        .footer {
+            background: white; border-top: 1px solid #E5E7EB; padding: 16px;
+            font-size: 11px; color: #6B7280; text-align: center; margin-top: 24px;
+        }
+        .footer-line { margin: 4px 0; }
+
+        @media (max-width: 1024px) {
+            .kpis-grid { grid-template-columns: repeat(2, 1fr); }
+            .fiscal-grid { grid-template-columns: repeat(2, 1fr); }
+            .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+        }
+        @media (max-width: 640px) {
+            .kpis-grid { grid-template-columns: 1fr; }
+            .fiscal-grid { grid-template-columns: 1fr; }
+            .certidoes-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>FACHIM PSICOLOGIA LTDA</h1>
+                <p>CNPJ: 51.187.625/0001-45 | Videira - SC</p>
+                <p>Lucro Presumido | Competência: Agosto 2026</p>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid #C5A059; display: flex; align-items: center; justify-content: center; background: rgba(197, 160, 89, 0.05);">
+                <span style="font-family: 'Cinzel', serif, Georgia; font-size: 20px; font-weight: 700; color: #C5A059; letter-spacing: 1px;">JF</span>
+            </div>
+        </div>
+
+        <div class="kpis-grid">
+            <div class="kpi-card fat">
+                <div class="kpi-label">Faturamento</div>
+                <div class="kpi-value">R$ 8.280,00</div>
+                <div class="kpi-sub pos">↑ 12,50% vs julho</div>
+            </div>
+            <div class="kpi-card iss">
+                <div class="kpi-label">ISS Municipal</div>
+                <div class="kpi-value">R$ 248,40</div>
+                <div class="kpi-sub warn">Venc. 25/09/2026</div>
+            </div>
+            <div class="kpi-card ret">
+                <div class="kpi-label">Retenções Federais</div>
+                <div class="kpi-value">R$ 509,22</div>
+                <div class="kpi-sub">IRRF + CSLL + PIS</div>
+            </div>
+            <div class="kpi-card carga">
+                <div class="kpi-label">Carga Tributária</div>
+                <div class="kpi-value">9,15%</div>
+                <div class="kpi-sub">Lucro Presumido</div>
+            </div>
+            <div class="kpi-card resultado">
+                <div class="kpi-label">Resultado Operacional</div>
+                <div class="kpi-value">R$ 6.822,38</div>
+                <div class="kpi-sub pos">Margem: 82,39%</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">
+                💳 Painel Financeiro - Guias e Pagamentos do Mês
+                <div class="competencia-badge">Competência Agosto/2026</div>
+            </div>
+            <div class="caixa-apuracao">
+                ⚠️ <strong>Caixa de Apuração Tributária:</strong> Regime de Lucro Presumido. Apuração de impostos por trimestre (3º Trimestre/2026). Retenções e ISS são pagáveis mensalmente conforme vencimentos abaixo.
+            </div>
+            <div class="payment-grid">
+                <div class="payment-item">
+                    <div class="payment-type">ISS Municipal Videira</div>
+                    <div class="payment-value">R$ 248,40</div>
+                    <div class="payment-info">
+                        <strong>Vencimento:</strong> 25/09/2026<br>
+                        Imposto Sobre Serviços de Qualquer Natureza (Psicologia).
+                    </div>
+                    <div class="payment-code">00190000090117955626900181934175715800000024840</div>
+                    <button class="btn-copy iss" onclick="copiarCodigo('00190000090117955626900181934175715800000024840', this)">
+                        📋 Copiar Código ISS (R$ 248,40)
+                    </button>
+                </div>
+                <div class="payment-item">
+                    <div class="payment-type">INSS DCTFWeb</div>
+                    <div class="payment-value">R$ 16,74</div>
+                    <div class="payment-info">
+                        <strong>Vencimento:</strong> 18/09/2026 (antecipado)<br>
+                        Contribuição Previdenciária da empresa (Lucro Presumido).
+                    </div>
+                    <div class="payment-code">85810000000 5  16740385262 2  61071626244 0  35772844003 5</div>
+                    <button class="btn-copy inss" onclick="copiarCodigo('85810000000516740385262261071626244035772844003 5', this)">
+                        🛡️ Copiar Código INSS (R$ 16,74)
+                    </button>
+                </div>
+            </div>
+        
+        <div style="background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #E5E7EB; margin-bottom: 24px;">
+            <h3 style="font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 12px;">📊 Apuração Tributária - Lucro Presumido (Agosto/2026)</h3>
+            <div style="background: #F9FAFB; border-left: 4px solid #C5A059; padding: 14px; border-radius: 6px; font-size: 13px; color: #4B5563; line-height: 1.6;">
+                <p style="margin: 0 0 8px 0;"><strong>• Faturamento Auditado:</strong> R$ 8.280,00 (NFS-e 30 prestação de serviços de psicologia).</p>
+                <p style="margin: 0 0 8px 0;"><strong>• ISS Municipal Videira (3,00%):</strong> <strong>R$ 248,40</strong> apurado para recolhimento em <strong>25/09/2026</strong>.</p>
+                <p style="margin: 0 0 8px 0;"><strong>• PIS / COFINS Mensais:</strong> <strong>R$ 0,00 a recolher</strong>. O valor devido foi integralmente quitado mediante retenção na fonte pelo tomador (PIS R$ 53,82 e COFINS R$ 248,40), devidamente escriturados e transmitidos na EFD-Contribuições via SERPRO em 03/09/2026.</p>
+                <p style="margin: 0 0 8px 0;"><strong>• IRPJ / CSLL (Apuração Trimestral):</strong> A apuração ocorre por trimestre (3º Trimestre encerra em 30/09/2026). As retenções sofridas na fonte em agosto (IRRF R$ 124,20 e CSLL R$ 82,80) já estão registradas e serão deduzidas integralmente das guias trimestrais que vencerão no final de outubro/2026.</p>
+                <p style="margin: 0;"><strong>• Carga Tributária Total Efetiva do Mês:</strong> 9,15% (R$ 757,62 somando ISS + Retenções Federais).</p>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-title">Apuração Tributária (Lucro Presumido)</div>
+                <canvas id="chartComposicao" style="position: relative; display: block; width: 100%; height: 260px;"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Faturamento vs Despesas</div>
+                <canvas id="chartFatDesp" style="position: relative; display: block; width: 100%; height: 260px;"></canvas>
+            </div>
+        </div>
+
+        <div class="fiscal-grid">
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">EFD-Contribuições</div>
+                <div class="fiscal-status">Transmitida (03/09 via SERPRO)</div>
+            </div>
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">ISS Municipal</div>
+                <div class="fiscal-status">A Recolher</div>
+            </div>
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">Retenções Federais</div>
+                <div class="fiscal-status">Registradas</div>
+            </div>
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">Notas de Entrada</div>
+                <div class="fiscal-status">Conferidas</div>
+            </div>
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">DCTFWeb</div>
+                <div class="fiscal-status">Em dia</div>
+            </div>
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">Obrigações</div>
+                <div class="fiscal-status">Em dia</div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 12px;">
+                Situação das Certidões
+            </div>
+            <div class="certidoes-grid">
+                <div class="cert-card" style="border-left: 4px solid #F59E0B;">
+                    <div class="cert-icon">⚠️</div>
+                    <div class="cert-label">Federal</div>
+                    <div class="cert-status">Positiva (Pendência)</div>
+                </div>
+                <div class="cert-card" style="border-left: 4px solid #10B981;">
+                    <div class="cert-icon">✔️</div>
+                    <div class="cert-label">Estadual</div>
+                    <div class="cert-status">Regular</div>
+                </div>
+                <div class="cert-card" style="border-left: 4px solid #F59E0B;">
+                    <div class="cert-icon">⚠️</div>
+                    <div class="cert-label">Municipal</div>
+                    <div class="cert-status">Positiva (Pendência)</div>
+                </div>
+                <div class="cert-card" style="border-left: 4px solid #10B981;">
+                    <div class="cert-icon">✔️</div>
+                    <div class="cert-label">FGTS</div>
+                    <div class="cert-status">Regular</div>
+                </div>
+                <div class="cert-card" style="border-left: 4px solid #10B981;">
+                    <div class="cert-icon">✔️</div>
+                    <div class="cert-label">Trabalhista</div>
+                    <div class="cert-status">Regular</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-line">Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</div>
+            <div class="footer-line">Responsável Técnica: Jaqueline do Prado Ferreira | CRC SC-048028/O-0</div>
+            <div class="footer-line">Videira - SC | contato@jaquelineferreiracontadora.com.br | WhatsApp (49) 9.9980-3552</div>
+            <div class="footer-line" style="margin-top: 8px; font-size: 10px; color: #9CA3AF;">
+                Dashboard Fiscal Confidencial - Uso Exclusivo do Cliente
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initCharts);
+        } else {
+            initCharts();
+        }
+        function initCharts() {(texto, btn) {
+            navigator.clipboard.writeText(texto).then(() => {
+                const orig = btn.innerText;
+                btn.innerText = '✓ Código Copiado!';
+                btn.style.backgroundColor = '#10B981';
+                setTimeout(() => {
+                    btn.innerText = orig;
+                    btn.style.backgroundColor = '';
+                }, 2500);
+            });
+        }
+
+        const roscaCtx = document.getElementById('rosca').getContext('2d');
+        new Chart(roscaCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['ISS Municipal', 'COFINS Retida', 'IRRF Retido', 'CSLL Retida', 'PIS Retido'],
+                datasets: [{
+                    data: [248.40, 248.40, 124.20, 82.80, 53.82],
+                    backgroundColor: ['#C5A059', '#C58A94', '#8B5CF6', '#6366F1', '#10B981'],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12 } },
+                    tooltip: { callbacks: { label: (ctx) => {
+                        const val = ctx.parsed;
+                        const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+                        const pct = ((val / total) * 100).toFixed(1);
+                        return `R$ ${val.toFixed(2)} (${pct}%)`;
+                    }}}
+                }
+            }
+        });
+
+        const barrasCtx = document.getElementById('barras').getContext('2d');
+        new Chart(barrasCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Faturamento', 'Despesas'],
+                datasets: [{
+                    data: [8280.00, 700.00],
+                    backgroundColor: ['#C58A94', '#C5A059'],
+                    borderRadius: 4,
+                    borderSkipped: false
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: (ctx) => `R$ ${ctx.parsed.x.toFixed(2)}` } }
+                },
+                scales: { x: { beginAtZero: true } }
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    // Gráfico 1: Composição Tributária (Rosca)
+    new Chart(document.getElementById('chartComposicao'), {
+      type: 'doughnut',
+      data: {
+        labels: ['ISS Municipal: R$ 248,40 (32,8%)', 'COFINS Retida: R$ 248,40 (32,8%)', 'IRRF Retido: R$ 124,20 (16,4%)', 'CSLL Retida: R$ 82,80 (10,9%)', 'PIS Retido: R$ 53,82 (7,1%)'],
+        datasets: [{
+          data: [248.40, 248.40, 124.20, 82.80, 53.82],
+          backgroundColor: ['#C5A059', '#C58A94', '#8B5CF6', '#6366F1', '#10B981'],
+          borderWidth: 2,
+          borderColor: '#ffffff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
+        }
+      }
+    });
+
+    // Gráfico 2: Faturamento vs Despesas (Barras Horizontais)
+    new Chart(document.getElementById('chartFatDesp'), {
+      type: 'bar',
+      data: {
+        labels: ['Faturamento', 'Despesas'],
+        datasets: [{
+          data: [8280.00, 700.00],
+          backgroundColor: ['#C58A94', '#C5A059'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { grid: { color: '#F3F4F6' } }, y: { grid: { display: false } } }
+      }
+    });
+    </script>
+
+</body>
+</html>

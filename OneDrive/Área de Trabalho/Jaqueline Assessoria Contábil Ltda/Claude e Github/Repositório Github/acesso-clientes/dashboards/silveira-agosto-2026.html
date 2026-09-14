@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Fiscal - SILVEIRA EMPREITEIRA</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #F9FAFB; color: #1F2937; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        .header {
+            background: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 24px;
+            margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .header-left h1 { font-size: 18px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+        .header-left p { font-size: 13px; color: #6B7280; margin: 2px 0; }
+        .header-right { font-size: 40px; font-weight: 700; color: #E5E7EB; text-align: center; min-width: 80px; }
+
+        .kpis-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
+            margin-bottom: 24px;
+        }
+        .kpi-card {
+            background: white; border: 1px solid #E5E7EB; border-left: 5px solid;
+            border-radius: 6px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .kpi-card.fat { border-left-color: #C58A94; }
+        .kpi-card.das { border-left-color: #F59E0B; }
+        .kpi-card.rbt { border-left-color: #8B5CF6; }
+        .kpi-card.carga { border-left-color: #6366F1; }
+        .kpi-card.resultado { border-left-color: #10B981; }
+        .kpi-label { font-size: 11px; color: #6B7280; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+        .kpi-value { font-size: 22px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+        .kpi-sub { font-size: 12px; color: #6B7280; }
+        .kpi-sub.pos { color: #10B981; }
+        .kpi-sub.warn { color: #F59E0B; }
+
+        .panel {
+            background: white; border: 1px solid #E5E7EB; border-radius: 8px;
+            padding: 24px; margin-bottom: 24px;
+        }
+        .panel-title {
+            font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .competencia-badge {
+            background: #FEF3C7; color: #92400E; padding: 4px 12px;
+            border-radius: 16px; font-size: 11px; font-weight: 600;
+        }
+        .payment-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
+        }
+        .payment-item {
+            border: 1px solid #E5E7EB; border-radius: 6px; padding: 16px;
+            background: #F9FAFB;
+        }
+        .payment-type { font-size: 13px; color: #6B7280; font-weight: 600; margin-bottom: 12px; }
+        .payment-value { font-size: 24px; font-weight: 700; color: #111827; margin-bottom: 8px; }
+        .payment-info { font-size: 12px; color: #6B7280; margin-bottom: 10px; line-height: 1.4; }
+        .payment-code { font-size: 11px; background: #F3F4F6; padding: 8px; border-radius: 4px;
+            color: #374151; margin-bottom: 12px; word-break: break-all; font-family: monospace; }
+        .btn-copy {
+            width: 100%; padding: 10px; border: none; border-radius: 6px; cursor: pointer;
+            font-size: 12px; font-weight: 600; transition: all 0.2s;
+        }
+        .btn-copy.das { background: #C5A059; color: white; }
+        .btn-copy.das:hover { background: #B89146; }
+        .btn-copy.inss { background: #0D9488; color: white; }
+        .btn-copy.inss:hover { background: #0A7A6E; }
+
+        .charts-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;
+        }
+        .chart-container {
+            background: white; border: 1px solid #E5E7EB; border-radius: 8px;
+            padding: 20px; position: relative; height: 280px;
+        }
+        .chart-title { font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 12px; }
+        canvas { max-height: 240px; }
+
+        .fiscal-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px;
+        }
+        .fiscal-card {
+            background: white; border: 1px solid #E5E7EB; border-radius: 6px;
+            padding: 16px; text-align: center;
+        }
+        .fiscal-icon { font-size: 24px; margin-bottom: 8px; }
+        .fiscal-label { font-size: 12px; font-weight: 600; color: #111827; }
+        .fiscal-status { font-size: 11px; color: #6B7280; margin-top: 4px; }
+
+        .certidoes-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px;
+        }
+        .cert-card {
+            background: white; border: 1px solid #E5E7EB; border-radius: 6px;
+            padding: 14px; text-align: center;
+        }
+        .cert-icon { font-size: 28px; margin-bottom: 6px; }
+        .cert-label { font-size: 11px; font-weight: 600; color: #111827; }
+        .cert-status { font-size: 10px; color: #6B7280; margin-top: 4px; }
+
+        .footer {
+            background: white; border-top: 1px solid #E5E7EB; padding: 16px;
+            font-size: 11px; color: #6B7280; text-align: center; margin-top: 24px;
+        }
+        .footer-line { margin: 4px 0; }
+
+        @media (max-width: 1024px) {
+            .kpis-grid { grid-template-columns: repeat(2, 1fr); }
+            .fiscal-grid { grid-template-columns: repeat(2, 1fr); }
+            .charts-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .kpis-grid { grid-template-columns: 1fr; }
+            .fiscal-grid { grid-template-columns: 1fr; }
+            .certidoes-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>SILVEIRA EMPREITEIRA E MÃO DE OBRA LTDA</h1>
+                <p>CNPJ: 22.547.216/0001-04 | Videira - SC</p>
+                <p>Simples Nacional - Anexo IV | Competência: Agosto 2026</p>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid #C5A059; display: flex; align-items: center; justify-content: center; background: rgba(197, 160, 89, 0.05);">
+                <span style="font-family: 'Cinzel', serif, Georgia; font-size: 20px; font-weight: 700; color: #C5A059; letter-spacing: 1px;">JF</span>
+            </div>
+        </div>
+
+        <div class="kpis-grid">
+            <div class="kpi-card fat">
+                <div class="kpi-label">Faturamento</div>
+                <div class="kpi-value">R$ 2.000,00</div>
+                <div class="kpi-sub warn">↓ 94,32% vs julho</div>
+            </div>
+            <div class="kpi-card das">
+                <div class="kpi-label">DAS a Recolher</div>
+                <div class="kpi-value">R$ 90,00</div>
+                <div class="kpi-sub warn">Venc. 21/09/2026</div>
+            </div>
+            <div class="kpi-card rbt">
+                <div class="kpi-label">RBT12 Acumulado</div>
+                <div class="kpi-value">R$ 145.280,80</div>
+                <div class="kpi-sub">80,7% do limite</div>
+            </div>
+            <div class="kpi-card carga">
+                <div class="kpi-label">Carga Tributária</div>
+                <div class="kpi-value">4,50%</div>
+                <div class="kpi-sub">Anexo IV</div>
+            </div>
+            <div class="kpi-card resultado">
+                <div class="kpi-label">Resultado Operacional</div>
+                <div class="kpi-value">R$ 1.059,43</div>
+                <div class="kpi-sub pos">Margem: 52,97%</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">
+                💳 Painel Financeiro - Guias e Pagamentos do Mês
+                <div class="competencia-badge">Competência Agosto/2026</div>
+            </div>
+            <div class="payment-grid">
+                <div class="payment-item">
+                    <div class="payment-type">DAS Simples Nacional</div>
+                    <div class="payment-value">R$ 90,00</div>
+                    <div class="payment-info">
+                        <strong>Vencimento:</strong> 21/09/2026<br>
+                        Tributos do Simples Nacional (Anexo IV - Construção Civil).
+                    </div>
+                    <div class="payment-code">85820000000 7  90000328262 4  64072026254 0  48936390804 5</div>
+                    <button class="btn-copy das" onclick="copiarCodigo('85820000000790000328262464072026254048936390804 5', this)">
+                        📋 Copiar Código DAS (R$ 90,00)
+                    </button>
+                </div>
+                <div class="payment-item">
+                    <div class="payment-type">INSS DCTFWeb</div>
+                    <div class="payment-value">R$ 502,51</div>
+                    <div class="payment-info">
+                        <strong>Vencimento:</strong> 18/09/2026 (antecipado)<br>
+                        INSS Folha/Pró-labore (Retenção Sócios + INSS Patronal Anexo IV).
+                    </div>
+                    <div class="payment-code">85870000005 7  02510385262 5  61071626247 4  47232322406 0</div>
+                    <button class="btn-copy inss" onclick="copiarCodigo('85870000005702510385262561071626247447232322406 0', this)">
+                        🛡️ Copiar Código INSS (R$ 502,51)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-title">Composição do DAS (Rosca)</div>
+                <canvas id="rosca"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Faturamento vs Despesas</div>
+                <canvas id="barras"></canvas>
+            </div>
+        </div>
+
+        <div class="fiscal-grid">
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">PGDAS-D</div>
+                <div class="fiscal-status">Transmitido</div>
+            </div>
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">Apuração DAS</div>
+                <div class="fiscal-status">Realizada</div>
+            </div>
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">NFS-e</div>
+                <div class="fiscal-status">Conferidas</div>
+            </div>
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">Despesas</div>
+                <div class="fiscal-status">Escrituradas</div>
+            </div>
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">Limite RBT12</div>
+                <div class="fiscal-status">Regular</div>
+            </div>
+            <div class="fiscal-card">
+                <div class="fiscal-icon">✔️</div>
+                <div class="fiscal-label">Obrigações</div>
+                <div class="fiscal-status">Em dia</div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 12px;">
+                Situação das Certidões
+            </div>
+            <div class="certidoes-grid">
+                <div class="cert-card" style="border-left: 4px solid #10B981;">
+                    <div class="cert-icon">✔️</div>
+                    <div class="cert-label">Federal</div>
+                    <div class="cert-status">Regular</div>
+                </div>
+                <div class="cert-card" style="border-left: 4px solid #10B981;">
+                    <div class="cert-icon">✔️</div>
+                    <div class="cert-label">Estadual</div>
+                    <div class="cert-status">Regular</div>
+                </div>
+                <div class="cert-card" style="border-left: 4px solid #10B981;">
+                    <div class="cert-icon">✔️</div>
+                    <div class="cert-label">Municipal</div>
+                    <div class="cert-status">Regular</div>
+                </div>
+                <div class="cert-card" style="border-left: 4px solid #10B981;">
+                    <div class="cert-icon">✔️</div>
+                    <div class="cert-label">FGTS</div>
+                    <div class="cert-status">Regular</div>
+                </div>
+                <div class="cert-card" style="border-left: 4px solid #10B981;">
+                    <div class="cert-icon">✔️</div>
+                    <div class="cert-label">Trabalhista</div>
+                    <div class="cert-status">Regular</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-line">Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</div>
+            <div class="footer-line">Responsável Técnica: Jaqueline do Prado Ferreira | CRC SC-048028/O-0</div>
+            <div class="footer-line">Videira - SC | contato@jaquelineferreiracontadora.com.br | WhatsApp (49) 9.9980-3552</div>
+            <div class="footer-line" style="margin-top: 8px; font-size: 10px; color: #9CA3AF;">
+                Dashboard Fiscal Confidencial - Uso Exclusivo do Cliente
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copiarCodigo(texto, btn) {
+            navigator.clipboard.writeText(texto).then(() => {
+                const orig = btn.innerText;
+                btn.innerText = '✓ Código Copiado!';
+                btn.style.backgroundColor = '#10B981';
+                setTimeout(() => {
+                    btn.innerText = orig;
+                    btn.style.backgroundColor = '';
+                }, 2500);
+            });
+        }
+
+        const roscaCtx = document.getElementById('rosca').getContext('2d');
+        new Chart(roscaCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['ISS Videira', 'IRPJ', 'COFINS', 'CSLL', 'PIS'],
+                datasets: [{
+                    data: [40.05, 16.92, 15.90, 13.68, 3.45],
+                    backgroundColor: ['#C58A94', '#C5A059', '#8B5CF6', '#6366F1', '#F59E0B'],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12 } },
+                    tooltip: { callbacks: { label: (ctx) => {
+                        const val = ctx.parsed;
+                        const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+                        const pct = ((val / total) * 100).toFixed(1);
+                        return `R$ ${val.toFixed(2)} (${pct}%)`;
+                    }}}
+                }
+            }
+        });
+
+        const barrasCtx = document.getElementById('barras').getContext('2d');
+        new Chart(barrasCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Faturamento', 'Despesas'],
+                datasets: [{
+                    data: [2000.00, 850.57],
+                    backgroundColor: ['#C58A94', '#C5A059'],
+                    borderRadius: 4,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: (ctx) => `R$ ${ctx.parsed.x.toFixed(2)}` } }
+                },
+                scales: { x: { beginAtZero: true } }
+            }
+        });
+    </script>
+</body>
+</html>
