@@ -1,1 +1,1175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Orçamento Contábil</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --cor-primaria: #1a1a2e;
+            --cor-secundaria: #d4af37;
+            --cor-acento: #c9a9a3;
+            --cor-fundo: #0f0f1e;
+            --cor-fundo-input: #252540;
+            --cor-texto: #f8f9fa;
+            --cor-texto-secundario: #b0b0c0;
+            --cor-borda: #3a3a50;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .container { display: flex; height: 100vh; }
+
+        .formulario {
+            flex: 0 0 40%;
+            overflow-y: auto;
+            padding: 30px;
+            border-right: 1px solid #ddd;
+            background-color: #f8f8f8;
+        }
+
+        .preview {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #000;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .secao {
+            margin-bottom: 12px;
+            background-color: var(--cor-fundo-input);
+            border-radius: 8px;
+            border-left: 4px solid var(--cor-secundaria);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .secao:hover {
+            border-left-color: var(--cor-acento);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);
+        }
+
+        .secao-titulo {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--cor-secundaria);
+            padding: 16px 20px;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .secao-titulo:hover {
+            background-color: rgba(212, 175, 55, 0.05);
+        }
+
+        .secao-titulo::after {
+            content: '▼';
+            font-size: 11px;
+            transition: transform 0.3s;
+            opacity: 0.6;
+        }
+
+        .secao-titulo.ativo::after {
+            transform: rotate(180deg);
+        }
+
+        .secao-conteudo {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 20px;
+        }
+
+        .secao-conteudo.ativo {
+            max-height: 3000px;
+            padding: 20px;
+        }
+
+        .campo-grupo {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--cor-texto-secundario);
+            margin-bottom: 8px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px 14px;
+            background-color: var(--cor-borda);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--cor-texto);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--cor-secundaria);
+            background-color: rgba(212, 175, 55, 0.05);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-size: 13px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            gap: 10px;
+            width: fit-content;
+            transition: color 0.2s;
+        }
+
+        .checkbox-label:hover {
+            color: var(--cor-secundaria);
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--cor-secundaria);
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        input[type="color"] {
+            width: 50px;
+            height: 40px;
+            border: 1px solid var(--cor-borda);
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .cor-grupo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .cor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cor-item label {
+            margin: 0;
+            font-size: 12px;
+            min-width: 120px;
+        }
+
+        .botoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 120px;
+            padding: 13px 16px;
+            background-color: var(--cor-secundaria);
+            color: var(--cor-primaria);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secundario {
+            background-color: var(--cor-acento);
+        }
+
+        button.limpar {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
+        /* PDF Preview */
+        .pdf-container {
+            width: 100%;
+            max-width: 850px;
+            background-color: white;
+            color: #000;
+            margin: 0 auto;
+            padding: 50px;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.8;
+            min-height: auto;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        .pdf-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.2);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .pdf-container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--cor-secundaria);
+            padding-bottom: 25px;
+        }
+
+        .pdf-header > div:first-child {
+            flex: 1;
+        }
+
+        .pdf-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: white;
+            margin: 0 0 8px 0;
+            border: none;
+            padding: 20px 25px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background-color: var(--cor-primaria);
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .pdf-header p {
+            font-size: 12px;
+            color: #888;
+            margin: 0;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .pdf-container #logoPreview {
+            width: var(--tamanho-logo, 200px);
+            height: auto;
+            aspect-ratio: 200/140;
+            max-height: 150px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            flex-shrink: 0;
+        }
+
+        #logoPreview.com-moldura {
+            border: 3px solid var(--cor-primaria);
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .pdf-data {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 35px;
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--cor-secundaria);
+        }
+
+        .pdf-data-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pdf-data-label {
+            font-size: 10px;
+            color: #999;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .pdf-data-valor {
+            font-size: 14px;
+            color: var(--cor-primaria);
+            font-weight: 600;
+        }
+
+        .pdf-secao {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .pdf-secao:nth-of-type(1),
+        .pdf-secao:nth-of-type(2),
+        .pdf-secao:nth-of-type(3) {
+            border-bottom: 3px solid var(--cor-secundaria);
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+
+        .pdf-secao-titulo {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--cor-primaria);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-left: 4px solid var(--cor-secundaria);
+            padding-left: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .pdf-titulo-cliente {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--cor-primaria);
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .pdf-secao-conteudo {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.8;
+            padding: 0 0 10px 0;
+        }
+
+        .pdf-secao-conteudo p {
+            margin-bottom: 12px;
+            color: #444;
+        }
+
+        .planos-tabela {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .planos-tabela th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 700;
+            color: white;
+            background-color: var(--cor-secundaria);
+            border-bottom: 3px solid var(--cor-acento);
+        }
+
+        .planos-tabela td {
+            padding: 11px 12px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+
+        .planos-tabela tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .servicos-list {
+            list-style: none;
+            padding-left: 0;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .servicos-list li {
+            padding-left: 24px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .servicos-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--cor-secundaria);
+            font-weight: bold;
+        }
+
+        .pdf-footer {
+            margin-top: 45px;
+            border-top: 3px solid var(--cor-secundaria);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+        }
+
+        .pdf-footer p {
+            margin: 5px 0;
+            font-weight: 500;
+        }
+
+        .info-box {
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--cor-secundaria);
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #333;
+            border-radius: 12px;
+        }
+
+        .info-box p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-box strong {
+            color: var(--cor-primaria);
+            font-weight: 700;
+        }
+
+        .proximos-passos {
+            font-size: 13px;
+            color: #333;
+        }
+
+        .proximos-passos ol {
+            margin-left: 24px;
+            margin-bottom: 12px;
+        }
+
+        .proximos-passos li {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        small {
+            color: var(--cor-texto-secundario);
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="formulario">
+            <h1>Gerador de Orçamento</h1>
+
+            <button type="button" onclick="limparDados()" class="limpar" style="width: 100%; margin-bottom: 20px;">Limpar Dados Salvos</button>
+
+            <!-- Seção de Personalização de Cores -->
+            <div class="secao">
+                <div class="secao-titulo ativo">Personalização de Cores</div>
+                <div class="secao-conteudo ativo">
+                    <div class="campo-grupo">
+                        <label style="margin-bottom: 15px; color: var(--cor-secundaria); font-weight: 600;">Customize as cores do seu orçamento</label>
+                        <div class="cor-grupo">
+                            <div class="cor-item">
+                                <label>Cor Principal</label>
+                                <input type="color" id="corPrimaria" value="#1a1a2e">
+                            </div>
+                            <div class="cor-item">
+                                <label>Cor de Destaque</label>
+                                <input type="color" id="corSecundaria" value="#d4af37">
+                            </div>
+                            <div class="cor-item">
+                                <label>Cor de Acento</label>
+                                <input type="color" id="corAcento" value="#c9a9a3">
+                            </div>
+                            <div class="cor-item">
+                                <label>Cor do Texto</label>
+                                <input type="color" id="corTexto" value="#f8f9fa">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="resetarCores()" style="background-color: var(--cor-acento); width: 100%; margin-top: 10px;">↺ Restaurar Cores Padrão</button>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo ativo">CLIENTE</div>
+                <div class="secao-conteudo ativo">
+                    <div class="campo-grupo"><label>Nome do Cliente / Razão Social</label><input type="text" id="nomeCliente" placeholder="Ex: João Silva"></div>
+                    <div class="campo-grupo"><label>Nome da Empresa</label><input type="text" id="nomeEmpresa" placeholder="Ex: Silva Consultoria"></div>
+                    <div class="campo-grupo"><label>Atividade Principal</label><input type="text" id="atividade" placeholder="Ex: Consultoria em Tecnologia"></div>
+                    <div class="campo-grupo">
+                        <label>CNAE (até 5 atividades)</label>
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <input type="text" id="cnae1" placeholder="Ex: 6202-3/00 - Consultoria em Tecnologia" style="flex: 1;">
+                            <button type="button" onclick="window.open('https://concla.ibge.gov.br/busca-online-cnae.html', '_blank')" style="padding: 10px 15px; background-color: var(--cor-acento); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; flex-shrink: 0;">Buscar CNAE</button>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <input type="text" id="cnae2" placeholder="CNAE 2 (opcional)" style="flex: 1;">
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <input type="text" id="cnae3" placeholder="CNAE 3 (opcional)" style="flex: 1;">
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <input type="text" id="cnae4" placeholder="CNAE 4 (opcional)" style="flex: 1;">
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="cnae5" placeholder="CNAE 5 (opcional)" style="flex: 1;">
+                        </div>
+                    </div>
+                    <div class="campo-grupo"><label>Data da Proposta</label><input type="date" id="dataProposta"></div>
+                    <div class="campo-grupo"><label>Faturamento Anual (R$)</label><input type="number" id="faturamento" placeholder="Ex: 150000" step="1000"></div>
+                    <div class="campo-grupo"><label>Pro Labore Mensal (R$)</label><input type="number" id="proLabore" placeholder="Ex: 3000" step="100"></div>
+                    <div class="campo-grupo"><label>Quantidade de Funcionários</label><input type="number" id="quantidadeFuncionarios" placeholder="Ex: 5" min="0"></div>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo">Dados do Seu Escritório</div>
+                <div class="secao-conteudo">
+                    <div class="campo-grupo"><label>Nome do Seu Escritório</label><input type="text" id="nomeEscritorio" placeholder="Ex: Jaqueline Ferreira Contadora"></div>
+                    <div class="campo-grupo"><label>Nome do Responsável</label><input type="text" id="responsavel" placeholder="Ex: Jaqueline Ferreira"></div>
+                    <div class="campo-grupo"><label>CRC</label><input type="text" id="crc" placeholder="Ex: 1.234.567"></div>
+                    <div class="campo-grupo"><label>Telefone</label><input type="tel" id="telefone" placeholder="Ex: (11) 99999-9999"></div>
+                    <div class="campo-grupo"><label>Email</label><input type="email" id="email" placeholder="Ex: contato@escritorio.com.br"></div>
+                    <div class="campo-grupo"><label>Logo (opcional)</label><input type="file" id="logo" accept="image/*"><small>JPG ou PNG — será redimensionada automaticamente</small></div>
+                    <div class="campo-grupo">
+                        <label>Tamanho da Logo</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="range" id="tamanhoLogo" min="80" max="300" value="200" style="flex: 1;">
+                            <span id="tamanhoLogoValor" style="min-width: 50px; text-align: center; font-weight: 600;">200px</span>
+                        </div>
+                    </div>
+                    <div class="campo-grupo">
+                        <label>Estilo da Logo</label>
+                        <select id="estiloCabecalho">
+                            <option value="simples">Simples (sem moldura)</option>
+                            <option value="moldura">Com moldura</option>
+                        </select>
+                    </div>
+                    <div class="campo-grupo">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="molduraTitulo" checked>
+                            <span>Adicionar moldura no título</span>
+                        </label>
+                    </div>
+                    <div class="campo-grupo">
+                        <label>Cor da Moldura do Título</label>
+                        <input type="color" id="corMolduraTitulo" value="#d4af37">
+                    </div>
+                    <div class="campo-grupo">
+                        <label>Cor do Texto do Título</label>
+                        <input type="color" id="corTextoTitulo" value="#ffffff">
+                    </div>
+                    <div class="campo-grupo">
+                        <label>Papel Timbrado (cabeçalho personalizado)</label>
+                        <input type="file" id="paperTimbrado" accept="image/*">
+                        <small>Opcional - será usado como fundo do cabeçalho</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo">Introdução</div>
+                <div class="secao-conteudo">
+                    <div class="campo-grupo"><label>Texto Introdutório</label><textarea id="introducao" placeholder="Prezado [Cliente]..."></textarea></div>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo ativo">Regimes Tributários</div>
+                <div class="secao-conteudo ativo">
+                    <div style="padding: 15px; background-color: rgba(212, 175, 55, 0.08); border-radius: 6px; display: flex; flex-direction: column;">
+                        <div style="font-size: 12px; color: var(--cor-secundaria); margin-bottom: 18px; font-weight: 600; letter-spacing: 0.3px;">Selecione os regimes a incluir na proposta:</div>
+                        <label class="checkbox-label"><input type="checkbox" id="usarMEI" checked><span>MEI</span></label>
+                        <label class="checkbox-label"><input type="checkbox" id="usarSimples" checked><span>Simples Nacional</span></label>
+                        <label class="checkbox-label"><input type="checkbox" id="usarPresumido" checked><span>Lucro Presumido</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo">MEI</div>
+                <div class="secao-conteudo">
+                    <div class="campo-grupo"><label>Descrição do Regime</label><textarea id="meiDescricao" placeholder="Ex: Ideal para profissionais autônomos com faturamento até R$ 81.500/ano"></textarea></div>
+                    <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                        <input type="checkbox" id="mei1check" checked>
+                        <span>PLANO 1 - BÁSICO</span>
+                    </label>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="mei1nome" placeholder="Básico" value="Básico"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="mei1valor" step="0.01" placeholder="0.00"></div>
+                    <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="mei1desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
+                </div>
+                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                        <input type="checkbox" id="mei2check" checked>
+                        <span>PLANO 2 - PROFISSIONAL</span>
+                    </label>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="mei2nome" placeholder="Profissional" value="Profissional"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="mei2valor" step="0.01" placeholder="0.00"></div>
+                    <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="mei2desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
+                </div>
+                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px;">
+                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                        <input type="checkbox" id="mei3check" checked>
+                        <span>PLANO 3 - PREMIUM</span>
+                    </label>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="mei3nome" placeholder="Premium" value="Premium"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="mei3valor" step="0.01" placeholder="0.00"></div>
+                    <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="mei3desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo">Simples Nacional</div>
+                <div class="secao-conteudo">
+                <div class="campo-grupo"><label>Descrição do Regime</label><textarea id="simplesDescricao" placeholder="Ex: Regime com menor carga tributária, ideal para pequenas e médias empresas"></textarea></div>
+                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                        <input type="checkbox" id="simples1check" checked>
+                        <span>PLANO 1 - BÁSICO</span>
+                    </label>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="simples1nome" placeholder="Básico" value="Básico"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="simples1valor" step="0.01" placeholder="0.00"></div>
+                    <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="simples1desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
+                </div>
+                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                        <input type="checkbox" id="simples2check" checked>
+                        <span>PLANO 2 - PROFISSIONAL</span>
+                    </label>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="simples2nome" placeholder="Profissional" value="Profissional"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="simples2valor" step="0.01" placeholder="0.00"></div>
+                    <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="simples2desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
+                </div>
+                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px;">
+                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                        <input type="checkbox" id="simples3check" checked>
+                        <span>PLANO 3 - PREMIUM</span>
+                    </label>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="simples3nome" placeholder="Premium" value="Premium"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="simples3valor" step="0.01" placeholder="0.00"></div>
+                    <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="simples3desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo">Lucro Presumido</div>
+                <div class="secao-conteudo">
+                <div class="campo-grupo"><label>Descrição do Regime</label><textarea id="presumidoDescricao" placeholder="Ex: Para empresas com faturamento maior, sem obrigação de escrituração analítica"></textarea></div>
+                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                        <input type="checkbox" id="presun1check" checked>
+                        <span>PLANO 1 - BÁSICO</span>
+                    </label>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="presun1nome" placeholder="Básico" value="Básico"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="presun1valor" step="0.01" placeholder="0.00"></div>
+                    <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="presun1desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
+                </div>
+                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                        <input type="checkbox" id="presun2check" checked>
+                        <span>PLANO 2 - PROFISSIONAL</span>
+                    </label>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="presun2nome" placeholder="Profissional" value="Profissional"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="presun2valor" step="0.01" placeholder="0.00"></div>
+                    <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="presun2desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
+                </div>
+                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px;">
+                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                        <input type="checkbox" id="presun3check" checked>
+                        <span>PLANO 3 - PREMIUM</span>
+                    </label>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="presun3nome" placeholder="Premium" value="Premium"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="presun3valor" step="0.01" placeholder="0.00"></div>
+                    <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="presun3desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo">Além do Básico</div>
+                <div class="secao-conteudo">
+                    <div class="campo-grupo"><label>O que você oferece além do básico (use Enter ou | para separar)</label><textarea id="alem" placeholder="Ex:&#10;Suporte via WhatsApp: disponível de seg a sex | Reuniões mensais: análise de resultados"></textarea></div>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo">Informações Importantes</div>
+                <div class="secao-conteudo">
+                    <div class="campo-grupo"><label>Nota 1 (use Enter ou | para separar)</label><textarea id="nota1" placeholder="Ex:&#10;Abertura de empresa: realizada junto com consultor jurídico | Acompanhamento: mensal conforme demanda"></textarea></div>
+                    <div class="campo-grupo"><label>Nota 2 (use Enter ou | para separar)</label><textarea id="nota2" placeholder="Ex:&#10;Suporte: disponível por e-mail e WhatsApp | Orientação: inclusa em todos os planos"></textarea></div>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo">Condições</div>
+                <div class="secao-conteudo">
+                    <div class="campo-grupo"><label>Condições Contratuais</label><textarea id="condicoes" placeholder="Ex: Pagamento mensal até o 5º dia útil | Vigência de 12 meses | Rescisão com 30 dias de aviso"></textarea></div>
+                </div>
+            </div>
+
+            <div class="secao">
+                <div class="secao-titulo">Próximos Passos</div>
+                <div class="secao-conteudo">
+                    <div class="campo-grupo"><input type="text" id="passo1" placeholder="Passo 1"></div>
+                    <div class="campo-grupo"><input type="text" id="passo2" placeholder="Passo 2"></div>
+                    <div class="campo-grupo"><input type="text" id="passo3" placeholder="Passo 3"></div>
+                    <div class="campo-grupo"><input type="text" id="passo4" placeholder="Passo 4"></div>
+                </div>
+            </div>
+
+            <div class="botoes">
+                <button onclick="gerarPDF()">Baixar PDF</button>
+                <button class="secundario" onclick="abrirWhatsApp()">WhatsApp</button>
+                <button class="secundario" onclick="limpar()">Limpar</button>
+            </div>
+        </div>
+
+        <div class="preview">
+            <div id="pdfPreview" class="pdf-container"></div>
+        </div>
+    </div>
+
+    <script>
+        let imagemLogo = "";
+
+        // Cores padrão
+        const coresPadrao = {
+            primaria: '#1a1a2e',
+            secundaria: '#d4af37',
+            acento: '#c9a9a3',
+            texto: '#f8f9fa'
+        };
+
+        // Atualizar cores
+        function atualizarCores() {
+            const corPrimaria = document.getElementById('corPrimaria').value;
+            const corSecundaria = document.getElementById('corSecundaria').value;
+            const corAcento = document.getElementById('corAcento').value;
+            const corTexto = document.getElementById('corTexto').value;
+
+            document.documentElement.style.setProperty('--cor-primaria', corPrimaria);
+            document.documentElement.style.setProperty('--cor-secundaria', corSecundaria);
+            document.documentElement.style.setProperty('--cor-acento', corAcento);
+            document.documentElement.style.setProperty('--cor-texto', corTexto);
+
+            salvarCores();
+            atualizar();
+        }
+
+        function salvarCores() {
+            const cores = {
+                primaria: document.getElementById('corPrimaria').value,
+                secundaria: document.getElementById('corSecundaria').value,
+                acento: document.getElementById('corAcento').value,
+                texto: document.getElementById('corTexto').value
+            };
+            localStorage.setItem('coresPersonalizadas', JSON.stringify(cores));
+        }
+
+        function carregarCores() {
+            const cores = localStorage.getItem('coresPersonalizadas');
+            if (cores) {
+                const parsed = JSON.parse(cores);
+                document.getElementById('corPrimaria').value = parsed.primaria || coresPadrao.primaria;
+                document.getElementById('corSecundaria').value = parsed.secundaria || coresPadrao.secundaria;
+                document.getElementById('corAcento').value = parsed.acento || coresPadrao.acento;
+                document.getElementById('corTexto').value = parsed.texto || coresPadrao.texto;
+                atualizarCores();
+            }
+        }
+
+        function resetarCores() {
+            document.getElementById('corPrimaria').value = coresPadrao.primaria;
+            document.getElementById('corSecundaria').value = coresPadrao.secundaria;
+            document.getElementById('corAcento').value = coresPadrao.acento;
+            document.getElementById('corTexto').value = coresPadrao.texto;
+            atualizarCores();
+        }
+
+        // Listeners para cores
+        document.getElementById('corPrimaria').addEventListener('change', atualizarCores);
+        document.getElementById('corSecundaria').addEventListener('change', atualizarCores);
+        document.getElementById('corAcento').addEventListener('change', atualizarCores);
+        document.getElementById('corTexto').addEventListener('change', atualizarCores);
+        document.getElementById('molduraTitulo').addEventListener('change', atualizar);
+        document.getElementById('corMolduraTitulo').addEventListener('change', atualizar);
+        document.getElementById('corMolduraTitulo').addEventListener('input', atualizar);
+        document.getElementById('corTextoTitulo').addEventListener('change', atualizar);
+        document.getElementById('corTextoTitulo').addEventListener('input', atualizar);
+
+        // Accordion
+        document.querySelectorAll(".secao-titulo").forEach(titulo => {
+            titulo.addEventListener("click", function() {
+                const conteudo = this.nextElementSibling;
+                this.classList.toggle("ativo");
+                conteudo.classList.toggle("ativo");
+            });
+        });
+
+        document.getElementById("dataProposta").valueAsDate = new Date();
+
+        document.getElementById("logo").addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imagemLogo = event.target.result;
+                    atualizar();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("paperTimbrado").addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    // Papel timbrado seria usado como background do cabeçalho
+                    atualizar();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("tamanhoLogo").addEventListener("input", function(e) {
+            const tamanho = e.target.value;
+            document.documentElement.style.setProperty('--tamanho-logo', tamanho + 'px');
+            document.getElementById('tamanhoLogoValor').textContent = tamanho + 'px';
+            localStorage.setItem('tamanhoLogo', tamanho);
+            atualizar();
+        });
+
+        function atualizar() {
+            const data = {
+                nomeCliente: document.getElementById("nomeCliente").value || "Seu Cliente",
+                nomeEmpresa: document.getElementById("nomeEmpresa").value,
+                atividade: document.getElementById("atividade").value,
+                cnae1: document.getElementById("cnae1").value,
+                cnae2: document.getElementById("cnae2").value,
+                cnae3: document.getElementById("cnae3").value,
+                cnae4: document.getElementById("cnae4").value,
+                cnae5: document.getElementById("cnae5").value,
+                dataProposta: document.getElementById("dataProposta").value,
+                proLabore: document.getElementById("proLabore").value,
+                quantidadeFuncionarios: document.getElementById("quantidadeFuncionarios").value,
+                nomeEscritorio: document.getElementById("nomeEscritorio").value,
+                responsavel: document.getElementById("responsavel").value,
+                crc: document.getElementById("crc").value,
+                telefone: document.getElementById("telefone").value,
+                email: document.getElementById("email").value,
+                faturamento: document.getElementById("faturamento").value,
+                introducao: document.getElementById("introducao").value,
+                alem: document.getElementById("alem").value,
+                nota1: document.getElementById("nota1").value,
+                nota2: document.getElementById("nota2").value,
+                condicoes: document.getElementById("condicoes").value,
+                passo1: document.getElementById("passo1").value || "Escolher regime",
+                passo2: document.getElementById("passo2").value || "Enviar documentação",
+                passo3: document.getElementById("passo3").value || "Assinar contrato",
+                passo4: document.getElementById("passo4").value || "Iniciar serviços"
+            };
+
+            const dataBR = new Date(data.dataProposta).toLocaleDateString("pt-BR", {year: "numeric", month: "long", day: "numeric"});
+            const corSec = document.getElementById('corSecundaria').value;
+            const molduraTituloAtiva = document.getElementById('molduraTitulo').checked;
+            const corMolduraTitulo = document.getElementById('corMolduraTitulo').value;
+            const corTextoTitulo = document.getElementById('corTextoTitulo').value;
+
+            let h1Style = '';
+            if (molduraTituloAtiva) {
+                h1Style = ' style="background-color: ' + corMolduraTitulo + '; color: ' + corTextoTitulo + '; padding: 20px 25px; border-radius: 8px; display: inline-block;"';
+            } else {
+                h1Style = ' style="background-color: transparent; color: ' + corTextoTitulo + ';"';
+            }
+
+            let html = '<div class="pdf-header"><div><h1' + h1Style + '>PROPOSTA DE PRESTAÇÃO DE SERVIÇOS CONTÁBEIS</h1><p>' + data.nomeEmpresa.toUpperCase() + '</p></div><div id="logoPreview"></div></div>';
+            html += '<div class="pdf-titulo-cliente">CLIENTE</div>';
+            html += '<div class="pdf-data">';
+            html += '<div class="pdf-data-item"><div class="pdf-data-label">Cliente</div><div class="pdf-data-valor">' + data.nomeCliente + '</div></div>';
+            html += '<div class="pdf-data-item"><div class="pdf-data-label">Atividade</div><div class="pdf-data-valor">' + data.atividade + '</div></div>';
+
+            let cnaesPreenchidos = [];
+            if (data.cnae1) cnaesPreenchidos.push(data.cnae1);
+            if (data.cnae2) cnaesPreenchidos.push(data.cnae2);
+            if (data.cnae3) cnaesPreenchidos.push(data.cnae3);
+            if (data.cnae4) cnaesPreenchidos.push(data.cnae4);
+            if (data.cnae5) cnaesPreenchidos.push(data.cnae5);
+
+            if (cnaesPreenchidos.length > 0) {
+                html += '<div class="pdf-data-item" style="grid-column: 1 / -1;"><div class="pdf-data-label">CNAE(s)</div><div class="pdf-data-valor">' + cnaesPreenchidos.join(' • ') + '</div></div>';
+            }
+
+            html += '<div class="pdf-data-item"><div class="pdf-data-label">Data</div><div class="pdf-data-valor">' + dataBR + '</div></div>';
+            html += '<div class="pdf-data-item"><div class="pdf-data-label">Faturamento Anual</div><div class="pdf-data-valor">' + (data.faturamento ? 'R$ ' + parseFloat(data.faturamento).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '—') + '</div></div>';
+            if (data.proLabore) {
+                html += '<div class="pdf-data-item"><div class="pdf-data-label">Pro Labore Mensal</div><div class="pdf-data-valor">R$ ' + parseFloat(data.proLabore).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</div></div>';
+            }
+            if (data.quantidadeFuncionarios) {
+                html += '<div class="pdf-data-item"><div class="pdf-data-label">Funcionários</div><div class="pdf-data-valor">' + data.quantidadeFuncionarios + '</div></div>';
+            }
+            html += '<div class="pdf-data-item"><div class="pdf-data-label">Validade</div><div class="pdf-data-valor">07 dias</div></div>';
+            html += '</div>';
+
+            if (data.introducao) {
+                html += '<div class="pdf-secao"><div class="pdf-secao-titulo">Introdução</div><div class="pdf-secao-conteudo"><p>' + data.introducao.replace(/\n/g, '<br>') + '</p></div></div>';
+            }
+
+            if (document.getElementById("usarMEI").checked) {
+                html += geraPlano("MEI", "mei", "meiDescricao", corSec);
+            }
+            if (document.getElementById("usarSimples").checked) {
+                html += geraPlano("Simples Nacional", "simples", "simplesDescricao", corSec);
+            }
+            if (document.getElementById("usarPresumido").checked) {
+                html += geraPlano("Lucro Presumido", "presun", "presumidoDescricao", corSec);
+            }
+
+            if (data.alem) {
+                html += '<div class="pdf-secao"><div class="pdf-secao-titulo">Além do Básico</div><div class="pdf-secao-conteudo">' + formatarNota(data.alem) + '</div></div>';
+            }
+
+            function formatarNota(texto) {
+                if (!texto) return '';
+                let linhas = texto.replace(/\r\n/g, '\n').split(/[\n|]/);
+                let html = '';
+                linhas.forEach(linha => {
+                    linha = linha.trim();
+                    if (linha) {
+                        if (linha.includes(':')) {
+                            let [titulo, conteudo] = linha.split(':', 2);
+                            html += '<p><strong>' + titulo.trim() + ':</strong> ' + conteudo.trim() + '</p>';
+                        } else {
+                            html += '<p>' + linha + '</p>';
+                        }
+                    }
+                });
+                return html;
+            }
+
+            let notas = '';
+            if (data.nota1) notas += '<div class="info-box" style="border-left-color: ' + corSec + ';">' + formatarNota(data.nota1) + '</div>';
+            if (data.nota2) notas += '<div class="info-box" style="border-left-color: ' + corSec + ';">' + formatarNota(data.nota2) + '</div>';
+            if (notas) {
+                html += '<div class="pdf-secao"><div class="pdf-secao-titulo">Informações Importantes</div><div class="pdf-secao-conteudo">' + notas + '</div></div>';
+            }
+
+            if (data.condicoes) {
+                html += '<div class="pdf-secao"><div class="pdf-secao-titulo">Condições Contratuais</div><div class="pdf-secao-conteudo"><p>' + data.condicoes.replace(/\n/g, '<br>') + '</p></div></div>';
+            }
+
+            html += '<div class="pdf-secao"><div class="pdf-secao-titulo">Próximos Passos</div><div class="proximos-passos"><ol>';
+            html += '<li>' + data.passo1 + '</li><li>' + data.passo2 + '</li><li>' + data.passo3 + '</li><li>' + data.passo4 + '</li>';
+            html += '</ol></div></div>';
+
+            html += '<div class="pdf-secao"><div class="pdf-secao-titulo">Nosso Compromisso</div><div class="pdf-secao-conteudo"><p>Atuamos como parceiros estratégicos desde o primeiro dia, garantindo conformidade fiscal, contábil e trabalhista para o crescimento sustentado do seu negócio.</p></div></div>';
+
+            html += '<div class="pdf-footer"><p><strong>' + data.nomeEscritorio + '</strong></p><p>' + data.responsavel + ' — CRC ' + data.crc + '</p><p>' + data.telefone + ' | ' + data.email + '</p></div>';
+
+            document.getElementById("pdfPreview").innerHTML = html;
+
+            if (imagemLogo) {
+                const logoEl = document.getElementById("logoPreview");
+                if (logoEl) {
+                    logoEl.style.backgroundImage = "url(" + imagemLogo + ")";
+                    const estilo = document.getElementById('estiloCabecalho').value;
+                    if (estilo === 'moldura') {
+                        logoEl.classList.add('com-moldura');
+                    } else {
+                        logoEl.classList.remove('com-moldura');
+                    }
+                }
+            }
+        }
+
+        function geraPlano(nome, tipo, idDesc, corSec) {
+            const desc = document.getElementById(idDesc).value;
+            let html = '<div class="pdf-secao"><div class="pdf-secao-titulo">' + nome + '</div>';
+            if (desc) html += '<div class="pdf-secao-conteudo"><p>' + desc.replace(/\n/g, '<br>') + '</p></div>';
+
+            html += '<table class="planos-tabela"><thead><tr><th style="border-bottom-color: ' + corSec + ';">Plano</th><th style="border-bottom-color: ' + corSec + ';">Valor/Mês</th></tr></thead><tbody>';
+
+            for (let i = 1; i <= 3; i++) {
+                const checkboxID = tipo + i + 'check';
+                const nomeID = tipo + i + 'nome';
+                const valorID = tipo + i + 'valor';
+                const descID = tipo + i + 'desc';
+                const isChecked = document.getElementById(checkboxID).checked;
+                const nomePlano = document.getElementById(nomeID).value;
+                const valorPlano = parseFloat(document.getElementById(valorID).value) || 0;
+                const descPlano = document.getElementById(descID).value;
+
+                if (isChecked && (nomePlano || valorPlano > 0)) {
+                    html += '<tr><td><strong>' + nomePlano + '</strong></td><td>R$ ' + valorPlano.toFixed(2).replace('.', ',') + '</td></tr>';
+                    if (descPlano) {
+                        html += '<tr><td colspan="2" style="font-size: 12px; color: #666; padding-top: 0;">' + descPlano.replace(/\n/g, '<br>') + '</td></tr>';
+                    }
+                }
+            }
+
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function gerarPDF() {
+            const element = document.getElementById("pdfPreview");
+            const opt = {margin: 10, filename: 'proposta.pdf', image: {type: 'jpeg', quality: 0.98}, html2canvas: {scale: 2}, jsPDF: {orientation: 'portrait', unit: 'mm', format: 'a4'}};
+            html2pdf().set(opt).from(element).save();
+        }
+
+        function abrirWhatsApp() {
+            gerarPDF();
+            const nomeCliente = document.getElementById("nomeCliente").value || "Cliente";
+            const nomeEscritorio = document.getElementById("nomeEscritorio").value || "Escritório Contábil";
+            const mensagem = `Olá ${nomeCliente}! 👋\n\nSegue em anexo a proposta de serviços contábeis de ${nomeEscritorio}.\n\nFique à vontade para tirar dúvidas! 📋`;
+            const urlWhatsApp = `https://web.whatsapp.com/send?text=${encodeURIComponent(mensagem)}`;
+            window.open(urlWhatsApp, '_blank');
+        }
+
+        function limpar() {
+            if (confirm("Limpar tudo?")) {
+                document.querySelectorAll("input:not([type='color']), textarea").forEach(el => { el.value = ""; el.checked = false; });
+                document.getElementById("dataProposta").valueAsDate = new Date();
+                atualizar();
+            }
+        }
+
+        function salvarDados() {
+            const dados = {};
+            document.querySelectorAll("input:not([type='color']), textarea").forEach(el => {
+                if (el.type === "checkbox") {
+                    dados[el.id] = el.checked;
+                } else if (el.type !== "file") {
+                    dados[el.id] = el.value;
+                }
+            });
+            // Salvar cores customizadas também
+            document.querySelectorAll("input[type='color']").forEach(el => {
+                dados[el.id] = el.value;
+            });
+            localStorage.setItem("orcamentoData", JSON.stringify(dados));
+        }
+
+        function carregarDados() {
+            const dados = localStorage.getItem("orcamentoData");
+            if (dados) {
+                const parsed = JSON.parse(dados);
+                Object.keys(parsed).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        if (el.type === "checkbox") {
+                            el.checked = parsed[id];
+                        } else {
+                            el.value = parsed[id];
+                        }
+                    }
+                });
+            }
+        }
+
+        function limparDados() {
+            if (confirm("Tem certeza que quer limpar todos os dados salvos?")) {
+                localStorage.removeItem("orcamentoData");
+                document.querySelectorAll("input:not([type='color']), textarea").forEach(el => {
+                    if (el.type === "checkbox") el.checked = false;
+                    else if (el.type !== "file") el.value = "";
+                });
+                imagemLogo = "";
+                atualizar();
+            }
+        }
+
+        document.querySelectorAll("input:not([type='color']), textarea, select").forEach(el => {
+            el.addEventListener("change", () => { atualizar(); salvarDados(); });
+            el.addEventListener("keyup", () => { atualizar(); salvarDados(); });
+        });
+
+        carregarCores();
+        carregarDados();
+
+        // Carregar tamanho da logo salvo
+        const tamanhoSalvo = localStorage.getItem('tamanhoLogo');
+        if (tamanhoSalvo) {
+            document.getElementById('tamanhoLogo').value = tamanhoSalvo;
+            document.documentElement.style.setProperty('--tamanho-logo', tamanhoSalvo + 'px');
+            document.getElementById('tamanhoLogoValor').textContent = tamanhoSalvo + 'px';
+        }
+
+        atualizar();
+    </script>
+</body>
+</html>
