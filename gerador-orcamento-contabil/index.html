@@ -654,6 +654,14 @@
                         <label class="checkbox-label"><input type="checkbox" id="usarSimples" checked><span>Simples Nacional</span></label>
                         <label class="checkbox-label"><input type="checkbox" id="usarPresumido" checked><span>Lucro Presumido</span></label>
                     </div>
+                    <div style="margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 6px;">
+                        <div style="font-size: 12px; color: #555; margin-bottom: 12px; font-weight: 600;">Valores Mínimos Recomendados (tabela FECONTABIL):</div>
+                        <div class="campo-grupo"><label>MEI - 1 Atividade (R$)</label><input type="number" id="meiMinimo" value="150" step="10"></div>
+                        <div class="campo-grupo"><label>MEI - 2+ Atividades (R$)</label><input type="number" id="meiMultiploMinimo" value="250" step="10"></div>
+                        <div class="campo-grupo"><label>Simples Nacional - 1 Atividade (R$)</label><input type="number" id="simplesMinimo" value="300" step="10"></div>
+                        <div class="campo-grupo"><label>Simples Nacional - 2+ Atividades (R$)</label><input type="number" id="simplesMultiploMinimo" value="450" step="10"></div>
+                        <div class="campo-grupo"><label>Lucro Presumido Mínimo (R$)</label><input type="number" id="presumidoMinimo" value="500" step="10"></div>
+                    </div>
                 </div>
             </div>
 
@@ -1061,6 +1069,28 @@
             let html = '<div class="pdf-secao"><div class="pdf-secao-titulo">' + nome + '</div>';
             if (desc) html += '<div class="pdf-secao-conteudo"><p>' + desc.replace(/\n/g, '<br>') + '</p></div>';
 
+            // Obter valor mínimo configurado
+            let minimoID = '';
+
+            // Contar quantos CNAEs foram preenchidos (válido para MEI e Simples)
+            let cnaesCount = 0;
+            if (document.getElementById("cnae1").value) cnaesCount++;
+            if (document.getElementById("cnae2").value) cnaesCount++;
+            if (document.getElementById("cnae3").value) cnaesCount++;
+            if (document.getElementById("cnae4").value) cnaesCount++;
+            if (document.getElementById("cnae5").value) cnaesCount++;
+
+            if (tipo === 'mei') {
+                minimoID = cnaesCount > 1 ? 'meiMultiploMinimo' : 'meiMinimo';
+            } else if (tipo === 'simples') {
+                minimoID = cnaesCount > 1 ? 'simplesMultiploMinimo' : 'simplesMinimo';
+            } else if (tipo === 'presun') {
+                minimoID = 'presumidoMinimo';
+            }
+
+            const valorMinimo = minimoID ? parseFloat(document.getElementById(minimoID).value) || 0 : 0;
+            const modoAlerta = '<div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 8px; margin-top: 5px; font-size: 11px; color: #856404;"><strong>⚠ Abaixo do mínimo:</strong> Recomendado R$ ' + valorMinimo.toFixed(2).replace('.', ',') + '</div>';
+
             html += '<table class="planos-tabela"><thead><tr><th style="border-bottom-color: ' + corSec + ';">Plano</th><th style="border-bottom-color: ' + corSec + ';">Valor/Mês</th></tr></thead><tbody>';
 
             for (let i = 1; i <= 3; i++) {
@@ -1074,7 +1104,8 @@
                 const descPlano = document.getElementById(descID).value;
 
                 if (isChecked && (nomePlano || valorPlano > 0)) {
-                    html += '<tr><td><strong>' + nomePlano + '</strong></td><td>R$ ' + valorPlano.toFixed(2).replace('.', ',') + '</td></tr>';
+                    const abaixoMinimo = valorPlano > 0 && valorPlano < valorMinimo;
+                    html += '<tr><td><strong>' + nomePlano + '</strong></td><td>R$ ' + valorPlano.toFixed(2).replace('.', ',') + (abaixoMinimo ? ' ' + modoAlerta : '') + '</td></tr>';
                     if (descPlano) {
                         html += '<tr><td colspan="2" style="font-size: 12px; color: #666; padding-top: 0;">' + descPlano.replace(/\n/g, '<br>') + '</td></tr>';
                     }
@@ -1123,6 +1154,18 @@
             });
             localStorage.setItem("orcamentoData", JSON.stringify(dados));
         }
+
+        // Adicionar listeners aos campos de valor mínimo
+        document.getElementById('meiMinimo').addEventListener('change', () => { atualizar(); salvarDados(); });
+        document.getElementById('meiMinimo').addEventListener('keyup', () => { atualizar(); salvarDados(); });
+        document.getElementById('meiMultiploMinimo').addEventListener('change', () => { atualizar(); salvarDados(); });
+        document.getElementById('meiMultiploMinimo').addEventListener('keyup', () => { atualizar(); salvarDados(); });
+        document.getElementById('simplesMinimo').addEventListener('change', () => { atualizar(); salvarDados(); });
+        document.getElementById('simplesMinimo').addEventListener('keyup', () => { atualizar(); salvarDados(); });
+        document.getElementById('simplesMultiploMinimo').addEventListener('change', () => { atualizar(); salvarDados(); });
+        document.getElementById('simplesMultiploMinimo').addEventListener('keyup', () => { atualizar(); salvarDados(); });
+        document.getElementById('presumidoMinimo').addEventListener('change', () => { atualizar(); salvarDados(); });
+        document.getElementById('presumidoMinimo').addEventListener('keyup', () => { atualizar(); salvarDados(); });
 
         function carregarDados() {
             const dados = localStorage.getItem("orcamentoData");
