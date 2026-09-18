@@ -669,6 +669,7 @@
                 <div class="secao-titulo">MEI</div>
                 <div class="secao-conteudo">
                     <div class="campo-grupo"><label>Descrição do Regime</label><textarea id="meiDescricao" placeholder="Ex: Ideal para profissionais autônomos com faturamento até R$ 81.500/ano"></textarea></div>
+                    <div class="campo-grupo"><label>Serviços Adicionais (opcional)</label><textarea id="meiAdicionais" placeholder="Ex: Nota Fiscal Avulsa: a partir de R$ 25,00"></textarea></div>
                     <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
                     <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
                         <input type="checkbox" id="mei1check" checked>
@@ -1068,6 +1069,14 @@
             const desc = document.getElementById(idDesc).value;
             let html = '<div class="pdf-secao"><div class="pdf-secao-titulo">' + nome + '</div>';
             if (desc) html += '<div class="pdf-secao-conteudo"><p>' + desc.replace(/\n/g, '<br>') + '</p></div>';
+
+            // Adicionar serviços adicionais do MEI
+            if (tipo === 'mei') {
+                const adicionais = document.getElementById('meiAdicionais').value;
+                if (adicionais) {
+                    html += '<div class="pdf-secao-conteudo" style="margin-top: 10px; padding: 10px; background-color: #f9f9f9; border-radius: 4px; border-left: 3px solid ' + corSec + ';"><p style="font-size: 12px; margin: 0;"><strong>Serviços Adicionais:</strong><br>' + adicionais.replace(/\n/g, '<br>') + '</p></div>';
+                }
+            }
 
             // Obter valor mínimo configurado
             let minimoID = '';
