@@ -1087,11 +1087,15 @@
             atualizarCores();
         }
 
-        // Listeners para cores
+        // Listeners para cores - adicionar 'input' para atualizar em tempo real
         document.getElementById('corPrimaria').addEventListener('change', atualizarCores);
+        document.getElementById('corPrimaria').addEventListener('input', atualizarCores);
         document.getElementById('corSecundaria').addEventListener('change', atualizarCores);
+        document.getElementById('corSecundaria').addEventListener('input', atualizarCores);
         document.getElementById('corAcento').addEventListener('change', atualizarCores);
+        document.getElementById('corAcento').addEventListener('input', atualizarCores);
         document.getElementById('corTexto').addEventListener('change', atualizarCores);
+        document.getElementById('corTexto').addEventListener('input', atualizarCores);
         document.getElementById('molduraTitulo').addEventListener('change', atualizar);
         document.getElementById('corMolduraTitulo').addEventListener('change', atualizar);
         document.getElementById('corMolduraTitulo').addEventListener('input', atualizar);
