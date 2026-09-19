@@ -216,9 +216,9 @@
         label {
             display: block;
             font-size: 12px;
-            color: var(--cor-texto-secundario);
+            color: #555555;
             margin-bottom: 8px;
-            font-weight: 500;
+            font-weight: 600;
             letter-spacing: 0.3px;
         }
 
@@ -231,10 +231,10 @@
         textarea {
             width: 100%;
             padding: 11px 14px;
-            background-color: var(--cor-borda);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #ffffff;
+            border: none;
             border-radius: 6px;
-            color: var(--cor-texto);
+            color: #000000;
             font-family: 'Inter', sans-serif;
             font-size: 13px;
             transition: all 0.2s;
@@ -248,9 +248,9 @@
         select:focus,
         textarea:focus {
             outline: none !important;
-            border-color: var(--cor-secundaria);
-            background-color: rgba(212, 175, 55, 0.05);
-            box-shadow: none !important;
+            border-color: #1a1a2e;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
         }
 
         textarea {
@@ -259,8 +259,9 @@
             font-size: 13px;
         }
 
+        input::placeholder,
         textarea::placeholder {
-            color: #8a8a9e;
+            color: #999999;
             opacity: 1;
         }
 
@@ -294,7 +295,7 @@
         input[type="color"] {
             width: 50px;
             height: 40px;
-            border: 1px solid var(--cor-borda);
+            border: none;
             border-radius: 6px;
             cursor: pointer;
             padding: 2px;
@@ -305,6 +306,10 @@
             grid-template-columns: 1fr 1fr;
             gap: 12px;
             margin-bottom: 12px;
+            background-color: #fafafa;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: none;
         }
 
         .cor-item {
@@ -317,6 +322,8 @@
             margin: 0;
             font-size: 12px;
             min-width: 120px;
+            color: #555555;
+            font-weight: 600;
         }
 
         .botoes {
