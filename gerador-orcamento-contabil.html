@@ -125,9 +125,9 @@
         .formulario {
             flex: 0 0 30%;
             overflow-y: auto;
-            padding: 30px;
-            border-right: 1px solid #ddd;
-            background-color: #f8f8f8;
+            padding: 20px;
+            border-right: 1px solid var(--cor-secundaria);
+            background-color: #ffffff;
             box-sizing: border-box;
         }
 
@@ -135,7 +135,7 @@
             flex: 0 0 70%;
             overflow-y: auto;
             padding: 30px;
-            background-color: #f5f5f5;
+            background-color: #f5f0ee;
             display: flex;
             align-items: flex-start;
             justify-content: center;
@@ -146,16 +146,16 @@
         h1 {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
-            margin-bottom: 30px;
-            color: #000;
+            margin-bottom: 25px;
+            color: var(--cor-primaria);
             font-weight: 700;
             letter-spacing: -0.5px;
         }
 
         .secao {
-            margin-bottom: 12px;
-            background-color: var(--cor-fundo-input);
-            border-radius: 8px;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
             border-left: 4px solid var(--cor-secundaria);
             overflow: hidden;
             transition: all 0.3s ease;
@@ -169,8 +169,9 @@
         .secao-titulo {
             font-size: 13px;
             font-weight: 600;
-            color: var(--cor-secundaria);
-            padding: 16px 20px;
+            color: #d4af37;
+            background-color: #1a1a2e;
+            padding: 12px 16px;
             text-transform: uppercase;
             cursor: pointer;
             display: flex;
@@ -182,7 +183,7 @@
         }
 
         .secao-titulo:hover {
-            background-color: rgba(212, 175, 55, 0.05);
+            background-color: #2a2a3e;
         }
 
         .secao-titulo::after {
@@ -205,11 +206,11 @@
 
         .secao-conteudo.ativo {
             max-height: 3000px;
-            padding: 20px;
+            padding: 16px;
         }
 
         .campo-grupo {
-            margin-bottom: 18px;
+            margin-bottom: 10px;
         }
 
         label {
@@ -267,7 +268,7 @@
             display: flex;
             align-items: center;
             font-size: 13px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             cursor: pointer;
             gap: 10px;
             width: fit-content;
@@ -302,8 +303,8 @@
         .cor-grupo {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 12px;
         }
 
         .cor-item {
@@ -321,17 +322,17 @@
         .botoes {
             display: flex;
             gap: 10px;
-            margin-top: 30px;
+            margin-top: 25px;
             flex-wrap: wrap;
         }
 
         button {
             flex: 1;
             min-width: 120px;
-            padding: 13px 16px;
-            background-color: var(--cor-secundaria);
-            color: var(--cor-primaria);
-            border: none;
+            padding: 11px 14px;
+            background-color: #1a1a2e !important;
+            color: #d4af37 !important;
+            border: none !important;
             border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
@@ -342,8 +343,9 @@
 
         button:hover {
             transform: translateY(-2px);
-            opacity: 0.9;
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            background-color: #2a2a3e !important;
+            color: #d4af37 !important;
+            box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
         }
 
         button:active {
@@ -351,12 +353,25 @@
         }
 
         button.secundario {
-            background-color: var(--cor-acento);
+            background-color: #1a1a2e !important;
+            color: #d4af37 !important;
+            border-color: #1a1a2e !important;
+        }
+
+        button.secundario:hover {
+            background-color: #2a2a3e !important;
+            color: #d4af37 !important;
         }
 
         button.limpar {
-            background-color: var(--cor-primaria);
-            color: var(--cor-secundaria);
+            background-color: #1a1a2e !important;
+            color: #d4af37 !important;
+            border-color: #1a1a2e !important;
+        }
+
+        button.limpar:hover {
+            background-color: #2a2a3e !important;
+            color: #d4af37 !important;
         }
 
         /* PDF Preview - A4 constrito */
@@ -731,7 +746,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" onclick="resetarCores()" style="background-color: var(--cor-acento); width: 100%; margin-top: 10px;">↺ Restaurar Cores Padrão</button>
+                    <button type="button" onclick="resetarCores()" style="width: 100%; margin-top: 10px;">↺ Restaurar Cores Padrão</button>
                 </div>
             </div>
 
@@ -746,10 +761,10 @@
                         <div id="cnae-container" style="display: flex; flex-direction: column; gap: 10px;">
                             <div style="display: flex; gap: 10px;" class="cnae-row">
                                 <input type="text" class="cnae-input" placeholder="Ex: 6202-3/00 - Consultoria em Tecnologia" style="flex: 1;">
-                                <button type="button" onclick="window.open('https://concla.ibge.gov.br/busca-online-cnae.html', '_blank')" style="padding: 10px 15px; background-color: var(--cor-acento); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; flex-shrink: 0;">Buscar CNAE</button>
+                                <button type="button" onclick="window.open('https://concla.ibge.gov.br/busca-online-cnae.html', '_blank')" style="padding: 10px 15px; font-size: 13px; flex-shrink: 0;">Buscar CNAE</button>
                             </div>
                         </div>
-                        <button type="button" onclick="adicionarCNAE()" id="btn-mais-cnae" style="margin-top: 10px; padding: 8px 15px; background-color: rgba(212, 175, 55, 0.3); color: #d4af37; border: 1px solid #d4af37; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; align-self: flex-start;">+ Adicionar CNAE</button>
+                        <button type="button" onclick="adicionarCNAE()" id="btn-mais-cnae" style="margin-top: 10px; padding: 8px 15px; font-size: 12px; align-self: flex-start;">+ Adicionar CNAE</button>
                     </div>
                     <div class="campo-grupo"><label>Data da Proposta</label><input type="date" id="dataProposta"></div>
                     <div class="campo-grupo"><label>WhatsApp do Cliente (com código do país)</label><input type="tel" id="telefoneCliente" placeholder="Ex: +5549999999999"></div>
@@ -1975,7 +1990,7 @@
             novaLinha.style.cssText = 'display: flex; gap: 10px;';
             novaLinha.innerHTML = `
                 <input type="text" class="cnae-input" placeholder="CNAE ${cnaesAtuais + 1} (opcional)" style="flex: 1;">
-                <button type="button" onclick="removerCNAE(this)" style="padding: 8px 12px; background-color: rgba(201, 169, 163, 0.3); color: #c9a9a3; border: 1px solid #c9a9a3; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; flex-shrink: 0;">Remover</button>
+                <button type="button" onclick="removerCNAE(this)" style="padding: 8px 12px; font-size: 12px; flex-shrink: 0;">Remover</button>
             `;
 
             container.appendChild(novaLinha);
