@@ -232,12 +232,13 @@
             width: 100%;
             padding: 11px 14px;
             background-color: #ffffff;
-            border: none;
+            border: 2px solid #c0c0c0 !important;
             border-radius: 6px;
             color: #000000;
             font-family: 'Inter', sans-serif;
             font-size: 13px;
             transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(26, 26, 46, 0.12) !important;
         }
 
         input[type="text"]:focus,
@@ -248,9 +249,9 @@
         select:focus,
         textarea:focus {
             outline: none !important;
-            border-color: #1a1a2e;
-            background-color: #f9f9f9;
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+            border-color: #1a1a2e !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(26, 26, 46, 0.2) !important;
         }
 
         textarea {
@@ -261,7 +262,7 @@
 
         input::placeholder,
         textarea::placeholder {
-            color: #999999;
+            color: #000000;
             opacity: 1;
         }
 
@@ -281,15 +282,55 @@
         }
 
         input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             cursor: pointer;
-            accent-color: var(--cor-secundaria);
             flex-shrink: 0;
             margin: 0;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--cor-secundaria);
-            border-radius: 3px;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+            background-color: #1a1a2e !important;
+            border: none !important;
+            border-radius: 6px !important;
+            box-shadow: 0 2px 6px rgba(26, 26, 46, 0.2) !important;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            outline: none !important;
+            color: transparent !important;
+        }
+
+        input[type="checkbox"]:focus,
+        input[type="checkbox"]:focus-visible,
+        input[type="checkbox"]:active {
+            outline: none !important;
+            box-shadow: 0 2px 6px rgba(26, 26, 46, 0.2) !important;
+            background-color: #1a1a2e !important;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #1a1a2e !important;
+        }
+
+        input[type="checkbox"]:checked:focus,
+        input[type="checkbox"]:checked:active {
+            background-color: #1a1a2e !important;
+        }
+
+        input[type="checkbox"]::after {
+            display: none;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            color: #ffffff !important;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1;
+            display: inline-block;
         }
 
         input[type="color"] {
@@ -733,7 +774,7 @@
                 <div class="secao-titulo ativo">Personalização de Cores</div>
                 <div class="secao-conteudo ativo">
                     <div class="campo-grupo">
-                        <label style="margin-bottom: 15px; color: var(--cor-secundaria); font-weight: 600;">Customize as cores do seu orçamento</label>
+                        <label style="margin-bottom: 15px; color: #000000; font-weight: 600;">Customize as cores do seu orçamento</label>
                         <div class="cor-grupo">
                             <div class="cor-item">
                                 <label>Cor Principal</label>
@@ -773,13 +814,20 @@
                         </div>
                         <button type="button" onclick="adicionarCNAE()" id="btn-mais-cnae" style="margin-top: 10px; padding: 8px 15px; font-size: 12px; align-self: flex-start;">+ Adicionar CNAE</button>
                     </div>
-                    <div class="campo-grupo"><label>Data da Proposta</label><input type="date" id="dataProposta"></div>
+                    <div class="campo-grupo" style="display: flex; gap: 10px; align-items: center;">
+                        <input type="checkbox" id="temDataProposta" checked style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+                        <label for="temDataProposta" style="margin: 0; cursor: pointer; flex: 1;">Data da Proposta</label>
+                    </div>
+                    <div class="campo-grupo"><input type="date" id="dataProposta"></div>
                     <div class="campo-grupo"><label>WhatsApp do Cliente (com código do país)</label><input type="tel" id="telefoneCliente" placeholder="Ex: +5549999999999"></div>
 
-                    <div class="campo-grupo" style="background-color: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 6px; border-left: 3px solid #d4af37;">
-                        <h4 style="margin: 0 0 12px 0; color: #d4af37; font-size: 13px; text-transform: uppercase;">Abertura de Empresa</h4>
-                        <div class="campo-grupo"><label>Data</label><input type="date" id="dataAbertura"></div>
-                        <div class="campo-grupo"><label>Valor (R$)</label><input type="number" id="valorAbertura" placeholder="0,00" step="0.01" min="0"></div>
+                    <div class="campo-grupo" style="display: flex; gap: 10px; align-items: center;">
+                        <input type="checkbox" id="temAbertura" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+                        <label for="temAbertura" style="margin: 0; cursor: pointer; flex: 1;">Abertura de Empresa</label>
+                    </div>
+                    <div class="campo-grupo"><label>Data</label><input type="date" id="dataAbertura"></div>
+                    <div class="campo-grupo"><label>Valor (R$)</label><input type="number" id="valorAbertura" placeholder="0,00" step="0.01"></div>
+                    <div class="campo-grupo" id="abertura-container" style="background-color: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 6px; border-left: 3px solid #d4af37; display: none;">
                         <div class="campo-grupo" style="display: flex; gap: 10px; align-items: center;">
                             <input type="checkbox" id="usarExemploAbertura" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
                             <label for="usarExemploAbertura" style="margin: 0; cursor: pointer; flex: 1; font-size: 12px; color: #d4af37;">Usar exemplo de órgãos/processos</label>
@@ -787,10 +835,13 @@
                         <div class="campo-grupo"><label>Descrição dos Serviços</label><textarea id="descricaoAbertura" placeholder="Ex: - Abertura CNPJ\n- Registro na prefeitura\n- Etc." rows="2"></textarea></div>
                     </div>
 
-                    <div class="campo-grupo" style="background-color: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 6px; border-left: 3px solid #d4af37;">
-                        <h4 style="margin: 0 0 12px 0; color: #d4af37; font-size: 13px; text-transform: uppercase;">Regularização</h4>
-                        <div class="campo-grupo"><label>Data</label><input type="date" id="dataRegularizacao"></div>
-                        <div class="campo-grupo"><label>Valor (R$)</label><input type="number" id="valorRegularizacao" placeholder="0,00" step="0.01" min="0"></div>
+                    <div class="campo-grupo" style="display: flex; gap: 10px; align-items: center;">
+                        <input type="checkbox" id="temRegularizacao" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+                        <label for="temRegularizacao" style="margin: 0; cursor: pointer; flex: 1;">Regularização</label>
+                    </div>
+                    <div class="campo-grupo"><label>Data</label><input type="date" id="dataRegularizacao"></div>
+                    <div class="campo-grupo"><label>Valor (R$)</label><input type="number" id="valorRegularizacao" placeholder="0,00" step="0.01"></div>
+                    <div class="campo-grupo" id="regularizacao-container" style="background-color: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 6px; border-left: 3px solid #d4af37; display: none;">
                         <div class="campo-grupo" style="display: flex; gap: 10px; align-items: center;">
                             <input type="checkbox" id="usarExemploRegularizacao" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
                             <label for="usarExemploRegularizacao" style="margin: 0; cursor: pointer; flex: 1; font-size: 12px; color: #d4af37;">Usar exemplo de órgãos/processos</label>
@@ -798,10 +849,13 @@
                         <div class="campo-grupo"><label>Descrição dos Serviços</label><textarea id="descricaoRegularizacao" placeholder="Ex: - Regularização fiscal\n- Obtenção de alvarás\n- Etc." rows="2"></textarea></div>
                     </div>
 
-                    <div class="campo-grupo" style="background-color: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 6px; border-left: 3px solid #d4af37;">
-                        <h4 style="margin: 0 0 12px 0; color: #d4af37; font-size: 13px; text-transform: uppercase;">Troca de Contabilidade</h4>
-                        <div class="campo-grupo"><label>Data</label><input type="date" id="dataTroca"></div>
-                        <div class="campo-grupo"><label>Valor (R$)</label><input type="number" id="valorTroca" placeholder="0,00" step="0.01" min="0"></div>
+                    <div class="campo-grupo" style="display: flex; gap: 10px; align-items: center;">
+                        <input type="checkbox" id="temTroca" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+                        <label for="temTroca" style="margin: 0; cursor: pointer; flex: 1;">Troca de Contabilidade</label>
+                    </div>
+                    <div class="campo-grupo"><label>Data</label><input type="date" id="dataTroca"></div>
+                    <div class="campo-grupo"><label>Valor (R$)</label><input type="number" id="valorTroca" placeholder="0,00" step="0.01"></div>
+                    <div class="campo-grupo" id="troca-container" style="background-color: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 6px; border-left: 3px solid #d4af37; display: none;">
                         <div class="campo-grupo" style="display: flex; gap: 10px; align-items: center;">
                             <input type="checkbox" id="usarExemploTroca" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
                             <label for="usarExemploTroca" style="margin: 0; cursor: pointer; flex: 1; font-size: 12px; color: #d4af37;">Usar exemplo de órgãos/processos</label>
@@ -813,11 +867,23 @@
                         <input type="checkbox" id="temFaturamento" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
                         <label for="temFaturamento" style="margin: 0; cursor: pointer; flex: 1;">Faturamento Anual (R$)</label>
                     </div>
-                    <div class="campo-grupo" id="faturamento-container" style="display: none;">
+                    <div class="campo-grupo">
                         <input type="number" id="faturamento" placeholder="Ex: 150000" step="1000">
                     </div>
-                    <div class="campo-grupo"><label>Pro Labore Mensal (R$)</label><input type="number" id="proLabore" placeholder="Ex: 3000" step="100"></div>
-                    <div class="campo-grupo"><label>Quantidade de Funcionários</label><input type="number" id="quantidadeFuncionarios" placeholder="Ex: 5" min="0"></div>
+                    <div class="campo-grupo" style="display: flex; gap: 10px; align-items: center;">
+                        <input type="checkbox" id="temProLabore" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+                        <label for="temProLabore" style="margin: 0; cursor: pointer; flex: 1;">Pro Labore</label>
+                    </div>
+                    <div class="campo-grupo" id="proLabore-container" style="display: none;">
+                        <input type="number" id="proLabore" placeholder="Ex: 3000" step="100">
+                    </div>
+                    <div class="campo-grupo" style="display: flex; gap: 10px; align-items: center;">
+                        <input type="checkbox" id="temFuncionarios" style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+                        <label for="temFuncionarios" style="margin: 0; cursor: pointer; flex: 1;">Funcionários</label>
+                    </div>
+                    <div class="campo-grupo" id="funcionarios-container" style="display: none;">
+                        <input type="number" id="quantidadeFuncionarios" placeholder="Ex: 5">
+                    </div>
                 </div>
             </div>
 
@@ -887,8 +953,8 @@
             <div class="secao">
                 <div class="secao-titulo ativo">Regimes Tributários</div>
                 <div class="secao-conteudo ativo">
-                    <div style="padding: 15px; background-color: rgba(212, 175, 55, 0.08); border-radius: 6px; display: flex; flex-direction: column;">
-                        <div style="font-size: 12px; color: var(--cor-secundaria); margin-bottom: 18px; font-weight: 600; letter-spacing: 0.3px;">Selecione os regimes a incluir na proposta:</div>
+                    <div style="padding: 15px; background-color: #f5f5f5; border-radius: 6px; display: flex; flex-direction: column;">
+                        <div style="font-size: 12px; color: #000000; margin-bottom: 18px; font-weight: 600; letter-spacing: 0.3px;">Selecione os regimes a incluir na proposta:</div>
                         <label class="checkbox-label"><input type="checkbox" id="usarMEI" checked><span>MEI</span></label>
                         <label class="checkbox-label"><input type="checkbox" id="usarSimples" checked><span>Simples Nacional</span></label>
                         <label class="checkbox-label"><input type="checkbox" id="usarPresumido" checked><span>Lucro Presumido</span></label>
@@ -909,31 +975,31 @@
                 <div class="secao-conteudo">
                     <div class="campo-grupo"><label>Descrição do Regime</label><textarea id="meiDescricao" placeholder="Ex: Ideal para profissionais autônomos com faturamento até R$ 81.500/ano"></textarea></div>
                     <div class="campo-grupo"><label>Serviços Adicionais (opcional)</label><textarea id="meiAdicionais" placeholder="Ex: Nota Fiscal Avulsa: a partir de R$ 25,00"></textarea></div>
-                    <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
-                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                    <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: #000000; font-weight: 600; font-size: 12px; margin-bottom: 15px;">
                         <input type="checkbox" id="mei1check" checked>
                         <span>PLANO 1 - BÁSICO</span>
                     </label>
-                    <div class="campo-grupo"><label>Nome</label><input type="text" id="mei1nome" placeholder="Básico" value="Básico"></div>
-                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="mei1valor" step="0.01" placeholder="0.00" value="167.00"></div>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="mei1nome" placeholder="Básico"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="mei1valor" step="0.01" placeholder="0.00"></div>
                     <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="mei1desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
                 </div>
-                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
-                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: #000000; font-weight: 600; font-size: 12px; margin-bottom: 15px;">
                         <input type="checkbox" id="mei2check" checked>
                         <span>PLANO 2 - PROFISSIONAL</span>
                     </label>
-                    <div class="campo-grupo"><label>Nome</label><input type="text" id="mei2nome" placeholder="Profissional" value="Profissional"></div>
-                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="mei2valor" step="0.01" placeholder="0.00" value="197.00"></div>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="mei2nome" placeholder="Profissional"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="mei2valor" step="0.01" placeholder="0.00"></div>
                     <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="mei2desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
                 </div>
-                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px;">
-                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px;">
+                    <label class="checkbox-label" style="color: #000000; font-weight: 600; font-size: 12px; margin-bottom: 15px;">
                         <input type="checkbox" id="mei3check" checked>
                         <span>PLANO 3 - PREMIUM</span>
                     </label>
-                    <div class="campo-grupo"><label>Nome</label><input type="text" id="mei3nome" placeholder="Premium" value="Premium"></div>
-                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="mei3valor" step="0.01" placeholder="0.00" value="227.00"></div>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="mei3nome" placeholder="Premium"></div>
+                    <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="mei3valor" step="0.01" placeholder="0.00"></div>
                     <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="mei3desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
                     </div>
                 </div>
@@ -943,30 +1009,30 @@
                 <div class="secao-titulo">Simples Nacional</div>
                 <div class="secao-conteudo">
                 <div class="campo-grupo"><label>Descrição do Regime</label><textarea id="simplesDescricao" placeholder="Ex: Regime com menor carga tributária, ideal para pequenas e médias empresas"></textarea></div>
-                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
-                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: #000000; font-weight: 600; font-size: 12px; margin-bottom: 15px;">
                         <input type="checkbox" id="simples1check" checked>
                         <span>PLANO 1 - BÁSICO</span>
                     </label>
-                    <div class="campo-grupo"><label>Nome</label><input type="text" id="simples1nome" placeholder="Básico" value="Básico"></div>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="simples1nome" placeholder="Básico"></div>
                     <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="simples1valor" step="0.01" placeholder="0.00"></div>
                     <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="simples1desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
                 </div>
-                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
-                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: #000000; font-weight: 600; font-size: 12px; margin-bottom: 15px;">
                         <input type="checkbox" id="simples2check" checked>
                         <span>PLANO 2 - PROFISSIONAL</span>
                     </label>
-                    <div class="campo-grupo"><label>Nome</label><input type="text" id="simples2nome" placeholder="Profissional" value="Profissional"></div>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="simples2nome" placeholder="Profissional"></div>
                     <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="simples2valor" step="0.01" placeholder="0.00"></div>
                     <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="simples2desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
                 </div>
-                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px;">
-                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px;">
+                    <label class="checkbox-label" style="color: #000000; font-weight: 600; font-size: 12px; margin-bottom: 15px;">
                         <input type="checkbox" id="simples3check" checked>
                         <span>PLANO 3 - PREMIUM</span>
                     </label>
-                    <div class="campo-grupo"><label>Nome</label><input type="text" id="simples3nome" placeholder="Premium" value="Premium"></div>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="simples3nome" placeholder="Premium"></div>
                     <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="simples3valor" step="0.01" placeholder="0.00"></div>
                     <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="simples3desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
                     </div>
@@ -977,30 +1043,30 @@
                 <div class="secao-titulo">Lucro Presumido</div>
                 <div class="secao-conteudo">
                 <div class="campo-grupo"><label>Descrição do Regime</label><textarea id="presumidoDescricao" placeholder="Ex: Para empresas com faturamento maior, sem obrigação de escrituração analítica"></textarea></div>
-                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
-                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: #000000; font-weight: 600; font-size: 12px; margin-bottom: 15px;">
                         <input type="checkbox" id="presun1check" checked>
                         <span>PLANO 1 - BÁSICO</span>
                     </label>
-                    <div class="campo-grupo"><label>Nome</label><input type="text" id="presun1nome" placeholder="Básico" value="Básico"></div>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="presun1nome" placeholder="Básico"></div>
                     <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="presun1valor" step="0.01" placeholder="0.00"></div>
                     <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="presun1desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
                 </div>
-                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
-                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <label class="checkbox-label" style="color: #000000; font-weight: 600; font-size: 12px; margin-bottom: 15px;">
                         <input type="checkbox" id="presun2check" checked>
                         <span>PLANO 2 - PROFISSIONAL</span>
                     </label>
-                    <div class="campo-grupo"><label>Nome</label><input type="text" id="presun2nome" placeholder="Profissional" value="Profissional"></div>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="presun2nome" placeholder="Profissional"></div>
                     <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="presun2valor" step="0.01" placeholder="0.00"></div>
                     <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="presun2desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
                 </div>
-                <div style="background-color: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 6px;">
-                    <label class="checkbox-label" style="color: var(--cor-secundaria); font-weight: 600; font-size: 12px; margin-bottom: 15px;">
+                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px;">
+                    <label class="checkbox-label" style="color: #000000; font-weight: 600; font-size: 12px; margin-bottom: 15px;">
                         <input type="checkbox" id="presun3check" checked>
                         <span>PLANO 3 - PREMIUM</span>
                     </label>
-                    <div class="campo-grupo"><label>Nome</label><input type="text" id="presun3nome" placeholder="Premium" value="Premium"></div>
+                    <div class="campo-grupo"><label>Nome</label><input type="text" id="presun3nome" placeholder="Premium"></div>
                     <div class="campo-grupo"><label>Valor/Mês</label><input type="number" id="presun3valor" step="0.01" placeholder="0.00"></div>
                     <div class="campo-grupo"><label>Descrição do Plano</label><textarea id="presun3desc" placeholder="O que está incluído neste plano..." style="min-height: 60px;"></textarea></div>
                     </div>
@@ -1296,7 +1362,7 @@
 
             html += '<div class="pdf-data-item"><div class="pdf-data-label">Faturamento Anual</div><div class="pdf-data-valor">' + (data.faturamento ? 'R$ ' + parseFloat(data.faturamento).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '—') + '</div></div>';
             if (data.proLabore) {
-                html += '<div class="pdf-data-item"><div class="pdf-data-label">Pro Labore Mensal</div><div class="pdf-data-valor">R$ ' + parseFloat(data.proLabore).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</div></div>';
+                html += '<div class="pdf-data-item"><div class="pdf-data-label">Pro Labore</div><div class="pdf-data-valor">R$ ' + parseFloat(data.proLabore).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</div></div>';
             }
             if (data.quantidadeFuncionarios) {
                 html += '<div class="pdf-data-item"><div class="pdf-data-label">Funcionários</div><div class="pdf-data-valor">' + data.quantidadeFuncionarios + '</div></div>';
@@ -1727,8 +1793,7 @@
                 const descPlano = document.getElementById(descID).value;
 
                 if (isChecked && (nomePlano || valorPlano > 0)) {
-                    const abaixoMinimo = valorPlano > 0 && valorPlano < valorMinimo;
-                    html += '<tr><td><strong>' + nomePlano + '</strong></td><td>R$ ' + valorPlano.toFixed(2).replace('.', ',') + (abaixoMinimo ? ' ' + modoAlerta : '') + '</td></tr>';
+                    html += '<tr><td><strong>' + nomePlano + '</strong></td><td>R$ ' + valorPlano.toFixed(2).replace('.', ',') + '</td></tr>';
                     if (descPlano) {
                         html += '<tr><td colspan="2" style="font-size: 12px; color: #666; padding-top: 0;">' + descPlano.replace(/\n/g, '<br>') + '</td></tr>';
                     }
@@ -2047,11 +2112,11 @@
             }
         }
 
-        // TEMPORARIAMENTE desabilitado para debug
-        // document.querySelectorAll("input:not([type='color']), textarea, select").forEach(el => {
-        //     el.addEventListener("change", () => { if (!window.logoDragActive) { atualizar(); salvarDados(); } });
-        //     el.addEventListener("keyup", () => { if (!window.logoDragActive) { atualizar(); salvarDados(); } });
-        // });
+        // Adicionar event listeners a todos os inputs para atualizar automaticamente
+        document.querySelectorAll("input:not([type='color']), textarea, select").forEach(el => {
+            el.addEventListener("change", () => { if (!window.logoDragActive) { atualizar(); salvarDados(); } });
+            el.addEventListener("keyup", () => { if (!window.logoDragActive) { atualizar(); salvarDados(); } });
+        });
 
         // IMPORTANTE: Fechar todas as seções ANTES de carregar dados
         document.querySelectorAll(".secao-titulo").forEach(titulo => {
@@ -2061,6 +2126,151 @@
 
         carregarCores();
         carregarDados();
+
+        // Preencher data da proposta com data atual se vazio
+        const inputDataProposta = document.getElementById('dataProposta');
+        if (!inputDataProposta.value) {
+            const hoje = new Date();
+            const ano = hoje.getFullYear();
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            inputDataProposta.value = `${ano}-${mes}-${dia}`;
+        }
+        inputDataProposta.addEventListener('change', () => { atualizar(); salvarDados(); });
+
+        // Controlar visibilidade do campo de Pro Labore Mensal
+        const checkboxProLabore = document.getElementById('temProLabore');
+        const containerProLabore = document.getElementById('proLabore-container');
+        const inputProLabore = document.getElementById('proLabore');
+
+        function atualizarVisibilidadeProLabore() {
+            if (checkboxProLabore.checked) {
+                containerProLabore.style.display = 'block';
+            } else {
+                containerProLabore.style.display = 'none';
+                inputProLabore.value = '';
+            }
+            atualizar();
+            salvarDados();
+        }
+
+        checkboxProLabore.addEventListener('change', atualizarVisibilidadeProLabore);
+        inputProLabore.addEventListener('change', () => { atualizar(); salvarDados(); });
+        inputProLabore.addEventListener('keyup', () => { atualizar(); salvarDados(); });
+
+        // Restaurar estado do checkbox ao carregar
+        if (inputProLabore.value) {
+            checkboxProLabore.checked = true;
+            containerProLabore.style.display = 'block';
+        }
+
+        // Controlar visibilidade do campo de Funcionários
+        const checkboxFuncionarios = document.getElementById('temFuncionarios');
+        const containerFuncionarios = document.getElementById('funcionarios-container');
+        const inputFuncionarios = document.getElementById('quantidadeFuncionarios');
+
+        function atualizarVisibilidadeFuncionarios() {
+            if (checkboxFuncionarios.checked) {
+                containerFuncionarios.style.display = 'block';
+            } else {
+                containerFuncionarios.style.display = 'none';
+                inputFuncionarios.value = '';
+            }
+            atualizar();
+            salvarDados();
+        }
+
+        checkboxFuncionarios.addEventListener('change', atualizarVisibilidadeFuncionarios);
+        inputFuncionarios.addEventListener('change', () => { atualizar(); salvarDados(); });
+        inputFuncionarios.addEventListener('keyup', () => { atualizar(); salvarDados(); });
+
+        // Restaurar estado do checkbox ao carregar
+        if (inputFuncionarios.value) {
+            checkboxFuncionarios.checked = true;
+            containerFuncionarios.style.display = 'block';
+        }
+
+        // Controlar visibilidade das seções de Abertura, Regularização e Troca
+        const checkboxAberturaPrincipal = document.getElementById('temAbertura');
+        const containerAbertura = document.getElementById('abertura-container');
+        const valorAbertura = document.getElementById('valorAbertura');
+        const descricaoAbertura = document.getElementById('descricaoAbertura');
+
+        function atualizarVisibilidadeAbertura() {
+            if (checkboxAberturaPrincipal.checked) {
+                containerAbertura.style.display = 'block';
+            } else {
+                containerAbertura.style.display = 'none';
+            }
+            atualizar();
+            salvarDados();
+        }
+
+        checkboxAberturaPrincipal.addEventListener('change', atualizarVisibilidadeAbertura);
+        valorAbertura.addEventListener('change', () => { atualizar(); salvarDados(); });
+        valorAbertura.addEventListener('keyup', () => { atualizar(); salvarDados(); });
+        descricaoAbertura.addEventListener('change', () => { atualizar(); salvarDados(); });
+        descricaoAbertura.addEventListener('keyup', () => { atualizar(); salvarDados(); });
+
+        // Restaurar estado do checkbox ao carregar
+        if (valorAbertura.value || descricaoAbertura.value) {
+            checkboxAberturaPrincipal.checked = true;
+            containerAbertura.style.display = 'block';
+        }
+
+        const checkboxRegularizacaoPrincipal = document.getElementById('temRegularizacao');
+        const containerRegularizacao = document.getElementById('regularizacao-container');
+        const valorRegularizacao = document.getElementById('valorRegularizacao');
+        const descricaoRegularizacao = document.getElementById('descricaoRegularizacao');
+
+        function atualizarVisibilidadeRegularizacao() {
+            if (checkboxRegularizacaoPrincipal.checked) {
+                containerRegularizacao.style.display = 'block';
+            } else {
+                containerRegularizacao.style.display = 'none';
+            }
+            atualizar();
+            salvarDados();
+        }
+
+        checkboxRegularizacaoPrincipal.addEventListener('change', atualizarVisibilidadeRegularizacao);
+        valorRegularizacao.addEventListener('change', () => { atualizar(); salvarDados(); });
+        valorRegularizacao.addEventListener('keyup', () => { atualizar(); salvarDados(); });
+        descricaoRegularizacao.addEventListener('change', () => { atualizar(); salvarDados(); });
+        descricaoRegularizacao.addEventListener('keyup', () => { atualizar(); salvarDados(); });
+
+        // Restaurar estado do checkbox ao carregar
+        if (valorRegularizacao.value || descricaoRegularizacao.value) {
+            checkboxRegularizacaoPrincipal.checked = true;
+            containerRegularizacao.style.display = 'block';
+        }
+
+        const checkboxTrocaPrincipal = document.getElementById('temTroca');
+        const containerTroca = document.getElementById('troca-container');
+        const valorTroca = document.getElementById('valorTroca');
+        const descricaoTroca = document.getElementById('descricaoTroca');
+
+        function atualizarVisibilidadeTroca() {
+            if (checkboxTrocaPrincipal.checked) {
+                containerTroca.style.display = 'block';
+            } else {
+                containerTroca.style.display = 'none';
+            }
+            atualizar();
+            salvarDados();
+        }
+
+        checkboxTrocaPrincipal.addEventListener('change', atualizarVisibilidadeTroca);
+        valorTroca.addEventListener('change', () => { atualizar(); salvarDados(); });
+        valorTroca.addEventListener('keyup', () => { atualizar(); salvarDados(); });
+        descricaoTroca.addEventListener('change', () => { atualizar(); salvarDados(); });
+        descricaoTroca.addEventListener('keyup', () => { atualizar(); salvarDados(); });
+
+        // Restaurar estado do checkbox ao carregar
+        if (valorTroca.value || descricaoTroca.value) {
+            checkboxTrocaPrincipal.checked = true;
+            containerTroca.style.display = 'block';
+        }
 
         // Adicionar event listeners para o primeiro CNAE
         const primeiroCnae = document.querySelector('.cnae-input');
@@ -2165,7 +2375,6 @@
         textareaTroca.addEventListener('keyup', () => { atualizar(); salvarDados(); });
 
         // Listeners para valor de Troca também
-        const valorTroca = document.getElementById('valorTroca');
         if (valorTroca) {
             valorTroca.addEventListener('change', () => { atualizar(); salvarDados(); });
             valorTroca.addEventListener('keyup', () => { atualizar(); salvarDados(); });
