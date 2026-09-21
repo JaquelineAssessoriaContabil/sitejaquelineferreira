@@ -289,6 +289,86 @@
             font-weight: 600;
             margin-left: 10px;
         }
+    
+        .accept-form {
+            background: #fef9f7;
+            padding: 25px;
+            border-radius: 8px;
+            border: 2px solid #c39a8a;
+            margin: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #c39a8a;
+            box-shadow: 0 0 0 3px rgba(195, 154, 138, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 4px;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .btn-submit {
+            background: #c39a8a;
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background: #b38a7a;
+            box-shadow: 0 4px 12px rgba(195, 154, 138, 0.3);
+        }
+
     </style>
 </head>
 <body>
@@ -311,6 +391,7 @@
             <button class="tab-btn" onclick="openTab(event, 'condicoes')">⚙️ Condições</button>
             <button class="tab-btn" onclick="openTab(event, 'documentos')">📄 10 Documentos</button>
             <button class="tab-btn" onclick="openTab(event, 'proximos')">🚀 Próximos Passos</button>
+            <button class="tab-btn" onclick="openTab(event, \'aceitar\')">✅ Aceitar Proposta</button>
         </div>
 
         <div class="content">
@@ -519,6 +600,64 @@
                     <br>Horário: Segunda a sexta, 09h-17h
                 </div>
             </div>
+            <!-- TAB 6: ACEITAR PROPOSTA -->
+            <div id="aceitar" class="tab-content">
+                <h2>Aceitar Proposta</h2>
+                
+                <p>Preencha o formulário abaixo para confirmar sua aceitação desta proposta:</p>
+
+                <div class="accept-form">
+                    <form id="acceptForm">
+                        <div class="form-group">
+                            <label for="nome">Seu Nome Completo</label>
+                            <input type="text" id="nome" name="nome" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefone">Telefone/WhatsApp</label>
+                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 9.0000-0000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="plano">Plano Escolhido</label>
+                            <select id="plano" name="plano" required>
+                                <option value="">Selecione um plano</option>
+                                <option value="essencial">Essencial - R$ 167,00/mês</option>
+                                <option value="profissional">Profissional - R$ 197,00/mês (RECOMENDADO)</option>
+                                <option value="premium">Premium - R$ 227,00/mês</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="observacoes">Observações/Dúvidas</label>
+                            <textarea id="observacoes" name="observacoes"></textarea>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="aceito" name="aceito" required>
+                            <label for="aceito">Eu aceito os termos e condições desta proposta e autorizo a Jaqueline Ferreira Assessoria Contábil a iniciar os procedimentos de formalização do MEI.</label>
+                        </div>
+
+                        <button type="submit" class="btn-submit">✅ Confirmar Aceitação</button>
+                    </form>
+
+                    <div id="successMessage" style="display: none; background: #e8f5e9; border-left: 4px solid #4caf50; padding: 20px; border-radius: 8px; margin-top: 20px; color: #2e7d32;">
+                        <strong>✓ Proposta aceita com sucesso!</strong><br>
+                        Você receberá um email de confirmação em breve com os próximos passos.
+                    </div>
+                </div>
+            </div>
+
 
         </div>
 
@@ -544,6 +683,28 @@
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
+    
+        // Formulário de aceite
+        document.getElementById('acceptForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                nome: document.getElementById('nome').value,
+                cpf: document.getElementById('cpf').value,
+                email: document.getElementById('email').value,
+                telefone: document.getElementById('telefone').value,
+                plano: document.getElementById('plano').value,
+                observacoes: document.getElementById('observacoes').value,
+                data: new Date().toLocaleString('pt-BR')
+            };
+
+            console.log('Proposta aceita:', formData);
+            
+            // Mostrar mensagem de sucesso
+            document.getElementById('acceptForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        });
+
     </script>
 </body>
 </html>
