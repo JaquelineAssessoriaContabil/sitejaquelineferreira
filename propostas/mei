@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propostas de Assessoria MEI - Jaqueline Ferreira</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f3f0 0%, #e8dfd6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            border-left: 4px solid #c39a8a;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .header .subtitle {
+            color: #999;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .propostas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .proposta-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .proposta-card:hover {
+            border-color: #c39a8a;
+            box-shadow: 0 6px 16px rgba(195, 154, 138, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .proposta-card h2 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .proposta-card .details {
+            color: #666;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+
+        .proposta-card .details p {
+            margin: 8px 0;
+        }
+
+        .proposta-card .label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .proposta-card .cta {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: #c39a8a;
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .proposta-card:hover .cta {
+            background: #b08670;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-top: 4px solid #c39a8a;
+        }
+
+        .footer p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .footer .contact {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer a {
+            color: #c39a8a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .propostas-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Propostas de Assessoria MEI</h1>
+            <p><strong>Jaqueline Ferreira Assessoria Contábil Ltda</strong></p>
+            <p class="subtitle">Formalização e acompanhamento de Microempreendedor Individual</p>
+        </div>
+
+        <div class="propostas-grid">
+            <!-- MAICON ZACCARON -->
+            <a href="maicon-zaccaron.html" class="proposta-card">
+                <div class="status-badge">✓ Ativa</div>
+                <h2>Maicon Zaccaron</h2>
+                <div class="details">
+                    <p><span class="label">Atividade:</span> Marmiteiro</p>
+                    <p><span class="label">Previsão:</span> 01/10/2026</p>
+                    <p><span class="label">Plano:</span> Profissional</p>
+                </div>
+                <div class="cta">Ver proposta →</div>
+            </a>
+
+            <!-- TEMPLATE PARA PRÓXIMOS CLIENTES -->
+            <div class="proposta-card" style="opacity: 0.6; border-style: dashed;">
+                <div class="status-badge" style="background: #f3e5f5; color: #6a1b9a;">⏳ Em breve</div>
+                <h2>Próximo cliente</h2>
+                <div class="details">
+                    <p><span class="label">Atividade:</span> -</p>
+                    <p><span class="label">Previsão:</span> -</p>
+                    <p><span class="label">Plano:</span> -</p>
+                </div>
+                <div class="cta" style="background: #ccc;">Aguardando...</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Sistema de Propostas MEI</strong></p>
+            <p>Cada cliente tem acesso direto à sua proposta personalizada com os planos e condições específicas.</p>
+            <div class="contact">
+                <p>📱 WhatsApp: <a href="https://wa.me/554999803552" target="_blank">(49) 9.9880-3552</a></p>
+                <p>📧 Email: contato@jaquelineferreiracontadora.com.br</p>
+                <p>🏢 Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
