@@ -154,7 +154,29 @@
               <label for="razao-social">Razão Social da Empresa *</label>
               <input type="text" id="razao-social" name="razao-social" placeholder="Nome completo da empresa" required>
             </div>
-            <div class="form-group">
+
+            <div style="grid-column:1 / -1;margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e8d4cf;">
+              <h4 style="color:#C5A29E;font-size:1.1rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;">
+                <span>💡</span> Nome que pretende colocar na empresa
+              </h4>
+              <p style="color:#666;margin-bottom:1.5rem;font-size:0.95rem;">Você tem alguma opção de nome em mente? Preencha as 3 principais opções abaixo para analisarmos a disponibilidade:</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;">
+                <div class="form-group">
+                  <label for="opcao-nome-1">Opção 1 *</label>
+                  <input type="text" id="opcao-nome-1" name="opcao-nome-1" placeholder="Ex: Inácio Nunes Pinto LTDA" required>
+                </div>
+                <div class="form-group">
+                  <label for="opcao-nome-2">Opção 2 *</label>
+                  <input type="text" id="opcao-nome-2" name="opcao-nome-2" placeholder="Ex: Nunes Pinto Comércio LTDA" required>
+                </div>
+                <div class="form-group">
+                  <label for="opcao-nome-3">Opção 3 *</label>
+                  <input type="text" id="opcao-nome-3" name="opcao-nome-3" placeholder="Ex: IP Negócios LTDA" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" style="grid-column:1 / -1;">
               <label for="localizacao">Localização (Cidade/Estado) *</label>
               <input type="text" id="localizacao" name="localizacao" placeholder="Ex:Videira/SC" required>
             </div>
@@ -600,7 +622,7 @@
   <script>
     // ==================== CONFIGURAÇÃO DO GOOGLE APPS SCRIPT ====================
     // COLE AQUI A URL DO SEU GOOGLE APPS SCRIPT APÓS PUBLICAR
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_taiz4GBS5JLz-lKOWSLmeCJbPTR0Dz2keKGf7THE4idbI4kH6-uhjF3MDxl0M4z';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxUdwtyXHV9SQXkgflCR1_S0oncKYxUE70JR2IxMdBb-fauzLD6V2eiDCUgXAtYfw/exec';
     // ==================== FIM DA CONFIGURAÇÃO ====================
 
     function openTab(evt,tabName){
@@ -902,6 +924,47 @@
         submitBtn.innerText=originalText;
       });
     }
+
+    // ==================== AUTO-SAVE COM LOCALSTORAGE ====================
+    function salvarDados(){
+      const formData={};
+      document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea, select').forEach(field=>{
+        if(field.id) formData[field.id]=field.value;
+      });
+      localStorage.setItem('proposta_dados_salvos',JSON.stringify(formData));
+    }
+
+    function carregarDados(){
+      const dados=localStorage.getItem('proposta_dados_salvos');
+      if(dados){
+        try{
+          const formData=JSON.parse(dados);
+          Object.keys(formData).forEach(id=>{
+            const field=document.getElementById(id);
+            if(field) field.value=formData[id];
+          });
+        }catch(e){
+          console.log('Erro ao carregar dados salvos');
+        }
+      }
+    }
+
+    function limparDadosSalvos(){
+      if(confirm('Tem certeza que deseja limpar todos os dados salvos?')){
+        localStorage.removeItem('proposta_dados_salvos');
+        location.reload();
+      }
+    }
+
+    // Carregar dados quando página abre
+    window.addEventListener('load',function(){
+      carregarDados();
+      // Salvar dados conforme digita
+      document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea, select').forEach(field=>{
+        field.addEventListener('change',salvarDados);
+        field.addEventListener('blur',salvarDados);
+      });
+    });
   </script>
 </body>
 </html>
