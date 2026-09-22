@@ -596,7 +596,7 @@
       </div>
       <div class="contact-item">
         <strong>💬 WhatsApp</strong>
-        <a href="https://wa.me/5549998803552" target="_blank">(49) 9.9880-3552</a>
+        <a href="https://wa.me/554999803552" target="_blank">(49) 9.9880-3552</a>
       </div>
     </div>
     <div class="contact-footer">
@@ -815,16 +815,22 @@
     }
 
     async function enviarDadosParaPlanilha(dados,numeroConfirmacao){
-      const urlScript='https://script.google.com/macros/s/AKfycbyYRdJWjCAU7Vn4t_VYgmirPj2yWOJ0fjNp54zAmLCVRe0wCRa2YEDmqfJgZrWKQ6dC/exec';
+      const urlScript='https://script.google.com/macros/s/AKfycbzlxeKsKlht5YpxqzxZUFZZB_WFtF47CvAfhSOvaw17yQjyQSDCWNmGS5ZKxkI3J54/exec';
       if(urlScript.includes('COLE_AQUI')){
         console.log('⚠️ URL do Google Apps Script não configurada.');
         return;
       }
       try{
         const payload={...dados,numeroConfirmacao:numeroConfirmacao,data:new Date().toLocaleString('pt-BR'),aceite:true};
-        const response=await fetch(urlScript,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
-        console.log('✓ Dados enviados para planilha');
+        const response=await fetch(urlScript,{
+          method:'POST',
+          mode:'no-cors',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(payload)
+        });
+        console.log('✓ Dados enviados para planilha:', payload);
       }catch(error){
+        console.error('Erro ao enviar para planilha:', error);
         console.log('Dados preparados para envio');
       }
     }
@@ -889,7 +895,9 @@
         nome:nome,
         cpf:cpf,
         email:email,
-        telefone:telefone
+        telefone:telefone,
+        razaoSocial:'',
+        cnpj:''
       };
 
       // 1. Enviar para planilha
@@ -911,7 +919,7 @@
 
       // 4. Abrir WhatsApp com mensagem
       setTimeout(()=>{
-        const whatsappNumber='5549998803552';
+        const whatsappNumber='554999803552';
         const message=`Olá Jaqueline! Aceitei sua proposta de assessoria para empresa LTDA. Número de confirmação: ${numeroConfirmacao}`;
         const whatsappLink='https://wa.me/'+whatsappNumber+'?text='+encodeURIComponent(message);
         window.open(whatsappLink,'_blank');
