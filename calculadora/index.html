@@ -1,1 +1,1186 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Honorários - Jaqueline Ferreira</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose: #C5A29E;
+      --rose-soft: #F7EEEC;
+      --rose-line: #E9D6D2;
+      --rose-deep: #93615C;
+      --gold: #C9A15E;
+      --gold-light: #F3DFAF;
+      --cream: #FBF6F1;
+      --ink: #1a1a1a;
+      --surface: #FFFFFF;
+      --text-secondary: #666666;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--rose-soft) 0%, var(--cream) 100%);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--surface);
+      padding: 35px;
+      border-radius: 12px;
+      border-top: 5px solid var(--rose);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .header-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    /* NAVIGATION */
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .nav-tile {
+      background: var(--surface);
+      border: 2px solid var(--rose-line);
+      border-left: 4px solid var(--gold);
+      border-radius: 10px;
+      padding: 1.5rem 1rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 120px;
+      font-weight: 600;
+      color: var(--ink);
+      font-size: 12px;
+    }
+
+    .nav-tile:hover {
+      border-color: var(--rose);
+      box-shadow: 0 4px 12px rgba(197, 162, 158, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .nav-tile.active {
+      background: linear-gradient(135deg, var(--rose-soft) 0%, var(--gold-light) 100%);
+      border-left: 4px solid var(--rose);
+      box-shadow: 0 4px 12px rgba(197, 162, 158, 0.2);
+    }
+
+    .nav-tile-icon {
+      font-size: 28px;
+    }
+
+    /* CONTENT */
+    .content {
+      display: none;
+    }
+
+    .content.active {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CARD */
+    .card {
+      background: var(--surface);
+      border: 2px solid var(--rose-line);
+      border-left: 4px solid var(--gold);
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--rose-line);
+    }
+
+    .card-icon {
+      font-size: 24px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--rose-soft);
+      border-radius: 8px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    /* FORM */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--rose-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input,
+    .form-select {
+      padding: 12px 14px;
+      border: 2px solid var(--rose-line);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--surface);
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px rgba(197, 162, 158, 0.1);
+      background: var(--rose-soft);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-secondary);
+    }
+
+    /* SLIDER */
+    .slider-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .slider-input {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--rose-line);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .slider-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(197, 162, 158, 0.3);
+    }
+
+    .slider-input::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 6px rgba(197, 162, 158, 0.3);
+    }
+
+    .slider-value {
+      min-width: 50px;
+      text-align: right;
+      font-weight: 700;
+      color: var(--rose);
+      font-size: 14px;
+    }
+
+    /* BUTTONS */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(197, 162, 158, 0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(197, 162, 158, 0.35);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--rose);
+      border: 2px solid var(--rose);
+    }
+
+    .btn-secondary:hover {
+      background: var(--rose-soft);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* RESULT CARD */
+    .result-box {
+      background: linear-gradient(135deg, var(--rose-soft) 0%, var(--gold-light) 100%);
+      border: 2px solid var(--rose-line);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    .result-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--rose-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .result-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--rose);
+      margin-bottom: 1rem;
+    }
+
+    .result-details {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .result-details strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    /* METRICS */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .metric-box {
+      background: var(--rose-soft);
+      border: 2px solid var(--rose-line);
+      border-radius: 8px;
+      padding: 1.2rem;
+      text-align: center;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--rose-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--rose);
+    }
+
+    /* TABLE */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 13px;
+    }
+
+    .table thead {
+      background: var(--rose-soft);
+    }
+
+    .table th {
+      padding: 12px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--rose-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--rose-line);
+    }
+
+    .table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--rose-line);
+    }
+
+    .table tr:hover {
+      background: var(--rose-soft);
+    }
+
+    /* DASHBOARD */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .dashboard-item {
+      background: var(--surface);
+      border: 2px solid var(--rose-line);
+      border-left: 4px solid var(--gold);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .dashboard-item:hover {
+      border-left-color: var(--rose);
+      box-shadow: 0 4px 12px rgba(197, 162, 158, 0.15);
+    }
+
+    .dashboard-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--rose-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .dashboard-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--rose);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 15px;
+      }
+
+      .nav-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .header h1 {
+        font-size: 20px;
+      }
+
+      .result-value {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Sistema de Honorários</h1>
+      <div class="header-subtitle">Jaqueline Ferreira Assessoria Contábil</div>
+    </div>
+
+    <div class="nav-grid">
+      <div class="nav-tile active" onclick="switchTab('calculator')">
+        <div class="nav-tile-icon">💰</div>
+        <div>Calculadora</div>
+      </div>
+      <div class="nav-tile" onclick="switchTab('dashboard')">
+        <div class="nav-tile-icon">📊</div>
+        <div>Dashboard</div>
+      </div>
+      <div class="nav-tile" onclick="switchTab('clients')">
+        <div class="nav-tile-icon">👥</div>
+        <div>Clientes</div>
+      </div>
+      <div class="nav-tile" onclick="switchTab('simulator')">
+        <div class="nav-tile-icon">🧮</div>
+        <div>Simulador</div>
+      </div>
+      <div class="nav-tile" onclick="switchTab('settings')">
+        <div class="nav-tile-icon">⚙️</div>
+        <div>Config</div>
+      </div>
+    </div>
+
+    <!-- CALCULATOR -->
+    <div id="calculator" class="content active">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">🧮</div>
+          <h2 class="card-title">Calcular Honorário</h2>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Cliente</label>
+            <input type="text" class="form-input" id="client-name" placeholder="Nome">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Regime Tributário</label>
+            <select class="form-select" id="client-type">
+              <option value="mei">MEI</option>
+              <option value="simples" selected>Simples Nacional</option>
+              <option value="lp">Lucro Presumido</option>
+              <option value="lr">Lucro Real</option>
+              <option value="pf">Pessoa Física</option>
+              <option value="avulsos">Avulsos/Consultorias</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Funcionários</label>
+            <input type="number" class="form-input" id="num-employees" value="0" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Volume de Movimentação</label>
+            <div class="slider-group">
+              <input type="range" class="slider-input" id="volume" min="1" max="5" value="2" step="1">
+              <span class="slider-value" id="volume-val">2</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Complexidade</label>
+            <div class="slider-group">
+              <input type="range" class="slider-input" id="complexity" min="1" max="5" value="2" step="1">
+              <span class="slider-value" id="complexity-val">2</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="calculateFee()">Calcular Honorário</button>
+
+        <div id="result-section" style="display: none;">
+          <div class="result-box">
+            <div class="result-label">Valor Proposto</div>
+            <div class="result-value" id="proposed-value">R$ 0</div>
+            <div class="result-details">
+              <strong>Piso Mínimo:</strong> R$ <span id="minimum-value">0</span><br>
+              <strong>Margem de Lucro:</strong> <span id="margin-value">40%</span>
+            </div>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="saveClient()">Salvar Cliente</button>
+            <button class="btn btn-secondary" onclick="resetCalculator()">Novo Cálculo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">📈</div>
+          <h2 class="card-title">Visão Geral</h2>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dashboard-item">
+            <div class="dashboard-label">Total de Clientes</div>
+            <div class="dashboard-value" id="total-clients">0</div>
+          </div>
+          <div class="dashboard-item">
+            <div class="dashboard-label">Faturamento</div>
+            <div class="dashboard-value" id="total-revenue">R$ 0</div>
+          </div>
+          <div class="dashboard-item">
+            <div class="dashboard-label">Ticket Médio</div>
+            <div class="dashboard-value" id="avg-ticket">R$ 0</div>
+          </div>
+          <div class="dashboard-item">
+            <div class="dashboard-label">Margem</div>
+            <div class="dashboard-value" id="avg-margin">40%</div>
+          </div>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th>Data</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="recent-clients">
+            <tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">Nenhum cliente calculado ainda</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div id="clients" class="content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">👥</div>
+          <h2 class="card-title">Histórico de Clientes</h2>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Regime</th>
+              <th>Valor</th>
+              <th>Complexidade</th>
+              <th>Data</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="clients-list">
+            <tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">Nenhum cliente registrado</td></tr>
+          </tbody>
+        </table>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="exportToCSV()">Exportar em CSV</button>
+          <button class="btn btn-secondary" onclick="clearHistory()">Limpar Histórico</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIMULATOR -->
+    <div id="simulator" class="content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">🧮</div>
+          <h2 class="card-title">Simulador Tributário</h2>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Regime</label>
+            <select class="form-select" id="sim-regime">
+              <option value="simples">Simples Nacional</option>
+              <option value="lp">Lucro Presumido</option>
+              <option value="lr">Lucro Real</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Faturamento Mensal (R$)</label>
+            <input type="number" class="form-input" id="sim-revenue" value="10000" step="1000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Número de Funcionários</label>
+            <input type="number" class="form-input" id="sim-employees" value="0" min="0" step="1">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="simulateTax()">Simular</button>
+
+        <div id="sim-result" style="display: none;">
+          <div class="result-box">
+            <div class="result-label">Análise Tributária</div>
+            <div class="result-details">
+              <strong>Regime:</strong> <span id="sim-regime-result">-</span><br>
+              <strong>Alíquota:</strong> <span id="sim-rate-result">0%</span><br>
+              <strong>Imposto Mensal:</strong> <span id="sim-tax-result">R$ 0</span><br>
+              <strong>Margem Líquida:</strong> <span id="sim-margin-result">0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="settings" class="content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">⚙️</div>
+          <h2 class="card-title">Configuração de Custos</h2>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Internet (R$/mês)</label>
+            <input type="number" class="form-input" id="cost-internet" value="220" step="10" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sistema Domínio (R$/mês)</label>
+            <input type="number" class="form-input" id="cost-system" value="550" step="50" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Seguro RC (R$/mês)</label>
+            <input type="number" class="form-input" id="cost-insurance" value="125" step="10" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Claude Pro (R$/mês)</label>
+            <input type="number" class="form-input" id="cost-claude" value="110" step="10" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cursos (R$/mês)</label>
+            <input type="number" class="form-input" id="cost-courses" value="490" step="50" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pró-labore (R$/mês)</label>
+            <input type="number" class="form-input" id="cost-prolabore" value="1621" step="50" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">INSS pró-labore (R$/mês)</label>
+            <input type="number" class="form-input" id="cost-inss" value="178.31" step="5" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Anuidade CNPJ (R$/ano)</label>
+            <input type="number" class="form-input" id="cost-cnpj" value="700" step="50" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Anuidade CPF (R$/ano)</label>
+            <input type="number" class="form-input" id="cost-cpf" value="700" step="50" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Alvará (R$/ano)</label>
+            <input type="number" class="form-input" id="cost-alvara" value="380" step="50" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Certificados (R$/ano)</label>
+            <input type="number" class="form-input" id="cost-cert" value="330" step="50" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Horas Disponíveis/Mês</label>
+            <input type="number" class="form-input" id="hours-available" value="160" step="10" onchange="updateTechnicalHour()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">% Produtivo</label>
+            <div class="slider-group">
+              <input type="range" class="slider-input" id="productivity" min="30" max="100" value="60" step="5" onchange="updateTechnicalHour()">
+              <span class="slider-value" id="productivity-val">60%</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Margem de Lucro (%)</label>
+            <div class="slider-group">
+              <input type="range" class="slider-input" id="margin-profit" min="20" max="80" value="40" step="5">
+              <span class="slider-value" id="margin-val">40%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <div class="metric-label">Custo Mensal</div>
+            <div class="metric-value" id="monthly-cost">R$ 0</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Hora Técnica</div>
+            <div class="metric-value" id="tech-hour">R$ 0</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Horas Produtivas</div>
+            <div class="metric-value" id="productive-hours">96</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">🎯</div>
+          <h2 class="card-title">Valores Mínimos por Regime</h2>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">MEI (R$/mês)</label>
+            <input type="number" class="form-input" id="min-mei" value="127" step="10">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Simples Nacional (R$/mês)</label>
+            <input type="number" class="form-input" id="min-simples" value="310" step="50">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Lucro Presumido (R$/mês)</label>
+            <input type="number" class="form-input" id="min-lp" value="500" step="50">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Lucro Real (R$/mês)</label>
+            <input type="number" class="form-input" id="min-lr" value="750" step="50">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pessoa Física (R$/mês)</label>
+            <input type="number" class="form-input" id="min-pf" value="200" step="50">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Avulsos (R$/mês)</label>
+            <input type="number" class="form-input" id="min-avulsos" value="400" step="50">
+          </div>
+        </div>
+      </div>
+
+      <!-- HONORÁRIOS -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">💰</div>
+          <h2 class="card-title">Tabela de Honorários</h2>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <label class="form-label" style="margin-bottom: 10px; display: block;">Filtro por Categoria</label>
+          <select class="form-select" id="honorarios-category" onchange="filterHonorarios()">
+            <option value="">Todas</option>
+            <option value="societario">Societário</option>
+            <option value="fiscal">Fiscal</option>
+            <option value="marcas">Marcas e Patentes</option>
+            <option value="financeiro">Financeiro</option>
+            <option value="pessoal">Pessoal</option>
+            <option value="mei">MEI</option>
+            <option value="contratos">Contratos</option>
+            <option value="consultorias">Consultorias</option>
+          </select>
+        </div>
+
+        <table class="table" style="font-size: 12px;">
+          <thead>
+            <tr>
+              <th style="text-align: left;">Descrição</th>
+              <th style="text-align: right; width: 120px;">Valor (R$)</th>
+              <th style="text-align: center; width: 80px;">Categoria</th>
+            </tr>
+          </thead>
+          <tbody id="honorarios-table">
+          </tbody>
+        </table>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="exportHonorarios()">Exportar Honorários</button>
+          <button class="btn btn-secondary" onclick="resetHonorarios()">Restaurar Padrão</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('volume').addEventListener('input', e => {
+      document.getElementById('volume-val').textContent = e.target.value;
+    });
+
+    document.getElementById('complexity').addEventListener('input', e => {
+      document.getElementById('complexity-val').textContent = e.target.value;
+    });
+
+    document.getElementById('productivity').addEventListener('input', e => {
+      document.getElementById('productivity-val').textContent = e.target.value + '%';
+    });
+
+    document.getElementById('margin-profit').addEventListener('input', e => {
+      document.getElementById('margin-val').textContent = e.target.value + '%';
+    });
+
+    // HONORÁRIOS DATA
+    const honorariosData = [
+      // SOCIETÁRIO
+      { desc: 'Constituição Empresarial Completa - LTDA, SPE, SCP, LTDA UNIPESSOAL', valor: 1200, categoria: 'societario' },
+      { desc: 'Transformação MEI para LTDA', valor: 1097, categoria: 'societario' },
+      { desc: 'Alteração empresa LTDA', valor: 1097, categoria: 'societario' },
+      { desc: 'Alteração empresa LTDA sem processo de viabilidade', valor: 697, categoria: 'societario' },
+      { desc: 'Alteração de MEI', valor: 150, categoria: 'societario' },
+      { desc: 'Alvará Bombeiros ou renovação', valor: 150, categoria: 'societario' },
+      { desc: 'Alvará Sanitário ou renovação', valor: 500, categoria: 'societario' },
+      { desc: 'Certidão de Isenção de Alvará Sanitário', valor: 100, categoria: 'societario' },
+      { desc: 'Alvará Prefeitura + Meu ISS + IE', valor: 250, categoria: 'societario' },
+      { desc: 'Meu ISS', valor: 100, categoria: 'societario' },
+      { desc: 'IE', valor: 250, categoria: 'societario' },
+      { desc: 'Alvará Ambiental ou renovação', valor: 250, categoria: 'societario' },
+      { desc: 'Alvará Polícia Civil ou renovação', valor: 150, categoria: 'societario' },
+      { desc: 'DBE (e-mail, telefone, etc)', valor: 497, categoria: 'societario' },
+      { desc: 'Baixa empresarial completa - LTDA, SPE, SCP, LTDA UNIPESSOAL', valor: 1247, categoria: 'societario' },
+      { desc: 'Registro junto aos conselhos de classe', valor: 1000, categoria: 'societario' },
+      { desc: 'Abertura de SA/Associações/Igrejas completo', valor: 2447, categoria: 'societario' },
+      { desc: 'Constituição Empresarial (Sede Virtual) - viabilidade/DBE/Junta Comercial', valor: 1247, categoria: 'societario' },
+      { desc: 'Alteração Empresarial c/ Sede Virtual', valor: 1347, categoria: 'societario' },
+      { desc: 'Alteração Empresarial + Atualização de Alvarás (Sede Virtual)', valor: 1497, categoria: 'societario' },
+      // FISCAL
+      { desc: 'Parcelamentos', valor: 150, categoria: 'fiscal' },
+      { desc: 'Recálculos (DAS, DARF)', valor: 15, categoria: 'fiscal' },
+      { desc: 'Recálculos (FGTS)', valor: 25, categoria: 'fiscal' },
+      { desc: 'NF-E (Cliente)', valor: 35, categoria: 'fiscal' },
+      { desc: 'NF-E', valor: 50, categoria: 'fiscal' },
+      { desc: 'NFS-E (Cliente)', valor: 25, categoria: 'fiscal' },
+      { desc: 'NFS-E', valor: 40, categoria: 'fiscal' },
+      { desc: 'Consultoria com planejamento tributário, compliance, consultoria especializada', valor: 1500, categoria: 'fiscal' },
+      // MARCAS E PATENTES
+      { desc: 'Registro de Marcas e Patentes com 1 classificação', valor: 1800, categoria: 'marcas' },
+      { desc: 'Registro de Marcas e Patentes com mais classificações', valor: 2600, categoria: 'marcas' },
+      { desc: 'Consulta de Registro da Marca', valor: 250, categoria: 'marcas' },
+      // FINANCEIRO
+      { desc: 'BPO Financeiro', valor: 2000, categoria: 'financeiro' },
+      // PESSOAL
+      { desc: 'Departamento Pessoal - Memorial de Cálculo - Rescisão', valor: 350, categoria: 'pessoal' },
+      { desc: 'Departamento Pessoal - Memorial de Cálculo - Folha Mensal', valor: 150, categoria: 'pessoal' },
+      { desc: 'Departamento Pessoal - Adicional Folha de Pagamento', valor: 50, categoria: 'pessoal' },
+      { desc: 'Pessoa Física - Assessoria Mensal', valor: 200, categoria: 'pessoal' },
+      { desc: 'Pessoa Física - Imposto de Renda', valor: 150, categoria: 'pessoal' },
+      { desc: 'Pessoa Física - Fazer Tabela Progressiva', valor: 0, categoria: 'pessoal' },
+      // MEI
+      { desc: 'MEI - DASN (Avulso)', valor: 150, categoria: 'mei' },
+      { desc: 'MEI - Recálculo DAS', valor: 15, categoria: 'mei' },
+      { desc: 'MEI - Assessoria Mensal MEI', valor: 197, categoria: 'mei' },
+      // CONTRATOS
+      { desc: 'Contrato Prestação de Serviços PJ (MEI)', valor: 200, categoria: 'contratos' },
+      { desc: 'Distrato (Contrato Prestação de Serviços PJ MEI)', valor: 150, categoria: 'contratos' },
+      { desc: 'Contrato de Locação', valor: 250, categoria: 'contratos' },
+      { desc: 'Contrato de Compra e Venda', valor: 0, categoria: 'contratos' },
+      // CONSULTORIAS
+      { desc: 'Tabelar', valor: 0, categoria: 'consultorias' },
+      { desc: 'Consulta de Análise da Empresa', valor: 250, categoria: 'consultorias' },
+    ];
+
+    function renderHonorarios(data = honorariosData) {
+      const tbody = document.getElementById('honorarios-table');
+      tbody.innerHTML = '';
+
+      const categoriaMap = {
+        societario: 'Societário',
+        fiscal: 'Fiscal',
+        marcas: 'Marcas',
+        financeiro: 'Financeiro',
+        pessoal: 'Pessoal',
+        mei: 'MEI',
+        contratos: 'Contratos',
+        consultorias: 'Consultorias'
+      };
+
+      data.forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td style="text-align: left;">${item.desc}</td>
+          <td style="text-align: right;">
+            <input type="number" class="form-input" style="width: 100%; padding: 8px; font-size: 13px;"
+                   value="${item.valor}" onchange="updateHonorarioValue(${index}, this.value)">
+          </td>
+          <td style="text-align: center; font-size: 11px; color: var(--text-secondary);">${categoriaMap[item.categoria]}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function updateHonorarioValue(index, valor) {
+      const stored = JSON.parse(localStorage.getItem('honorarios') || JSON.stringify(honorariosData));
+      stored[index].valor = parseFloat(valor) || 0;
+      localStorage.setItem('honorarios', JSON.stringify(stored));
+    }
+
+    function filterHonorarios() {
+      const categoria = document.getElementById('honorarios-category').value;
+      const stored = JSON.parse(localStorage.getItem('honorarios') || JSON.stringify(honorariosData));
+      const filtered = categoria ? stored.filter(h => h.categoria === categoria) : stored;
+      renderHonorarios(filtered);
+    }
+
+    function exportHonorarios() {
+      const stored = JSON.parse(localStorage.getItem('honorarios') || JSON.stringify(honorariosData));
+      let csv = 'Descrição,Valor (R$),Categoria\n';
+      stored.forEach(h => {
+        csv += `"${h.desc}",${h.valor},${h.categoria}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `honorarios_${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+    }
+
+    function resetHonorarios() {
+      if (confirm('Restaurar todos os valores padrão dos honorários?')) {
+        localStorage.removeItem('honorarios');
+        renderHonorarios();
+      }
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tile').forEach(el => el.classList.remove('active'));
+      document.getElementById(tab).classList.add('active');
+      document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+    }
+
+    function updateTechnicalHour() {
+      const costs = {
+        internet: parseFloat(document.getElementById('cost-internet').value) || 0,
+        system: parseFloat(document.getElementById('cost-system').value) || 0,
+        insurance: parseFloat(document.getElementById('cost-insurance').value) || 0,
+        claude: parseFloat(document.getElementById('cost-claude').value) || 0,
+        courses: parseFloat(document.getElementById('cost-courses').value) || 0,
+        prolabore: parseFloat(document.getElementById('cost-prolabore').value) || 0,
+        inss: parseFloat(document.getElementById('cost-inss').value) || 0,
+        cnpj: (parseFloat(document.getElementById('cost-cnpj').value) || 0) / 12,
+        cpf: (parseFloat(document.getElementById('cost-cpf').value) || 0) / 12,
+        alvara: (parseFloat(document.getElementById('cost-alvara').value) || 0) / 12,
+        cert: (parseFloat(document.getElementById('cost-cert').value) || 0) / 12
+      };
+
+      const totalMonthly = Object.values(costs).reduce((a, b) => a + b, 0);
+      const hoursAvailable = parseFloat(document.getElementById('hours-available').value) || 160;
+      const productivity = parseFloat(document.getElementById('productivity').value) || 60;
+      const productiveHours = (hoursAvailable * productivity) / 100;
+      const techHour = totalMonthly / productiveHours;
+
+      document.getElementById('monthly-cost').textContent = 'R$ ' + totalMonthly.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      document.getElementById('tech-hour').textContent = 'R$ ' + techHour.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      document.getElementById('productive-hours').textContent = Math.round(productiveHours);
+    }
+
+    function calculateFee() {
+      const clientName = document.getElementById('client-name').value || 'Cliente';
+      const clientType = document.getElementById('client-type').value;
+      const employees = parseInt(document.getElementById('num-employees').value) || 0;
+      const volume = parseInt(document.getElementById('volume').value) || 1;
+      const complexity = parseInt(document.getElementById('complexity').value) || 1;
+
+      const costs = {
+        internet: parseFloat(document.getElementById('cost-internet').value) || 0,
+        system: parseFloat(document.getElementById('cost-system').value) || 0,
+        insurance: parseFloat(document.getElementById('cost-insurance').value) || 0,
+        claude: parseFloat(document.getElementById('cost-claude').value) || 0,
+        courses: parseFloat(document.getElementById('cost-courses').value) || 0,
+        prolabore: parseFloat(document.getElementById('cost-prolabore').value) || 0,
+        inss: parseFloat(document.getElementById('cost-inss').value) || 0,
+        cnpj: (parseFloat(document.getElementById('cost-cnpj').value) || 0) / 12,
+        cpf: (parseFloat(document.getElementById('cost-cpf').value) || 0) / 12,
+        alvara: (parseFloat(document.getElementById('cost-alvara').value) || 0) / 12,
+        cert: (parseFloat(document.getElementById('cost-cert').value) || 0) / 12
+      };
+
+      const totalMonthly = Object.values(costs).reduce((a, b) => a + b, 0);
+      const hoursAvailable = parseFloat(document.getElementById('hours-available').value) || 160;
+      const productivity = parseFloat(document.getElementById('productivity').value) || 60;
+      const productiveHours = (hoursAvailable * productivity) / 100;
+      const techHour = totalMonthly / productiveHours;
+
+      let estimatedHours = 4;
+      estimatedHours += (volume - 1) * 2;
+      estimatedHours += (complexity - 1) * 3;
+      estimatedHours += employees * 2;
+
+      let complexityFactor = 1 + ((complexity - 1) * 0.15);
+      complexityFactor += (employees > 0 ? 0.1 : 0);
+      complexityFactor += (volume > 3 ? 0.1 : 0);
+
+      const baseValue = estimatedHours * techHour;
+      const calculatedValue = baseValue * complexityFactor;
+
+      const minimums = {
+        mei: parseFloat(document.getElementById('min-mei').value) || 127,
+        simples: parseFloat(document.getElementById('min-simples').value) || 310,
+        lp: parseFloat(document.getElementById('min-lp').value) || 500,
+        lr: parseFloat(document.getElementById('min-lr').value) || 750,
+        pf: parseFloat(document.getElementById('min-pf').value) || 200,
+        avulsos: parseFloat(document.getElementById('min-avulsos').value) || 400
+      };
+      const minimumFee = minimums[clientType] || 310;
+
+      const finalValue = Math.max(calculatedValue, minimumFee);
+      const marginPercent = parseFloat(document.getElementById('margin-profit').value) || 40;
+      const marginAmount = finalValue * (marginPercent / 100);
+      const proposedValue = Math.round(finalValue + marginAmount);
+
+      const realMargin = ((proposedValue - finalValue) / finalValue) * 100;
+
+      document.getElementById('proposed-value').textContent = 'R$ ' + proposedValue.toLocaleString('pt-BR');
+      document.getElementById('minimum-value').textContent = Math.round(minimumFee).toLocaleString('pt-BR');
+      document.getElementById('margin-value').textContent = Math.round(realMargin) + '%';
+      document.getElementById('result-section').style.display = 'block';
+
+      window.lastCalculation = { clientName, clientType, proposedValue, complexity };
+    }
+
+    function saveClient() {
+      if (!window.lastCalculation) return;
+
+      const clients = JSON.parse(localStorage.getItem('clients') || '[]');
+      clients.push({
+        id: Date.now(),
+        ...window.lastCalculation,
+        date: new Date().toLocaleDateString('pt-BR')
+      });
+      localStorage.setItem('clients', JSON.stringify(clients));
+
+      updateDashboard();
+      updateClientsList();
+      resetCalculator();
+      alert('Cliente salvo com sucesso!');
+    }
+
+    function resetCalculator() {
+      document.getElementById('client-name').value = '';
+      document.getElementById('result-section').style.display = 'none';
+    }
+
+    function updateDashboard() {
+      const clients = JSON.parse(localStorage.getItem('clients') || '[]');
+      const total = clients.length;
+      const revenue = clients.reduce((sum, c) => sum + c.proposedValue, 0);
+      const avgTicket = total > 0 ? revenue / total : 0;
+
+      document.getElementById('total-clients').textContent = total;
+      document.getElementById('total-revenue').textContent = 'R$ ' + revenue.toLocaleString('pt-BR');
+      document.getElementById('avg-ticket').textContent = 'R$ ' + Math.round(avgTicket).toLocaleString('pt-BR');
+
+      const recent = clients.slice(-5).reverse();
+      const tbody = document.getElementById('recent-clients');
+      tbody.innerHTML = '';
+      recent.forEach(c => {
+        tbody.innerHTML += `<tr><td>${c.clientName}</td><td>${c.clientType.toUpperCase()}</td><td>R$ ${c.proposedValue.toLocaleString('pt-BR')}</td><td>${c.date}</td><td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="deleteClient(${c.id})">Del</button></td></tr>`;
+      });
+      if (clients.length === 0) tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">Nenhum cliente calculado ainda</td></tr>';
+    }
+
+    function updateClientsList() {
+      const clients = JSON.parse(localStorage.getItem('clients') || '[]');
+      const tbody = document.getElementById('clients-list');
+      tbody.innerHTML = '';
+
+      clients.forEach(c => {
+        tbody.innerHTML += `<tr><td>${c.clientName}</td><td>${c.clientType}</td><td>R$ ${c.proposedValue.toLocaleString('pt-BR')}</td><td>${c.complexity}/5</td><td>${c.date}</td><td><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="deleteClient(${c.id})">Del</button></td></tr>`;
+      });
+      if (clients.length === 0) tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">Nenhum cliente registrado</td></tr>';
+    }
+
+    function deleteClient(id) {
+      const clients = JSON.parse(localStorage.getItem('clients') || '[]');
+      const filtered = clients.filter(c => c.id !== id);
+      localStorage.setItem('clients', JSON.stringify(filtered));
+      updateDashboard();
+      updateClientsList();
+    }
+
+    function exportToCSV() {
+      const clients = JSON.parse(localStorage.getItem('clients') || '[]');
+      let csv = 'Cliente,Regime,Valor,Complexidade,Data\n';
+      clients.forEach(c => {
+        csv += `"${c.clientName}",${c.clientType},${c.proposedValue},${c.complexity},${c.date}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `clientes_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+    }
+
+    function clearHistory() {
+      if (confirm('Tem certeza que deseja limpar todo o histórico?')) {
+        localStorage.removeItem('clients');
+        updateDashboard();
+        updateClientsList();
+      }
+    }
+
+    function simulateTax() {
+      const regime = document.getElementById('sim-regime').value;
+      const revenue = parseFloat(document.getElementById('sim-revenue').value) || 0;
+      const employees = parseInt(document.getElementById('sim-employees').value) || 0;
+
+      let rate = 0;
+      if (regime === 'simples') {
+        rate = Math.min(33, 4 + (employees * 0.5));
+      } else if (regime === 'lp') {
+        rate = 15.5 + (employees * 0.5);
+      } else if (regime === 'lr') {
+        rate = 30 + (employees * 0.5);
+      }
+
+      const taxAmount = (revenue * rate) / 100;
+      const netMargin = ((revenue - taxAmount) / revenue) * 100;
+
+      document.getElementById('sim-regime-result').textContent = regime.toUpperCase();
+      document.getElementById('sim-rate-result').textContent = rate.toFixed(2) + '%';
+      document.getElementById('sim-tax-result').textContent = 'R$ ' + taxAmount.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+      document.getElementById('sim-margin-result').textContent = netMargin.toFixed(2) + '%';
+      document.getElementById('sim-result').style.display = 'block';
+    }
+
+    updateTechnicalHour();
+    updateDashboard();
+    updateClientsList();
+    renderHonorarios();
+  </script>
+</body>
+</html>
