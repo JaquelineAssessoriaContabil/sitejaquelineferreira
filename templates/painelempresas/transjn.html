@@ -101,6 +101,10 @@ DADOS PREENCHIDOS CONFORME DOCUMENTOS:
                 <div class="value" id="id_regime">-</div>
             </div>
             <div class="key-value">
+                <div class="key">Natureza Jurídica</div>
+                <div class="value" id="id_natureza">-</div>
+            </div>
+            <div class="key-value">
                 <div class="key">Endereço</div>
                 <div class="value" id="id_endereco">-</div>
             </div>
@@ -215,17 +219,14 @@ DADOS PREENCHIDOS CONFORME DOCUMENTOS:
     </div>
 
     <script>
-        // ============================================================================
-        // DADOS DA EMPRESA - PREENCHIDOS CONFORME DOCUMENTOS
-        // ============================================================================
-
         const escritorio = "Jaqueline Ferreira Assessoria Contábil";
 
         const empresa = {
             razaoSocial: "TRANS JN TRANSPORTE ESCOLAR LTDA",
             cnpj: "26.481.883/0001-92",
             nomeFantasia: "TRANS JN TRANSPORTE ESCOLAR",
-            regimeTributario: "Microempresa (ME) - Simples Nacional",
+            regimeTributario: "Simples Nacional / ME",
+            naturezaJuridica: "206-2 - Sociedade Empresária Limitada",
             endereco: "Rua Manoel de Oliveira, 30",
             cep: "89.562-784",
             municipio: "VIDEIRA",
@@ -334,6 +335,7 @@ DADOS PREENCHIDOS CONFORME DOCUMENTOS:
             document.getElementById("id_cnpj").textContent = empresa.cnpj || "-";
             document.getElementById("id_fantasia").textContent = empresa.nomeFantasia || "-";
             document.getElementById("id_regime").textContent = empresa.regimeTributario || "-";
+            document.getElementById("id_natureza").textContent = empresa.naturezaJuridica || "-";
             document.getElementById("id_endereco").textContent = empresa.endereco || "-";
             document.getElementById("id_email").textContent = empresa.email || "-";
             document.getElementById("id_telefone").textContent = empresa.telefone || "-";
