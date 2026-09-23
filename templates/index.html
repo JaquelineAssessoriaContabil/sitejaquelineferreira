@@ -1,1 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Templates - Jaqueline Ferreira Assessoria Contábil</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --rose: #C5A29E;
+            --gold: #C9A15E;
+            --cream: #FBF6F1;
+            --dark: #2c2c2c;
+            --light-gray: #f5f5f5;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--cream);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid var(--gold);
+        }
+        .header h1 {
+            color: var(--dark);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: var(--rose);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        .template-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--gold);
+        }
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .template-card-header {
+            background: linear-gradient(135deg, var(--rose) 0%, var(--gold) 100%);
+            color: white;
+            padding: 20px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .template-card-content {
+            padding: 20px;
+        }
+        .template-list {
+            list-style: none;
+        }
+        .template-item {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        .template-item:last-child {
+            border-bottom: none;
+        }
+        .template-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.2s;
+            padding: 8px 0;
+        }
+        .template-link:hover {
+            color: var(--gold);
+            padding-left: 8px;
+        }
+        .template-link::after {
+            content: "→";
+            color: var(--gold);
+            font-weight: 700;
+        }
+        .empty-category {
+            color: var(--rose);
+            font-size: 13px;
+            font-style: italic;
+            padding: 15px 0;
+            text-align: center;
+        }
+        .footer {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--gold);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .footer p {
+            color: var(--dark);
+            font-size: 12px;
+            margin: 5px 0;
+        }
+        .footer strong {
+            color: var(--gold);
+        }
+        @media (max-width: 768px) {
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Templates Profissionais</h1>
+            <p>Jaqueline Ferreira Assessoria Contábil</p>
+        </div>
 
+        <div class="templates-grid">
+            <!-- PAINÉIS DE EMPRESA -->
+            <div class="template-card">
+                <div class="template-card-header">🏢 Painéis de Empresa</div>
+                <div class="template-card-content">
+                    <ul class="template-list">
+                        <li class="template-item">
+                            <a href="painelEmpresas/PainelEmpresa_Trans_JN_Transporte_Escolar.html" class="template-link">
+                                Trans JN Transporte Escolar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- PROPOSTAS -->
+            <div class="template-card">
+                <div class="template-card-header">📑 Propostas Comerciais</div>
+                <div class="template-card-content">
+                    <div class="empty-category">
+                        Nenhuma proposta disponível ainda
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTRATOS -->
+            <div class="template-card">
+                <div class="template-card-header">📜 Contratos</div>
+                <div class="template-card-content">
+                    <div class="empty-category">
+                        Nenhum contrato disponível ainda
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARECERES -->
+            <div class="template-card">
+                <div class="template-card-header">⚖️ Pareceres Técnicos</div>
+                <div class="template-card-content">
+                    <div class="empty-category">
+                        Nenhum parecer disponível ainda
+                    </div>
+                </div>
+            </div>
+
+            <!-- RELATÓRIOS -->
+            <div class="template-card">
+                <div class="template-card-header">📊 Relatórios</div>
+                <div class="template-card-content">
+                    <div class="empty-category">
+                        Nenhum relatório disponível ainda
+                    </div>
+                </div>
+            </div>
+
+            <!-- DECLARAÇÕES -->
+            <div class="template-card">
+                <div class="template-card-header">✍️ Declarações</div>
+                <div class="template-card-content">
+                    <div class="empty-category">
+                        Nenhuma declaração disponível ainda
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Jaqueline Ferreira Assessoria Contábil</strong></p>
+            <p>CRC SC-013019/O-4 | Videira - SC</p>
+            <p style="margin-top: 10px; font-size: 11px; color: var(--rose);">Última atualização: 23/09/2026</p>
+        </div>
+    </div>
+</body>
+</html>
