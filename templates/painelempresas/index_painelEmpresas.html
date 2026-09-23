@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painéis de Empresa</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --rose: #C5A29E;
+            --gold: #C9A15E;
+            --cream: #FBF6F1;
+            --dark: #2c2c2c;
+            --light-gray: #f5f5f5;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--cream);
+            color: var(--dark);
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--gold);
+        }
+        .header h1 {
+            color: var(--dark);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: var(--rose);
+            font-size: 13px;
+        }
+        .paineis-list {
+            list-style: none;
+        }
+        .painel-item {
+            background: white;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border-left: 4px solid var(--gold);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        .painel-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        .painel-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        .painel-link:hover {
+            color: var(--gold);
+        }
+        .painel-link::after {
+            content: "→";
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 18px;
+        }
+        .empty {
+            text-align: center;
+            color: var(--rose);
+            padding: 30px;
+            font-style: italic;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid var(--light-gray);
+            font-size: 12px;
+            color: var(--rose);
+        }
+        @media (max-width: 600px) {
+            .header h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Painéis de Empresa</h1>
+            <p>Jaqueline Ferreira Assessoria Contábil</p>
+        </div>
+
+        <ul class="paineis-list">
+            <!-- ADICIONE AQUI: Copie a linha abaixo e altere o nome -->
+            <!-- <li class="painel-item"><a href="PainelEmpresa_NOME.html" class="painel-link"><span>Nome da Empresa</span></a></li> -->
+
+            <li class="painel-item"><a href="PainelEmpresa_Jaqueline.html" class="painel-link"><span>Jaqueline Ferreira Assessoria Contábil</span></a></li>
+            <li class="painel-item"><a href="PainelEmpresa_Trans_JN_Transporte_Escolar.html" class="painel-link"><span>Trans JN Transporte Escolar LTDA</span></a></li>
+        </ul>
+
+        <div class="footer">
+            <p>Para adicionar um novo painel: copie uma linha acima, altere o nome do arquivo e o nome da empresa</p>
+        </div>
+    </div>
+</body>
+</html>
