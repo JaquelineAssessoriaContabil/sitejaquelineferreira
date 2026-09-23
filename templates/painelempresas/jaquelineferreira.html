@@ -82,6 +82,10 @@
                 <div class="value" id="id_regime">-</div>
             </div>
             <div class="key-value">
+                <div class="key">Natureza Jurídica</div>
+                <div class="value" id="id_natureza">-</div>
+            </div>
+            <div class="key-value">
                 <div class="key">Endereço</div>
                 <div class="value" id="id_endereco">-</div>
             </div>
@@ -196,7 +200,8 @@
             razaoSocial: "Jaqueline Ferreira Assessoria Contábil LTDA",
             cnpj: "64.202.276/0001-35",
             nomeFantasia: "Jaqueline Ferreira Assessoria Contábil",
-            regimeTributario: "Simples Nacional",
+            regimeTributario: "Simples Nacional / ME",
+            naturezaJuridica: "206-2 - Sociedade Empresária Limitada",
             endereco: "Rua Manoel de Oliveira, 30 - Nossa Senhora Aparecida - Videira/SC",
             cep: "89.562-784",
             municipio: "Videira",
@@ -270,6 +275,7 @@
             document.getElementById("id_razao").textContent = empresa.razaoSocial;
             document.getElementById("id_cnpj").textContent = empresa.cnpj;
             document.getElementById("id_regime").textContent = empresa.regimeTributario;
+            document.getElementById("id_natureza").textContent = empresa.naturezaJuridica;
             document.getElementById("id_endereco").textContent = empresa.endereco;
             document.getElementById("id_email").textContent = empresa.email;
             document.getElementById("id_telefone").textContent = empresa.telefone;
