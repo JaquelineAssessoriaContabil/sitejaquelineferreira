@@ -572,10 +572,11 @@ NOTAS:
 
         const acessos = [
             {
-                sistema: "NFS-e (Nota Fiscal de Serviço)",
+                sistema: "Portal de Emissão de Notas Fiscais",
                 usuario: "68.844.953/0001-70",
+                senha: "Ange@2026",
                 email: "",
-                observacao: "Site: www.nfse.gov.br"
+                observacao: "Emissão de notas fiscais de serviço"
             }
         ];
 
@@ -843,6 +844,9 @@ NOTAS:
                     }
                     if (a.usuario && a.usuario.trim() !== "") {
                         html += "<div class='access-item'><div class='access-label'>Usuário</div><div class='access-value'>" + a.usuario + "</div></div>";
+                    }
+                    if (a.senha && a.senha.trim() !== "") {
+                        html += "<div class='access-item'><div class='access-label'>Senha</div><div class='access-value'>" + a.senha + "</div></div>";
                     }
                     if (a.email && a.email.trim() !== "") {
                         html += "<div class='access-item'><div class='access-label'>E-mail</div><div class='access-value'>" + a.email + "</div></div>";
