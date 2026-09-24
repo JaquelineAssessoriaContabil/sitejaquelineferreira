@@ -1,0 +1,932 @@
+<!--
+================================================================================
+TEMPLATE-MESTRE MEI: PAINEL DO MICROEMPREENDEDOR INDIVIDUAL
+Versão 2.0 — Jaqueline Ferreira Assessoria Contábil
+================================================================================
+
+INSTRUÇÕES DE USO:
+
+1. DADOS DO MEI (linha ~210)
+   Altere o objeto "mei" com os dados do microempreendedor:
+
+   - nomeEmpresarial: [ALTERE - Nome empresarial do CNPJ]
+   - nomeEmpreendedor: [ALTERE - Nome completo do empresário]
+   - cpf: [ALTERE - CPF (somente se disponível em documento)]
+   - cnpj: [ALTERE - XX.XXX.XXX/XXXX-XX]
+   - nomeFantasia: [ALTERE - Nome fantasia (opcional)]
+   - dataAbertura: [ALTERE - DD/MM/YYYY]
+   - situacaoCadastral: [ALTERE - Ativa, Suspensa, Cancelada, etc]
+   - regimeTributario: [ALTERE - SIMEI (somente com fonte)]
+   - ocupacaoPrincipal: [ALTERE - Ocupação principal]
+   - cnaePrincipal: [ALTERE - XXXX-X/XX - Descrição]
+   - ocupacoesSecundarias: [ALTERE - Apenas se houver e estiverem em documento]
+   - cnaesSecundarios: [ALTERE - Apenas se houver]
+   - dataOpcaoSimei: [ALTERE - DD/MM/YYYY (se disponível)]
+   - situacaoSimei: [ALTERE - Ativa, Suspensa, etc (se disponível)]
+   - endereco: [ALTERE - Endereço completo]
+   - cep: [ALTERE - CEP]
+   - bairro: [ALTERE - Bairro]
+   - municipio: [ALTERE - Município]
+   - estado: [ALTERE - UF]
+   - email: [ALTERE - E-mail]
+   - telefone: [ALTERE - Telefone]
+   - capitalSocial: [ALTERE - Valor (somente se disponível)]
+   - naturezaJuridica: [ALTERE - Código e descrição (somente se disponível)]
+   - data: [ALTERE - DD/MM/YYYY - Data de atualização do painel]
+
+2. ACESSOS (linha ~240)
+   Atualize o array "acessos" com informações fornecidas:
+
+   {
+     sistema: "[Portal/Sistema]",
+     usuario: "[Usuário fornecido - nunca invente]",
+     email: "[E-mail de acesso - somente se informado]",
+     observacao: "[Notas relevantes - somente se houver]"
+   }
+
+3. DADOS BANCÁRIOS (linha ~250)
+   Atualize a função "copiar_bancario()":
+
+   - banco: [NOME DO BANCO]
+   - agencia: [AGÊNCIA]
+   - conta: [CONTA]
+   - tipo: [Corrente/Poupança]
+   - pix: [CHAVE PIX]
+   - cpfFavorecido: [CPF do favorecido]
+   - favorecido: [NOME COMPLETO]
+   - observacoes: [Notas adicionais, se houver]
+
+REGRAS ABSOLUTAS:
+- NUNCA inventar dados
+- NUNCA preencher CPF por suposição
+- NUNCA assumir regime ou situação fiscal
+- NUNCA reutilizar dados de outro cliente
+- NUNCA usar dados de exemplo como dados reais
+- Cada informação deve ter fonte rastreável
+- Se não houver informação: deixar vazio ou "Não informado nos documentos"
+
+NOTAS:
+- O rodapé exibe automaticamente o nome do MEI preenchido
+- A constante escritorio mantém a identificação do escritório responsável
+- Cópia de CNPJ e dados funcionando em todos os browsers
+- Cópia automática para Ctrl+V — compatível com todos os browsers
+- Links para portais oficiais abrem em nova aba
+- Nenhum campo obrigatório para dados não disponíveis
+- MEI não possui estrutura societária — não incluir sócios/administradores
+
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do MEI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --rose: #C5A29E;
+            --gold: #C9A15E;
+            --cream: #FBF6F1;
+            --dark: #2c2c2c;
+            --light-gray: #f5f5f5;
+            --border-light: #e8ddd5;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--cream);
+            color: var(--dark);
+            line-height: 1.4;
+            padding: 15px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 18px;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            color: var(--dark);
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .header p {
+            color: var(--rose);
+            font-size: 12px;
+            margin: 0;
+        }
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .info-card {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 3px solid var(--gold);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .info-card-label {
+            color: var(--rose);
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+        .info-card-value {
+            color: var(--dark);
+            font-size: 12px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+        .section {
+            background: white;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            color: var(--gold);
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--gold);
+        }
+        .key-value {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 12px;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .key-value:last-child {
+            border-bottom: none;
+        }
+        .key {
+            color: var(--rose);
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .value {
+            color: var(--dark);
+            font-size: 12px;
+            word-break: break-word;
+        }
+        .item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: var(--light-gray);
+            border-radius: 6px;
+            border-left: 3px solid var(--rose);
+        }
+        .item-label {
+            color: var(--rose);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .btn {
+            background-color: var(--gold);
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 3px 3px 3px 0;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background-color: var(--rose);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .btn-small {
+            padding: 5px 8px;
+            font-size: 10px;
+        }
+        .btn-portal {
+            background-color: var(--rose);
+        }
+        .btn-portal:hover {
+            background-color: var(--gold);
+        }
+        .footer {
+            background: var(--cream);
+            color: var(--dark);
+            padding: 12px;
+            text-align: center;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 11px;
+            border: 1px solid var(--gold);
+        }
+        .footer p {
+            margin: 0;
+            line-height: 1.6;
+        }
+        .hidden {
+            display: none;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .status-ativo {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-pendente {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-inativo {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .access-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .access-item {
+            background: var(--light-gray);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid var(--rose);
+        }
+        .access-label {
+            color: var(--rose);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .access-value {
+            color: var(--dark);
+            font-size: 11px;
+            margin-top: 4px;
+            word-break: break-all;
+        }
+        @media (max-width: 768px) {
+            .key-value {
+                grid-template-columns: 1fr;
+            }
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+            .access-row {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Painel do MEI</h1>
+            <p>Cadastro, Regularidade e Acompanhamento Contábil</p>
+        </div>
+
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="info-card-label">Nome Empresarial</div>
+                <div class="info-card-value" id="card_nomeEmpresarial">-</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">CNPJ</div>
+                <div class="info-card-value" id="card_cnpj">-</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">Município</div>
+                <div class="info-card-value" id="card_municipio">-</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">Atualização</div>
+                <div class="info-card-value" id="card_data">-</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🏢 Identificação do MEI</div>
+            <div class="key-value">
+                <div class="key">Nome Empresarial</div>
+                <div class="value" id="id_nomeEmpresarial">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Nome do Empreendedor</div>
+                <div class="value" id="id_nomeEmpreendedor">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">CPF</div>
+                <div class="value" id="id_cpf">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">CNPJ</div>
+                <div class="value" id="id_cnpj">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Nome Fantasia</div>
+                <div class="value" id="id_nomeFantasia">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Data de Abertura</div>
+                <div class="value" id="id_dataAbertura">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Situação Cadastral</div>
+                <div class="value" id="id_situacaoCadastral">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Enquadramento</div>
+                <div class="value" id="id_regimeTributario">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Natureza Jurídica</div>
+                <div class="value" id="id_naturezaJuridica">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Capital Social</div>
+                <div class="value" id="id_capitalSocial">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Endereço</div>
+                <div class="value" id="id_endereco">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">CEP</div>
+                <div class="value" id="id_cep">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Bairro</div>
+                <div class="value" id="id_bairro">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Município</div>
+                <div class="value" id="id_municipio">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">UF</div>
+                <div class="value" id="id_estado">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">E-mail</div>
+                <div class="value" id="id_email">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Telefone</div>
+                <div class="value" id="id_telefone">-</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🧾 Dados do MEI</div>
+            <div class="key-value">
+                <div class="key">Ocupação Principal</div>
+                <div class="value" id="mei_ocupacaoPrincipal">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">CNAE Principal</div>
+                <div class="value" id="mei_cnaePrincipal">-</div>
+            </div>
+            <div class="key-value" id="ocupacoes-sec-row">
+                <div class="key">Ocupações Secundárias</div>
+                <div class="value" id="mei_ocupacoesSecundarias">-</div>
+            </div>
+            <div class="key-value" id="cnaes-sec-row">
+                <div class="key">CNAEs Secundários</div>
+                <div class="value" id="mei_cnaesSecundarios">-</div>
+            </div>
+            <div class="key-value" id="data-opcao-row">
+                <div class="key">Data de Opção pelo SIMEI</div>
+                <div class="value" id="mei_dataOpcaoSimei">-</div>
+            </div>
+            <div class="key-value" id="situacao-simei-row">
+                <div class="key">Situação no SIMEI</div>
+                <div class="value" id="mei_situacaoSimei">-</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🔗 Consultas e Documentos Oficiais</div>
+            <div id="documentos-container"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">⚡ Acessos Rápidos</div>
+            <div id="acessos-rapidos-container"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🔐 Informações de Acesso</div>
+            <div id="acessos-container"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">✅ Regularidade Fiscal e Certidões</div>
+            <div id="certidoes-container"></div>
+            <div id="cnd-container"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📄 Obrigações e Acompanhamento</div>
+            <div id="obrigacoes-container"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📋 Dados Cadastrais</div>
+            <button class="btn" onclick="copiar_todos()">📋 Copiar Todos os Dados</button>
+            <button class="btn" onclick="copiar_basico()">📄 Copiar Dados Básicos</button>
+            <div class="key-value">
+                <div class="key">Nome Empresarial</div>
+                <div class="value" id="forn_nomeEmpresarial">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">CNPJ</div>
+                <div class="value" id="forn_cnpj">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Endereço</div>
+                <div class="value" id="forn_endereco">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">CEP</div>
+                <div class="value" id="forn_cep">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Município</div>
+                <div class="value" id="forn_municipio">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">E-mail</div>
+                <div class="value" id="forn_email">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Telefone</div>
+                <div class="value" id="forn_telefone">-</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🏦 Dados Bancários</div>
+            <button class="btn" onclick="copiar_bancario()">📋 Copiar Dados Bancários</button>
+            <div class="key-value">
+                <div class="key">Banco</div>
+                <div class="value" id="banc_banco">Não informado nos documentos</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Agência</div>
+                <div class="value" id="banc_agencia">Não informado nos documentos</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Conta</div>
+                <div class="value" id="banc_conta">Não informado nos documentos</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Tipo de Conta</div>
+                <div class="value" id="banc_tipo">Não informado nos documentos</div>
+            </div>
+            <div class="key-value">
+                <div class="key">PIX</div>
+                <div class="value" id="banc_pix">Não informado nos documentos</div>
+            </div>
+            <div class="key-value">
+                <div class="key">CPF do Favorecido</div>
+                <div class="value" id="banc_cpfFavorecido">Não informado nos documentos</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Favorecido</div>
+                <div class="value" id="banc_favorecido">Não informado nos documentos</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Observações</div>
+                <div class="value" id="banc_observacoes">-</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p style="margin-bottom: 4px;"><strong>Painel do MEI — <span id="footer_mei">-</span></strong></p>
+            <p style="margin: 0; font-size: 10px;" id="footer_data">Informações baseadas nos dados cadastrados e atualizadas até -</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // INSTRUÇÕES: ALTERE OS DADOS ABAIXO CONFORME SEUS DOCUMENTOS
+        // ============================================================================
+
+        const escritorio = "Jaqueline Ferreira Assessoria Contábil";
+
+        const mei = {
+            nomeEmpresarial: "67.103.003 JONATHAN GABRIEL GONCALVES FERMINO",
+            nomeEmpreendedor: "JONATHAN GABRIEL GONCALVES FERMINO",
+            cpf: "135.589.589-85",
+            cnpj: "67.103.003/0001-21",
+            nomeFantasia: "",
+            dataAbertura: "01/06/2026",
+            situacaoCadastral: "ATIVA",
+            regimeTributario: "",
+            ocupacaoPrincipal: "Mecânico(a) de veículos independente",
+            cnaePrincipal: "4520-0/01 - Serviços de manutenção e reparação mecânica de veículos automotores",
+            ocupacoesSecundarias: "",
+            cnaesSecundarios: "",
+            dataOpcaoSimei: "",
+            situacaoSimei: "",
+            endereco: "RUA PREFEITO LUIZ ADELAR SOLDATELLI, 1753",
+            cep: "89162-160",
+            bairro: "VALADA SAO PAULO",
+            municipio: "RIO DO SUL",
+            estado: "SC",
+            email: "JONATHANGABRIEL9876@GMAIL.COM",
+            telefone: "(47) 8846-3107",
+            capitalSocial: "1.000,00",
+            naturezaJuridica: "213-5 - Empresário (Individual)",
+            data: "23/09/2026"
+        };
+
+        const acessos = [
+            {
+                sistema: "Portal de Emissão de Notas Fiscais",
+                usuario: "67.103.003/0001-21",
+                senha: "Jonathan19.",
+                email: "",
+                observacao: "Emissão de notas fiscais de serviço"
+            }
+        ];
+
+        const portais = {
+            cartaoCnpj: "https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/",
+            simplesNacional: "https://www8.receita.fazenda.gov.br/SimplesNacional/aplicacoes.aspx?id=21",
+            das: "https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao",
+            nfse: "https://www.gov.br/empresas-e-negocios/pt-br/empreendedor/servicos-para-mei/nota-fiscal/nota-fiscal-de-servico-eletronica-nfs-e",
+            cndFederal: "https://servicos.receitafederal.gov.br/servico/certidoes/#/home/cnpj",
+            cndEstadual: "https://sat.sef.sc.gov.br/tax.NET/Sat.CtaCte.Web/SolicitacaoCnd.aspx",
+            cndt: "https://cndt-certidao.tst.jus.br/",
+            fgts: "https://consulta-crf.caixa.gov.br/consultacrf/pages/consultaEmpregador.jsf"
+        };
+
+        const cndMunicipais = {
+            "Videira": "https://videira.atende.net/autoatendimento/servicos/certidao-negativa-de-debitos",
+            "Curitiba": "https://cnd-cidadao.curitiba.pr.gov.br/Certidao/SolicitarCnpj",
+            "Rio do Sul": "https://www.riodosul.sc.gov.br/autoatendimento/servicos/certidao-negativa-de-debitos/detalhar/1",
+            "Agronômica": "https://cidadao.e-publica.net/cidadao/agronomica/portal/servicos/certidoes/emissao?params=Nw%3D%3D"
+        };
+
+        // ============================================================================
+        // FUNÇÕES DE CÓPIA E NAVEGAÇÃO
+        // ============================================================================
+
+        function copiarParaClipboard(texto) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(texto).then(() => {
+                    alert("Dados copiados com sucesso.\nUse Ctrl+V (ou Cmd+V) para colar.");
+                }).catch(() => {
+                    fallbackCopy(texto);
+                });
+            } else {
+                fallbackCopy(texto);
+            }
+        }
+
+        function fallbackCopy(texto) {
+            const textarea = document.createElement("textarea");
+            textarea.value = texto;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand("copy");
+                alert("Dados copiados com sucesso.\nUse Ctrl+V (ou Cmd+V) para colar.");
+            } catch (err) {
+                alert("Erro ao copiar os dados. Tente novamente.");
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+
+        function abrir_portal(tipo) {
+            let url = portais[tipo];
+
+            // CND Municipal: buscar link conforme o município
+            if (tipo === "cndMunicipal") {
+                url = cndMunicipais[mei.municipio] || null;
+            }
+
+            if (!url) return;
+            if (mei.cnpj && mei.cnpj.trim() !== "") {
+                copiarParaClipboard(mei.cnpj);
+            }
+            window.open(url, "_blank");
+        }
+
+        function copiar_todos() {
+            let linhas = [];
+            linhas.push("PAINEL DO MEI");
+            linhas.push("=".repeat(50));
+            linhas.push("");
+
+            // IDENTIFICAÇÃO
+            linhas.push("IDENTIFICAÇÃO");
+            if (mei.nomeEmpresarial && mei.nomeEmpresarial.trim() !== "") linhas.push("Nome Empresarial: " + mei.nomeEmpresarial);
+            if (mei.nomeEmpreendedor && mei.nomeEmpreendedor.trim() !== "") linhas.push("Nome do Empreendedor: " + mei.nomeEmpreendedor);
+            if (mei.cpf && mei.cpf.trim() !== "") linhas.push("CPF: " + mei.cpf);
+            if (mei.cnpj && mei.cnpj.trim() !== "") linhas.push("CNPJ: " + mei.cnpj);
+            if (mei.nomeFantasia && mei.nomeFantasia.trim() !== "") linhas.push("Nome Fantasia: " + mei.nomeFantasia);
+            if (mei.dataAbertura && mei.dataAbertura.trim() !== "") linhas.push("Data de Abertura: " + mei.dataAbertura);
+            if (mei.situacaoCadastral && mei.situacaoCadastral.trim() !== "") linhas.push("Situação Cadastral: " + mei.situacaoCadastral);
+            if (mei.regimeTributario && mei.regimeTributario.trim() !== "") linhas.push("Enquadramento: " + mei.regimeTributario);
+            if (mei.naturezaJuridica && mei.naturezaJuridica.trim() !== "") linhas.push("Natureza Jurídica: " + mei.naturezaJuridica);
+            if (mei.capitalSocial && mei.capitalSocial.trim() !== "") linhas.push("Capital Social: " + mei.capitalSocial);
+
+            // ENDEREÇO
+            linhas.push("");
+            linhas.push("ENDEREÇO");
+            if (mei.endereco && mei.endereco.trim() !== "") linhas.push("Endereço: " + mei.endereco);
+            if (mei.cep && mei.cep.trim() !== "") linhas.push("CEP: " + mei.cep);
+            if (mei.bairro && mei.bairro.trim() !== "") linhas.push("Bairro: " + mei.bairro);
+            if (mei.municipio && mei.municipio.trim() !== "") linhas.push("Município: " + mei.municipio + (mei.estado ? " / " + mei.estado : ""));
+
+            // CONTATO
+            linhas.push("");
+            linhas.push("CONTATO");
+            if (mei.email && mei.email.trim() !== "") linhas.push("E-mail: " + mei.email);
+            if (mei.telefone && mei.telefone.trim() !== "") linhas.push("Telefone: " + mei.telefone);
+
+            // ATIVIDADE
+            linhas.push("");
+            linhas.push("ATIVIDADE");
+            if (mei.ocupacaoPrincipal && mei.ocupacaoPrincipal.trim() !== "") linhas.push("Ocupação Principal: " + mei.ocupacaoPrincipal);
+            if (mei.cnaePrincipal && mei.cnaePrincipal.trim() !== "") linhas.push("CNAE Principal: " + mei.cnaePrincipal);
+            if (mei.ocupacoesSecundarias && mei.ocupacoesSecundarias.trim() !== "") linhas.push("Ocupações Secundárias: " + mei.ocupacoesSecundarias);
+            if (mei.cnaesSecundarios && mei.cnaesSecundarios.trim() !== "") linhas.push("CNAEs Secundários: " + mei.cnaesSecundarios);
+
+            // SIMEI
+            linhas.push("");
+            linhas.push("SIMEI");
+            if (mei.dataOpcaoSimei && mei.dataOpcaoSimei.trim() !== "") linhas.push("Data de Opção pelo SIMEI: " + mei.dataOpcaoSimei);
+            if (mei.situacaoSimei && mei.situacaoSimei.trim() !== "") linhas.push("Situação no SIMEI: " + mei.situacaoSimei);
+
+            linhas.push("");
+
+            let texto = linhas.join("\n");
+            copiarParaClipboard(texto);
+        }
+
+        function copiar_basico() {
+            const texto = "DADOS BÁSICOS MEI\n" +
+                          "=".repeat(30) + "\n\n" +
+                          "Nome Empresarial: " + (mei.nomeEmpresarial || "-") + "\n" +
+                          "CNPJ: " + (mei.cnpj || "-") + "\n" +
+                          "Empreendedor: " + (mei.nomeEmpreendedor || "-") + "\n" +
+                          "Endereço: " + (mei.endereco || "-") + "\n" +
+                          "Município: " + (mei.municipio || "-");
+            copiarParaClipboard(texto);
+        }
+
+        function copiar_bancario() {
+            let texto = "DADOS BANCÁRIOS MEI\n" + "=".repeat(30) + "\n\n";
+            const banco = document.getElementById("banc_banco").textContent;
+            const agencia = document.getElementById("banc_agencia").textContent;
+            const conta = document.getElementById("banc_conta").textContent;
+            const tipo = document.getElementById("banc_tipo").textContent;
+            const pix = document.getElementById("banc_pix").textContent;
+            const cpfFavorecido = document.getElementById("banc_cpfFavorecido").textContent;
+            const favorecido = document.getElementById("banc_favorecido").textContent;
+
+            if (banco !== "Não informado nos documentos") texto += "Banco: " + banco + "\n";
+            if (agencia !== "Não informado nos documentos") texto += "Agência: " + agencia + "\n";
+            if (conta !== "Não informado nos documentos") texto += "Conta: " + conta + "\n";
+            if (tipo !== "Não informado nos documentos") texto += "Tipo: " + tipo + "\n";
+            if (pix !== "Não informado nos documentos") texto += "PIX: " + pix + "\n";
+            if (cpfFavorecido !== "Não informado nos documentos") texto += "CPF Favorecido: " + cpfFavorecido + "\n";
+            if (favorecido !== "Não informado nos documentos") texto += "Favorecido: " + favorecido + "\n";
+
+            if (texto.split("\n").length <= 3) {
+                texto += "\n[Nenhum dado bancário cadastrado]\n";
+            }
+            copiarParaClipboard(texto);
+        }
+
+        // ============================================================================
+        // RENDERIZAÇÃO DINÂMICA
+        // ============================================================================
+
+        function renderizar() {
+            // Cards superiores
+            document.getElementById("card_nomeEmpresarial").textContent = mei.nomeEmpresarial || "-";
+            document.getElementById("card_cnpj").textContent = mei.cnpj || "-";
+            document.getElementById("card_municipio").textContent = (mei.municipio || "-") + "/" + (mei.estado || "-");
+            document.getElementById("card_data").textContent = mei.data || "-";
+
+            // Seção: Identificação do MEI
+            document.getElementById("id_nomeEmpresarial").textContent = mei.nomeEmpresarial || "-";
+            document.getElementById("id_nomeEmpreendedor").textContent = mei.nomeEmpreendedor || "-";
+            document.getElementById("id_cpf").textContent = mei.cpf || "-";
+            document.getElementById("id_cnpj").textContent = mei.cnpj || "-";
+            document.getElementById("id_nomeFantasia").textContent = mei.nomeFantasia || "-";
+            document.getElementById("id_dataAbertura").textContent = mei.dataAbertura || "-";
+            document.getElementById("id_situacaoCadastral").textContent = mei.situacaoCadastral || "-";
+            document.getElementById("id_regimeTributario").textContent = mei.regimeTributario || "-";
+            document.getElementById("id_naturezaJuridica").textContent = mei.naturezaJuridica || "-";
+            document.getElementById("id_capitalSocial").textContent = mei.capitalSocial || "-";
+            document.getElementById("id_endereco").textContent = mei.endereco || "-";
+            document.getElementById("id_bairro").textContent = mei.bairro || "-";
+            document.getElementById("id_municipio").textContent = mei.municipio || "-";
+            document.getElementById("id_estado").textContent = mei.estado || "-";
+            document.getElementById("id_cep").textContent = mei.cep || "-";
+            document.getElementById("id_email").textContent = mei.email || "-";
+            document.getElementById("id_telefone").textContent = mei.telefone || "-";
+
+            // Seção: Dados do MEI
+            document.getElementById("mei_ocupacaoPrincipal").textContent = mei.ocupacaoPrincipal || "-";
+            document.getElementById("mei_cnaePrincipal").textContent = mei.cnaePrincipal || "-";
+            document.getElementById("mei_ocupacoesSecundarias").textContent = mei.ocupacoesSecundarias || "-";
+            document.getElementById("mei_cnaesSecundarios").textContent = mei.cnaesSecundarios || "-";
+            document.getElementById("mei_dataOpcaoSimei").textContent = mei.dataOpcaoSimei || "-";
+            document.getElementById("mei_situacaoSimei").textContent = mei.situacaoSimei || "-";
+
+            // Ocultar linhas vazias
+            document.getElementById("ocupacoes-sec-row").classList.toggle("hidden", !mei.ocupacoesSecundarias || mei.ocupacoesSecundarias.trim() === "");
+            document.getElementById("cnaes-sec-row").classList.toggle("hidden", !mei.cnaesSecundarios || mei.cnaesSecundarios.trim() === "");
+            document.getElementById("data-opcao-row").classList.toggle("hidden", !mei.dataOpcaoSimei || mei.dataOpcaoSimei.trim() === "");
+            document.getElementById("situacao-simei-row").classList.toggle("hidden", !mei.situacaoSimei || mei.situacaoSimei.trim() === "");
+
+            // Dados cadastrais (para cópia)
+            document.getElementById("forn_nomeEmpresarial").textContent = mei.nomeEmpresarial || "-";
+            document.getElementById("forn_cnpj").textContent = mei.cnpj || "-";
+            document.getElementById("forn_endereco").textContent = mei.endereco || "-";
+            document.getElementById("forn_cep").textContent = mei.cep || "-";
+            document.getElementById("forn_municipio").textContent = mei.municipio || "-";
+            document.getElementById("forn_email").textContent = mei.email || "-";
+            document.getElementById("forn_telefone").textContent = mei.telefone || "-";
+
+            // Rodapé
+            document.getElementById("footer_mei").textContent = mei.nomeEmpresarial || "Microempreendedor Individual";
+            document.getElementById("footer_data").textContent = "Painel atualizado em " + (mei.data || "data não informada");
+
+            // Documentos/Consultas Oficiais (padrão visual Painel da Empresa)
+            var documentos = document.getElementById("documentos-container");
+            documentos.innerHTML = "";
+            var tiposDocumentos = [
+                { nome: "Cartão CNPJ", desc: "Comprovante de Inscrição da Receita Federal", tipo: "cartaoCnpj", icon: "🔗" },
+                { nome: "Simples Nacional", desc: "Consulta optantes SIMEI", tipo: "simplesNacional", icon: "🔗" }
+            ];
+            tiposDocumentos.forEach((d) => {
+                var div = document.createElement("div");
+                div.className = "item";
+                var htmlContent = "<div class='item-label'>" + d.icon + " " + d.nome + "</div>";
+                htmlContent += "<div style='font-size:11px;color:var(--dark);margin-bottom:10px;'>" + d.desc + "</div>";
+                htmlContent += "<div class='item-row'>";
+                htmlContent += "<span style='font-size:12px;color:var(--rose);'>Acesso Direto</span>";
+                htmlContent += "<button class='btn btn-small' onclick='abrir_portal(\"" + d.tipo + "\")'>🔗 Acessar</button>";
+                htmlContent += "</div>";
+                div.innerHTML = htmlContent;
+                documentos.appendChild(div);
+            });
+
+            // Acessos Rápidos (padrão visual Painel da Empresa)
+            var acessosRapidos = document.getElementById("acessos-rapidos-container");
+            acessosRapidos.innerHTML = "";
+            var tiposAcessos = [
+                { nome: "DAS Mensal", desc: "Emitir e consultar DAS do MEI", tipo: "das", icon: "💰" },
+                { nome: "NFS-e", desc: "Nota Fiscal de Serviço", tipo: "nfse", icon: "🧾" }
+            ];
+            tiposAcessos.forEach((a) => {
+                var div = document.createElement("div");
+                div.className = "item";
+                var htmlContent = "<div class='item-label'>" + a.icon + " " + a.nome + "</div>";
+                htmlContent += "<div style='font-size:11px;color:var(--dark);margin-bottom:10px;'>" + a.desc + "</div>";
+                htmlContent += "<div class='item-row'>";
+                htmlContent += "<span style='font-size:12px;color:var(--rose);'>Acesso Direto</span>";
+                htmlContent += "<button class='btn btn-small' onclick='abrir_portal(\"" + a.tipo + "\")'>🔗 Acessar</button>";
+                htmlContent += "</div>";
+                div.innerHTML = htmlContent;
+                acessosRapidos.appendChild(div);
+            });
+
+            // Informações de Acesso
+            var acessosDiv = document.getElementById("acessos-container");
+            acessosDiv.innerHTML = "";
+            if (acessos && acessos.length > 0) {
+                acessos.forEach((a, idx) => {
+                    var div = document.createElement("div");
+                    div.className = "access-row";
+                    var html = "";
+                    if (a.sistema && a.sistema.trim() !== "") {
+                        html += "<div class='access-item'><div class='access-label'>Sistema</div><div class='access-value'>" + a.sistema + "</div></div>";
+                    }
+                    if (a.usuario && a.usuario.trim() !== "") {
+                        html += "<div class='access-item'><div class='access-label'>Usuário</div><div class='access-value'>" + a.usuario + "</div></div>";
+                    }
+                    if (a.senha && a.senha.trim() !== "") {
+                        html += "<div class='access-item'><div class='access-label'>Senha</div><div class='access-value'>" + a.senha + "</div></div>";
+                    }
+                    if (a.email && a.email.trim() !== "") {
+                        html += "<div class='access-item'><div class='access-label'>E-mail</div><div class='access-value'>" + a.email + "</div></div>";
+                    }
+                    if (a.observacao && a.observacao.trim() !== "") {
+                        html += "<div class='access-item'><div class='access-label'>Observação</div><div class='access-value'>" + a.observacao + "</div></div>";
+                    }
+                    div.innerHTML = html;
+                    if (html.trim()) acessosDiv.appendChild(div);
+                });
+                if (acessosDiv.children.length === 0) {
+                    acessosDiv.innerHTML = "<div class='item'><div class='item-label'>Nenhuma informação de acesso registrada</div></div>";
+                }
+            } else {
+                acessosDiv.innerHTML = "<div class='item'><div class='item-label'>Nenhuma informação de acesso registrada</div></div>";
+            }
+
+            // Regularidade Fiscal e Certidões (Status/Monitoramento)
+            var certidoes = document.getElementById("certidoes-container");
+            certidoes.innerHTML = "";
+            // Seção informativa - sem duplicação com os acessos diretos
+
+            // CNDs com acesso direto (reutilizando padrão visual do Painel da Empresa)
+            var cndDiv = document.getElementById("cnd-container");
+            cndDiv.innerHTML = "";
+            var tiposCnd = [
+                { nome: "Certidão Negativa - Federal", tipo: "cndFederal", botao: "Emitir" },
+                { nome: "Certidão Negativa - Estadual (SC)", tipo: "cndEstadual", botao: "Emitir" },
+                { nome: "Certidão Negativa - Municipal", tipo: "cndMunicipal", botao: "Emitir" },
+                { nome: "CNDT (Débito Trabalhista)", tipo: "cndt", botao: "Emitir" },
+                { nome: "Certidão FGTS", tipo: "fgts", botao: "Emitir" }
+            ];
+            tiposCnd.forEach((c) => {
+                var div = document.createElement("div");
+                div.className = "item";
+                var cnpjValue = mei.cnpj || "-";
+                var htmlContent = "<div class='item-label'>" + c.nome + "</div>";
+                htmlContent += "<div style='font-size:11px;color:var(--dark);margin-bottom:10px;font-family:monospace;background:#f0f0f0;padding:6px;border-radius:3px;cursor:pointer;' class='cnpj-copy' data-cnpj='" + (mei.cnpj || "") + "'>";
+                htmlContent += "<strong>CNPJ:</strong> " + cnpjValue + " 📋</div>";
+                htmlContent += "<div class='item-row'>";
+                htmlContent += "<span style='font-size:12px;color:var(--rose);'>Acesso Direto</span>";
+
+                // CND Municipal: verificar se tem link para o município
+                if (c.tipo === "cndMunicipal") {
+                    var municipioLink = cndMunicipais[mei.municipio] || null;
+                    if (!municipioLink) {
+                        htmlContent += "<button class='btn btn-small' disabled style='opacity:0.5;cursor:not-allowed;'>Link não configurado</button>";
+                    } else {
+                        htmlContent += "<button class='btn btn-small' onclick='abrir_portal(\"cndMunicipal\")'>🔗 " + c.botao + "</button>";
+                    }
+                } else {
+                    htmlContent += "<button class='btn btn-small' onclick='abrir_portal(\"" + c.tipo + "\")'>🔗 " + c.botao + "</button>";
+                }
+
+                htmlContent += "</div>";
+                div.innerHTML = htmlContent;
+                cndDiv.appendChild(div);
+                div.querySelector(".cnpj-copy").addEventListener("click", function() {
+                    var cnpj = this.getAttribute("data-cnpj");
+                    if (cnpj && cnpj.trim() !== "") copiarParaClipboard(cnpj);
+                });
+            });
+
+            // Obrigações e Acompanhamento
+            var obrigacoes = document.getElementById("obrigacoes-container");
+            obrigacoes.innerHTML = "";
+            var tiposObrigacoes = [
+                { nome: "DAS Mensal", desc: "Recolhimento mensal", icone: "💰" },
+                { nome: "DASN-SIMEI (Anual)", desc: "Declaração Anual de Faturamento", icone: "📄" },
+                { nome: "Emissão de NFS-e", desc: "Quando prestador de serviços", icone: "🧾" }
+            ];
+            tiposObrigacoes.forEach((o) => {
+                var div = document.createElement("div");
+                div.className = "item";
+                div.innerHTML = "<div class='item-label'>" + o.icone + " " + o.nome + "</div><div style='font-size:11px; margin-top:4px; color: var(--rose);'>" + o.desc + "</div><div style='margin-top:8px;'><span class='status-badge status-inativo'>Não informado</span></div>";
+                obrigacoes.appendChild(div);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", renderizar);
+    </script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!--
+================================================================================
+PAINEL DA EMPRESA — MACAIA GESTAO LTDA
+Gerado em: 23/09/2026
+Jaqueline Ferreira Assessoria Contábil
+Baseado no TEMPLATE-MESTRE v1.5
+Fonte: Documentos anexados
+  ✓ Alvará de Licença para Localização e Funcionamento
+  ✓ Instrumento de Alteração de Empresário Individual em Sociedade Limitada
+  ✓ Quadro de Sócios e Administradores (QSA)
+  ✓ Cartão CNPJ — Comprovante de Inscrição e Situação Cadastral
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel da Empresa</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --rose: #C5A29E; --gold: #C9A15E; --cream: #FBF6F1;
+            --dark: #2c2c2c; --light-gray: #f5f5f5;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--cream); color: var(--dark); line-height: 1.4; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 15px; }
+        .header { text-align: center; margin-bottom: 18px; border-bottom: 3px solid var(--gold); padding-bottom: 15px; }
+        .header h1 { color: var(--dark); font-size: 26px; font-weight: 700; }
+        .header p { color: var(--rose); font-size: 12px; margin-top: 4px; }
+        .info-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 18px; }
+        .info-card { background: white; padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--gold); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .info-card-label { color: var(--rose); font-size: 9px; font-weight: 700; text-transform: uppercase; margin-bottom: 3px; }
+        .info-card-value { color: var(--dark); font-size: 12px; font-weight: 600; word-break: break-word; }
+        .section { background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .section-title { color: var(--gold); font-size: 16px; font-weight: 700; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid var(--gold); }
+        .key-value { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; padding: 6px 0; border-bottom: 1px solid #eee; }
+        .key-value:last-child { border-bottom: none; }
+        .key { color: var(--rose); font-weight: 700; font-size: 12px; }
+        .value { color: var(--dark); font-size: 12px; }
+        .item { padding: 10px; margin-bottom: 8px; background: var(--light-gray); border-radius: 6px; border-left: 3px solid var(--rose); }
+        .item-label { color: var(--rose); font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+        .btn { background-color: var(--gold); color: white; padding: 6px 10px; border: none; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; margin: 3px 3px 3px 0; transition: all 0.3s; }
+        .btn:hover { background-color: var(--rose); transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .btn-small { padding: 5px 8px; font-size: 10px; }
+        .footer { background: var(--cream); color: var(--dark); padding: 12px; text-align: center; margin-top: 20px; border-radius: 8px; font-size: 11px; border: 1px solid var(--gold); }
+        .cnpj-copy { cursor: pointer; }
+        .cnpj-copy:hover { opacity: 0.8; }
+        .hidden { display: none; }
+        @media (max-width: 768px) { .key-value { grid-template-columns: 1fr; } .info-cards { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Painel da Empresa</h1>
+            <p>Cadastro, Regularidade e Dados Empresariais</p>
+        </div>
+
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="info-card-label">Razão Social</div>
+                <div class="info-card-value" id="card_razao">-</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">CNPJ</div>
+                <div class="info-card-value" id="card_cnpj">-</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">Município</div>
+                <div class="info-card-value" id="card_municipio">-</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">Atualização</div>
+                <div class="info-card-value" id="card_data">-</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🏢 Identificação da Empresa</div>
+            <div class="key-value">
+                <div class="key">Razão Social</div>
+                <div class="value" id="id_razao">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">CNPJ</div>
+                <div class="value" id="id_cnpj">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Regime Tributário</div>
+                <div class="value" id="id_regime">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Porte</div>
+                <div class="value" id="id_porte">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Natureza Jurídica</div>
+                <div class="value" id="id_natureza">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Endereço</div>
+                <div class="value" id="id_endereco">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">E-mail</div>
+                <div class="value" id="id_email">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Telefone</div>
+                <div class="value" id="id_telefone">-</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🔗 Consultas e Documentos Oficiais</div>
+            <div id="documentos-container"></div>
+        </div>
+
+        <div class="section" id="resp-section">
+            <div class="section-title">👤 Responsável Técnico</div>
+            <div class="key-value" id="resp-nome-row">
+                <div class="key">Nome</div>
+                <div class="value" id="resp_nome">-</div>
+            </div>
+            <div class="key-value" id="resp-crc-row">
+                <div class="key">CRC</div>
+                <div class="value" id="resp_crc">-</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">👥 Sócios/Administradores</div>
+            <div id="socios-container"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">✅ Regularidade Fiscal e Certidões</div>
+            <div id="certidoes-container"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📋 Dados Cadastrais</div>
+            <button class="btn" onclick="copiar_fornecedor()">📋 Copiar Todos os Dados</button>
+            <button class="btn" onclick="copiar_basico()">📄 Copiar Dados Básicos</button>
+            <div class="key-value">
+                <div class="key">Razão Social</div>
+                <div class="value" id="forn_razao">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">CNPJ</div>
+                <div class="value" id="forn_cnpj">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Inscrição Municipal</div>
+                <div class="value" id="forn_im">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Endereço</div>
+                <div class="value" id="forn_endereco">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">CEP</div>
+                <div class="value" id="forn_cep">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">E-mail</div>
+                <div class="value" id="forn_email">-</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Telefone</div>
+                <div class="value" id="forn_telefone">-</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🏦 Dados Bancários</div>
+            <button class="btn" onclick="copiar_bancario()">📋 Copiar Dados Bancários</button>
+            <div class="key-value">
+                <div class="key">Banco</div>
+                <div class="value" id="banc_banco">Não cadastrado</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Agência</div>
+                <div class="value" id="banc_agencia">Não cadastrado</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Conta</div>
+                <div class="value" id="banc_conta">Não cadastrado</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Tipo de Conta</div>
+                <div class="value" id="banc_tipo">Não cadastrado</div>
+            </div>
+            <div class="key-value">
+                <div class="key">PIX</div>
+                <div class="value" id="banc_pix">Não cadastrado</div>
+            </div>
+            <div class="key-value">
+                <div class="key">Favorecido</div>
+                <div class="value" id="banc_favorecido">Não cadastrado</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p style="margin: 0;">Painel da Empresa — <span id="footer_empresa">-</span></p>
+            <p style="margin: 4px 0 0 0; font-size: 10px;" id="footer_data">Informações baseadas nos dados cadastrados e atualizadas até -</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // DADOS PREENCHIDOS — MACAIA GESTAO LTDA
+        // Fonte: Documentos anexados (Alvará, Contrato Social, QSA, Cartão CNPJ)
+        // Template: TEMPLATE-MESTRE v1.5
+        // Data de Atualização: 23/09/2026
+        // ============================================================================
+
+        const escritorio = "Jaqueline Ferreira Assessoria Contábil";
+
+        const empresa = {
+            razaoSocial: "MACAIA GESTAO LTDA",
+            cnpj: "33.075.903/0001-90",
+            nomeFantasia: "GRUPO MACAIA",
+            regimeTributario: "Simples Nacional",
+            porte: "ME",
+            naturezaJuridica: "206-2 - Sociedade Empresária Limitada",
+            endereco: "EST SEDE ETELVINA, SN, INTERIOR",
+            cep: "89.567-899",
+            municipio: "Videira",
+            estado: "SC",
+            email: "tatarobson@macaiadetrancaruas.com",
+            telefone: "(49) 9180-3787",
+            inscricaoMunicipal: "2461048",
+            responsavelNome: "JAQUELINE FERREIRA ASSESSORIA CONTÁBIL LTDA",
+            responsavelCrc: "",
+            socios: [
+                {
+                    nome: "ROBSON KLEBER SCHENATO",
+                    cpf: "041.818.669-39",
+                    qualificacao: "Sócio-Administrador",
+                    participacao: "100%",
+                    endereco: "Estrada Sede Etelvina, SN",
+                    complemento: "Interior - Videira/SC, CEP: 89.567-899"
+                }
+            ],
+            data: "23/09/2026"
+        };
+
+        const cndMunicipais = {
+            // Tabela de CNDs municipais por município
+            // Adicione novos municípios conforme necessário
+            // Formato: "municipio": "url"
+        };
+
+        const portais = {
+            federal: "https://servicos.receitafederal.gov.br/servico/certidoes/#/home/cnpj",
+            estadual: "https://sat.sef.sc.gov.br/tax.NET/Sat.CtaCte.Web/SolicitacaoCnd.aspx",
+            municipal: null,
+            trabalhista: "https://cndt-certidao.tst.jus.br/",
+            fgts: "https://consulta-crf.caixa.gov.br/consultacrf/pages/consultaEmpregador.jsf",
+            falencia: "https://www.tjsc.jus.br/web/judicial/certidoes",
+            cartaoCnpj: "https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/",
+            simplesNacional: "https://www8.receita.fazenda.gov.br/simplesnacional/aplicacoes.aspx?id=21"
+        };
+
+        function copiarParaClipboard(texto) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(texto).then(() => {
+                    if (texto.includes("CNPJ:")) {
+                        alert("CNPJ copiado.\nUse Ctrl+V para colar");
+                    } else {
+                        alert("Dados copiados.\nUse Ctrl+V para colar");
+                    }
+                }).catch(() => {
+                    fallbackCopy(texto);
+                });
+            } else {
+                fallbackCopy(texto);
+            }
+        }
+
+        function fallbackCopy(texto) {
+            const textarea = document.createElement("textarea");
+            textarea.value = texto;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand("copy");
+                if (texto.includes("CNPJ:")) {
+                    alert("CNPJ copiado.\nUse Ctrl+V para colar");
+                } else {
+                    alert("Dados copiados.\nUse Ctrl+V para colar");
+                }
+            } catch (err) {
+                alert("Erro ao copiar. Tente novamente.");
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+
+        function obter_portal_municipal() {
+            if (!empresa.municipio) return null;
+            return cndMunicipais[empresa.municipio] || null;
+        }
+
+        function abrir_portal(tipo) {
+            var url;
+
+            if (tipo === "municipal") {
+                url = obter_portal_municipal();
+                if (!url) {
+                    alert("Link não configurado para " + (empresa.municipio || "este município"));
+                    return;
+                }
+            } else {
+                url = portais[tipo];
+                if (!url) return;
+            }
+
+            copiarParaClipboard(empresa.cnpj);
+            window.open(url, "_blank");
+        }
+
+        function copiar_fornecedor() {
+            const texto = "DADOS CADASTRO FORNECEDOR\n" + "=".repeat(25) + "\n\nRazão Social: " + empresa.razaoSocial + "\nCNPJ: " + empresa.cnpj + "\nInscrição Municipal: " + empresa.inscricaoMunicipal + "\nEndereço: " + empresa.endereco + "\nCEP: " + empresa.cep + "\nE-mail: " + empresa.email + "\nTelefone: " + empresa.telefone;
+            copiarParaClipboard(texto);
+        }
+
+        function copiar_basico() {
+            const texto = "DADOS BÁSICOS\n" + "=".repeat(15) + "\n\nRazão Social: " + empresa.razaoSocial + "\nCNPJ: " + empresa.cnpj + "\nInscrição Municipal: " + empresa.inscricaoMunicipal;
+            copiarParaClipboard(texto);
+        }
+
+        function copiar_bancario() {
+            const texto = "DADOS BANCÁRIOS\n" + "=".repeat(15) + "\n\nBanco: 085 - CREDICOMIN\nAgência: 0110-4\nConta: 2136.923-2\nTipo de Conta: Corrente\nPIX: 33.075.903/0001-90\nFavorecido: MACAIA GESTAO LTDA";
+            copiarParaClipboard(texto);
+        }
+
+        function renderizar() {
+            document.getElementById("card_razao").textContent = empresa.razaoSocial || "-";
+            document.getElementById("card_cnpj").textContent = empresa.cnpj || "-";
+            document.getElementById("card_municipio").textContent = (empresa.municipio || "-") + "/" + (empresa.estado || "-");
+            document.getElementById("card_data").textContent = empresa.data || "-";
+
+            document.getElementById("id_razao").textContent = empresa.razaoSocial || "-";
+            document.getElementById("id_cnpj").textContent = empresa.cnpj || "-";
+            document.getElementById("id_regime").textContent = empresa.regimeTributario || "-";
+            document.getElementById("id_porte").textContent = empresa.porte || "-";
+            document.getElementById("id_natureza").textContent = empresa.naturezaJuridica || "-";
+            document.getElementById("id_endereco").textContent = empresa.endereco || "-";
+            document.getElementById("id_email").textContent = empresa.email || "-";
+            document.getElementById("id_telefone").textContent = empresa.telefone || "-";
+
+            document.getElementById("resp_nome").textContent = empresa.responsavelNome || "-";
+            document.getElementById("resp_crc").textContent = empresa.responsavelCrc || "-";
+
+            var respSection = document.getElementById("resp-section");
+            var respCrcRow = document.getElementById("resp-crc-row");
+
+            if (!empresa.responsavelNome || empresa.responsavelNome.trim() === "") {
+                respSection.classList.add("hidden");
+            } else {
+                respSection.classList.remove("hidden");
+                if (!empresa.responsavelCrc || empresa.responsavelCrc.trim() === "") {
+                    respCrcRow.classList.add("hidden");
+                } else {
+                    respCrcRow.classList.remove("hidden");
+                }
+            }
+
+            document.getElementById("footer_empresa").textContent = empresa.razaoSocial || "-";
+            if (document.getElementById("footer_data")) {
+                document.getElementById("footer_data").textContent = "Informações baseadas nos dados cadastrados e atualizadas até " + (empresa.data || "-");
+            }
+
+            document.getElementById("forn_razao").textContent = empresa.razaoSocial || "-";
+            document.getElementById("forn_cnpj").textContent = empresa.cnpj || "-";
+            document.getElementById("forn_im").textContent = empresa.inscricaoMunicipal || "-";
+            document.getElementById("forn_endereco").textContent = empresa.endereco || "-";
+            document.getElementById("forn_cep").textContent = empresa.cep || "-";
+            document.getElementById("forn_email").textContent = empresa.email || "-";
+            document.getElementById("forn_telefone").textContent = empresa.telefone || "-";
+
+            document.getElementById("banc_banco").textContent = "085 - CREDICOMIN";
+            document.getElementById("banc_agencia").textContent = "0110-4";
+            document.getElementById("banc_conta").textContent = "2136.923-2";
+            document.getElementById("banc_tipo").textContent = "Corrente";
+            document.getElementById("banc_pix").textContent = empresa.cnpj;
+            document.getElementById("banc_favorecido").textContent = "MACAIA GESTAO LTDA";
+
+            var socios = document.getElementById("socios-container");
+            socios.innerHTML = "";
+            if (empresa.socios && empresa.socios.length > 0) {
+                empresa.socios.forEach((s, i) => {
+                    var div = document.createElement("div");
+                    div.className = "item";
+                    var htmlContent = "<div class='item-label'>Sócio " + (i + 1) + "</div><div class='key-value' style='margin-bottom: 8px;'><div class='key'>Nome</div><div class='value'>" + (s.nome || "-") + "</div></div><div class='key-value' style='margin-bottom: 8px;'><div class='key'>CPF</div><div class='value'>" + (s.cpf || "-") + "</div></div><div class='key-value' style='margin-bottom: 8px;'><div class='key'>Qualificação</div><div class='value'>" + (s.qualificacao || "-") + "</div></div>";
+                    if (s.participacao && s.participacao.trim() !== "") {
+                        htmlContent += "<div class='key-value' style='margin-bottom: 8px;'><div class='key'>Participação</div><div class='value'>" + s.participacao + "</div></div>";
+                    }
+                    if ((s.endereco && s.endereco.trim() !== "") || (s.complemento && s.complemento.trim() !== "")) {
+                        htmlContent += "<div class='key-value' style='margin-bottom: 0;'><div class='key'>Endereço</div><div class='value'>" + (s.endereco || "-") + ", " + (s.complemento || "-") + "</div></div>";
+                    }
+                    div.innerHTML = htmlContent;
+                    socios.appendChild(div);
+                });
+            }
+
+            var certidoes = document.getElementById("certidoes-container");
+            certidoes.innerHTML = "";
+            var tipos = [
+                { nome: "Certidão Negativa - Federal", tipo: "federal" },
+                { nome: "Certidão Negativa - Estadual", tipo: "estadual" },
+                { nome: "Certidão Negativa - Municipal", tipo: "municipal" },
+                { nome: "CNDT (Débito Trabalhista)", tipo: "trabalhista" },
+                { nome: "Certidão FGTS", tipo: "fgts" },
+                { nome: "Falência/Recuperação", tipo: "falencia" }
+            ];
+            tipos.forEach((c) => {
+                var div = document.createElement("div");
+                div.className = "item";
+                var cnpjValue = empresa.cnpj || "-";
+
+                var btnText = "🔗 Emitir";
+                var statusText = "Não Verificado";
+                var btnDisabled = false;
+
+                if (c.tipo === "municipal") {
+                    var municipalUrl = obter_portal_municipal();
+                    if (!municipalUrl) {
+                        statusText = "Link não configurado";
+                        btnText = "ⓘ Não disponível";
+                        btnDisabled = true;
+                    }
+                }
+
+                var btnClass = btnDisabled ? "btn btn-small" : "btn btn-small";
+                var onclickAttr = btnDisabled ? "" : "onclick='abrir_portal(\"" + c.tipo + "\")'";
+
+                div.innerHTML = "<div class='item-label'>" + c.nome + "</div><div style='font-size:11px;color:var(--dark);margin-bottom:10px;font-family:monospace;background:#f0f0f0;padding:6px;border-radius:3px;cursor:pointer;' class='cnpj-copy' data-cnpj='" + empresa.cnpj + "'><strong>CNPJ:</strong> " + cnpjValue + " 📋</div><div class='item-row'><span style='font-size:12px;color:var(--rose);'>" + statusText + "</span><button class='" + btnClass + "' " + onclickAttr + " " + (btnDisabled ? "disabled style='opacity:0.5;cursor:not-allowed;'" : "") + ">" + btnText + "</button></div>";
+                certidoes.appendChild(div);
+                div.querySelector(".cnpj-copy").addEventListener("click", function() {
+                    var cnpj = this.getAttribute("data-cnpj");
+                    if (cnpj && cnpj.trim() !== "") copiarParaClipboard(cnpj);
+                });
+            });
+
+            var documentos = document.getElementById("documentos-container");
+            documentos.innerHTML = "";
+            var tiposDocumentos = [
+                { nome: "Cartão CNPJ / Comprovante de Inscrição", tipo: "cartaoCnpj" },
+                { nome: "Consulta Optantes – Simples Nacional e SIMEI", tipo: "simplesNacional" }
+            ];
+            tiposDocumentos.forEach((d) => {
+                var div = document.createElement("div");
+                div.className = "item";
+                var cnpjValue = empresa.cnpj || "-";
+                div.innerHTML = "<div class='item-label'>" + d.nome + "</div><div style='font-size:11px;color:var(--dark);margin-bottom:10px;font-family:monospace;background:#f0f0f0;padding:6px;border-radius:3px;cursor:pointer;' class='cnpj-copy' data-cnpj='" + empresa.cnpj + "'><strong>CNPJ:</strong> " + cnpjValue + " 📋</div><div class='item-row'><span style='font-size:12px;color:var(--rose);'>Acesso Direto</span><button class='btn btn-small' onclick='abrir_portal(\"" + d.tipo + "\")'>🔗 Acessar</button></div>";
+                documentos.appendChild(div);
+                div.querySelector(".cnpj-copy").addEventListener("click", function() {
+                    var cnpj = this.getAttribute("data-cnpj");
+                    if (cnpj && cnpj.trim() !== "") copiarParaClipboard(cnpj);
+                });
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", renderizar);
+    </script>
+</body>
+</html>
