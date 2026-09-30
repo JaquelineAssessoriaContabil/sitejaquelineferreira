@@ -3,566 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Departamento Pessoal - VEDI OPTICA E RELOJOARIA LTDA</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dashboard DP - VEDI OPTICA</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #F9FAFB; color: #1F2937; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: linear-gradient(135deg, #e5d1cd 0%, #cbd2df 100%); 
+            color: #333; 
+            padding: 20px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container { width: 100%; max-width: 950px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 2px solid #c5a880; 
+            padding-bottom: 20px; 
+            margin-bottom: 25px; 
+        }
+        .header h1 { font-size: 22px; color: #2a3a5c; font-weight: 700; }
+        .header p { font-size: 13px; color: #6c757d; margin-top: 3px; font-weight: 500; }
+        .logo-jf { background: #2a3a5c; border: 2px solid #c5a880; color: #ffffff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
+        
+        .section-title { font-size: 15px; font-weight: 600; color: #2a3a5c; margin: 25px 0 12px 0; display: flex; align-items: center; gap: 8px; border-left: 4px solid #c5a880; padding-left: 10px; }
+        
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .card { background: white; border: 1px solid #eef0f2; border-radius: 8px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); }
+        .card.purple { border-top: 4px solid #9b59b6; }
+        .card.gold { border-top: 4px solid #c5a880; }
+        .card.blue { border-top: 4px solid #2a3a5c; }
+        
+        .card-label { font-size: 11px; text-transform: uppercase; color: #888; font-weight: 600; }
+        .card-value { font-size: 22px; font-weight: 700; color: #2a3a5c; margin: 6px 0 2px 0; }
+        .card-sub { font-size: 12px; color: #666; }
 
-        /* HEADER */
-        .header {
-            background: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 24px;
-            margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .header-left h1 { font-size: 18px; font-weight: 700; color: #111827; margin-bottom: 4px; }
-        .header-left p { font-size: 13px; color: #6B7280; margin: 2px 0; }
-        .header-right { font-size: 40px; font-weight: 700; color: #E5E7EB; text-align: center; min-width: 80px; }
-
-        /* SEÇÃO RESUMO GERAL */
-        .section-title {
-            font-size: 15px; font-weight: 600; color: #111827; margin: 24px 0 16px 0;
-            padding-bottom: 8px; border-bottom: 2px solid #E5E7EB;
-        }
-
-        /* KPI CARDS - 5 COLUNAS */
-        .kpis-grid {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
-            margin-bottom: 24px;
-        }
-        .kpi-card {
-            background: white; border: 1px solid #E5E7EB; border-left: 5px solid;
-            border-radius: 6px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-        }
-        .kpi-card.folha { border-left-color: #C58A94; }
-        .kpi-card.encargos { border-left-color: #F59E0B; }
-        .kpi-card.liquido { border-left-color: #8B5CF6; }
-        .kpi-card.empregados { border-left-color: #6366F1; }
-        .kpi-card.contribuintes { border-left-color: #10B981; }
-        .kpi-label { font-size: 11px; color: #6B7280; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
-        .kpi-value { font-size: 22px; font-weight: 700; color: #111827; margin-bottom: 4px; }
-        .kpi-sub { font-size: 12px; color: #6B7280; }
-        .kpi-sub.pos { color: #10B981; }
-        .kpi-sub.warn { color: #F59E0B; }
-
-        /* PAINEL */
-        .panel {
-            background: white; border: 1px solid #E5E7EB; border-radius: 8px;
-            padding: 24px; margin-bottom: 24px;
-        }
-        .panel-title {
-            font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 16px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .competencia-badge {
-            background: #FEF3C7; color: #92400E; padding: 4px 12px;
-            border-radius: 16px; font-size: 11px; font-weight: 600;
-        }
-        .payment-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
-        }
-        .payment-item {
-            border: 1px solid #E5E7EB; border-radius: 6px; padding: 16px;
-            background: #F9FAFB;
-        }
-        .payment-type { font-size: 13px; color: #6B7280; font-weight: 600; margin-bottom: 12px; }
-        .payment-value { font-size: 24px; font-weight: 700; color: #111827; margin-bottom: 8px; }
-        .payment-info { font-size: 12px; color: #6B7280; margin-bottom: 10px; line-height: 1.4; }
-        .payment-code { font-size: 11px; background: #F3F4F6; padding: 8px; border-radius: 4px;
-            color: #374151; margin-bottom: 12px; word-break: break-all; font-family: monospace; }
-        .btn-copy {
-            width: 100%; padding: 10px; border: none; border-radius: 6px; cursor: pointer;
-            font-size: 12px; font-weight: 600; transition: all 0.2s;
-        }
-        .btn-copy.inss { background: #C58A94; color: white; }
-        .btn-copy.inss:hover { background: #AE7681; }
-        .btn-copy.fgts { background: #C5A059; color: white; }
-        .btn-copy.fgts:hover { background: #B89146; }
-
-        /* CHARTS */
-        .charts-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;
-        }
-        .chart-container {
-            background: white; border: 1px solid #E5E7EB; border-radius: 8px;
-            padding: 20px; position: relative; height: 280px;
-        }
-        .chart-title { font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 12px; }
-        canvas { max-height: 240px; }
-
-        /* TABELAS */
-        .table-container {
-            background: white; border: 1px solid #E5E7EB; border-radius: 8px;
-            padding: 20px; margin-bottom: 24px; overflow-x: auto;
-        }
-        table {
-            width: 100%; border-collapse: collapse; font-size: 13px;
-        }
-        thead {
-            background: #F9FAFB; border-bottom: 2px solid #E5E7EB;
-        }
-        th {
-            padding: 12px; text-align: left; font-weight: 600; color: #111827;
-        }
-        td {
-            padding: 12px; border-bottom: 1px solid #E5E7EB;
-        }
-        tbody tr:hover {
-            background: #F9FAFB;
-        }
-        .text-right { text-align: right; }
-
-        /* ACOMPANHAMENTO */
-        .fiscal-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px;
-        }
-        .fiscal-card {
-            background: white; border: 1px solid #E5E7EB; border-radius: 6px;
-            padding: 16px; text-align: center;
-        }
-        .fiscal-icon { font-size: 24px; margin-bottom: 8px; }
-        .fiscal-label { font-size: 12px; font-weight: 600; color: #111827; }
-        .fiscal-status { font-size: 11px; color: #6B7280; margin-top: 4px; }
-
-        /* CERTIDÕES */
-        .certidoes-grid {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px;
-        }
-        .cert-card {
-            background: white; border: 1px solid #E5E7EB; border-radius: 6px;
-            padding: 14px; text-align: center;
-        }
-        .cert-icon { font-size: 28px; margin-bottom: 6px; }
-        .cert-label { font-size: 11px; font-weight: 600; color: #111827; }
-        .cert-status { font-size: 10px; color: #6B7280; margin-top: 4px; }
-
-        /* RODAPÉ */
-        .footer {
-            background: white; border-top: 1px solid #E5E7EB; padding: 16px;
-            font-size: 11px; color: #6B7280; text-align: center; margin-top: 24px;
-        }
-        .footer-line { margin: 4px 0; }
-
-        @media (max-width: 1024px) {
-            .kpis-grid { grid-template-columns: repeat(2, 1fr); }
-            .fiscal-grid { grid-template-columns: repeat(2, 1fr); }
-            .charts-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 640px) {
-            .kpis-grid { grid-template-columns: 1fr; }
-            .fiscal-grid { grid-template-columns: 1fr; }
-            .certidoes-grid { grid-template-columns: repeat(2, 1fr); }
-        }
+        /* Links de Documentos */
+        .pdf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .btn-pdf { display: inline-flex; align-items: center; gap: 10px; background-color: #ffffff; border: 1px solid #eef0f2; color: #4a4a4a; text-decoration: none; padding: 12px 15px; border-radius: 6px; font-size: 12.5px; font-weight: 500; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+        .btn-pdf:hover { background-color: #fbf7f6; border-color: #bd9a5f; color: #bd9a5f; transform: translateY(-2px); }
+        
+        .btn-back { display: inline-block; margin-top: 20px; text-decoration: none; background-color: #2a3a5c; color: white; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: 600; text-transform: uppercase; transition: background 0.2s; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- HEADER -->
-        <div class="header">
-            <div class="header-left">
-                <h1>VEDI OPTICA E RELOJOARIA LTDA</h1>
-                <p>CNPJ: 85.375.731/0001-74</p>
-                <p>Departamento Pessoal | Competência: Setembro 2026</p>
-            </div>
+
+<div class="container">
+    <div class="header">
+        <div>
+            <h1>VEDI OPTICA E RELOJOARIA LTDA</h1>
+            <p>CNPJ: 85.375.731/0001-74</p>
+            <p>Departamento Pessoal | Competência: Setembro 2026</p>
         </div>
+        <div class="logo-jf">JF</div>
+    </div>
 
-        <!-- RESUMO GERAL DA EMPRESA -->
-        <div class="section-title">📊 Resumo Geral da Empresa</div>
-        <div class="kpis-grid">
-            <div class="kpi-card folha">
-                <div class="kpi-label">Total de Folha</div>
-                <div class="kpi-value">R$ 13.704,16</div>
-                <div class="kpi-sub">Proventos</div>
-            </div>
-            <div class="kpi-card encargos">
-                <div class="kpi-label">Encargos Totais</div>
-                <div class="kpi-value">R$ 1.408,83</div>
-                <div class="kpi-sub">INSS + FGTS</div>
-            </div>
-            <div class="kpi-card liquido">
-                <div class="kpi-label">Líquido a Pagar</div>
-                <div class="kpi-value">R$ 11.020,73</div>
-                <div class="kpi-sub pos">Funcionários + Sócios</div>
-            </div>
-            <div class="kpi-card empregados">
-                <div class="kpi-label">Empregados</div>
-                <div class="kpi-value">3</div>
-                <div class="kpi-sub">1 em férias</div>
-            </div>
-            <div class="kpi-card contribuintes">
-                <div class="kpi-label">Contribuintes</div>
-                <div class="kpi-value">2</div>
-                <div class="kpi-sub">Pro-labore (11%)</div>
-            </div>
+    <div class="section-title">Resumo Financeiro da Competência</div>
+    <div class="grid-cards">
+        <div class="card purple">
+            <div class="card-label">Total de Folha</div>
+            <div class="card-value">R$ 13.704,16</div>
+            <div class="card-sub">Proventos Brutos</div>
         </div>
-
-        <!-- SEÇÃO EMPREGADOS -->
-        <div class="section-title">👥 Empregados (Vínculo CLT)</div>
-        <div class="kpis-grid">
-            <div class="kpi-card folha">
-                <div class="kpi-label">Total Proventos</div>
-                <div class="kpi-value">R$ 7.951,58</div>
-                <div class="kpi-sub">3 funcionários</div>
-            </div>
-            <div class="kpi-card encargos">
-                <div class="kpi-label">INSS Desconto</div>
-                <div class="kpi-value">R$ 522,72</div>
-                <div class="kpi-sub">Retido na folha</div>
-            </div>
-            <div class="kpi-card encargos">
-                <div class="kpi-label">FGTS Recolher</div>
-                <div class="kpi-value">R$ 529,49</div>
-                <div class="kpi-sub">8% a recolher</div>
-            </div>
-            <div class="kpi-card liquido">
-                <div class="kpi-label">Líquido Empregados</div>
-                <div class="kpi-value">R$ 6.752,13</div>
-                <div class="kpi-sub">Após descontos</div>
-            </div>
-            <div class="kpi-card empregados">
-                <div class="kpi-label">Custo Médio/Emp</div>
-                <div class="kpi-value">R$ 2.718,52</div>
-                <div class="kpi-sub">Com encargos</div>
-            </div>
+        <div class="card gold">
+            <div class="card-label">Encargos Totais</div>
+            <div class="card-value">R$ 1.408,83</div>
+            <div class="card-sub">INSS + FGTS</div>
         </div>
-
-        <!-- EXPLICAÇÃO CUSTO EMPRESA -->
-        <div class="panel" style="background: #F0F4FF; border-left: 4px solid #6366F1;">
-            <div style="font-size: 13px; color: #111827; line-height: 1.6;">
-                <strong>💡 Entendendo o Custo Real:</strong><br>
-                O custo total para a empresa com cada funcionário é maior que o salário contratado, pois inclui encargos trabalhistas (INSS patronal + FGTS).
-                O funcionário recebe líquido após descontos do INSS do empregado. A diferença entre custo empresa e líquido funcionário representa o investimento em encargos e proteção social.
-            </div>
-        </div>
-
-        <!-- TABELA EMPREGADOS -->
-        <div class="table-container">
-            <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 12px;">
-                Detalhamento de Empregados
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Funcionário</th>
-                        <th class="text-right">Salário Base</th>
-                        <th class="text-right">Proventos</th>
-                        <th class="text-right">INSS Desc.</th>
-                        <th class="text-right">FGTS Rec.</th>
-                        <th class="text-right">Líquido</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Andreza Martini</td>
-                        <td class="text-right">R$ 2.040,00</td>
-                        <td class="text-right">R$ 2.040,00</td>
-                        <td class="text-right">R$ 159,28</td>
-                        <td class="text-right">R$ 163,20</td>
-                        <td class="text-right">R$ 1.880,72</td>
-                        <td>✅ Normal</td>
-                    </tr>
-                    <tr>
-                        <td>Solange Aparecida Moraes</td>
-                        <td class="text-right">R$ 2.040,00</td>
-                        <td class="text-right">R$ 2.040,00</td>
-                        <td class="text-right">R$ 159,28</td>
-                        <td class="text-right">R$ 163,20</td>
-                        <td class="text-right">R$ 1.880,72</td>
-                        <td>✅ Normal</td>
-                    </tr>
-                    <tr>
-                        <td>Erick Henrique Cordeiro</td>
-                        <td class="text-right">R$ 2.040,00</td>
-                        <td class="text-right">R$ 3.871,58</td>
-                        <td class="text-right">R$ 204,16</td>
-                        <td class="text-right">R$ 203,09</td>
-                        <td class="text-right">R$ 501,60*</td>
-                        <td>🏖️ Férias</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="font-size: 11px; color: #6B7280; margin-top: 8px;">
-                * Erick recebe líquido reduzido porque a maior parte foi adiantada nas férias. FGTS é calculado normalmente.
-            </div>
-        </div>
-
-        <!-- DEMONSTRATIVO: CUSTO REAL COM FUNCIONÁRIOS -->
-        <div class="table-container">
-            <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 16px;">
-                📋 Demonstrativo: Quanto a Empresa Gasta Com Cada Funcionário
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Funcionário</th>
-                        <th class="text-right">Proventos/Salário</th>
-                        <th class="text-right">FGTS (Seu Custo)</th>
-                        <th class="text-right" style="background: #FEF3C7; font-weight: 700; border-left: 2px solid #E5E7EB;"><strong>CUSTO TOTAL</strong></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Andreza Martini</td>
-                        <td class="text-right">R$ 2.040,00</td>
-                        <td class="text-right">R$ 163,20</td>
-                        <td class="text-right" style="background: #FEF3C7; border-left: 2px solid #E5E7EB; font-weight: 600;">R$ 2.203,20</td>
-                    </tr>
-                    <tr>
-                        <td>Solange Aparecida Moraes</td>
-                        <td class="text-right">R$ 2.040,00</td>
-                        <td class="text-right">R$ 163,20</td>
-                        <td class="text-right" style="background: #FEF3C7; border-left: 2px solid #E5E7EB; font-weight: 600;">R$ 2.203,20</td>
-                    </tr>
-                    <tr>
-                        <td>Erick Henrique Cordeiro (com férias)</td>
-                        <td class="text-right">R$ 3.871,58</td>
-                        <td class="text-right">R$ 203,09</td>
-                        <td class="text-right" style="background: #FEF3C7; border-left: 2px solid #E5E7EB; font-weight: 600;">R$ 4.074,67</td>
-                    </tr>
-                    <tr style="background: #F3F4F6; font-weight: 600;">
-                        <td>TOTAL GASTO COM EMPREGADOS</td>
-                        <td class="text-right">R$ 7.951,58</td>
-                        <td class="text-right">R$ 529,49</td>
-                        <td class="text-right" style="background: #FEF3C7; border-left: 2px solid #E5E7EB;">R$ 8.481,07</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="font-size: 11px; color: #6B7280; margin-top: 12px; line-height: 1.6;">
-                <strong>Nota:</strong> INSS (R$ 522,72) foi descontado dos funcionários e será recolhido por você na guia, mas não é seu custo direto — é dinheiro que saiu do salário deles.
-                O seu custo real é o salário + FGTS.
-            </div>
-        </div>
-
-        <!-- SEÇÃO CONTRIBUINTES (se houver) -->
-        <div class="section-title">👤 Contribuintes Individuais (INSS 11%)</div>
-        <div class="kpis-grid">
-            <div class="kpi-card folha">
-                <div class="kpi-label">Total Pró-Labore</div>
-                <div class="kpi-value">R$ 3.242,00</div>
-                <div class="kpi-sub">2 sócios</div>
-            </div>
-            <div class="kpi-card encargos">
-                <div class="kpi-label">INSS (11%)</div>
-                <div class="kpi-value">R$ 356,62</div>
-                <div class="kpi-sub">A recolher</div>
-            </div>
-            <div class="kpi-card liquido">
-                <div class="kpi-label">Líquido Contribuintes</div>
-                <div class="kpi-value">R$ 2.885,38</div>
-                <div class="kpi-sub">Após INSS</div>
-            </div>
-            <div class="kpi-card contribuintes">
-                <div class="kpi-label">Qtd Contribuintes</div>
-                <div class="kpi-value">2</div>
-                <div class="kpi-sub">Sócios/Administradores</div>
-            </div>
-            <div class="kpi-card contribuintes">
-                <div class="kpi-label">Média/Sócio</div>
-                <div class="kpi-value">R$ 1.621,00</div>
-                <div class="kpi-sub">Pró-labore</div>
-            </div>
-        </div>
-
-        <!-- TABELA CONTRIBUINTES -->
-        <div class="table-container">
-            <div style="font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 12px;">
-                Detalhamento de Contribuintes Individuais
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sócio/Contribuinte</th>
-                        <th class="text-right">Qualificação</th>
-                        <th class="text-right">Pró-Labore</th>
-                        <th class="text-right">INSS (11%)</th>
-                        <th class="text-right">Líquido</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Paulo Dal Moro Junior</td>
-                        <td class="text-right">Sócio Administrador</td>
-                        <td class="text-right">R$ 1.621,00</td>
-                        <td class="text-right">R$ 178,31</td>
-                        <td class="text-right">R$ 1.442,69</td>
-                        <td>✅ Normal</td>
-                    </tr>
-                    <tr>
-                        <td>Kauana Menegon Cordeiro</td>
-                        <td class="text-right">Sócia Cotista</td>
-                        <td class="text-right">R$ 1.621,00</td>
-                        <td class="text-right">R$ 178,31</td>
-                        <td class="text-right">R$ 1.442,69</td>
-                        <td>✅ Normal</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- PAINEL ENCARGOS -->
-        <div class="panel">
-            <div class="panel-title">
-                💳 Encargos a Recolher - Setembro 2026
-                <div class="competencia-badge">Vencimento: 20/10/2026</div>
-            </div>
-            <div class="payment-grid">
-                <div class="payment-item">
-                    <div class="payment-type">INSS - Empregados</div>
-                    <div class="payment-value">R$ 522,72</div>
-                    <div class="payment-info">
-                        <strong>Código:</strong> 1082 (Desconto)<br>
-                        <strong>Vencimento:</strong> 20/10/2026
-                    </div>
-                    <div class="payment-code">85850000008 5 22720385262 0 93071626273 7 22714541233 9</div>
-                    <button class="btn-copy inss" onclick="copiarCodigo('85850000008522720385262093071626273722714541233 9', this)">
-                        📋 Copiar Código INSS
-                    </button>
-                </div>
-                <div class="payment-item">
-                    <div class="payment-type">INSS - Contribuinte 11%</div>
-                    <div class="payment-value">R$ 356,62</div>
-                    <div class="payment-info">
-                        <strong>Código:</strong> 1099 (Contribuinte Individual)<br>
-                        <strong>Vencimento:</strong> 20/10/2026
-                    </div>
-                    <div class="payment-code">85850000003 5 66200385262 0 93071626273 7 22714541233 9</div>
-                    <button class="btn-copy inss" onclick="copiarCodigo('85850000003566200385262093071626273722714541233 9', this)">
-                        📋 Copiar Código INSS Contrib.
-                    </button>
-                </div>
-                <div class="payment-item">
-                    <div class="payment-type">FGTS Digital</div>
-                    <div class="payment-value">R$ 529,49</div>
-                    <div class="payment-info">
-                        <strong>Identificador:</strong> 0126093063984300-6<br>
-                        <strong>Vencimento:</strong> 20/10/2026<br>
-                        <strong>PIX:</strong> Copia e cola disponível
-                    </div>
-                    <div class="payment-code">00020101021226900014br.gov.bcb.pix2568pix-qrcode.caixa.gov.br</div>
-                    <button class="btn-copy fgts" onclick="copiarCodigo('00020101021226900014br.gov.bcb.pix2568pix-qrcode.caixa.gov.br', this)">
-                        💰 Copiar PIX FGTS
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- CHARTS -->
-        <div class="charts-grid">
-            <div class="chart-container">
-                <div class="chart-title">Composição da Folha (Empregados)</div>
-                <canvas id="rosca"></canvas>
-            </div>
-            <div class="chart-container">
-                <div class="chart-title">Folha vs Encargos</div>
-                <canvas id="barras"></canvas>
-            </div>
-        </div>
-
-        <!-- ACOMPANHAMENTO DP -->
-        <div class="section-title">✅ Acompanhamento Departamento Pessoal</div>
-        <div class="fiscal-grid">
-            <div class="fiscal-card">
-                <div class="fiscal-icon">✔️</div>
-                <div class="fiscal-label">Folha Processada</div>
-                <div class="fiscal-status">Realizada</div>
-            </div>
-            <div class="fiscal-card">
-                <div class="fiscal-icon">✔️</div>
-                <div class="fiscal-label">INSS</div>
-                <div class="fiscal-status">Guia Gerada para pagamento</div>
-            </div>
-            <div class="fiscal-card">
-                <div class="fiscal-icon">✔️</div>
-                <div class="fiscal-label">FGTS</div>
-                <div class="fiscal-status">Guia Gerada para pagamento</div>
-            </div>
-            <div class="fiscal-card">
-                <div class="fiscal-icon">🏖️</div>
-                <div class="fiscal-label">Férias em Processo</div>
-                <div class="fiscal-status">Erick Henrique</div>
-            </div>
-        </div>
-
-
-        <!-- RODAPÉ -->
-        <div class="footer">
-            <div class="footer-line">Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</div>
-            <div class="footer-line">Responsável Técnica: Jaqueline do Prado Ferreira | CRC SC-048028/O-0</div>
-            <div class="footer-line">Videira - SC | contato@jaquelineferreiracontadora.com.br | WhatsApp (49) 9.9980-3552</div>
-            <div class="footer-line" style="margin-top: 8px; font-size: 10px; color: #9CA3AF;">
-                Dashboard Departamento Pessoal Confidencial - Uso Exclusivo do Cliente
-            </div>
+        <div class="card blue">
+            <div class="card-label">Líquido a Pagar</div>
+            <div class="card-value">R$ 11.020,73</div>
+            <div class="card-sub">Funcionários + Sócios</div>
         </div>
     </div>
 
-    <script>
-        function copiarCodigo(texto, btn) {
-            navigator.clipboard.writeText(texto).then(() => {
-                const orig = btn.innerText;
-                btn.innerText = '✓ Código Copiado!';
-                btn.style.backgroundColor = '#10B981';
-                setTimeout(() => {
-                    btn.innerText = orig;
-                    btn.style.backgroundColor = '';
-                }, 2500);
-            });
-        }
+    <!-- 📂 CENTRAL DE DOCUMENTOS DO PAINEL DE DP -->
+    <div class="section-title">📦 Guias de Encargos Trabalhistas</div>
+    <div class="pdf-grid">
+        <a href="documentos-vedi/dp/01.%20FGTS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" class="btn-pdf">📄 01. Guia de FGTS</a>
+        <a href="documentos-vedi/dp/02.%20FGTS%2009.2026%20-%20Detalhe%20da%20Guia.pdf" target="_blank" class="btn-pdf">📄 02. Detalhe da Guia FGTS</a>
+        <a href="documentos-vedi/dp/03.%20INSS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" class="btn-pdf">📄 03. Guia de INSS (DCTFWeb)</a>
+    </div>
 
-        // Rosca: Composição da Folha (Empregados + Contribuintes)
-        const roscaCtx = document.getElementById('rosca').getContext('2d');
-        new Chart(roscaCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Horas Normais', 'Férias', '1/3 Férias', 'Adiant. Férias', 'Pró-Labore'],
-                datasets: [{
-                    data: [4080.00, 1496.00, 498.67, 1832.91, 3242.00],
-                    backgroundColor: ['#C58A94', '#C5A059', '#8B5CF6', '#6366F1', '#10B981'],
-                    borderColor: '#fff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12 } },
-                    tooltip: { callbacks: { label: (ctx) => {
-                        const val = ctx.parsed;
-                        const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
-                        const pct = ((val / total) * 100).toFixed(1);
-                        return `R$ ${val.toFixed(2)} (${pct}%)`;
-                    }}}
-                }
-            }
-        });
+    <div class="section-title">📊 Relatórios de Fechamento & Declarações</div>
+    <div class="pdf-grid">
+        <a href="documentos-vedi/dp/03.1%20DeclaracaoCompleta_85375731000174_092026_40_.pdf" target="_blank" class="btn-pdf">📄 03.1 Declaração Completa eSocial</a>
+        <a href="documentos-vedi/dp/03.2%20Recibo_85375731000174_092026_40_0000050000533092975.pdf" target="_blank" class="btn-pdf">📄 03.2 Recibo de Entrega eSocial</a>
+        <a href="documentos-vedi/dp/04.%20Resumo%20Folha%2009.2026.pdf" target="_blank" class="btn-pdf">📄 04. Resumo de Folha Analítico</a>
+        <a href="documentos-vedi/dp/05.%20Extrato%20Folha%2009.2026.pdf" target="_blank" class="btn-pdf">📄 05. Extrato de Folha de Pagamento</a>
+    </div>
 
-        // Barras: Empregados vs Contribuintes vs Encargos
-        const barrasCtx = document.getElementById('barras').getContext('2d');
-        new Chart(barrasCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Empregados', 'Contribuintes', 'Encargos INSS', 'FGTS', 'Líquido Total'],
-                datasets: [{
-                    data: [7951.58, 3242.00, 879.34, 529.49, 11020.73],
-                    backgroundColor: ['#C58A94', '#10B981', '#F59E0B', '#C5A059', '#6366F1'],
-                    borderRadius: 4,
-                    borderSkipped: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                indexAxis: 'y',
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { callbacks: { label: (ctx) => `R$ ${ctx.parsed.x.toFixed(2)}` } }
-                },
-                scales: { x: { beginAtZero: true } }
-            }
-        });
-    </script>
+    <div class="section-title">👥 Recibos de Pagamento Individuais (Holerites)</div>
+    <div class="pdf-grid">
+        <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Andreza%20Martini.pdf" target="_blank" class="btn-pdf">👤 Recibo - Andreza Martini</a>
+        <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Erick%20Henrique%20Cordeiro.pdf" target="_blank" class="btn-pdf">👤 Recibo - Erick Henrique Cordeiro</a>
+        <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Kauana%20Menegon%20Cordeiro.pdf" target="_blank" class="btn-pdf">👤 Recibo - Kauana Menegon Cordeiro</a>
+        <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Paulo%20Dal%20Moro%20Junior.pdf" target="_blank" class="btn-pdf">👤 Recibo - Paulo Dal Moro Junior</a>
+        <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Solange%20Aparecida%20Moraes.pdf" target="_blank" class="btn-pdf">👤 Recibo - Solange Aparecida Moraes</a>
+    </div>
+
+    <a href="acesso-clientes-portal-vedi.html" class="btn-back">⬅️ Voltar ao Menu Principal</a>
+</div>
+
 </body>
 </html>
