@@ -4,119 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEDI OPTICA E RELOJOARIA LTDA - Portal do Cliente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body { 
-            font-family: 'Segoe UI', system-ui, sans-serif; 
-            background-color: #f7f1f0; /* Rosé suave da sua marca */
-            color: #4a4a4a; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            min-height: 100vh; 
-            padding: 40px 20px; 
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #faf8f7;
+            color: #3a3a3a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* PAPEL DE PAREDE / MARCA D'ÁGUA SUAVE NO FUNDO */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 75vh; 
-            height: 75vh;
-            background-image: url('Jaqueline do Prado Ferreira - PNG-28.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0.12; 
-            z-index: 0; 
-            pointer-events: none; 
-        }
-        
+
         .header-card, .menu-container, .footer-institucional {
             position: relative;
             z-index: 1;
         }
-        
-        /* Cabeçalho clean */
-        .header-card { 
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(5px);
-            width: 100%; 
-            max-width: 950px; 
-            padding: 25px 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(189, 154, 95, 0.06); 
-            border-left: 5px solid #bd9a5f; /* Dourado JF */
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-        .header-info h1 { font-size: 20px; color: #333333; font-weight: 600; letter-spacing: -0.3px; }
-        .header-info p { font-size: 13px; color: #8c8c8c; margin-top: 4px; font-weight: 500; }
-        
-        .mes-tag {
-            display: inline-block;
-            background-color: #fbeee8;
-            color: #bd9a5f;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            border-radius: 20px;
-            margin-top: 8px;
-            letter-spacing: 0.5px;
-            border: 1px solid #f2eceb;
-        }
-        
-        /* Logo no Cabeçalho */
-        .header-logo img {
-            width: 75px;
-            height: 75px;
-            object-fit: contain;
+
+        /* CABEÇALHO DELICADO */
+        .header-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 950px;
+            padding: 28px 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #bd9a5f;
+            margin-bottom: 36px;
+            text-align: center;
         }
 
-        /* Grid de 4 cards */
-        .menu-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); 
-            gap: 20px; 
-            width: 100%; 
-            max-width: 950px; 
-            margin-bottom: 40px; 
+        .header-info h1 {
+            font-size: 22px;
+            color: #2d2d2d;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
         }
-        
-        .portal-card { 
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(5px);
-            text-decoration: none; 
-            color: inherit; 
-            padding: 35px 20px 25px 20px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
-            text-align: center; 
-            border: 1px solid #f2eceb; 
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+
+        .header-info p {
+            font-size: 13px;
+            color: #7a7a7a;
+            margin-bottom: 10px;
+            font-weight: 400;
         }
-        
-        .portal-card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 10px 25px rgba(189, 154, 95, 0.12);
-            border-color: #bd9a5f;
+
+        .mes-tag {
+            display: inline-block;
+            background: #fef5f2;
+            color: #a88170;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid #f0e8e3;
+            letter-spacing: 0.4px;
+        }
+
+
+        /* GRID DE 4 CARDS */
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            width: 100%;
+            max-width: 950px;
+            margin-bottom: 40px;
+        }
+
+        .portal-card {
             background: #ffffff;
+            text-decoration: none;
+            color: inherit;
+            padding: 32px 20px 24px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #f0e8e3;
+            text-align: center;
+            transition: all 0.25s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        
+
+        .portal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(189, 154, 95, 0.08);
+            border-color: #e8dcd7;
+        }
+
         .icon-circle {
             width: 60px;
             height: 60px;
@@ -124,104 +108,176 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin-bottom: 15px;
-            background: #fbf7f6; 
-            color: #bd9a5f;      
-            transition: all 0.3s ease;
-        }
-        .portal-card:hover .icon-circle {
-            transform: scale(1.08);
-            background: #bd9a5f;
-            color: #ffffff;
+            margin-bottom: 14px;
+            background: #fef5f2;
+            color: #c5a680;
+            transition: all 0.25s ease-out;
         }
 
-        .portal-card h2 { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #333333; }
-        .portal-card p { font-size: 12.5px; color: #7a7a7a; line-height: 1.5; margin-bottom: 20px; flex-grow: 1; }
-        
+        .icon-circle svg {
+            width: 28px;
+            height: 28px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .portal-card:hover .icon-circle {
+            transform: scale(1.05);
+            background: #fdf0ea;
+            color: #bd9a5f;
+        }
+
+        .portal-card h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2d2d2d;
+        }
+
+        .portal-card p {
+            font-size: 13px;
+            color: #7a7a7a;
+            line-height: 1.5;
+            margin-bottom: 18px;
+            flex-grow: 1;
+            font-weight: 400;
+        }
+
         .card-button {
             width: 100%;
-            padding: 10px;
+            padding: 11px;
             border-radius: 6px;
             font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: #bd9a5f;
-            color: white;
-            transition: all 0.2s ease;
+            letter-spacing: 0.4px;
+            background: #e8dcd7;
+            color: #8b7355;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease-out;
         }
-        .portal-card:hover .card-button { background: #a3824b; }
 
-        /* 🎨 SINALIZAÇÃO EXCLUSIVA EM ROSÉ MAIS FORTE / ROSA-ANTIGO */
+        .portal-card:hover .card-button {
+            background: #dcc9c1;
+            color: #7a6447;
+        }
+
+        /* CARD ESPECIAL FÉRIAS - ROSÉ DELICADO */
         .portal-card.alerta-ferias {
-            background: rgba(229, 209, 205, 0.95); /* Rosé mais forte e imponente da sua paleta */
-            border: 1px solid #d1b2ac;
-            box-shadow: 0 4px 15px rgba(209, 178, 172, 0.3);
+            background: #fcf3f0;
+            border: 1px solid #ead5ce;
         }
+
         .portal-card.alerta-ferias:hover {
-            box-shadow: 0 10px 25px rgba(209, 178, 172, 0.5);
-            border-color: #bd9a5f;
+            box-shadow: 0 6px 16px rgba(209, 178, 172, 0.08);
+            border-color: #e0c5be;
         }
+
         .portal-card.alerta-ferias .icon-circle {
-            background: #ffffff; 
-            color: #d1b2ac; /* Ícone no tom rosé forte */
+            background: #fde8e1;
+            color: #c5a196;
         }
+
+        .portal-card.alerta-ferias:hover .icon-circle {
+            background: #fce0d7;
+            color: #bd9a5f;
+        }
+
         .status-tag {
-            display: block;
-            background: #d1b2ac; /* Etiqueta rosé em harmonia */
-            color: white;
+            display: inline-block;
+            background: #e0c5be;
+            color: #ffffff;
             font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 4px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 5px;
             margin-bottom: 10px;
             text-transform: uppercase;
-        }
-        .portal-card.alerta-ferias .card-button {
-            background: #d1b2ac;
-        }
-        .portal-card.alerta-ferias:hover .card-button {
-            background: #bd9a5f;
+            letter-spacing: 0.4px;
         }
 
-        /* Rodapé Institucional */
+        .portal-card.alerta-ferias .card-button {
+            background: #dcc9c1;
+            color: #8b7355;
+        }
+
+        .portal-card.alerta-ferias:hover .card-button {
+            background: #d0bbb2;
+            color: #7a6447;
+        }
+
+        /* RODAPÉ INSTITUCIONAL */
         .footer-institucional {
             text-align: center;
             width: 100%;
             max-width: 950px;
-            border-top: 1px solid #e1d5d2;
+            border-top: 1px solid #e8dcd7;
             padding-top: 20px;
-            margin-top: 10px;
+            margin-top: 16px;
         }
-        .footer-institucional p { font-size: 12px; color: #7a7a7a; line-height: 1.6; }
-        .footer-confidencial { font-size: 11px !important; color: #a39390 !important; margin-top: 8px; font-weight: 500; }
 
-        @media (max-width: 580px) { 
-            .menu-container { grid-template-columns: 1fr; gap: 15px; } 
-            .header-card { flex-direction: column-reverse; text-align: center; border-left: none; border-top: 5px solid #bd9a5f; }
+        .footer-institucional p {
+            font-size: 12px;
+            color: #8a8a8a;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .footer-confidencial {
+            font-size: 11px !important;
+            color: #a39390 !important;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 680px) {
+            .menu-container {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .header-card {
+                flex-direction: column-reverse;
+                text-align: center;
+                border-left: none;
+                border-top: 4px solid #bd9a5f;
+                padding: 20px 24px;
+            }
+
+            .header-info h1 {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Cabeçalho -->
+    <!-- CABEÇALHO -->
     <div class="header-card">
         <div class="header-info">
             <h1>VEDI OPTICA E RELOJOARIA LTDA</h1>
             <p>CNPJ: 85.375.731/0001-74 • Painel de Atendimento Contábil</p>
             <div class="mes-tag">📅 Competência: Setembro / 2026</div>
         </div>
-        <div class="header-logo">
-            <img src="Jaqueline do Prado Ferreira - PNG-28.png" alt="Jaqueline Ferreira Assessoria Contábil">
-        </div>
     </div>
 
-    <!-- Container dos 4 Cards -->
+    <!-- CONTAINER DOS CARDS -->
     <div class="menu-container">
         <!-- Card 1: Fiscal -->
         <a href="fiscal-vedi.html" class="portal-card">
-            <div class="icon-circle">📊</div>
+            <div class="icon-circle">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 3v18h18"></path>
+                    <path d="M7 11l3-3 3 3 3-3 3 3"></path>
+                    <circle cx="9" cy="8" r="1.5"></circle>
+                    <circle cx="15" cy="6" r="1.5"></circle>
+                </svg>
+            </div>
             <h2>Painel Fiscal</h2>
             <p>Acesse o faturamento, evolução tributária e guias de impostos como o DAS.</p>
             <div class="card-button">Acessar Painel</div>
@@ -229,15 +285,27 @@
 
         <!-- Card 2: DP -->
         <a href="dp-vedi.html" class="portal-card">
-            <div class="icon-circle">👥</div>
+            <div class="icon-circle">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="3"></circle>
+                    <path d="M6 14c0-2 2.5-4 6-4s6 2 6 4v4H6z"></path>
+                </svg>
+            </div>
             <h2>Depto. Pessoal</h2>
             <p>Confira o resumo da folha, encargos (INSS/FGTS) e pró-labore.</p>
             <div class="card-button">Acessar Painel</div>
         </a>
 
-        <!-- Card 3: Férias Funcionários (Rosé Forte + Nome Alterado) -->
+        <!-- Card 3: Férias Funcionários (DELICADO EM ROSÉ) -->
         <a href="ferias-vedi.html" class="portal-card alerta-ferias">
-            <div class="icon-circle">📅</div>
+            <div class="icon-circle">
+                <svg viewBox="0 0 24 24">
+                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                    <line x1="4" y1="10" x2="20" y2="10"></line>
+                    <line x1="9" y1="14" x2="9" y2="20"></line>
+                    <line x1="15" y1="14" x2="15" y2="20"></line>
+                </svg>
+            </div>
             <span class="status-tag">Afastamento Ativo</span>
             <h2>Férias Funcionários</h2>
             <p>Visualize períodos de aquisição, dias de gozo e valores de recibos.</p>
@@ -246,14 +314,22 @@
 
         <!-- Card 4: Contabilidade -->
         <a href="contabilidade-vedi.html" class="portal-card">
-            <div class="icon-circle">💼</div>
+            <div class="icon-circle">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7 3h10c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2z"></path>
+                    <line x1="9" y1="6" x2="15" y2="6"></line>
+                    <line x1="9" y1="10" x2="15" y2="10"></line>
+                    <line x1="9" y1="14" x2="15" y2="14"></line>
+                    <line x1="9" y1="18" x2="13" y2="18"></line>
+                </svg>
+            </div>
             <h2>Contabilidade</h2>
             <p>Consulte balancetes, demonstrações de resultado e relatórios contábeis da empresa.</p>
             <div class="card-button">Acessar Painel</div>
         </a>
     </div>
 
-    <!-- Rodapé Oficial Jaqueline Ferreira Assessoria Contábil -->
+    <!-- RODAPÉ -->
     <div class="footer-institucional">
         <p>Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</p>
         <p>Responsável Técnica: Jaqueline do Prado Ferreira | CRC SC-048028/O-0</p>
