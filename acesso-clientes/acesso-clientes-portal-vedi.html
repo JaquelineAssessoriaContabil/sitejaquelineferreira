@@ -21,41 +21,36 @@
             overflow-x: hidden;
         }
 
-        /* Papel de parede com a sua marca d'água elegante e gigante ao fundo */
+        /* Papel de parede sutil da marca */
         body::before {
             content: "JF";
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 35vw; /* Tamanho gigante proporcional à tela */
+            font-size: 35vw; 
             font-weight: 700;
-            color: rgba(189, 154, 95, 0.04); /* Dourado ultra suave e transparente */
+            color: rgba(189, 154, 95, 0.04); 
             letter-spacing: -10px;
             z-index: 0;
             pointer-events: none;
-            font-family: 'Segoe UI', sans-serif;
-            text-shadow: 
-                0 0 20px rgba(189, 154, 95, 0.02),
-                inset 0 0 10px rgba(189, 154, 95, 0.02);
         }
         
-        /* Garante que o conteúdo fique acima do papel de parede */
         .header-card, .menu-container, .footer-institucional {
             position: relative;
             z-index: 1;
         }
         
-        /* Cabeçalho clean em branco com detalhes em dourado */
+        /* Cabeçalho clean */
         .header-card { 
-            background: rgba(255, 255, 255, 0.95); /* Leve transparência moderna */
+            background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(5px);
             width: 100%; 
             max-width: 950px; 
             padding: 25px 30px; 
             border-radius: 12px; 
             box-shadow: 0 4px 15px rgba(189, 154, 95, 0.06); 
-            border-left: 5px solid #bd9a5f; /* Dourado JF */
+            border-left: 5px solid #bd9a5f; 
             margin-bottom: 25px;
             display: flex;
             align-items: center;
@@ -65,7 +60,6 @@
         .header-info h1 { font-size: 20px; color: #333333; font-weight: 600; letter-spacing: -0.3px; }
         .header-info p { font-size: 13px; color: #8c8c8c; margin-top: 4px; font-weight: 500; }
         
-        /* Etiqueta de Mês em Destaque */
         .mes-tag {
             display: inline-block;
             background-color: #fbeee8;
@@ -80,7 +74,6 @@
             border: 1px solid #f2eceb;
         }
         
-        /* Estilização para o círculo da logomarca / Selo JF */
         .logo-placeholder {
             width: 65px;
             height: 65px;
@@ -93,19 +86,24 @@
             justify-content: center;
             font-weight: 700;
             font-size: 18px;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(189, 154, 95, 0.1);
         }
 
-        .menu-container { display: flex; gap: 20px; width: 100%; max-width: 950px; margin-bottom: 40px; }
+        /* Ajuste do grid para 4 cards ficarem bem distribuídos */
+        .menu-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); 
+            gap: 20px; 
+            width: 100%; 
+            max-width: 950px; 
+            margin-bottom: 40px; 
+        }
         
         .portal-card { 
-            flex: 1; 
             background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(5px);
             text-decoration: none; 
             color: inherit; 
-            padding: 40px 25px 30px 25px; 
+            padding: 35px 20px 25px 20px; 
             border-radius: 12px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
             text-align: center; 
@@ -114,7 +112,6 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            position: relative;
         }
         
         .portal-card:hover { 
@@ -125,14 +122,14 @@
         }
         
         .icon-circle {
-            width: 65px;
-            height: 65px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
-            margin-bottom: 20px;
+            font-size: 24px;
+            margin-bottom: 15px;
             background: #fbf7f6; 
             color: #bd9a5f;      
             transition: all 0.3s ease;
@@ -143,14 +140,14 @@
             color: #ffffff;
         }
 
-        .portal-card h2 { font-size: 17px; font-weight: 600; margin-bottom: 10px; color: #333333; }
-        .portal-card p { font-size: 13px; color: #7a7a7a; line-height: 1.5; margin-bottom: 25px; flex-grow: 1; }
+        .portal-card h2 { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #333333; }
+        .portal-card p { font-size: 12.5px; color: #7a7a7a; line-height: 1.5; margin-bottom: 20px; flex-grow: 1; }
         
         .card-button {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -160,7 +157,6 @@
         }
         .portal-card:hover .card-button { 
             background: #a3824b; 
-            box-shadow: 0 4px 12px rgba(163, 130, 75, 0.2);
         }
 
         /* Rodapé Institucional */
@@ -172,29 +168,18 @@
             padding-top: 20px;
             margin-top: 10px;
         }
-        .footer-institucional p {
-            font-size: 12px;
-            color: #7a7a7a;
-            line-height: 1.6;
-        }
-        .footer-confidencial {
-            font-size: 11px !important;
-            color: #a39390 !important;
-            margin-top: 8px;
-            font-weight: 500;
-        }
+        .footer-institucional p { font-size: 12px; color: #7a7a7a; line-height: 1.6; }
+        .footer-confidencial { font-size: 11px !important; color: #a39390 !important; margin-top: 8px; font-weight: 500; }
 
-        @media (max-width: 768px) { 
+        @media (max-width: 580px) { 
+            .menu-container { grid-template-columns: 1fr; gap: 15px; } 
             .header-card { flex-direction: column-reverse; text-align: center; border-left: none; border-top: 5px solid #bd9a5f; }
-            .menu-container { flex-direction: column; gap: 15px; } 
-            .footer-institucional { padding: 20px 10px 0 10px; }
-            body::before { font-size: 60vw; } /* Ajusta papel de parede no celular */
         }
     </style>
 </head>
 <body>
 
-    <!-- Cabeçalho com Informações, Mês e Logo Integrada -->
+    <!-- Cabeçalho -->
     <div class="header-card">
         <div class="header-info">
             <h1>VEDI OPTICA E RELOJOARIA LTDA</h1>
@@ -206,26 +191,37 @@
         </div>
     </div>
 
-    <!-- Cards de Opções -->
+    <!-- Container dos 4 Cards -->
     <div class="menu-container">
+        <!-- Card 1: Fiscal -->
         <a href="fiscal-vedi.html" class="portal-card">
             <div class="icon-circle">📊</div>
             <h2>Painel Fiscal</h2>
-            <p>Acesse o faturamento, evolução de carga tributária e guias de impostos como o DAS.</p>
+            <p>Acesse o faturamento, evolução tributária e guias de impostos como o DAS.</p>
             <div class="card-button">Acessar Painel</div>
         </a>
 
+        <!-- Card 2: DP -->
         <a href="dp-vedi.html" class="portal-card">
             <div class="icon-circle">👥</div>
             <h2>Depto. Pessoal</h2>
-            <p>Confira o resumo da folha, encargos (INSS/FGTS), pró-labore e contagem de empregados.</p>
+            <p>Confira o resumo da folha, encargos (INSS/FGTS) e pró-labore.</p>
             <div class="card-button">Acessar Painel</div>
         </a>
 
+        <!-- Card 3: Férias -->
         <a href="ferias-vedi.html" class="portal-card">
             <div class="icon-circle">📅</div>
             <h2>Aviso de Férias</h2>
-            <p>Visualize períodos de aquisição, dias de gozo, salários base e valores líquidos de recibos.</p>
+            <p>Visualize períodos de aquisição, dias de gozo e valores de recibos.</p>
+            <div class="card-button">Acessar Painel</div>
+        </a>
+
+        <!-- Card 4: NOVO CARD CONTABILIDADE -->
+        <a href="contabilidade-vedi.html" class="portal-card">
+            <div class="icon-circle">💼</div>
+            <h2>Contabilidade</h2>
+            <p>Consulte balancetes, demonstrações de resultado e relatórios contábeis da empresa.</p>
             <div class="card-button">Acessar Painel</div>
         </a>
     </div>
