@@ -9,7 +9,7 @@
         
         body { 
             font-family: 'Segoe UI', system-ui, sans-serif; 
-            background-color: #f7f1f0; /* Rosé suave da sua marca */
+            background-color: #f7f1f0; 
             color: #4a4a4a; 
             display: flex; 
             flex-direction: column; 
@@ -21,19 +21,22 @@
             overflow-x: hidden;
         }
 
-        /* Papel de parede sutil da marca */
+        /* Papel de parede / Marca d'água de fundo */
         body::before {
-            content: "JF";
+            content: "";
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 35vw; 
-            font-weight: 700;
-            color: rgba(189, 154, 95, 0.04); 
-            letter-spacing: -10px;
-            z-index: 0;
-            pointer-events: none;
+            width: 70vh; 
+            height: 70vh;
+            background-image: url('../logo-jf.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.12; 
+            z-index: 0; 
+            pointer-events: none; 
         }
         
         .header-card, .menu-container, .footer-institucional {
@@ -88,7 +91,7 @@
             font-size: 18px;
         }
 
-        /* Ajuste do grid para 4 cards ficarem bem distribuídos */
+        /* Grid de 4 cards */
         .menu-container { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); 
@@ -155,8 +158,35 @@
             color: white;
             transition: all 0.2s ease;
         }
-        .portal-card:hover .card-button { 
-            background: #a3824b; 
+        .portal-card:hover .card-button { background: #a3824b; }
+
+        /* ==========================================
+           🎨 ESTILO DE SINALIZAÇÃO DE FÉRIAS ATIVAS
+           ========================================== */
+        .portal-card.alerta-ferias {
+            background: rgba(251, 238, 232, 0.95); /* Fundo rosé/creme de atenção */
+            border: 1px solid #eabda8;
+            box-shadow: 0 4px 15px rgba(234, 189, 168, 0.2);
+        }
+        .portal-card.alerta-ferias:hover {
+            box-shadow: 0 10px 25px rgba(234, 189, 168, 0.4);
+            border-color: #bd9a5f;
+        }
+        .portal-card.alerta-ferias .icon-circle {
+            background: #e74c3c; /* Círculo vermelho suave para destacar o aviso */
+            color: white;
+        }
+        /* Etiqueta de aviso interno do card */
+        .status-tag {
+            display: block;
+            background: #e74c3c;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         /* Rodapé Institucional */
@@ -209,15 +239,16 @@
             <div class="card-button">Acessar Painel</div>
         </a>
 
-        <!-- Card 3: Férias -->
-        <a href="ferias-vedi.html" class="portal-card">
+        <!-- Card 3: Férias (COM O SINALIZADOR ATIVADO) -->
+        <a href="ferias-vedi.html" class="portal-card alerta-ferias">
             <div class="icon-circle">📅</div>
+            <span class="status-tag">Afastamento Ativo</span>
             <h2>Aviso de Férias</h2>
             <p>Visualize períodos de aquisição, dias de gozo e valores de recibos.</p>
-            <div class="card-button">Acessar Painel</div>
+            <div class="card-button" style="background: #e74c3c;">Acessar Painel</div>
         </a>
 
-        <!-- Card 4: NOVO CARD CONTABILIDADE -->
+        <!-- Card 4: Contabilidade -->
         <a href="contabilidade-vedi.html" class="portal-card">
             <div class="icon-circle">💼</div>
             <h2>Contabilidade</h2>
@@ -236,4 +267,3 @@
 
 </body>
 </html>
-
