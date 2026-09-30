@@ -3,128 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Férias - VEDI OPTICA</title>
+    <title>Dashboard Férias - Erick Henrique Cordeiro</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            background: linear-gradient(135deg, #e5d1cd 0%, #cbd2df 100%); 
-            color: #333; 
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #f7f1f0; /* Rosé suave da sua marca */
+            color: #000000; /* Todas as escritas base em preto */
+            min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            align-items: flex-start;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
         }
-        .container { width: 100%; max-width: 950px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        
-        .header { 
-            border-bottom: 2px solid #c5a880; 
-            padding-bottom: 20px; 
-            margin-bottom: 25px; 
+
+        /* Papel de parede sutil da sua marca ao fundo */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 75vh; 
+            height: 75vh;
+            background-image: url('Jaqueline do Prado Ferreira - PNG-28.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.06; 
+            z-index: 0; 
+            pointer-events: none; 
+        }
+
+        /* ESTRUTURA EM DUAS COLUNAS */
+        .wrapper {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 25px;
+            width: 100%;
+            max-width: 1400px;
+            position: relative;
+            z-index: 1;
         }
-        .header h1 { font-size: 22px; color: #2a3a5c; font-weight: 700; }
-        .header p { font-size: 13px; color: #6c757d; margin-top: 3px; font-weight: 500; }
-        .logo-jf { background: #2a3a5c; border: 2px solid #c5a880; color: #ffffff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; box-shadow: 0 4px 10px rgba(42, 58, 92, 0.2); }
+
+        /* 📁 BARRA LATERAL ESQUERDA PARA OS DOCUMENTOS DE FÉRIAS */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 25px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(189, 154, 95, 0.06);
+            border-top: 4px solid #bd9a5f; /* Dourado JF */
+            flex-shrink: 0;
+            align-self: flex-start;
+        }
         
-        .section-title { font-size: 16px; font-weight: 600; color: #2a3a5c; margin: 25px 0 15px 0; display: flex; align-items: center; gap: 8px; border-left: 4px solid #c5a880; padding-left: 10px; }
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #000000; /* Título em preto */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
         
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        .card { background: white; border: 1px solid #eef0f2; border-radius: 8px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-        .card.red { border-top: 4px solid #e74c3c; }
-        .card.gold { border-top: 4px solid #c5a880; }
-        .card.green { border-top: 4px solid #2ecc71; }
-        .card.blue { border-top: 4px solid #2a3a5c; }
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+        .sidebar-section:last-child { margin-bottom: 0; }
         
-        .card-label { font-size: 11px; text-transform: uppercase; color: #888; font-weight: 600; }
-        .card-value { font-size: 22px; font-weight: 700; color: #2a3a5c; margin: 6px 0 4px 0; }
-        .card-sub { font-size: 12px; color: #666; font-weight: 500; }
+        .sidebar-subtitle {
+            font-size: 11px;
+            font-weight: 700;
+            color: #bd9a5f; /* Dourado */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #f2eceb;
+        }
         
-        .list-info { background: #fdfdfd; border: 1px solid #eef0f2; border-radius: 8px; padding: 10px 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.01); }
-        .info-row { padding: 15px 0; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; align-items: center; }
-        .info-row:last-child { border-bottom: none; }
-        .info-block { display: flex; flex-direction: column; }
-        .info-label { font-size: 11px; text-transform: uppercase; color: #888; font-weight: 600; margin-bottom: 4px; }
-        .info-val { font-size: 14px; color: #2a3a5c; font-weight: 600; }
-        .info-sub { font-size: 12px; color: #777; margin-top: 2px; }
+        .pdf-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
         
-        /* Estilização para o bloco de arquivos PDF */
-        .pdf-section { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
-        .btn-pdf { display: inline-flex; align-items: center; gap: 12px; background-color: #ffffff; border: 1px solid #eabda8; color: #a3824b; text-decoration: none; padding: 15px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-        .btn-pdf:hover { background-color: #fbeee8; border-color: #bd9a5f; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(189,154,95,0.1); }
-        
-        .btn-back { display: inline-block; margin-top: 30px; text-decoration: none; background-color: #2a3a5c; color: white; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: background 0.2s; }
-        .btn-back:hover { background-color: #1a2530; }
+        .btn-sidebar-pdf {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #000000; /* Nomes dos arquivos em preto */
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+        }
+        .btn-sidebar-pdf:hover {
+            background-color: #fbf7f6;
+            color: #bd9a5f;
+            padding-left: 14px;
+        }
+
+        /* CONTAINER DO CONTEÚDO À DIREITA */
+        .container { 
+            flex-grow: 1;
+        }
+
+        /* HEADER */
+        .header {
+            background: rgba(255, 255, 255, 0.95); border: 1px solid #E5E7EB; border-radius: 8px; padding: 24px;
+            margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 5px solid #bd9a5f;
+        }
+        .header-left h1 { font-size: 18px; font-weight: 700; color: #000000; margin-bottom: 4px; }
+        .header-left p { font-size: 13px; color: #000000; margin: 4px 0; }
+        .header-right img { width: 55px; height: 55px; object-fit: contain; }
+
+        /* SEÇÃO TÍTULO */
+        .section-title {
+            font-size: 15px; font-weight: 600; color: #000000; margin: 24px 0 16px 0;
+            padding-bottom: 8px; border-bottom: 2px solid #bd9a5f;
+        }
+
+        /* KPI CARDS - 5 COLUNAS */
+        .kpis-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
+            margin-bottom: 24px;
+        }
+        .kpi-card {
+            background: white; border: 1px solid #E5E7EB; border-left: 5px solid;
+            border-radius: 6px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .kpi-card.ferias { border-left-color: #C58A94; }
+        .kpi-card.terco { border-left-color: #bd9a5f; }
+        .kpi-card.desconto { border-left-color: #bd9a5f; }
+        .kpi-card.liquido { border-left-color: #10B981; }
+        .kpi-card.dias { border-left-color: #6366F1; }
+        .kpi-label { font-size: 11px; color: #000000; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+        .kpi-value { font-size: 22px; font-weight: 700; color: #000000; margin-bottom: 4px; }
+        .kpi-sub { font-size: 12px; color: #000000; font-weight: 500; }
+        .kpi-sub.pos { color: #10B981; font-weight: 700; }
+
+        /* PAINEL */
+        .panel {
+            background: white; border: 1px solid #E5E7EB; border-radius: 8px;
+            padding: 24px; margin-bottom: 24px;
+        }
+        .panel-title {
+            font-size: 15px; font-weight: 600; color: #000000; margin-bottom: 16px;
+        }
+        .info-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+        }
+        .info-item {
+            padding: 16px; background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 6px;
+        }
+        .info-label { font-size: 11px; color: #000000; text-transform: uppercase; font-weight: 700; margin-bottom: 6px; }
+        .info-value { font-size: 16px; font-weight: 600; color: #000000; }
+        .info-sub { font-size: 12px; color: #000000; margin-top: 4px; }
+
+        /* BOTÃO DE VOLTAR */
+        .btn-back { 
+            display: inline-block; margin-top: 10px; text-decoration: none; 
+            background-color: #bd9a5f; color: white; padding: 12px 22px; 
+            border-radius: 6px; font-size: 12px; font-weight: 600; 
+            text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(189, 154, 95, 0.15);
+        }
+        .btn-back:hover { background-color: #a3824b; transform: translateY(-2px); }
+
+        /* RODAPÉ */
+        .footer {
+            background: white; border-top: 1px solid #E5E7EB; padding: 16px;
+            font-size: 11px; color: #000000; text-align: center; margin-top: 24px; border-radius: 8px;
+            font-weight: 500; line-height: 1.5;
+        }
+        .footer-line { margin: 4px 0; }
+
+        @media (max-width: 1150px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .kpis-grid { grid-template-columns: repeat(2, 1fr); }
+            .info-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <div>
-            <h1>FÉRIAS - ERICK HENRIQUE CORDEIRO</h1>
-            <p><strong>VEDI OPTICA E RELOJOARIA LTDA</strong> | CNPJ: 85.375.731/0001-74</p>
-            <p>Acompanhamento de Recibo de Férias Coletivas / Individuais</p>
-        </div>
-        <div class="logo-jf">JF</div>
-    </div>
+<div class="wrapper">
 
-    <div class="section-title">Resumo Financeiro do Recibo</div>
-    <div class="grid-cards">
-        <div class="card red">
-            <div class="card-label">Valor Férias</div>
-            <div class="card-value">R$ 2.040,00</div>
-            <div class="card-sub">Base Integral (30 Dias)</div>
-        </div>
-        <div class="card gold">
-            <div class="card-label">1/3 Constitucional</div>
-            <div class="card-value">R$ 680,00</div>
-            <div class="card-sub">Adicional em Lei</div>
-        </div>
-        <div class="card gold">
-            <div class="card-label">Desconto INSS</div>
-            <div class="card-value">R$ 220,48</div>
-            <div class="card-sub">Retido na Fonte</div>
-        </div>
-        <div class="card green">
-            <div class="card-label">Valor Líquido</div>
-            <div class="card-value">R$ 2.499,52</div>
-            <div class="card-sub" style="color:#2ecc71; font-weight: 600;">Adiantamento Líquido</div>
-        </div>
-    </div>
-
-    <div class="section-title">Prazos e Cronograma Legal</div>
-    <div class="list-info">
-        <div class="info-row">
-            <div class="info-block">
-                <div class="info-label">Período Aquisitivo</div>
-                <div class="info-val">17/07/2025 A 16/07/2026</div>
+    <!-- 📁 BARRA LATERAL ESQUERDA - DOCUMENTOS DE FÉRIAS EM PRETO -->
+    <div class="sidebar">
+        <div class="sidebar-title">📁 Arquivos em PDF</div>
+        
+        <div class="sidebar-section">
+            <div class="sidebar-subtitle">Recibos de Férias</div>
+            <div class="pdf-list">
+                <a href="documentos-vedi/ferias/06.%20F%C3%A9rias%20-%20Erick%20Henrique%20-%20Aviso%20e%20Recibo.pdf" target="_blank" class="btn-sidebar-pdf">📄 06. Aviso e Recibo</a>
+                <a href="documentos-vedi/ferias/06.1%20F%C3%A9rias%20-%20Erick%20Henrique%20-%20Simula%C3%A7%C3%A3o.pdf" target="_blank" class="btn-sidebar-pdf">📄 06.1 Simulação Férias</a>
             </div>
         </div>
-        <div class="info-row">
-            <div class="info-block">
-                <div class="info-label">Período de Gozo (Descanso)</div>
-                <div class="info-val">09/09/2026 A 08/10/2026</div>
-            </div>
+        
+        <div style="margin-top: 30px;">
+            <a href="acesso-clientes-portal-vedi.html" class="btn-back" style="width: 100%; text-align: center;">Menu Principal</a>
         </div>
     </div>
 
-    <!-- 📄 CENTRAL DE DOWNLOADS DO PAINEL DE FÉRIAS -->
-    <div class="section-title">📂 Documentos para Download (Confidencial)</div>
-    <div class="pdf-section">
-        <a href="documentos-vedi/ferias/06.%20F%C3%A9rias%20-%20Erick%20Henrique%20-%20Aviso%20e%20Recibo.pdf" target="_blank" class="btn-pdf">
-            📄 06. Aviso e Recibo de Férias - Erick Henrique
-        </a>
-        <a href="documentos-vedi/ferias/06.1%20F%C3%A9rias%20-%20Erick%20Henrique%20-%20Simula%C3%A7%C3%A3o.pdf" target="_blank" class="btn-pdf">
-            📄 06.1 Simulação de Férias - Erick Henrique
-        </a>
-    </div>
+    <!-- 📊 PAINEL ORIGINAL À DIREITA COM ESCRITAS EM PRETO -->
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <h1>FÉRIAS - ERICK HENRIQUE CORDEIRO</h1>
+                <p>VEDI OPTICA E RELOJOARIA LTDA | CNPJ: 85.375.731/0001-74</p>
+                <p>Período de Gozo: 09/09/2026 A 08/10/2026 | Direito Adquirido: 17/07/2025 A 16/07/2026</p>
+            </div>
+            <div class="header-right">
+                <img src="Jaqueline do Prado Ferreira - PNG-28.png" alt="JF">
+            </div>
+        </div>
 
-    <a href="acesso-clientes-portal-vedi.html" class="btn-back">⬅️ Voltar ao Menu</a>
-</div>
-
-</body>
-</html>
+        <!-- KPI CARDS -->
+        <div class="section-title">📊 Resumo das Férias</div>
+        <div class="kpis-grid">
+            <div class="kpi-card ferias">
+                <div class="kpi-label">Férias (30 dias)</div>
+                <div class="kpi-value">R$ 2.040,00</div>
+                <div class="kpi-sub">Correspondente ao mês</div>
+            </div>
+            <div class="kpi-card terco">
+                <div class="kpi-label">1/3 das Férias</div>
+                <div class="kpi-value">R$ 680,00</div>
+                <div class="kpi-sub">Adicional constitucional</div>
+            </div>
+            <div class="kpi-card desconto">
+                <div class="kpi-label">Desconto INSS</div>
+                <div class="kpi-value">R$ 220,48</div>
+                <div class="kpi-sub">8% obrigatório</div>
+            </div>
+            <div class="kpi-card liquido">
+                <div class="kpi-label">Valor Líquido</div>
+                <div class="kpi-value">R$ 2.499,52</div>
+                <div class="kpi-sub pos">Adiantado em 04/09</div>
+            </div>
+            <div class="kpi-card dias">
