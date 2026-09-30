@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Gerenciador de Parcelamentos MEI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --rose: #C5A29E;
+      --gold: #C9A15E;
+      --cream: #FBF6F1;
+      --dark: #2c2c2c;
+      --light-gray: #f5f5f5;
+      --green: #4CAF50;
+      --red: #f44336;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, var(--cream) 0%, #f9f3f1 100%);
+      color: var(--dark);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, var(--rose) 0%, #B8968F 100%);
+      padding: 3rem 2rem;
+      border-radius: 16px;
+      margin-bottom: 3rem;
+      color: white;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    header > div {
+      position: relative;
+      z-index: 1;
+    }
+    header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 700; }
+    header p { font-size: 1.1rem; opacity: 0.95; }
+
+    /* SEÇÃO */
+    .section {
+      margin-bottom: 3rem;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--rose);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--gold);
+    }
+
+    /* BOTÃO NOVO CLIENTE */
+    .btn-novo {
+      background: linear-gradient(135deg, var(--gold) 0%, #B8905C 100%);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .btn-novo:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    /* GRID DE CLIENTES */
+    .clientes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    /* CARD CLIENTE */
+    .cliente-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+      border-top: 4px solid var(--gold);
+      position: relative;
+    }
+    .cliente-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    }
+    .cliente-nome {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    .cliente-cnpj {
+      font-size: 0.9rem;
+      color: var(--rose);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-family: 'Courier New', monospace;
+    }
+    .cliente-info {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .cliente-acoes {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-acessar {
+      flex: 1;
+      background: linear-gradient(135deg, var(--gold) 0%, #B8905C 100%);
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: opacity 0.3s;
+    }
+    .btn-acessar:hover {
+      opacity: 0.9;
+    }
+    .btn-remover {
+      background: #f5f5f5;
+      color: var(--red);
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+    }
+    .btn-remover:hover {
+      background: var(--red);
+      color: white;
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      animation: fadeIn 0.3s;
+    }
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      animation: slideUp 0.3s;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--rose);
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 0.9rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--light-gray);
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    .modal-acoes {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .btn-criar {
+      flex: 1;
+      background: linear-gradient(135deg, var(--gold) 0%, #B8905C 100%);
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-criar:hover {
+      opacity: 0.9;
+    }
+    .btn-cancelar {
+      flex: 1;
+      background: var(--light-gray);
+      color: var(--dark);
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-cancelar:hover {
+      background: #e0e0e0;
+    }
+
+    /* VAZIO */
+    .vazio {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .vazio-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .vazio-text {
+      font-size: 1.1rem;
+      color: #999;
+      margin-bottom: 1.5rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background: linear-gradient(135deg, rgba(245,230,225,0.8) 0%, rgba(249,245,243,0.8) 100%);
+      color: var(--dark);
+      padding: 2rem;
+      margin-top: 4rem;
+      text-align: center;
+      border-top: 2px solid rgba(197,162,158,0.2);
+      border-radius: 12px;
+    }
+    footer p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      header h1 { font-size: 1.8rem; }
+      .clientes-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div>
+        <h1>📊 Gerenciador de Parcelamentos</h1>
+        <p>Jaqueline Ferreira Assessoria Contábil</p>
+      </div>
+    </header>
+
+    <!-- SEÇÃO CLIENTES -->
+    <section class="section">
+      <h2 class="section-title">👥 Meus Clientes</h2>
+      
+      <button class="btn-novo" onclick="abrirModal()">➕ Novo Cliente</button>
+
+      <div id="clientesContainer" class="clientes-grid"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p><strong>Jaqueline Ferreira Assessoria Contábil Ltda</strong></p>
+      <p>CNPJ: 64.202.276/0001-35</p>
+      <p style="margin-top: 1rem; opacity: 0.7; font-size: 0.85rem;">
+        Gerenciador de Parcelamentos MEI — 2026
+      </p>
+    </footer>
+  </div>
+
+  <!-- MODAL NOVO CLIENTE -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title">➕ Novo Cliente</h2>
+      
+      <div class="form-group">
+        <label for="nomeCliente">Nome Completo *</label>
+        <input type="text" id="nomeCliente" placeholder="Ex: Joene Moreira do Nascimento">
+      </div>
+
+      <div class="form-group">
+        <label for="cnpjCliente">CNPJ *</label>
+        <input type="text" id="cnpjCliente" placeholder="Ex: 45.918.527/0001-38">
+      </div>
+
+      <div class="form-group">
+        <label for="pastaCliente">Nome da Pasta *</label>
+        <input type="text" id="pastaCliente" placeholder="Ex: joene (sem espaços, minúsculas)">
+      </div>
+
+      <div class="modal-acoes">
+        <button class="btn-criar" onclick="criarCliente()">Criar Cliente</button>
+        <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dados em localStorage
+    const STORAGE_KEY = 'parcelamentosClientes';
+
+    // Carregar clientes ao abrir página
+    document.addEventListener('DOMContentLoaded', function() {
+      renderizarClientes();
+    });
+
+    function renderizarClientes() {
+      const clientes = obterClientes();
+      const container = document.getElementById('clientesContainer');
+
+      if (clientes.length === 0) {
+        container.innerHTML = `
+          <div class="vazio" style="grid-column: 1 / -1;">
+            <div class="vazio-icon">📋</div>
+            <div class="vazio-text">Nenhum cliente cadastrado ainda</div>
+            <button class="btn-novo" onclick="abrirModal()">➕ Criar Primeiro Cliente</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = clientes.map(cliente => `
+        <div class="cliente-card">
+          <div class="cliente-nome">💼 ${cliente.nome}</div>
+          <div class="cliente-cnpj">${cliente.cnpj}</div>
+          <div class="cliente-info">
+            <strong>Pasta:</strong> /porcliente/${cliente.pasta}/<br>
+            <strong>Criado:</strong> ${new Date(cliente.dataCriacao).toLocaleDateString('pt-BR')}
+          </div>
+          <div class="cliente-acoes">
+            <button class="btn-acessar" onclick="acessarCliente('${cliente.pasta}')">
+              📂 Abrir Painel
+            </button>
+            <button class="btn-remover" onclick="removerCliente('${cliente.pasta}')" title="Remover cliente">
+              🗑️
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function obterClientes() {
+      const dados = localStorage.getItem(STORAGE_KEY);
+      return dados ? JSON.parse(dados) : [];
+    }
+
+    function salvarClientes(clientes) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(clientes));
+    }
+
+    function abrirModal() {
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function fecharModal() {
+      document.getElementById('modal').classList.remove('active');
+      limparFormulario();
+    }
+
+    function limparFormulario() {
+      document.getElementById('nomeCliente').value = '';
+      document.getElementById('cnpjCliente').value = '';
+      document.getElementById('pastaCliente').value = '';
+    }
+
+    function criarCliente() {
+      const nome = document.getElementById('nomeCliente').value.trim();
+      const cnpj = document.getElementById('cnpjCliente').value.trim();
+      const pasta = document.getElementById('pastaCliente').value.trim();
+
+      if (!nome || !cnpj || !pasta) {
+        alert('⚠️ Preencha todos os campos!');
+        return;
+      }
+
+      const clientes = obterClientes();
+      
+      if (clientes.some(c => c.pasta === pasta)) {
+        alert('⚠️ Já existe um cliente com essa pasta!');
+        return;
+      }
+
+      clientes.push({
+        nome,
+        cnpj,
+        pasta,
+        dataCriacao: new Date().toISOString()
+      });
+
+      salvarClientes(clientes);
+      renderizarClientes();
+      fecharModal();
+
+      alert(`✅ Cliente ${nome} criado!\n\nPróximos passos:\n1. Crie a pasta: /parcelamentos/porcliente/${pasta}/\n2. Copie o template de painel para lá\n3. Personalize com os dados do cliente`);
+    }
+
+    function removerCliente(pasta) {
+      if (confirm(`⚠️ Tem certeza que deseja remover este cliente?\n\nNota: A pasta em /parcelamentos/porcliente/${pasta}/ não será deletada automaticamente.`)) {
+        let clientes = obterClientes();
+        clientes = clientes.filter(c => c.pasta !== pasta);
+        salvarClientes(clientes);
+        renderizarClientes();
+        alert(`✅ Cliente removido!\n\nNão esqueça de deletar a pasta:\n/parcelamentos/porcliente/${pasta}/`);
+      }
+    }
+
+    function acessarCliente(pasta) {
+      window.location.href = `parcelamentos/porcliente/${pasta}/`;
+    }
+
+    // Fechar modal ao clicar fora
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if (event.target === modal) {
+        fecharModal();
+      }
+    }
+  </script>
+</body>
+</html>
