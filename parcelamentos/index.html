@@ -238,6 +238,43 @@
       color: var(--dark);
     }
 
+    /* BARRA DE PROGRESSO NOS CARDS */
+    .progress-mini {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e8d4cf;
+      position: relative;
+      z-index: 1;
+    }
+    .progress-mini-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--rose);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .progress-mini-bar {
+      width: 100%;
+      height: 8px;
+      background: #e8d4cf;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    .progress-mini-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green) 0%, #66bb6a 100%);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    .progress-mini-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #666;
+      font-weight: 500;
+    }
+
     /* FEATURES */
     .features-list {
       display: grid;
@@ -347,6 +384,17 @@
             </div>
           </div>
 
+          <div class="progress-mini">
+            <div class="progress-mini-label">✅ Pagas</div>
+            <div class="progress-mini-bar">
+              <div class="progress-mini-fill" style="width: 3.57%;"></div>
+            </div>
+            <div class="progress-mini-info">
+              <span>2/56</span>
+              <span>3.57%</span>
+            </div>
+          </div>
+
           <div class="cliente-acoes">
             <a href="parcelamentomeijoene.html" class="btn btn-acessar">🔍 Abrir Painel</a>
             <a href="parcelamentomeijoene.html" download class="btn btn-download">⬇️ Baixar</a>
@@ -374,6 +422,17 @@
             </div>
           </div>
 
+          <div class="progress-mini">
+            <div class="progress-mini-label">✅ Pagas</div>
+            <div class="progress-mini-bar">
+              <div class="progress-mini-fill" style="width: 5%;"></div>
+            </div>
+            <div class="progress-mini-info">
+              <span>3/60</span>
+              <span>5%</span>
+            </div>
+          </div>
+
           <div class="cliente-acoes">
             <a href="parcelamentomeicharles.html" class="btn btn-acessar">🔍 Abrir Painel</a>
             <a href="parcelamentomeicharles.html" download class="btn btn-download">⬇️ Baixar</a>
@@ -398,6 +457,17 @@
             <div class="cliente-info-item">
               <span class="info-label">Total:</span>
               <span class="info-value">R$ 1.593,17</span>
+            </div>
+          </div>
+
+          <div class="progress-mini">
+            <div class="progress-mini-label">✅ Pagas</div>
+            <div class="progress-mini-bar">
+              <div class="progress-mini-fill" style="width: 68.97%;"></div>
+            </div>
+            <div class="progress-mini-info">
+              <span>20/29</span>
+              <span>68.97%</span>
             </div>
           </div>
 
