@@ -1,1 +1,893 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Painel de Parcelamentos — Cleunice Ribeiro de Lima</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --rose: #C5A29E;
+      --gold: #C9A15E;
+      --cream: #FBF6F1;
+      --dark: #2c2c2c;
+      --light-gray: #f5f5f5;
+      --red: #f44336;
+      --blue: #1976D2;
+      --green: #4CAF50;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--cream);
+      color: var(--dark);
+      line-height: 1.4;
+    }
+    .container { max-width: 1000px; margin: 0 auto; padding: 15px; }
 
+    header {
+      background: linear-gradient(135deg, var(--rose) 0%, #B8968F 100%);
+      padding: 3rem 2rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    header > div { position: relative; z-index: 1; }
+    header h1 { font-size: 2rem; margin-bottom: 0.5rem; color: white; font-weight: 700; letter-spacing: 0.5px; }
+    header p { font-size: 1rem; opacity: 0.95; margin-bottom: 0; color: rgba(255,255,255,0.9); }
+
+    .info-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .info-card {
+      background: transparent;
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--gold);
+    }
+    .info-card-label {
+      color: var(--rose);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .info-card-value {
+      color: var(--dark);
+      font-size: 1.1rem;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .guia-destaque {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      border-top: 5px solid var(--gold);
+    }
+    .guia-destaque .section-title { margin-top: 0; margin-bottom: 2rem; font-size: 1.3rem; }
+    .guia-cards-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+
+    .guia-card {
+      background: #fafafa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--gold);
+      transition: all 0.3s;
+    }
+    .guia-card:hover {
+      box-shadow: 0 4px 12px rgba(197,162,158,0.15);
+      transform: translateY(-2px);
+    }
+    .guia-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.75rem;
+    }
+    .guia-info {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .barcode-label {
+      background: var(--gold);
+      color: white;
+      padding: 0.75rem;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: inline-block;
+      font-size: 0.85rem;
+    }
+    .barcode-box {
+      background: white;
+      padding: 1rem;
+      border-radius: 4px;
+      border: 2px dashed var(--gold);
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      word-break: break-all;
+      font-weight: 600;
+      color: var(--dark);
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 1rem;
+    }
+    .barcode-box:hover {
+      background: #f9f3f1;
+      transform: scale(1.01);
+    }
+    .btn-copy {
+      background: linear-gradient(135deg, var(--gold) 0%, #B8905C 100%);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: opacity 0.3s;
+    }
+    .btn-copy:hover { opacity: 0.9; }
+
+    .info-box {
+      background: #f9f3f1;
+      border-left: 4px solid var(--gold);
+      padding: 1.5rem;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .tabs-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    .tabs-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      background: #f5f5f5;
+      border-radius: 8px 8px 0 0;
+    }
+    .tab-btn {
+      flex: 1;
+      min-width: 150px;
+      padding: 1rem;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: #666;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.95rem;
+    }
+    .tab-btn:hover {
+      background: rgba(197,162,158,0.05);
+      color: var(--rose);
+    }
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+      background: white;
+    }
+
+    .tab-pane {
+      display: none;
+      padding: 2rem;
+      animation: fadeIn 0.3s;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--rose);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .resume-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .resume-card {
+      background: #f9f3f1;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--gold);
+    }
+    .resume-label {
+      color: var(--rose);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .resume-value {
+      color: var(--dark);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .status-badge.avencer {
+      background-color: #FFF3CD;
+      color: #856404;
+      border: 1px solid #FFE69C;
+    }
+    .status-badge.paga {
+      background-color: #D4EDDA;
+      color: #155724;
+      border: 1px solid #C3E6CB;
+    }
+    .status-badge.vencida {
+      background-color: #F8D7DA;
+      color: #721C24;
+      border: 1px solid #F5C6CB;
+    }
+
+    footer {
+      background: linear-gradient(135deg, rgba(245,230,225,0.8) 0%, rgba(249,245,243,0.8) 100%);
+      color: var(--dark);
+      padding: 2rem;
+      margin-top: 4rem;
+      text-align: center;
+      border-top: 2px solid rgba(197,162,158,0.2);
+      border-radius: 12px;
+    }
+    footer p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+    }
+
+    .parcelas-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .parcelas-table thead {
+      background: linear-gradient(135deg, var(--rose) 0%, #B8968F 100%);
+      color: white;
+    }
+    .parcelas-table th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .parcelas-table td {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95rem;
+    }
+    .parcelas-table tbody tr:hover {
+      background-color: #fafafa;
+    }
+    .parcelas-table .status-paga {
+      color: #155724;
+      font-weight: 700;
+    }
+    .parcelas-table .status-avencer {
+      color: #856404;
+      font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+      header h1 { font-size: 1.5rem; }
+      .tabs-nav { flex-direction: column; }
+      .tab-btn { min-width: 100%; }
+      .guia-cards-row { grid-template-columns: 1fr; }
+      .parcelas-table { font-size: 0.85rem; }
+      .parcelas-table th, .parcelas-table td { padding: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div>
+        <h1>Parcelamentos</h1>
+        <p>Controle de seus compromissos fiscais</p>
+      </div>
+    </header>
+
+    <!-- INFO CARDS -->
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-card-label">Contribuinte</div>
+        <div class="info-card-value">Cleunice Ribeiro de Lima</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">CPF</div>
+        <div class="info-card-value">061.306.469-09</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Parcelamentos</div>
+        <div class="info-card-value">3</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Total a Pagar</div>
+        <div class="info-card-value">R$ 831,28</div>
+      </div>
+    </div>
+
+    <!-- GUIAS DESTAQUE -->
+    <div class="guia-destaque">
+      <div class="section-title">💳 Guias para Pagamento</div>
+      <div class="guia-cards-row">
+
+        <!-- PGFN -->
+        <div class="guia-card">
+          <div class="guia-title">🏛️ PGFN-SISPAR</div>
+          <div class="guia-info">
+            <strong>Vencimento:</strong> 30/09/2026 | <strong>Valor:</strong> R$ 134,94
+          </div>
+          <div class="barcode-label">Código de Barras</div>
+          <div class="barcode-box" onclick="copiarCodigoBarras('858600000012349403852627730717262720824919913510')">
+            858600000012349403852627730717262720824919913510
+          </div>
+          <button class="btn-copy" onclick="copiarCodigoBarras('858600000012349403852627730717262720824919913510')">
+            📋 Copiar Código de Barras
+          </button>
+        </div>
+
+        <!-- IRPF -->
+        <div class="guia-card">
+          <div class="guia-title">📊 Imposto de Renda 2026</div>
+          <div class="guia-info">
+            <strong>Vencimento:</strong> 30/09/2026 | <strong>Valor:</strong> R$ 488,76
+          </div>
+          <div class="barcode-label">Código de Barras</div>
+          <div class="barcode-box" onclick="copiarCodigoBarras('858600000047887603852625730701262725823793098785')">
+            858600000047887603852625730701262725823793098785
+          </div>
+          <button class="btn-copy" onclick="copiarCodigoBarras('858600000047887603852625730701262725823793098785')">
+            📋 Copiar Código de Barras
+          </button>
+        </div>
+
+        <!-- SIMPLIFICADO -->
+        <div class="guia-card">
+          <div class="guia-title">📝 Parcelamento Simplificado</div>
+          <div class="guia-info">
+            <strong>Vencimento:</strong> 30/09/2026 | <strong>Valor:</strong> R$ 207,58
+          </div>
+          <div class="barcode-label">Código de Barras</div>
+          <div class="barcode-box" onclick="copiarCodigoBarras('858300000025075803852624730703262722823681443006')">
+            858300000025075803852624730703262722823681443006
+          </div>
+          <button class="btn-copy" onclick="copiarCodigoBarras('858300000025075803852624730703262722823681443006')">
+            📋 Copiar Código de Barras
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMO PAGAR -->
+    <div class="info-box">
+      <strong>📋 Como Pagar:</strong><br>
+      <strong style="color: var(--gold);">💳 Código de Barras (Caixa Econômica Federal ou Banco do Brasil):</strong><br>
+      1. Clique em "Copiar Código de Barras"<br>
+      2. Abra o app do Caixa ou BB<br>
+      3. Vá para "Pagar com Código de Barras"<br>
+      4. Cole o código copiado<br>
+      5. Confirme e finalize<br><br>
+      <strong style="color: #1976D2;">🏦 PIX (Qualquer banco):</strong><br>
+      Escaneie o QR Code PIX que vem na guia de pagamento com o seu app bancário
+    </div>
+
+    <!-- ABAS -->
+    <div class="tabs-container">
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="mudarAba(event, 'resumo')">📊 Resumo</button>
+        <button class="tab-btn" onclick="mudarAba(event, 'pgfn')">🏛️ PGFN</button>
+        <button class="tab-btn" onclick="mudarAba(event, 'irpf')">📊 IRPF</button>
+        <button class="tab-btn" onclick="mudarAba(event, 'simplificado')">📝 Simplificado</button>
+      </div>
+
+      <!-- RESUMO -->
+      <div id="resumo" class="tab-pane active">
+        <div class="section-title">📊 Resumo Geral</div>
+        <div class="resume-grid">
+          <div class="resume-card">
+            <div class="resume-label">Total a Pagar</div>
+            <div class="resume-value">R$ 831,28</div>
+          </div>
+          <div class="resume-card">
+            <div class="resume-label">Parcelamentos</div>
+            <div class="resume-value">3</div>
+          </div>
+          <div class="resume-card">
+            <div class="resume-label">Vencimento</div>
+            <div class="resume-value">30/09/2026</div>
+          </div>
+          <div class="resume-card">
+            <div class="resume-label">Status</div>
+            <div class="resume-value">A Vencer</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PGFN -->
+      <div id="pgfn" class="tab-pane">
+        <div class="section-title">🏛️ PGFN-SISPAR (014144355)</div>
+        <div class="resume-grid">
+          <div class="resume-card">
+            <div class="resume-label">Valor</div>
+            <div class="resume-value">R$ 134,94</div>
+          </div>
+          <div class="resume-card">
+            <div class="resume-label">Vencimento</div>
+            <div class="resume-value">30/09/2026</div>
+          </div>
+          <div class="resume-card">
+            <div class="resume-label">Status</div>
+            <div class="resume-value"><span class="status-badge avencer">A Vencer</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <h4 style="color: var(--rose); margin-bottom: 1rem; font-size: 1rem;">Relação de Prestações</h4>
+          <table class="parcelas-table">
+            <thead>
+              <tr>
+                <th>Prestação</th>
+                <th>Vencimento</th>
+                <th>Valor</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0001</td>
+                <td>06/11/2025</td>
+                <td>R$ 122,80</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>0002</td>
+                <td>04/12/2025</td>
+                <td>R$ 122,59</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>0003</td>
+                <td>14/01/2026</td>
+                <td>R$ 124,07</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>0004</td>
+                <td>10/02/2026</td>
+                <td>R$ 125,48</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>0005</td>
+                <td>13/03/2026</td>
+                <td>R$ 126,69</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>0006</td>
+                <td>30/04/2026</td>
+                <td>R$ 128,16</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>0007</td>
+                <td>01/06/2026</td>
+                <td>R$ 130,78</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>0008</td>
+                <td>07/07/2026</td>
+                <td>R$ 132,14</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>0009</td>
+                <td>31/07/2026</td>
+                <td>R$ 132,14</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>0010</td>
+                <td>01/09/2026</td>
+                <td>R$ 134,94</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>0011</td>
+                <td>30/09/2026</td>
+                <td>R$ 121,37</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>0012</td>
+                <td>30/10/2026</td>
+                <td>R$ 121,37</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- IRPF -->
+      <div id="irpf" class="tab-pane">
+        <div class="section-title">📊 Meu Imposto de Renda 2026</div>
+        <div class="resume-grid">
+          <div class="resume-card">
+            <div class="resume-label">Valor</div>
+            <div class="resume-value">R$ 488,76</div>
+          </div>
+          <div class="resume-card">
+            <div class="resume-label">Vencimento</div>
+            <div class="resume-value">30/09/2026</div>
+          </div>
+          <div class="resume-card">
+            <div class="resume-label">Status</div>
+            <div class="resume-value"><span class="status-badge avencer">A Vencer</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <h4 style="color: var(--rose); margin-bottom: 1rem; font-size: 1rem;">Relação de Quotas</h4>
+          <table class="parcelas-table">
+            <thead>
+              <tr>
+                <th>Quota</th>
+                <th>Vencimento</th>
+                <th>Valor</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>29/05/2026</td>
+                <td>R$ 468,03</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>30/06/2026</td>
+                <td>R$ 468,03</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>31/07/2026</td>
+                <td>R$ 468,03</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>31/08/2026</td>
+                <td>R$ 468,03</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30/09/2026</td>
+                <td>R$ 468,03</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30/10/2026</td>
+                <td>R$ 468,03</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>30/11/2026</td>
+                <td>R$ 468,03</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>30/12/2026</td>
+                <td>R$ 425,14</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SIMPLIFICADO -->
+      <div id="simplificado" class="tab-pane">
+        <div class="section-title">📝 Parcelamento Simplificado</div>
+        <div class="resume-grid">
+          <div class="resume-card">
+            <div class="resume-label">Total a Pagar</div>
+            <div class="resume-value">R$ 5.224,28</div>
+          </div>
+          <div class="resume-card">
+            <div class="resume-label">Parcelas Pagas</div>
+            <div class="resume-value">3 de 26</div>
+          </div>
+          <div class="resume-card">
+            <div class="resume-label">Próximo Vencimento</div>
+            <div class="resume-value">30/09/2026</div>
+          </div>
+          <div class="resume-card">
+            <div class="resume-label">Status</div>
+            <div class="resume-value"><span class="status-badge avencer">A Vencer</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <h4 style="color: var(--rose); margin-bottom: 1rem; font-size: 1rem;">Relação de Parcelas (26 parcelas)</h4>
+          <table class="parcelas-table">
+            <thead>
+              <tr>
+                <th>Parcela</th>
+                <th>Vencimento</th>
+                <th>Valor</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>03/06/2026</td>
+                <td>R$ 200,93</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>31/07/2026</td>
+                <td>R$ 202,93</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>31/08/2026</td>
+                <td>R$ 207,58</td>
+                <td class="status-paga">✓ Paga</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>30/09/2026</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30/10/2026</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30/11/2026</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>30/12/2026</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>29/01/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>26/02/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>31/03/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td>30/04/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td>31/05/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>13</td>
+                <td>30/06/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>14</td>
+                <td>30/07/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>15</td>
+                <td>31/08/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>16</td>
+                <td>30/09/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>17</td>
+                <td>29/10/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>18</td>
+                <td>30/11/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>19</td>
+                <td>30/12/2027</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>20</td>
+                <td>31/01/2028</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>21</td>
+                <td>25/02/2028</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>22</td>
+                <td>31/03/2028</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>23</td>
+                <td>28/04/2028</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>24</td>
+                <td>31/05/2028</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>25</td>
+                <td>30/06/2028</td>
+                <td>R$ 207,58</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+              <tr>
+                <td>26</td>
+                <td>31/07/2028</td>
+                <td>R$ 207,68</td>
+                <td class="status-avencer">🕐 A Vencer</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p><strong>Jaqueline Ferreira Assessoria Contábil Ltda</strong></p>
+      <p>CRC SC-013019/O-4 | Videira - SC</p>
+      <p style="margin-top: 1rem; opacity: 0.7; font-size: 0.85rem;">
+        Painel de Parcelamentos — 2026
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    function copiarCodigoBarras(codigo) {
+      const codigoLimpo = codigo.replace(/\s+/g, '');
+      navigator.clipboard.writeText(codigoLimpo).then(() => {
+        alert('✓ Código de barras copiado!\nCole no seu aplicativo bancário para pagar.');
+      }).catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = codigoLimpo;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('✓ Código de barras copiado!\nCole no seu aplicativo bancário para pagar.');
+      });
+    }
+
+    function mudarAba(event, abaId) {
+      // Remove active de todos os botões
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      // Adiciona active ao botão clicado
+      event.target.classList.add('active');
+
+      // Remove active de todas as abas
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+      // Mostra a aba selecionada
+      document.getElementById(abaId).classList.add('active');
+    }
+  </script>
+</body>
+</html>
