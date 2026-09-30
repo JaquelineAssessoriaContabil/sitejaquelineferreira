@@ -172,6 +172,53 @@
       margin-top: 1.5rem;
     }
 
+    /* BARRA DE PROGRESSO */
+    .progress-card {
+      background: white;
+      border: 2px solid var(--gold);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .progress-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--rose);
+    }
+    .progress-percent {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e8d4cf;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green) 0%, #66bb6a 100%);
+      border-radius: 6px;
+      transition: width 0.5s ease;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #666;
+      font-weight: 500;
+    }
+
     .parcel-table {
       width: 100%;
       border-collapse: collapse;
@@ -405,6 +452,20 @@
         <div id="resumo" class="tab-pane active">
           <div class="section-title">📊 Resumo do Parcelamento</div>
 
+          <div class="progress-card">
+            <div class="progress-header">
+              <div class="progress-title">✅ Parcelas Pagas</div>
+              <div class="progress-percent">68.97%</div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 68.97%;"></div>
+            </div>
+            <div class="progress-label">
+              <span>20 de 29 pagas</span>
+              <span>9 pendentes</span>
+            </div>
+          </div>
+
           <div class="summary-grid">
             <div class="summary-box paga">
               <div class="summary-label">✅ Pagas</div>
@@ -563,4 +624,3 @@
   </script>
 </body>
 </html>
-
