@@ -310,6 +310,50 @@
     }
     .btn-copy:hover { opacity: 0.9; }
 
+    .pix-label {
+      background: #1976D2;
+      color: white;
+      padding: 0.75rem;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: inline-block;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+    .pix-box {
+      background: white;
+      padding: 1rem;
+      border-radius: 4px;
+      border: 2px dashed #1976D2;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      word-break: break-all;
+      font-weight: 600;
+      color: var(--dark);
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 1rem;
+    }
+    .pix-box:hover {
+      background: #e3f2fd;
+      transform: scale(1.01);
+    }
+    .btn-copy-pix {
+      background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: opacity 0.3s;
+    }
+    .btn-copy-pix:hover { opacity: 0.9; }
+
     footer {
       background: linear-gradient(135deg, rgba(245,230,225,0.6) 0%, rgba(249,245,243,0.6) 100%);
       color: var(--dark);
@@ -414,21 +458,36 @@
             <strong>Vencimento:</strong> 30/09/2025 | <strong>Valor:</strong> R$ 62,69
           </div>
           <div class="barcode-label">Código de Barras — Setembro</div>
-          <div class="barcode-box" onclick="copiarCodigoBarras('858400000006269032826257307182627238252769905 83')">
-            85840000000 0 62690328262 5 73071826272 3 82527699058 3
+          <div class="barcode-box" onclick="copiarCodigoBarras('858400000006269032826257307182627238252769905833')">
+            858400000006269032826257307182627238252769905833
           </div>
-          <button class="btn-copy" onclick="copiarCodigoBarras('858400000006269032826257307182627238252769905 83')">
-            📋 Copiar e Pagar
+          <button class="btn-copy" onclick="copiarCodigoBarras('858400000006269032826257307182627238252769905833')">
+            📋 Copiar Código de Barras
+          </button>
+
+          <div class="pix-label">🏦 PIX Identificador</div>
+          <div class="pix-box" onclick="copiarPix('07182627282527699096110914')">
+            07182627282527699096110914
+          </div>
+          <button class="btn-copy-pix" onclick="copiarPix('07182627282527699096110914')">
+            📋 Copiar PIX
           </button>
         </div>
       </div>
 
       <div class="info-box">
         <strong>📋 Como Pagar:</strong><br>
-        1. Clique em "Copiar e Pagar"<br>
+        <strong style="color: var(--gold);">Opção 1 — Código de Barras:</strong><br>
+        1. Clique em "Copiar Código de Barras"<br>
         2. Abra o aplicativo do seu banco<br>
         3. Vá para "Pagar com Código de Barras"<br>
         4. Cole o código copiado<br>
+        5. Confirme e finalize o pagamento<br><br>
+        <strong style="color: #1976D2;">Opção 2 — PIX:</strong><br>
+        1. Clique em "Copiar PIX"<br>
+        2. Abra o aplicativo do seu banco<br>
+        3. Vá para "Transferência via PIX"<br>
+        4. Cole o identificador copiado<br>
         5. Confirme e finalize o pagamento
       </div>
 
@@ -619,6 +678,21 @@
         document.execCommand('copy');
         document.body.removeChild(textarea);
         alert('✓ Código de barras copiado!\nCole no seu aplicativo bancário para pagar.');
+      });
+    }
+
+    function copiarPix(pix) {
+      const pixLimpo = pix.replace(/\s+/g, '');
+      navigator.clipboard.writeText(pixLimpo).then(() => {
+        alert('✓ PIX copiado!\nCole no seu aplicativo bancário para pagar.');
+      }).catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = pixLimpo;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('✓ PIX copiado!\nCole no seu aplicativo bancário para pagar.');
       });
     }
   </script>
