@@ -9,7 +9,7 @@
         
         body { 
             font-family: 'Segoe UI', system-ui, sans-serif; 
-            background-color: #f7f1f0; 
+            background-color: #f7f1f0; /* Rosé suave da sua marca */
             color: #4a4a4a; 
             display: flex; 
             flex-direction: column; 
@@ -21,20 +21,21 @@
             overflow-x: hidden;
         }
 
-        /* Papel de parede / Marca d'água de fundo */
+        /* PAPEL DE PAREDE / MARCA D'ÁGUA SUAVE NO FUNDO */
         body::before {
             content: "";
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70vh; 
-            height: 70vh;
-            background-image: url('../logo-jf.png');
+            width: 75vh; 
+            height: 75vh;
+            /* Puxa exatamente o arquivo com o nome que você subiu */
+            background-image: url('Jaqueline do Prado Ferreira - PNG-28.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            opacity: 0.12; 
+            opacity: 0.12; /* Bem sutil para envelopar a página com elegância */
             z-index: 0; 
             pointer-events: none; 
         }
@@ -77,18 +78,11 @@
             border: 1px solid #f2eceb;
         }
         
-        .logo-placeholder {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background-color: #fbf7f6;
-            border: 2px solid #bd9a5f;
-            color: #bd9a5f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
+        /* Espaço da Logo no Cabeçalho */
+        .header-logo img {
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
         }
 
         /* Grid de 4 cards */
@@ -160,11 +154,9 @@
         }
         .portal-card:hover .card-button { background: #a3824b; }
 
-        /* ==========================================
-           🎨 ESTILO DE SINALIZAÇÃO DE FÉRIAS ATIVAS
-           ========================================== */
+        /* Sinalização de Férias Ativas */
         .portal-card.alerta-ferias {
-            background: rgba(251, 238, 232, 0.95); /* Fundo rosé/creme de atenção */
+            background: rgba(251, 238, 232, 0.95); 
             border: 1px solid #eabda8;
             box-shadow: 0 4px 15px rgba(234, 189, 168, 0.2);
         }
@@ -173,10 +165,9 @@
             border-color: #bd9a5f;
         }
         .portal-card.alerta-ferias .icon-circle {
-            background: #e74c3c; /* Círculo vermelho suave para destacar o aviso */
+            background: #e74c3c; 
             color: white;
         }
-        /* Etiqueta de aviso interno do card */
         .status-tag {
             display: block;
             background: #e74c3c;
@@ -204,6 +195,7 @@
         @media (max-width: 580px) { 
             .menu-container { grid-template-columns: 1fr; gap: 15px; } 
             .header-card { flex-direction: column-reverse; text-align: center; border-left: none; border-top: 5px solid #bd9a5f; }
+            body::before { width: 45vh; height: 45vh; }
         }
     </style>
 </head>
@@ -217,7 +209,8 @@
             <div class="mes-tag">📅 Competência: Setembro / 2026</div>
         </div>
         <div class="header-logo">
-            <div class="logo-placeholder">JF</div>
+            <!-- Puxando o nome real do seu arquivo de imagem -->
+            <img src="Jaqueline do Prado Ferreira - PNG-28.png" alt="Jaqueline Ferreira Assessoria Contábil">
         </div>
     </div>
 
@@ -239,7 +232,7 @@
             <div class="card-button">Acessar Painel</div>
         </a>
 
-        <!-- Card 3: Férias (COM O SINALIZADOR ATIVADO) -->
+        <!-- Card 3: Férias -->
         <a href="ferias-vedi.html" class="portal-card alerta-ferias">
             <div class="icon-circle">📅</div>
             <span class="status-tag">Afastamento Ativo</span>
