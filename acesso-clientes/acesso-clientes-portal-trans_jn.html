@@ -7,10 +7,10 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-        .header-card { background: white; width: 100%; max-width: 1000px; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-left: 5px solid #2b3d52; margin-bottom: 30px; }
+        .header-card { background: white; width: 100%; max-width: 800px; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-left: 5px solid #2b3d52; margin-bottom: 30px; }
         .header-card h1 { font-size: 20px; color: #1a2530; font-weight: 600; margin-bottom: 5px; }
         .header-card p { font-size: 13px; color: #777; }
-        .menu-container { display: flex; gap: 20px; width: 100%; max-width: 1000px; }
+        .menu-container { display: flex; gap: 20px; width: 100%; max-width: 800px; }
         .portal-card { flex: 1; background: white; text-decoration: none; color: inherit; padding: 35px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eef0f2; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .portal-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .icon { font-size: 36px; margin-bottom: 15px; }
@@ -18,8 +18,7 @@
         .portal-card p { font-size: 12.5px; color: #666; line-height: 1.4; }
         .fiscal { border-top: 5px solid #2b3d52; }
         .dp { border-top: 5px solid #bd9a5f; }
-        .ferias { border-top: 5px solid #e74c3c; }
-        @media (max-width: 768px) { .menu-container { flex-direction: column; gap: 15px; } .header-card { text-align: center; border-left: none; border-top: 5px solid #2b3d52; } }
+        @media (max-width: 600px) { .menu-container { flex-direction: column; gap: 15px; } .header-card { text-align: center; border-left: none; border-top: 5px solid #2b3d52; } }
     </style>
 </head>
 <body>
@@ -30,25 +29,18 @@
     </div>
 
     <div class="menu-container">
-        <!-- Link para o Fiscal -->
+        <!-- Card 1: Fiscal -->
         <a href="fiscal-trans-jn.html" class="portal-card fiscal">
             <div class="icon">📊</div>
             <h2>Painel Fiscal</h2>
             <p>Acesse o faturamento, evolução de carga tributária e guias de impostos como o DAS.</p>
         </a>
 
-        <!-- Link para o DP -->
+        <!-- Card 2: DP -->
         <a href="dp-trans-jn.html" class="portal-card dp">
             <div class="icon">👥</div>
             <h2>Depto. Pessoal</h2>
             <p>Confira o resumo da folha, encargos (INSS/FGTS), pró-labore e contagem de empregados.</p>
-        </a>
-
-        <!-- Link para as Férias -->
-        <a href="ferias-trans-jn.html" class="portal-card ferias">
-            <div class="icon">📅</div>
-            <h2>Aviso de Férias</h2>
-            <p>Visualize períodos de aquisição, dias de gozo, salários base e valores líquidos de recibos.</p>
         </a>
     </div>
 
