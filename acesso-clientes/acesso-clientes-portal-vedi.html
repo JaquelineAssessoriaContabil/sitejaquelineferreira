@@ -39,10 +39,9 @@
         
         /* Estilização para o círculo da logomarca */
         .header-logo img {
-            width: 75px;
-            height: 75px;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
-            border-radius: 50%;
         }
 
         .menu-container { display: flex; gap: 20px; width: 100%; max-width: 950px; margin-bottom: 40px; }
@@ -146,8 +145,8 @@
             <p>CNPJ: 85.375.731/0001-74 • Painel Exclusivo de Atendimento Contábil</p>
         </div>
         <div class="header-logo">
-            <!-- Puxa a logo salva na mesma pasta com o nome logo-jf.png -->
-            <img src="logo-jf.png" alt="Logout Jaqueline Ferreira">
+            <!-- Puxando a imagem do repositório de forma segura -->
+            <img src="logo-jf.png" alt="Jaqueline Ferreira Assessoria Contábil" onerror="this.src='https://githubusercontent.com';">
         </div>
     </div>
 
