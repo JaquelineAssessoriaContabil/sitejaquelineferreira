@@ -111,48 +111,34 @@
       background: white;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-bottom: 1.5rem;
-      overflow: hidden;
+      margin-bottom: 2rem;
     }
     .tabs-nav {
       display: flex;
-      gap: 0;
-      border-bottom: 2px solid var(--gold);
       flex-wrap: wrap;
-      background: #f9f5f3;
-      overflow-x: auto;
+      border-bottom: 2px solid var(--light-gray);
+      background: #fafafa;
+      border-radius: 8px 8px 0 0;
     }
     .tab-btn {
-      padding: 1rem 1.25rem;
       background: transparent;
       border: none;
-      cursor: pointer;
+      padding: 1rem 1.5rem;
       font-size: 0.95rem;
       font-weight: 600;
-      color: var(--rose);
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
+      color: var(--dark);
+      cursor: pointer;
       transition: all 0.3s;
-      white-space: nowrap;
+      border-bottom: 3px solid transparent;
     }
-    .tab-btn:hover {
-      background: rgba(197, 162, 158, 0.05);
-      color: var(--dark);
-    }
+    .tab-btn:hover { color: var(--rose); }
     .tab-btn.active {
-      color: var(--dark);
+      color: var(--rose);
       border-bottom-color: var(--gold);
       background: white;
     }
-    .tab-btn.destaque {
-      background: linear-gradient(135deg, rgba(201, 161, 94, 0.2) 0%, rgba(197, 162, 158, 0.1) 100%);
-      color: var(--gold);
-      font-weight: 700;
-      border-bottom-color: var(--gold);
-    }
     .tabs-content {
       padding: 2rem;
-      min-height: 400px;
     }
     .tab-pane {
       display: none;
@@ -161,54 +147,53 @@
       display: block;
     }
 
-    /* SECTIONS */
-    .section-title {
-      color: var(--gold);
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
     /* RESUMO */
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
+      gap: 1.5rem;
       margin-bottom: 2rem;
     }
     .summary-box {
-      background: #f9f3f1;
+      background: white;
       padding: 1.5rem;
       border-radius: 8px;
-      border-left: 4px solid var(--gold);
       text-align: center;
+      border: 2px solid var(--light-gray);
+      transition: all 0.3s;
     }
+    .summary-box:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .summary-box.paga { border-color: var(--green); background: #f1f8f4; }
+    .summary-box.vencida { border-color: var(--red); background: #fef5f5; }
+    .summary-box.avencer { border-color: var(--blue); background: #f0f7ff; }
     .summary-label {
-      color: var(--rose);
+      color: var(--dark);
       font-size: 0.85rem;
-      font-weight: 700;
+      font-weight: 600;
       text-transform: uppercase;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
     }
     .summary-value {
-      color: var(--dark);
       font-size: 2rem;
       font-weight: 700;
+      color: var(--rose);
     }
-    .summary-box.paga { border-left-color: var(--green); }
-    .summary-box.vencida { border-left-color: var(--red); }
-    .summary-box.avencer { border-left-color: var(--blue); }
-
     .info-box {
-      background: #f9f3f1;
-      border-left: 4px solid var(--gold);
+      background: #f0f8ff;
+      border-left: 4px solid var(--blue);
       padding: 1rem;
       border-radius: 4px;
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .obs-box {
+      background: #f9f3f1;
+      border-left: 4px solid var(--rose);
+      padding: 1rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin-top: 1.5rem;
     }
 
     /* TABELAS */
@@ -373,6 +358,13 @@
       opacity: 0.8;
     }
 
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--rose);
+      margin-bottom: 1.5rem;
+    }
+
     @media (max-width: 768px) {
       header {
         padding: 2rem 1.5rem;
@@ -464,13 +456,20 @@
         </div>
       </div>
 
-      <div class="info-box" style="margin-top: 2rem; background: #f0f8ff; border-left-color: var(--blue);">
+      <div class="info-box">
         <strong>📋 Como Pagar:</strong><br>
         1. Clique em "Copiar e Pagar"<br>
         2. Abra o aplicativo do seu banco<br>
         3. Vá para "Pagar com Código de Barras"<br>
         4. Cole o código copiado<br>
         5. Confirme e finalize o pagamento
+      </div>
+
+      <div class="obs-box">
+        <strong>ℹ️ Sobre os Valores das Parcelas:</strong><br>
+        • Parcela básica: R$ 50,28<br>
+        • 1ª parcela (junho): R$ 50,28 (consolidação inicial)<br>
+        • Conforme os meses podem sofrer variações no valor
       </div>
     </div>
 
@@ -507,14 +506,14 @@
           </div>
 
           <div class="info-box">
-            💡 <strong>Total:</strong> 56 parcelas | <strong>Valor Total:</strong> R$ 2.815,93 | <strong>Valor Médio:</strong> R$ 50,28
+            💡 <strong>Total:</strong> 56 parcelas | <strong>Valor Total:</strong> R$ 2.815,93 | <strong>Parcela Básica:</strong> R$ 50,28
           </div>
         </div>
 
         <!-- ABA: CRONOGRAMA 2026 -->
         <div id="cronograma2026" class="tab-pane">
           <div class="section-title">📅 Cronograma — 2026</div>
-          <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--rose); font-weight: 600;">7 parcelas | Total: R$ 352,96</p>
+          <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--rose); font-weight: 600;">8 parcelas | Total: R$ 406,74</p>
           <table class="parcel-table">
             <thead>
               <tr>
@@ -527,12 +526,12 @@
             </thead>
             <tbody>
               <tr><td><strong>1</strong></td><td>Junho</td><td>30/06/2026</td><td>R$ 50,28</td><td><span class="status-badge status-paga">Paga</span></td></tr>
-              <tr><td><strong>2</strong></td><td>Julho</td><td>31/07/2026</td><td>R$ 50,28</td><td><span class="status-badge status-paga">Paga</span></td></tr>
-              <tr><td><strong>3</strong></td><td>Agosto</td><td>31/08/2026</td><td>R$ 50,28</td><td><span class="status-badge status-vencida">Vencida</span></td></tr>
+              <tr><td><strong>2</strong></td><td>Julho</td><td>31/07/2026</td><td>R$ 50,78</td><td><span class="status-badge status-paga">Paga</span></td></tr>
+              <tr><td><strong>3</strong></td><td>Agosto</td><td>31/08/2026</td><td>R$ 51,94</td><td><span class="status-badge status-vencida">Vencida</span></td></tr>
               <tr><td><strong>4</strong></td><td>Setembro</td><td>30/09/2026</td><td>R$ 51,94</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>5</strong></td><td>Outubro</td><td>30/10/2026</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>5</strong></td><td>Outubro</td><td>31/10/2026</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>6</strong></td><td>Novembro</td><td>30/11/2026</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>7</strong></td><td>Dezembro</td><td>30/12/2026</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>7</strong></td><td>Dezembro</td><td>31/12/2026</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -554,12 +553,12 @@
             <tbody>
               <tr><td><strong>8</strong></td><td>Janeiro</td><td>31/01/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>9</strong></td><td>Fevereiro</td><td>28/02/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>10</strong></td><td>Março</td><td>30/03/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>10</strong></td><td>Março</td><td>31/03/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>11</strong></td><td>Abril</td><td>30/04/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>12</strong></td><td>Maio</td><td>30/05/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>12</strong></td><td>Maio</td><td>31/05/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>13</strong></td><td>Junho</td><td>30/06/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>14</strong></td><td>Julho</td><td>31/07/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>15</strong></td><td>Agosto</td><td>30/08/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>15</strong></td><td>Agosto</td><td>31/08/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>16</strong></td><td>Setembro</td><td>30/09/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>17</strong></td><td>Outubro</td><td>31/10/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>18</strong></td><td>Novembro</td><td>30/11/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
@@ -585,12 +584,12 @@
             <tbody>
               <tr><td><strong>20</strong></td><td>Janeiro</td><td>31/01/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>21</strong></td><td>Fevereiro</td><td>29/02/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>22</strong></td><td>Março</td><td>30/03/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>22</strong></td><td>Março</td><td>31/03/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>23</strong></td><td>Abril</td><td>30/04/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>24</strong></td><td>Maio</td><td>30/05/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>24</strong></td><td>Maio</td><td>31/05/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>25</strong></td><td>Junho</td><td>30/06/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>26</strong></td><td>Julho</td><td>31/07/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>27</strong></td><td>Agosto</td><td>30/08/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>27</strong></td><td>Agosto</td><td>31/08/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>28</strong></td><td>Setembro</td><td>30/09/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>29</strong></td><td>Outubro</td><td>31/10/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>30</strong></td><td>Novembro</td><td>30/11/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
@@ -616,12 +615,12 @@
             <tbody>
               <tr><td><strong>32</strong></td><td>Janeiro</td><td>31/01/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>33</strong></td><td>Fevereiro</td><td>28/02/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>34</strong></td><td>Março</td><td>30/03/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>34</strong></td><td>Março</td><td>31/03/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>35</strong></td><td>Abril</td><td>30/04/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>36</strong></td><td>Maio</td><td>30/05/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>36</strong></td><td>Maio</td><td>31/05/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>37</strong></td><td>Junho</td><td>30/06/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>38</strong></td><td>Julho</td><td>31/07/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>39</strong></td><td>Agosto</td><td>30/08/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>39</strong></td><td>Agosto</td><td>31/08/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>40</strong></td><td>Setembro</td><td>30/09/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>41</strong></td><td>Outubro</td><td>31/10/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>42</strong></td><td>Novembro</td><td>30/11/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
@@ -647,12 +646,12 @@
             <tbody>
               <tr><td><strong>44</strong></td><td>Janeiro</td><td>31/01/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>45</strong></td><td>Fevereiro</td><td>28/02/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>46</strong></td><td>Março</td><td>30/03/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>46</strong></td><td>Março</td><td>31/03/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>47</strong></td><td>Abril</td><td>30/04/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>48</strong></td><td>Maio</td><td>30/05/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>48</strong></td><td>Maio</td><td>31/05/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>49</strong></td><td>Junho</td><td>30/06/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>50</strong></td><td>Julho</td><td>31/07/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>51</strong></td><td>Agosto</td><td>30/08/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
+              <tr><td><strong>51</strong></td><td>Agosto</td><td>31/08/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>52</strong></td><td>Setembro</td><td>30/09/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>53</strong></td><td>Outubro</td><td>31/10/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
               <tr><td><strong>54</strong></td><td>Novembro</td><td>30/11/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
