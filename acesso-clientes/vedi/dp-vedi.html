@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard DP - VEDI OPTICA</title>
+    <title>Dashboard Departamento Pessoal - VEDI OPTICA E RELOJOARIA LTDA</title>
     <script src="https://jsdelivr.net"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -11,7 +11,7 @@
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background: #f7f1f0; /* Rosé suave da sua marca */
-            color: #000000; /* Escritas em preto */
+            color: #000000; /* Todas as escritas base em preto nítido */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -44,12 +44,12 @@
             display: flex;
             gap: 25px;
             width: 100%;
-            max-width: 1550px;
+            max-width: 1650px;
             position: relative;
             z-index: 1;
         }
 
-        /* 📁 BARRA LATERAL ESQUERDA - HISTÓRICO ACUMULATIVO */
+        /* 📁 BARRA LATERAL ESQUERDA PARA OS ARQUIVOS PDF */
         .sidebar {
             width: 290px;
             background: rgba(255, 255, 255, 0.95);
@@ -76,7 +76,7 @@
         }
         
         .sidebar-month-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             background: #ffffff;
             padding: 10px;
             border-radius: 8px;
@@ -114,6 +114,7 @@
             border-radius: 4px;
             transition: all 0.2s ease;
             line-height: 1.4;
+            text-align: left;
         }
         .btn-sidebar-pdf:hover {
             background-color: #fbf7f6;
@@ -121,7 +122,7 @@
             padding-left: 12px;
         }
 
-        /* CONTAINER DO PAINEL AVANÇADO À DIREITA */
+        /* CONTAINER DO CONTEÚDO À DIREITA */
         .container { 
             flex-grow: 1;
         }
@@ -133,12 +134,12 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 5px solid #bd9a5f;
         }
         .header-left h1 { font-size: 18px; font-weight: 700; color: #000000; margin-bottom: 4px; }
-        .header-left p { font-size: 13px; color: #000000; margin: 2px 0; }
+        .header-left p { font-size: 13px; color: #000000; margin: 4px 0; }
         .header-right img { width: 55px; height: 55px; object-fit: contain; }
 
         /* SEÇÃO RESUMO GERAL */
         .section-title {
-            font-size: 14px; font-weight: 600; color: #000000; margin: 24px 0 16px 0;
+            font-size: 15px; font-weight: 600; color: #000000; margin: 24px 0 16px 0;
             padding-bottom: 8px; border-bottom: 2px solid #bd9a5f;
         }
 
@@ -154,13 +155,13 @@
         .kpi-card.folha { border-left-color: #C58A94; }
         .kpi-card.encargos { border-left-color: #bd9a5f; }
         .kpi-card.liquido { border-left-color: #bd9a5f; }
-        .kpi-card.empregados { border-left-color: #4a4a4a; }
-        .kpi-card.contribuintes { border-left-color: #4a4a4a; }
+        .kpi-card.empregados { border-left-color: #6366F1; }
+        .kpi-card.contribuintes { border-left-color: #10B981; }
         .kpi-label { font-size: 11px; color: #000000; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
         .kpi-value { font-size: 22px; font-weight: 700; color: #000000; margin-bottom: 4px; }
         .kpi-sub { font-size: 12px; color: #000000; font-weight: 500; }
 
-        /* PAINEL PIX */
+        /* PAINEL COPIA E COLA PIX */
         .panel {
             background: white; border: 1px solid #E5E7EB; border-radius: 8px;
             padding: 24px; margin-bottom: 24px;
@@ -239,14 +240,11 @@
 
         /* RODAPÉ */
         .footer {
-            background: white; border-top: 1px solid #E5E7EB; padding: 16px;
+            background: white; border-top: 1px solid #E5E7EB; padding: 20px;
             font-size: 11px; color: #000000; text-align: center; margin-top: 24px; border-radius: 8px; font-weight: 500;
         }
         .footer-line { margin: 4px 0; }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1250px) {
             .wrapper { flex-direction: column; }
             .sidebar { width: 100%; max-height: none; }
-            .kpis-grid { grid-template-columns: repeat(2, 1fr); }
-            .charts-grid { grid-template-columns: 1fr; }
-        }
