@@ -6,108 +6,242 @@
     <title>Dashboard DP - VEDI OPTICA</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
-            background: linear-gradient(135deg, #e5d1cd 0%, #cbd2df 100%); 
-            color: #333; 
-            padding: 20px; 
+            background-color: #f7f1f0; /* Rosé suave da sua marca */
+            color: #4a4a4a; 
+            min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            align-items: flex-start;
+            padding: 40px 20px;
         }
-        .container { width: 100%; max-width: 950px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+
+        /* CONTAINER PRINCIPAL QUE DIVIDE EM DUAS COLUNAS */
+        .wrapper {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1250px;
+        }
+
+        /* 📁 BARRA LATERAL ESQUERDA PARA OS ARQUIVOS PDF */
+        .sidebar {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 25px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(189, 154, 95, 0.06);
+            border-top: 4px solid #bd9a5f; /* Dourado JF */
+            flex-shrink: 0;
+        }
+        
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #333333;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+        .sidebar-section:last-child { margin-bottom: 0; }
+        
+        .sidebar-subtitle {
+            font-size: 11px;
+            font-weight: 700;
+            color: #bd9a5f;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #f2eceb;
+        }
+        
+        .pdf-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .btn-sidebar-pdf {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: #555555;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            text-align: left;
+            line-height: 1.4;
+        }
+        .btn-sidebar-pdf:hover {
+            background-color: #fbf7f6;
+            color: #bd9a5f;
+            padding-left: 14px;
+        }
+
+        /* 📊 PAINEL CENTRAL (CONTEÚDO ANALÍTICO ORIGINAL) */
+        .main-panel { 
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(5px);
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(189, 154, 95, 0.06);
+        }
         
         .header { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            border-bottom: 2px solid #c5a880; 
+            border-bottom: 2px solid #bd9a5f; 
             padding-bottom: 20px; 
             margin-bottom: 25px; 
         }
-        .header h1 { font-size: 22px; color: #2a3a5c; font-weight: 700; }
-        .header p { font-size: 13px; color: #6c757d; margin-top: 3px; font-weight: 500; }
-        .logo-jf { background: #2a3a5c; border: 2px solid #c5a880; color: #ffffff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
+        .header h1 { font-size: 20px; color: #333333; font-weight: 600; letter-spacing: -0.3px; }
+        .header p { font-size: 13px; color: #8c8c8c; margin-top: 3px; font-weight: 500; }
         
-        .section-title { font-size: 15px; font-weight: 600; color: #2a3a5c; margin: 25px 0 12px 0; display: flex; align-items: center; gap: 8px; border-left: 4px solid #c5a880; padding-left: 10px; }
+        .logo-placeholder {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-color: #fbf7f6;
+            border: 2px solid #bd9a5f;
+            color: #bd9a5f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
         
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .card { background: white; border: 1px solid #eef0f2; border-radius: 8px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); }
-        .card.purple { border-top: 4px solid #9b59b6; }
-        .card.gold { border-top: 4px solid #c5a880; }
-        .card.blue { border-top: 4px solid #2a3a5c; }
+        .section-title { font-size: 15px; font-weight: 600; color: #333333; margin: 25px 0 12px 0; display: flex; align-items: center; gap: 8px; border-left: 4px solid #bd9a5f; padding-left: 10px; }
         
-        .card-label { font-size: 11px; text-transform: uppercase; color: #888; font-weight: 600; }
-        .card-value { font-size: 22px; font-weight: 700; color: #2a3a5c; margin: 6px 0 2px 0; }
-        .card-sub { font-size: 12px; color: #666; }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .card { background: white; border: 1px solid #f2eceb; border-radius: 8px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); }
+        
+        /* Linhas Verticais de Destaque Originais */
+        .card.purple { border-left: 4px solid #9b59b6; }
+        .card.gold { border-left: 4px solid #bd9a5f; }
+        .card.blue { border-left: 4px solid #4a4a4a; }
+        
+        .card-label { font-size: 11px; text-transform: uppercase; color: #8c8c8c; font-weight: 600; }
+        .card-value { font-size: 22px; font-weight: 700; color: #333333; margin: 6px 0 2px 0; }
+        .card-sub { font-size: 12px; color: #7a7a7a; }
+        
+        /* 🎨 BOTÃO DE VOLTAR EM DOURADO REFINADO */
+        .btn-back { 
+            display: inline-block; 
+            margin-top: 20px; 
+            text-decoration: none; 
+            background-color: #bd9a5f; 
+            color: white; 
+            padding: 12px 22px; 
+            border-radius: 6px; 
+            font-size: 12px; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease; 
+            box-shadow: 0 4px 12px rgba(189, 154, 95, 0.15);
+        }
+        .btn-back:hover {
+            background-color: #a3824b;
+            box-shadow: 0 4px 15px rgba(163, 130, 75, 0.25);
+            transform: translateY(-2px);
+        }
 
-        /* Links de Documentos */
-        .pdf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .btn-pdf { display: inline-flex; align-items: center; gap: 10px; background-color: #ffffff; border: 1px solid #eef0f2; color: #4a4a4a; text-decoration: none; padding: 12px 15px; border-radius: 6px; font-size: 12.5px; font-weight: 500; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
-        .btn-pdf:hover { background-color: #fbf7f6; border-color: #bd9a5f; color: #bd9a5f; transform: translateY(-2px); }
-        
-        .btn-back { display: inline-block; margin-top: 20px; text-decoration: none; background-color: #2a3a5c; color: white; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: 600; text-transform: uppercase; transition: background 0.2s; }
+        /* Responsividade para telas de celulares */
+        @media (max-width: 900px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .header { flex-direction: column-reverse; text-align: center; gap: 15px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <div>
-            <h1>VEDI OPTICA E RELOJOARIA LTDA</h1>
-            <p>CNPJ: 85.375.731/0001-74</p>
-            <p>Departamento Pessoal | Competência: Setembro 2026</p>
+<div class="wrapper">
+
+    <!-- 📁 BARRA LATERAL FIXA - CENTRAL DE ARQUIVOS EM PDF -->
+    <div class="sidebar">
+        <div class="sidebar-title">📁 Documentos (PDF)</div>
+        
+        <!-- Bloco 1 -->
+        <div class="sidebar-section">
+            <div class="sidebar-subtitle">Encargos Sociais</div>
+            <div class="pdf-list">
+                <a href="documentos-vedi/dp/01.%20FGTS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" class="btn-sidebar-pdf">📄 Guia de FGTS</a>
+                <a href="documentos-vedi/dp/02.%20FGTS%2009.2026%20-%20Detalhe%20da%20Guia.pdf" target="_blank" class="btn-sidebar-pdf">📄 Detalhe Guia FGTS</a>
+                <a href="documentos-vedi/dp/03.%20INSS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" class="btn-sidebar-pdf">📄 Guia de INSS (DCTFWeb)</a>
+            </div>
         </div>
-        <div class="logo-jf">JF</div>
-    </div>
-
-    <div class="section-title">Resumo Financeiro da Competência</div>
-    <div class="grid-cards">
-        <div class="card purple">
-            <div class="card-label">Total de Folha</div>
-            <div class="card-value">R$ 13.704,16</div>
-            <div class="card-sub">Proventos Brutos</div>
+        
+        <!-- Bloco 2 -->
+        <div class="sidebar-section">
+            <div class="sidebar-subtitle">Fechamentos</div>
+            <div class="pdf-list">
+                <a href="documentos-vedi/dp/03.1%20DeclaracaoCompleta_85375731000174_092026_40_.pdf" target="_blank" class="btn-sidebar-pdf">📄 Declaração eSocial</a>
+                <a href="documentos-vedi/dp/03.2%20Recibo_85375731000174_092026_40_0000050000533092975.pdf" target="_blank" class="btn-sidebar-pdf">📄 Recibo eSocial</a>
+                <a href="documentos-vedi/dp/04.%20Resumo%20Folha%2009.2026.pdf" target="_blank" class="btn-sidebar-pdf">📄 Resumo Analítico</a>
+                <a href="documentos-vedi/dp/05.%20Extrato%20Folha%2009.2026.pdf" target="_blank" class="btn-sidebar-pdf">📄 Extrato de Folha</a>
+            </div>
         </div>
-        <div class="card gold">
-            <div class="card-label">Encargos Totais</div>
-            <div class="card-value">R$ 1.408,83</div>
-            <div class="card-sub">INSS + FGTS</div>
+        
+        <!-- Bloco 3 -->
+        <div class="sidebar-section">
+            <div class="sidebar-subtitle">Holerites Individuais</div>
+            <div class="pdf-list">
+                <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Andreza%20Martini.pdf" target="_blank" class="btn-sidebar-pdf">👤 Andreza Martini</a>
+                <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Erick%20Henrique%20Cordeiro.pdf" target="_blank" class="btn-sidebar-pdf">👤 Erick H. Cordeiro</a>
+                <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Kauana%20Menegon%20Cordeiro.pdf" target="_blank" class="btn-sidebar-pdf">👤 Kauana M. Cordeiro</a>
+                <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Paulo%20Dal%20Moro%20Junior.pdf" target="_blank" class="btn-sidebar-pdf">👤 Paulo D. Moro Jr.</a>
+                <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Solange%20Aparecida%20Moraes.pdf" target="_blank" class="btn-sidebar-pdf">👤 Solange A. Moraes</a>
+            </div>
         </div>
-        <div class="card blue">
-            <div class="card-label">Líquido a Pagar</div>
-            <div class="card-value">R$ 11.020,73</div>
-            <div class="card-sub">Funcionários + Sócios</div>
+    </div>
+
+    <!-- 📊 PAINEL CENTRAL ANALÍTICO ORIGINAL -->
+    <div class="main-panel">
+        <div class="header">
+            <div>
+                <h1>VEDI OPTICA E RELOJOARIA LTDA</h1>
+                <p>CNPJ: 85.375.731/0001-74</p>
+                <p>Departamento Pessoal | Competência: Setembro 2026</p>
+            </div>
+            <div class="logo-placeholder">JF</div>
         </div>
-    </div>
 
-    <!-- 📂 CENTRAL DE DOCUMENTOS DO PAINEL DE DP -->
-    <div class="section-title">📦 Guias de Encargos Trabalhistas</div>
-    <div class="pdf-grid">
-        <a href="documentos-vedi/dp/01.%20FGTS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" class="btn-pdf">📄 01. Guia de FGTS</a>
-        <a href="documentos-vedi/dp/02.%20FGTS%2009.2026%20-%20Detalhe%20da%20Guia.pdf" target="_blank" class="btn-pdf">📄 02. Detalhe da Guia FGTS</a>
-        <a href="documentos-vedi/dp/03.%20INSS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" class="btn-pdf">📄 03. Guia de INSS (DCTFWeb)</a>
-    </div>
+        <div class="section-title">Resumo Financeiro da Competência</div>
+        <div class="grid-cards">
+            <div class="card purple">
+                <div class="card-label">Total de Folha</div>
+                <div class="card-value">R$ 13.704,16</div>
+                <div class="card-sub">Proventos Brutos</div>
+            </div>
+            <div class="card gold">
+                <div class="card-label">Encargos Totais</div>
+                <div class="card-value">R$ 1.408,83</div>
+                <div class="card-sub">INSS + FGTS</div>
+            </div>
+            <div class="card blue">
+                <div class="card-label">Líquido a Pagar</div>
+                <div class="card-value">R$ 11.020,73</div>
+                <div class="card-sub">Funcionários + Sócios</div>
+            </div>
+        </div>
 
-    <div class="section-title">📊 Relatórios de Fechamento & Declarações</div>
-    <div class="pdf-grid">
-        <a href="documentos-vedi/dp/03.1%20DeclaracaoCompleta_85375731000174_092026_40_.pdf" target="_blank" class="btn-pdf">📄 03.1 Declaração Completa eSocial</a>
-        <a href="documentos-vedi/dp/03.2%20Recibo_85375731000174_092026_40_0000050000533092975.pdf" target="_blank" class="btn-pdf">📄 03.2 Recibo de Entrega eSocial</a>
-        <a href="documentos-vedi/dp/04.%20Resumo%20Folha%2009.2026.pdf" target="_blank" class="btn-pdf">📄 04. Resumo de Folha Analítico</a>
-        <a href="documentos-vedi/dp/05.%20Extrato%20Folha%2009.2026.pdf" target="_blank" class="btn-pdf">📄 05. Extrato de Folha de Pagamento</a>
-    </div>
-
-    <div class="section-title">👥 Recibos de Pagamento Individuais (Holerites)</div>
-    <div class="pdf-grid">
-        <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Andreza%20Martini.pdf" target="_blank" class="btn-pdf">👤 Recibo - Andreza Martini</a>
-        <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Erick%20Henrique%20Cordeiro.pdf" target="_blank" class="btn-pdf">👤 Recibo - Erick Henrique Cordeiro</a>
-        <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Kauana%20Menegon%20Cordeiro.pdf" target="_blank" class="btn-pdf">👤 Recibo - Kauana Menegon Cordeiro</a>
-        <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Paulo%20Dal%20Moro%20Junior.pdf" target="_blank" class="btn-pdf">👤 Recibo - Paulo Dal Moro Junior</a>
-        <a href="documentos-vedi/dp/Recibo%20de%20Pagamento%2009.2026%20-%20Solange%20Aparecida%20Moraes.pdf" target="_blank" class="btn-pdf">👤 Recibo - Solange Aparecida Moraes</a>
-    </div>
-
-    <a href="acesso-clientes-portal-vedi.html" class="btn-back">⬅️ Voltar ao Menu Principal</a>
-</div>
-
-</body>
-</html>
