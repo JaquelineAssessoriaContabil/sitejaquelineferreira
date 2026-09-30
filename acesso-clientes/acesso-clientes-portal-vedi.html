@@ -6,49 +6,141 @@
     <title>VEDI OPTICA E RELOJOARIA LTDA - Portal do Cliente</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-        .header-card { background: white; width: 100%; max-width: 1000px; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-left: 5px solid #2b3d52; margin-bottom: 30px; }
-        .header-card h1 { font-size: 20px; color: #1a2530; font-weight: 600; margin-bottom: 5px; }
-        .header-card p { font-size: 13px; color: #777; }
-        .menu-container { display: flex; gap: 20px; width: 100%; max-width: 1000px; }
-        .portal-card { flex: 1; background: white; text-decoration: none; color: inherit; padding: 35px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eef0f2; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .portal-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .icon { font-size: 14px; font-weight: bold; margin-bottom: 15px; color: #777; background: #eee; padding: 4px 10px; border-radius: 20px; }
-        .portal-card h2 { font-size: 17px; font-weight: 600; margin-bottom: 8px; color: #1a2530; }
-        .portal-card p { font-size: 12.5px; color: #666; line-height: 1.4; }
-        .fiscal { border-top: 5px solid #2b3d52; }
-        .dp { border-top: 5px solid #bd9a5f; }
-        .ferias { border-top: 5px solid #e74c3c; }
-        @media (max-width: 768px) { .menu-container { flex-direction: column; gap: 15px; } .header-card { text-align: center; border-left: none; border-top: 5px solid #2b3d52; } }
+        
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            /* Fundo rosé/rosa-antigo do seu site */
+            background: linear-gradient(135deg, #e5d1cd 0%, #cbd2df 100%); 
+            color: #333; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+        
+        /* Cabeçalho no azul-escuro corporativo da JF Assessoria */
+        .header-card { 
+            background: #2a3a5c; 
+            width: 100%; 
+            max-width: 950px; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(42, 58, 92, 0.15); 
+            border-bottom: 5px solid #c5a880; /* Linha de destaque em Dourado */
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .header-card h1 { font-size: 22px; color: #ffffff; font-weight: 700; letter-spacing: -0.5px; }
+        .header-card p { font-size: 13px; color: #cbd2df; margin-top: 5px; font-weight: 500; }
+
+        .menu-container { display: flex; gap: 20px; width: 100%; max-width: 950px; }
+        
+        .portal-card { 
+            flex: 1; 
+            background: white; 
+            text-decoration: none; 
+            color: inherit; 
+            padding: 40px 25px 30px 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            text-align: center; 
+            border: 1px solid #eef0f2; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            position: relative;
+        }
+        
+        /* Efeito ao passar o mouse */
+        .portal-card:hover { 
+            transform: translateY(-6px); 
+            box-shadow: 0 15px 30px rgba(42, 58, 92, 0.2);
+            border-color: #c5a880;
+        }
+        
+        /* Círculos dos ícones */
+        .icon-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            background: #f4ece1; /* Bege suave */
+            color: #2a3a5c;      /* Azul Escuro */
+            transition: transform 0.3s ease;
+        }
+        .portal-card:hover .icon-circle {
+            transform: scale(1.1);
+            background: #2a3a5c;
+            color: #ffffff;
+        }
+
+        .portal-card h2 { font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #2a3a5c; }
+        .portal-card p { font-size: 13px; color: #6c757d; line-height: 1.5; margin-bottom: 25px; flex-grow: 1; }
+        
+        /* Botões em Dourado Corporativo */
+        .card-button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: #c5a880;
+            color: white;
+            transition: all 0.2s ease;
+        }
+        
+        .portal-card:hover .card-button { 
+            background: #2a3a5c; 
+            box-shadow: 0 4px 10px rgba(42, 58, 92, 0.2);
+        }
+
+        @media (max-width: 768px) { 
+            .menu-container { flex-direction: column; gap: 15px; } 
+            .header-card { text-align: center; border-bottom: 5px solid #c5a880; } 
+        }
     </style>
 </head>
 <body>
 
+    <!-- Bloco Superior Institucional -->
     <div class="header-card">
         <h1>VEDI OPTICA E RELOJOARIA LTDA</h1>
-        <p>CNPJ: 85.375.731/0001-74 • Portal Unificado de Atendimento</p>
+        <p>CNPJ: 85.375.731/0001-74 • Painel Exclusivo de Atendimento Contábil</p>
     </div>
 
+    <!-- Container direcionando para os arquivos que você já criou -->
     <div class="menu-container">
         <!-- Card 1: Fiscal -->
-        <a href="fiscal-vedi.html" class="portal-card fiscal">
-            <div class="icon">CONTA</div>
+        <a href="fiscal-vedi.html" class="portal-card">
+            <div class="icon-circle">📊</div>
             <h2>Painel Fiscal</h2>
             <p>Acesse o faturamento, evolução de carga tributária e guias de impostos como o DAS.</p>
+            <div class="card-button">Acessar Painel</div>
         </a>
 
         <!-- Card 2: DP -->
-        <a href="dp-vedi.html" class="portal-card dp">
-            <div class="icon">DP</div>
+        <a href="dp-vedi.html" class="portal-card">
+            <div class="icon-circle">👥</div>
             <h2>Depto. Pessoal</h2>
             <p>Confira o resumo da folha, encargos (INSS/FGTS), pró-labore e contagem de empregados.</p>
+            <div class="card-button">Acessar Painel</div>
         </a>
 
         <!-- Card 3: Férias -->
-        <a href="ferias-vedi.html" class="portal-card ferias">
-            <div class="icon">INFO</div>
+        <a href="ferias-vedi.html" class="portal-card">
+            <div class="icon-circle">📅</div>
             <h2>Aviso de Férias</h2>
             <p>Visualize períodos de aquisição, dias de gozo, salários base e valores líquidos de recibos.</p>
+            <div class="card-button">Acessar Painel</div>
         </a>
     </div>
 
