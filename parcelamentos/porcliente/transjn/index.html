@@ -464,31 +464,19 @@
           <button class="btn-copy" onclick="copiarCodigoBarras('858400000006269032826257307182627238252769905833')">
             📋 Copiar Código de Barras
           </button>
-
-          <div class="pix-label">🏦 PIX Chave</div>
-          <div class="pix-box" onclick="copiarPix('85d7f86c-4533-4a5e-b3bf-3395c0dab8b1')">
-            85d7f86c-4533-4a5e-b3bf-3395c0dab8b1
-          </div>
-          <button class="btn-copy-pix" onclick="copiarPix('85d7f86c-4533-4a5e-b3bf-3395c0dab8b1')">
-            📋 Copiar PIX
-          </button>
         </div>
       </div>
 
       <div class="info-box">
         <strong>📋 Como Pagar:</strong><br>
-        <strong style="color: var(--gold);">Opção 1 — Código de Barras (Caixa Econômica Federal ou Banco do Brasil):</strong><br>
+        <strong style="color: var(--gold);">💳 Código de Barras (Caixa Econômica Federal ou Banco do Brasil):</strong><br>
         1. Clique em "Copiar Código de Barras"<br>
         2. Abra o app do Caixa ou BB<br>
         3. Vá para "Pagar com Código de Barras"<br>
         4. Cole o código copiado<br>
         5. Confirme e finalize<br><br>
-        <strong style="color: #1976D2;">Opção 2 — PIX (Qualquer banco):</strong><br>
-        1. Clique em "Copiar PIX"<br>
-        2. Abra o app do seu banco (qualquer um)<br>
-        3. Vá para "Transferência via PIX"<br>
-        4. Cole o identificador copiado<br>
-        5. Confirme e finalize
+        <strong style="color: #1976D2;">🏦 PIX (Qualquer banco):</strong><br>
+        Escaneie o QR Code PIX que vem na guia de pagamento com o seu app bancário
       </div>
 
       <div class="obs-box">
@@ -678,21 +666,6 @@
         document.execCommand('copy');
         document.body.removeChild(textarea);
         alert('✓ Código de barras copiado!\nCole no seu aplicativo bancário para pagar.');
-      });
-    }
-
-    function copiarPix(pix) {
-      const pixLimpo = pix.replace(/\s+/g, '');
-      navigator.clipboard.writeText(pixLimpo).then(() => {
-        alert('✓ PIX copiado!\nCole no seu aplicativo bancário para pagar.');
-      }).catch(() => {
-        const textarea = document.createElement('textarea');
-        textarea.value = pixLimpo;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        alert('✓ PIX copiado!\nCole no seu aplicativo bancário para pagar.');
       });
     }
   </script>
