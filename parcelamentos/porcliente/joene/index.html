@@ -7,155 +7,173 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #1e3a8a;
-            --secondary: #3b82f6;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --text: #1e293b;
-            --text-light: #64748b;
+            --rose: #C5A09F;
+            --gold: #C5A059;
+            --cream: #FDFBF7;
+            --dark: #2C2C2C;
+            --light-gray: #F5F5F5;
+            --red: #FF4D4D;
+            --blue: #1976D2;
+            --green: #4CAF50;
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-            line-height: 1.5;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--cream);
+            color: var(--dark);
+            line-height: 1.4;
         }
-        .container { max-width: 800px; margin: 0 auto; }
+        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--rose) 0%, #E8D2CF 100%);
+            padding: 30px 20px;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
             color: white;
-            padding: 30px;
-            border-radius: 12px;
             text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
+        header h1 { font-size: 1.8rem; margin-bottom: 5px; color: #2C2C2C; }
+        header p { font-size: 1rem; color: #555; }
         .card {
-            background: var(--surface);
-            padding: 24px;
+            background: white;
             border-radius: 12px;
+            padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #F0E6E4;
+        }
+        .card h2 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--rose);
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 15px;
+            gap: 15px;
         }
-        .info-item label { font-size: 0.875rem; color: var(--text-light); font-weight: 600; }
-        .info-item p { font-size: 1.125rem; font-weight: 700; color: var(--text); }
-        .badge {
+        .info-item label {
+            font-size: 0.8rem;
+            color: #777;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: block;
+        }
+        .info-item p { font-size: 1rem; font-weight: 600; color: #333; }
+        .guia-box {
+            background: #FFF9F9;
+            border-left: 4px solid var(--red);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .guia-box.proximo {
+            background: #FFFDF5;
+            border-left: 4px solid var(--gold);
+        }
+        .status-badge {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 8px;
         }
-        .badge-danger { background: #fee2e2; color: var(--danger); }
-        .badge-warning { background: #fef3c7; color: var(--warning); }
-        .badge-success { background: #d1fae5; color: var(--success); }
-        .btn-copy {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 10px;
-            cursor: pointer;
-            border: none;
-        }
-        .btn-copy:hover { background: var(--secondary); }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        th { background: #f1f5f9; font-weight: 600; }
-        .footer {
+        .status-badge.vencida { background: #FFD2D2; color: #D32F2F; }
+        .status-badge.proxima { background: #FFEAA7; color: #D4A373; }
+        .status-badge.paga { background: #D4EDDA; color: #155724; }
+        .status-badge.avencer { background: #E2E3E5; color: #383D41; }
+        .codigo-barras {
+            font-family: monospace;
+            background: #F8F9FA;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            word-break: break-all;
+            border: 1px solid #E9ECEF;
             text-align: center;
-            margin-top: 40px;
-            color: var(--text-light);
-            font-size: 0.875rem;
+        }
+        .btn-copy {
+            background: var(--rose);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-copy:hover { background: #B38E8D; }
+        .resumo-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .resumo-box { padding: 10px; border-radius: 8px; background: #F8F9FA; }
+        .resumo-box .num { font-size: 1.4rem; font-weight: bold; display: block; }
+        .resumo-box.pagas .num { color: var(--green); }
+        .resumo-box.vencidas .num { color: var(--red); }
+        .resumo-box.avencer .num { color: #666; }
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #EFEFEF; }
+        th { background: #FDFBF7; color: #555; font-weight: bold; }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.85rem;
+            border-top: 1px solid #EFEFEF;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Parcelamentos MEI</h1>
-            <p>Controle de suas parcelas mensais</p>
-        </header>
-
-        <div class="card">
-            <h2>Dados do Cliente</h2>
-            <div class="info-grid">
-                <div class="info-item"><label>Cliente</label><p>Joene Moreira do Nascimento</p></div>
-                <div class="info-item"><label>CNPJ</label><p>45.918.527/0001-38</p></div>
-                <div class="info-item"><label>Tipo</label><p>MEI</p></div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>🎯 Guias para Pagamento</h2>
-            <div style="margin-top: 15px; padding: 15px; border-left: 4px solid var(--danger); background: #fff5f5; border-radius: 4px;">
-                <span class="badge badge-danger">⚠ VENCIDA — Parcela 3</span>
-                <p><strong>Vencimento:</strong> 31/08/2026 | <strong>Valor:</strong> R$ 51,94</p>
-                <p style="font-family: monospace; background: #e2e8f0; padding: 8px; margin-top: 5px; border-radius: 4px; word-break: break-all;">0000000 2 51940328262 7 73071826272 3 82186816312 4</p>
-                <button class="btn-copy" onclick="navigator.clipboard.writeText('0000000 2 51940328262 7 73071826272 3 82186816312 4'); alert('Código copiado!');">📋 Copiar e Pagar</button>
-            </div>
-
-            <div style="margin-top: 15px; padding: 15px; border-left: 4px solid var(--warning); background: #fffbeb; border-radius: 4px;">
-                <span class="badge badge-warning">⏰ PRÓXIMO — Parcela 4</span>
-                <p><strong>Vencimento:</strong> 30/09/2026 | <strong>Valor:</strong> R$ 51,94</p>
-                <p style="font-family: monospace; background: #e2e8f0; padding: 8px; margin-top: 5px; border-radius: 4px; word-break: break-all;">85850000000 2 51940328262 7 73071826272 3 8216689612 4</p>
-                <button class="btn-copy" onclick="navigator.clipboard.writeText('85850000000 2 51940328262 7 73071826272 3 8216689612 4'); alert('Código copiado!');">📋 Copiar e Pagar</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>📊 Resumo do Parcelamento</h2>
-            <div class="info-grid">
-                <div class="info-item"><label>✅ Pagas</label><p>2</p></div>
-                <div class="info-item"><label>⚠ Vencidas</label><p>1</p></div>
-                <div class="info-item"><label>🕐 A Vencer</label><p>53</p></div>
-            </div>
-            <p style="margin-top: 15px; font-weight: bold;">💡 Total: 56 parcelas | Valor Total: R$ 2.815,93</p>
-        </div>
-
-        <div class="card">
-            <h2>📅 Cronograma — 2026</h2>
-            <table>
-                <thead>
-                    <tr><th>Parc.</th><th>Período</th><th>Vencimento</th><th>Valor</th><th>Status</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>1</td><td>Junho</td><td>30/06/2026</td><td>R$ 50,28</td><td><span class="badge badge-success">Paga</span></td></tr>
-                    <tr><td>2</td><td>Julho</td><td>31/07/2026</td><td>R$ 50,28</td><td><span class="badge badge-success">Paga</span></td></tr>
-                    <tr><td>3</td><td>Agosto</td><td>31/08/2026</td><td>R$ 50,28</td><td><span class="badge badge-danger">Vencida</span></td></tr>
-                    <tr><td>4</td><td>Setembro</td><td>30/09/2026</td><td>R$ 51,94</td><td><span class="badge badge-warning">A vencer</span></td></tr>
-                    <tr><td>5</td><td>Outubro</td><td>30/10/2026</td><td>R$ 50,28</td><td><span class="badge badge-warning">A vencer</span></td></tr>
-                    <tr><td>6</td><td>Novembro</td><td>30/11/2026</td><td>R$ 50,28</td><td><span class="badge badge-warning">A vencer</span></td></tr>
-                    <tr><td>7</td><td>Dezembro</td><td>30/12/2026</td><td>R$ 50,28</td><td><span class="badge badge-warning">A vencer</span></td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="footer">
-            <p>📱 WhatsApp (49) 9.9880-3552 | 📧 Email: contato@jaquelineferreiracontadora.com.br</p>
-            <p><strong>Jaqueline Ferreira Assessoria Contábil Ltda</strong> | CNPJ: 64.202.276/0001-35</p>
+<div class="container">
+    <header>
+        <h1>Parcelamentos MEI</h1>
+        <p>Controle de suas parcelas mensais</p>
+    </header>
+    <div class="card">
+        <h2>📋 Dados do Cliente</h2>
+        <div class="info-grid">
+            <div class="info-item"><label>Cliente</label><p>Joene Moreira do Nascimento</p></div>
+            <div class="info-item"><label>CNPJ</label><p>45.918.527/0001-38</p></div>
+            <div class="info-item"><label>Tipo</label><p>MEI</p></div>
         </div>
     </div>
+    <div class="card">
+        <h2>🎯 Guias para Pagamento</h2>
+        <div class="guia-box">
+            <span class="status-badge vencida">⚠ VENCIDA — Parcela 3 — Agosto/2026</span>
+            <p><strong>Vencimento:</strong> 31/08/2026 | <strong>Valor:</strong> R$ 51,94</p>
+            <div class="codigo-barras">00000002519403282627730718262723821868163124</div>
+            <button class="btn-copy" onclick="copyText('00000002519403282627730718262723821868163124')">📋 Copiar e Pagar</button>
+        </div>
+        <div class="guia-box proximo">
+            <span class="status-badge proxima">⏰ PRÓXIMO — Parcela 4 — Setembro/2026</span>
+            <p><strong>Vencimento:</strong> 30/09/2026 | <strong>Valor:</strong> R$ 51,94</p>
+            <div class="codigo-barras">858500000002519403282627730718262723821866896124</div>
+            <button class="btn-copy" onclick="copyText('858500000002519403282627730718262723821866896124')">📋 Copiar e Pagar</button>
+        </div>
+    </div>
+</div>
+<script>
+function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Código de barras copiado com sucesso!');
+    });
+}
+</script>
 </body>
 </html>
