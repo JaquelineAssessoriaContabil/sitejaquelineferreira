@@ -16,19 +16,41 @@
             justify-content: center;
             align-items: flex-start;
             padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        /* CONTAINER PRINCIPAL QUE DIVIDE EM DUAS COLUNAS */
+        /* Papel de parede sutil da sua marca ao fundo */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 75vh; 
+            height: 75vh;
+            background-image: url('Jaqueline do Prado Ferreira - PNG-28.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.08; 
+            z-index: 0; 
+            pointer-events: none; 
+        }
+
+        /* CONTAINER QUE DIVIDE EM DUAS COLUNAS */
         .wrapper {
             display: flex;
             gap: 25px;
             width: 100%;
             max-width: 1250px;
+            position: relative;
+            z-index: 1;
         }
 
         /* 📁 BARRA LATERAL ESQUERDA PARA OS ARQUIVOS PDF */
         .sidebar {
-            width: 300px;
+            width: 280px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(5px);
             padding: 25px 20px;
@@ -36,6 +58,7 @@
             box-shadow: 0 4px 15px rgba(189, 154, 95, 0.06);
             border-top: 4px solid #bd9a5f; /* Dourado JF */
             flex-shrink: 0;
+            align-self: flex-start;
         }
         
         .sidebar-title {
@@ -44,10 +67,7 @@
             color: #333333;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 20px;
         }
         
         .sidebar-section {
@@ -69,15 +89,13 @@
         .pdf-list {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
         
         .btn-sidebar-pdf {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: none;
-            border: none;
             color: #555555;
             text-decoration: none;
             font-size: 12px;
@@ -85,7 +103,6 @@
             padding: 8px 10px;
             border-radius: 6px;
             transition: all 0.2s ease;
-            text-align: left;
             line-height: 1.4;
         }
         .btn-sidebar-pdf:hover {
@@ -94,7 +111,7 @@
             padding-left: 14px;
         }
 
-        /* 📊 PAINEL CENTRAL (CONTEÚDO ANALÍTICO ORIGINAL) */
+        /* 📊 SEU PAINEL ORIGINAL COMPLETO À DIREITA */
         .main-panel { 
             flex-grow: 1;
             background: rgba(255, 255, 255, 0.95); 
@@ -115,35 +132,21 @@
         .header h1 { font-size: 20px; color: #333333; font-weight: 600; letter-spacing: -0.3px; }
         .header p { font-size: 13px; color: #8c8c8c; margin-top: 3px; font-weight: 500; }
         
-        .logo-placeholder {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            background-color: #fbf7f6;
-            border: 2px solid #bd9a5f;
-            color: #bd9a5f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 16px;
+        .header-logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
         }
         
         .section-title { font-size: 15px; font-weight: 600; color: #333333; margin: 25px 0 12px 0; display: flex; align-items: center; gap: 8px; border-left: 4px solid #bd9a5f; padding-left: 10px; }
         
         .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .card { background: white; border: 1px solid #f2eceb; border-radius: 8px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); }
-        
-        /* Linhas Verticais de Destaque Originais */
-        .card.purple { border-left: 4px solid #9b59b6; }
-        .card.gold { border-left: 4px solid #bd9a5f; }
-        .card.blue { border-left: 4px solid #4a4a4a; }
+        .card { background: white; border: 1px solid #f2eceb; border-radius: 8px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); border-top: 4px solid #bd9a5f; }
         
         .card-label { font-size: 11px; text-transform: uppercase; color: #8c8c8c; font-weight: 600; }
         .card-value { font-size: 22px; font-weight: 700; color: #333333; margin: 6px 0 2px 0; }
         .card-sub { font-size: 12px; color: #7a7a7a; }
         
-        /* 🎨 BOTÃO DE VOLTAR EM DOURADO REFINADO */
         .btn-back { 
             display: inline-block; 
             margin-top: 20px; 
@@ -161,12 +164,10 @@
         }
         .btn-back:hover {
             background-color: #a3824b;
-            box-shadow: 0 4px 15px rgba(163, 130, 75, 0.25);
             transform: translateY(-2px);
         }
 
-        /* Responsividade para telas de celulares */
-        @media (max-width: 900px) {
+        @media (max-width: 950px) {
             .wrapper { flex-direction: column; }
             .sidebar { width: 100%; }
             .header { flex-direction: column-reverse; text-align: center; gap: 15px; }
@@ -177,32 +178,29 @@
 
 <div class="wrapper">
 
-    <!-- 📁 BARRA LATERAL FIXA - CENTRAL DE ARQUIVOS EM PDF -->
+    <!-- 📁 BARRA LATERAL ESQUERDA - TODOS OS SEUS PDFS REAIS -->
     <div class="sidebar">
-        <div class="sidebar-title">📁 Documentos (PDF)</div>
+        <div class="sidebar-title">📁 Arquivos em PDF</div>
         
-        <!-- Bloco 1 -->
         <div class="sidebar-section">
             <div class="sidebar-subtitle">Encargos Sociais</div>
             <div class="pdf-list">
-                <a href="documentos-vedi/dp/01.%20FGTS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" class="btn-sidebar-pdf">📄 Guia de FGTS</a>
-                <a href="documentos-vedi/dp/02.%20FGTS%2009.2026%20-%20Detalhe%20da%20Guia.pdf" target="_blank" class="btn-sidebar-pdf">📄 Detalhe Guia FGTS</a>
-                <a href="documentos-vedi/dp/03.%20INSS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" class="btn-sidebar-pdf">📄 Guia de INSS (DCTFWeb)</a>
+                <a href="documentos-vedi/dp/01.%20FGTS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" class="btn-sidebar-pdf">📄 01. Guia de FGTS</a>
+                <a href="documentos-vedi/dp/02.%20FGTS%2009.2026%20-%20Detalhe%20da%20Guia.pdf" target="_blank" class="btn-sidebar-pdf">📄 02. Detalhe Guia FGTS</a>
+                <a href="documentos-vedi/dp/03.%20INSS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" class="btn-sidebar-pdf">📄 03. Guia de INSS</a>
             </div>
         </div>
         
-        <!-- Bloco 2 -->
         <div class="sidebar-section">
-            <div class="sidebar-subtitle">Fechamentos</div>
+            <div class="sidebar-subtitle">Fechamentos eSocial</div>
             <div class="pdf-list">
-                <a href="documentos-vedi/dp/03.1%20DeclaracaoCompleta_85375731000174_092026_40_.pdf" target="_blank" class="btn-sidebar-pdf">📄 Declaração eSocial</a>
-                <a href="documentos-vedi/dp/03.2%20Recibo_85375731000174_092026_40_0000050000533092975.pdf" target="_blank" class="btn-sidebar-pdf">📄 Recibo eSocial</a>
-                <a href="documentos-vedi/dp/04.%20Resumo%20Folha%2009.2026.pdf" target="_blank" class="btn-sidebar-pdf">📄 Resumo Analítico</a>
-                <a href="documentos-vedi/dp/05.%20Extrato%20Folha%2009.2026.pdf" target="_blank" class="btn-sidebar-pdf">📄 Extrato de Folha</a>
+                <a href="documentos-vedi/dp/03.1%20DeclaracaoCompleta_85375731000174_092026_40_.pdf" target="_blank" class="btn-sidebar-pdf">📄 03.1 Declaração eSocial</a>
+                <a href="documentos-vedi/dp/03.2%20Recibo_85375731000174_092026_40_0000050000533092975.pdf" target="_blank" class="btn-sidebar-pdf">📄 03.2 Recibo eSocial</a>
+                <a href="documentos-vedi/dp/04.%20Resumo%20Folha%2009.2026.pdf" target="_blank" class="btn-sidebar-pdf">📄 04. Resumo da Folha</a>
+                <a href="documentos-vedi/dp/05.%20Extrato%20Folha%2009.2026.pdf" target="_blank" class="btn-sidebar-pdf">📄 05. Extrato da Folha</a>
             </div>
         </div>
         
-        <!-- Bloco 3 -->
         <div class="sidebar-section">
             <div class="sidebar-subtitle">Holerites Individuais</div>
             <div class="pdf-list">
@@ -215,7 +213,7 @@
         </div>
     </div>
 
-    <!-- 📊 PAINEL CENTRAL ANALÍTICO ORIGINAL -->
+    <!-- 📊 SEU PAINEL ORIGINAL COMPLETO À DIREITA -->
     <div class="main-panel">
         <div class="header">
             <div>
@@ -223,25 +221,27 @@
                 <p>CNPJ: 85.375.731/0001-74</p>
                 <p>Departamento Pessoal | Competência: Setembro 2026</p>
             </div>
-            <div class="logo-placeholder">JF</div>
+            <div class="header-logo">
+                <img src="Jaqueline do Prado Ferreira - PNG-28.png" alt="JF">
+            </div>
         </div>
 
-        <div class="section-title">Resumo Financeiro da Competência</div>
+        <div class="section-title">Resumo Geral da Empresa</div>
         <div class="grid-cards">
-            <div class="card purple">
+            <div class="card">
                 <div class="card-label">Total de Folha</div>
                 <div class="card-value">R$ 13.704,16</div>
                 <div class="card-sub">Proventos Brutos</div>
             </div>
-            <div class="card gold">
+            <div class="card">
                 <div class="card-label">Encargos Totais</div>
                 <div class="card-value">R$ 1.408,83</div>
-                <div class="card-sub">INSS + FGTS</div>
+                <div class="card-sub">INSS + FGTS a Recolher</div>
             </div>
-            <div class="card blue">
+            <div class="card">
                 <div class="card-label">Líquido a Pagar</div>
                 <div class="card-value">R$ 11.020,73</div>
                 <div class="card-sub">Funcionários + Sócios</div>
             </div>
         </div>
-
+        
