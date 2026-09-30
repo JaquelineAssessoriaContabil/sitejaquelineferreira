@@ -1,749 +1,161 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Painel de Parcelamentos MEI</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --rose: #C5A29E;
-      --gold: #C9A15E;
-      --cream: #FBF6F1;
-      --dark: #2c2c2c;
-      --light-gray: #f5f5f5;
-      --red: #f44336;
-      --blue: #1976D2;
-      --green: #4CAF50;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background-color: var(--cream);
-      color: var(--dark);
-      line-height: 1.4;
-    }
-    .container { max-width: 1000px; margin: 0 auto; padding: 15px; }
-
-    /* HEADER */
-    header {
-      background: linear-gradient(135deg, var(--rose) 0%, #B8968F 100%);
-      padding: 3rem 2rem;
-      border-radius: 12px;
-      margin-bottom: 1.5rem;
-      color: white;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-      position: relative;
-      overflow: hidden;
-    }
-    header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -10%;
-      width: 300px;
-      height: 300px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    header > div {
-      position: relative;
-      z-index: 1;
-    }
-    header h1 { font-size: 2rem; margin-bottom: 0.5rem; color: white; font-weight: 700; letter-spacing: 0.5px; }
-    header p { font-size: 1rem; opacity: 0.95; margin-bottom: 0; color: rgba(255,255,255,0.9); }
-
-    /* INFO CARDS */
-    .info-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-      background: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .info-card {
-      background: transparent;
-      padding: 1rem;
-      border-radius: 8px;
-      border-left: 4px solid var(--gold);
-      box-shadow: none;
-    }
-    .info-card-label {
-      color: var(--rose);
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-    .info-card-value {
-      color: var(--dark);
-      font-size: 1.1rem;
-      font-weight: 700;
-      word-break: break-word;
-    }
-
-    /* GUIAS DESTAQUE */
-    .guia-destaque {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      padding: 2.5rem;
-      margin-bottom: 2rem;
-      border-top: 5px solid var(--gold);
-    }
-    .guia-destaque .section-title {
-      margin-top: 0;
-      margin-bottom: 2rem;
-      font-size: 1.3rem;
-    }
-    .guia-cards-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    /* TABS */
-    .tabs-container {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-bottom: 1.5rem;
-      overflow: hidden;
-    }
-    .tabs-nav {
-      display: flex;
-      gap: 0;
-      border-bottom: 2px solid var(--gold);
-      flex-wrap: wrap;
-      background: #f9f5f3;
-      overflow-x: auto;
-    }
-    .tab-btn {
-      padding: 1rem 1.25rem;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--rose);
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      transition: all 0.3s;
-      white-space: nowrap;
-    }
-    .tab-btn:hover {
-      background: rgba(197, 162, 158, 0.05);
-      color: var(--dark);
-    }
-    .tab-btn.active {
-      color: var(--dark);
-      border-bottom-color: var(--gold);
-      background: white;
-    }
-    .tab-btn.destaque {
-      background: linear-gradient(135deg, rgba(201, 161, 94, 0.2) 0%, rgba(197, 162, 158, 0.1) 100%);
-      color: var(--gold);
-      font-weight: 700;
-      border-bottom-color: var(--gold);
-    }
-    .tabs-content {
-      padding: 2rem;
-      min-height: 400px;
-    }
-    .tab-pane {
-      display: none;
-    }
-    .tab-pane.active {
-      display: block;
-    }
-
-    /* SECTIONS */
-    .section-title {
-      color: var(--gold);
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    /* RESUMO */
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .summary-box {
-      background: #f9f3f1;
-      padding: 1.5rem;
-      border-radius: 8px;
-      border-left: 4px solid var(--gold);
-      text-align: center;
-    }
-    .summary-label {
-      color: var(--rose);
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-    .summary-value {
-      color: var(--dark);
-      font-size: 2rem;
-      font-weight: 700;
-    }
-    .summary-box.paga { border-left-color: var(--green); }
-    .summary-box.vencida { border-left-color: var(--red); }
-    .summary-box.avencer { border-left-color: var(--blue); }
-
-    .info-box {
-      background: #f9f3f1;
-      border-left: 4px solid var(--gold);
-      padding: 1rem;
-      border-radius: 4px;
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
-    }
-
-    /* TABELAS */
-    .parcel-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
-    .parcel-table th {
-      background: #f9f3f1;
-      color: var(--rose);
-      padding: 0.75rem;
-      text-align: left;
-      font-weight: 600;
-      border-bottom: 2px solid var(--gold);
-    }
-    .parcel-table td {
-      padding: 0.75rem;
-      border-bottom: 1px solid #e8d4cf;
-    }
-    .parcel-table tr:hover {
-      background: #f9f3f1;
-    }
-    .status-badge {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    .status-paga { background: #E8F5E9; color: var(--green); }
-    .status-vencida { background: #FFEBEE; color: var(--red); }
-    .status-avencer { background: #E3F2FD; color: var(--blue); }
-
-    /* GUIAS */
-    .guia-card {
-      background: #fff3cd;
-      border: 2px solid var(--gold);
-      border-radius: 8px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .guia-card.vencida {
-      background: #ffebee;
-      border-color: var(--red);
-    }
-    .guia-title {
-      color: var(--dark);
-      font-weight: 700;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-    .guia-card.vencida .guia-title {
-      color: var(--red);
-    }
-    .guia-info {
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      color: var(--dark);
-    }
-    .barcode-label {
-      background: var(--gold);
-      color: white;
-      padding: 0.75rem;
-      border-radius: 4px;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      display: inline-block;
-      font-size: 0.85rem;
-    }
-    .guia-card.vencida .barcode-label {
-      background: var(--red);
-    }
-    .barcode-box {
-      background: white;
-      padding: 1rem;
-      border-radius: 4px;
-      border: 2px dashed var(--gold);
-      font-family: 'Courier New', monospace;
-      font-size: 0.85rem;
-      word-break: break-all;
-      font-weight: 600;
-      color: var(--dark);
-      cursor: pointer;
-      transition: all 0.3s;
-      margin-bottom: 1rem;
-    }
-    .barcode-box:hover {
-      background: #f9f3f1;
-      transform: scale(1.01);
-    }
-    .btn-copy {
-      background: linear-gradient(135deg, var(--gold) 0%, #B8905C 100%);
-      color: white;
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      transition: opacity 0.3s;
-    }
-    .btn-copy:hover {
-      opacity: 0.9;
-    }
-    .guia-card.vencida .btn-copy {
-      background: linear-gradient(135deg, var(--red) 0%, #d32f2f 100%);
-    }
-
-    /* FOOTER */
-    footer {
-      background: linear-gradient(135deg, rgba(245,230,225,0.6) 0%, rgba(249,245,243,0.6) 100%);
-      color: var(--dark);
-      padding: 2rem 1rem 1rem;
-      margin-top: 2rem;
-      box-shadow: 0 -2px 8px rgba(197,162,158,0.08);
-      border-top: 2px solid rgba(197,162,158,0.12);
-      border-radius: 8px;
-    }
-    .contact-footer {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
-    .contact-item {
-      background: rgba(197,162,158,0.06);
-      padding: 1rem;
-      border-radius: 8px;
-      border: 1px solid rgba(197,162,158,0.12);
-    }
-    .contact-item strong {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: var(--dark);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-    .contact-item a {
-      color: var(--dark);
-      text-decoration: none;
-      font-weight: 500;
-      word-break: break-word;
-      display: block;
-      overflow-wrap: break-word;
-      font-size: 0.8rem;
-    }
-    .contact-item a:hover {
-      opacity: 0.6;
-      text-decoration: underline;
-    }
-    footer p {
-      margin: 0.75rem 0;
-      text-align: center;
-      font-size: 0.85rem;
-      opacity: 0.8;
-    }
-
-    @media (max-width: 768px) {
-      header {
-        padding: 2rem 1.5rem;
-      }
-      header h1 {
-        font-size: 1.6rem;
-      }
-      .tabs-nav {
-        overflow-x: auto;
-      }
-      .tab-btn {
-        padding: 0.75rem 1rem;
-        font-size: 0.85rem;
-      }
-      .tabs-content {
-        padding: 1.5rem;
-      }
-      .guia-destaque {
-        padding: 1.5rem;
-      }
-      .guia-cards-row {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Parcelamentos MEI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .card {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 15px;
+        }
+        .info-item label { font-size: 0.875rem; color: var(--text-light); font-weight: 600; }
+        .info-item p { font-size: 1.125rem; font-weight: 700; color: var(--text); }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .badge-danger { background: #fee2e2; color: var(--danger); }
+        .badge-warning { background: #fef3c7; color: var(--warning); }
+        .badge-success { background: #d1fae5; color: var(--success); }
+        .btn-copy {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-copy:hover { background: var(--secondary); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th { background: #f1f5f9; font-weight: 600; }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- HEADER -->
-    <header>
-      <div>
-        <h1>Parcelamentos MEI</h1>
-        <p>Controle de suas parcelas mensais</p>
-      </div>
-    </header>
+    <div class="container">
+        <header>
+            <h1>Parcelamentos MEI</h1>
+            <p>Controle de suas parcelas mensais</p>
+        </header>
 
-    <!-- INFO CARDS DO CLIENTE -->
-    <div class="info-cards">
-      <div class="info-card">
-        <div class="info-card-label">Cliente</div>
-        <div class="info-card-value">Joene Moreira do Nascimento</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">CNPJ</div>
-        <div class="info-card-value">45.918.527/0001-38</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Tipo</div>
-        <div class="info-card-value">MEI</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Data de Emissão</div>
-        <div class="info-card-value" id="dataEmissao">-</div>
-      </div>
-    </div>
-
-    <!-- GUIAS EM DESTAQUE -->
-    <div class="guia-destaque">
-      <div class="section-title">🎯 Guias para Pagamento</div>
-      <div class="guia-cards-row">
-        <!-- AGOSTO VENCIDA -->
-        <div class="guia-card vencida">
-          <div class="guia-title">⚠️ VENCIDA — Parcela 3 — Agosto/2026</div>
-          <div class="guia-info">
-            <strong>Vencimento:</strong> 31/08/2026 | <strong>Valor:</strong> R$ 51,94
-          </div>
-          <div class="barcode-label" style="background: var(--red);">Código de Barras — Agosto</div>
-          <div class="barcode-box" onclick="copiarCodigoBarras('00000002519403282627730718262723821868163124')">
-            0000000 2 51940328262 7 73071826272 3 82186816312 4
-          </div>
-          <button class="btn-copy" style="background: linear-gradient(135deg, var(--red) 0%, #d32f2f 100%);" onclick="copiarCodigoBarras('00000002519403282627730718262723821868163124')">
-            📋 Copiar e Pagar
-          </button>
-        </div>
-
-        <!-- SETEMBRO A VENCER -->
-        <div class="guia-card">
-          <div class="guia-title">⏰ PRÓXIMO — Parcela 4 — Setembro/2026</div>
-          <div class="guia-info">
-            <strong>Vencimento:</strong> 30/09/2026 | <strong>Valor:</strong> R$ 51,94
-          </div>
-          <div class="barcode-label">Código de Barras — Setembro</div>
-          <div class="barcode-box" onclick="copiarCodigoBarras('85850000000251940328262773071826272382186689612 4')">
-            85850000000 2 51940328262 7 73071826272 3 82186689612 4
-          </div>
-          <button class="btn-copy" onclick="copiarCodigoBarras('85850000000251940328262773071826272382186689612 4')">
-            📋 Copiar e Pagar
-          </button>
-        </div>
-      </div>
-
-      <div class="info-box" style="margin-top: 2rem; background: #f0f8ff; border-left-color: var(--blue);">
-        <strong>📋 Como Pagar:</strong><br>
-        1. Clique em "Copiar e Pagar"<br>
-        2. Abra o aplicativo do seu banco<br>
-        3. Vá para "Pagar com Código de Barras"<br>
-        4. Cole o código copiado<br>
-        5. Confirme e finalize o pagamento
-      </div>
-    </div>
-
-    <!-- TABS -->
-    <div class="tabs-container">
-      <div class="tabs-nav">
-        <button class="tab-btn active" onclick="mudarAba(event, 'resumo')">📊 Resumo</button>
-        <button class="tab-btn" onclick="mudarAba(event, 'cronograma2026')">📅 2026</button>
-        <button class="tab-btn" onclick="mudarAba(event, 'cronograma2027')">📅 2027</button>
-        <button class="tab-btn" onclick="mudarAba(event, 'cronograma2028')">📅 2028</button>
-        <button class="tab-btn" onclick="mudarAba(event, 'cronograma2029')">📅 2029</button>
-        <button class="tab-btn" onclick="mudarAba(event, 'cronograma2030')">📅 2030</button>
-        <button class="tab-btn" onclick="mudarAba(event, 'cronograma2031')">📅 2031</button>
-      </div>
-
-      <div class="tabs-content">
-        <!-- ABA: RESUMO -->
-        <div id="resumo" class="tab-pane active">
-          <div class="section-title">📊 Resumo do Parcelamento</div>
-
-          <div class="summary-grid">
-            <div class="summary-box paga">
-              <div class="summary-label">✅ Pagas</div>
-              <div class="summary-value">2</div>
+        <div class="card">
+            <h2>Dados do Cliente</h2>
+            <div class="info-grid">
+                <div class="info-item"><label>Cliente</label><p>Joene Moreira do Nascimento</p></div>
+                <div class="info-item"><label>CNPJ</label><p>45.918.527/0001-38</p></div>
+                <div class="info-item"><label>Tipo</label><p>MEI</p></div>
             </div>
-            <div class="summary-box vencida">
-              <div class="summary-label">⚠️ Vencidas</div>
-              <div class="summary-value">1</div>
+        </div>
+
+        <div class="card">
+            <h2>🎯 Guias para Pagamento</h2>
+            <div style="margin-top: 15px; padding: 15px; border-left: 4px solid var(--danger); background: #fff5f5; border-radius: 4px;">
+                <span class="badge badge-danger">⚠ VENCIDA — Parcela 3</span>
+                <p><strong>Vencimento:</strong> 31/08/2026 | <strong>Valor:</strong> R$ 51,94</p>
+                <p style="font-family: monospace; background: #e2e8f0; padding: 8px; margin-top: 5px; border-radius: 4px; word-break: break-all;">0000000 2 51940328262 7 73071826272 3 82186816312 4</p>
+                <button class="btn-copy" onclick="navigator.clipboard.writeText('0000000 2 51940328262 7 73071826272 3 82186816312 4'); alert('Código copiado!');">📋 Copiar e Pagar</button>
             </div>
-            <div class="summary-box avencer">
-              <div class="summary-label">🕐 A Vencer</div>
-              <div class="summary-value">53</div>
+
+            <div style="margin-top: 15px; padding: 15px; border-left: 4px solid var(--warning); background: #fffbeb; border-radius: 4px;">
+                <span class="badge badge-warning">⏰ PRÓXIMO — Parcela 4</span>
+                <p><strong>Vencimento:</strong> 30/09/2026 | <strong>Valor:</strong> R$ 51,94</p>
+                <p style="font-family: monospace; background: #e2e8f0; padding: 8px; margin-top: 5px; border-radius: 4px; word-break: break-all;">85850000000 2 51940328262 7 73071826272 3 8216689612 4</p>
+                <button class="btn-copy" onclick="navigator.clipboard.writeText('85850000000 2 51940328262 7 73071826272 3 8216689612 4'); alert('Código copiado!');">📋 Copiar e Pagar</button>
             </div>
-          </div>
-
-          <div class="info-box">
-            💡 <strong>Total:</strong> 56 parcelas | <strong>Valor Total:</strong> R$ 2.815,93 | <strong>Valor Médio:</strong> R$ 50,28
-          </div>
         </div>
 
-        <!-- ABA: CRONOGRAMA 2026 -->
-        <div id="cronograma2026" class="tab-pane">
-          <div class="section-title">📅 Cronograma — 2026</div>
-          <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--rose); font-weight: 600;">7 parcelas | Total: R$ 352,96</p>
-          <table class="parcel-table">
-            <thead>
-              <tr>
-                <th style="width: 60px;">Parc.</th>
-                <th>Período</th>
-                <th>Vencimento</th>
-                <th>Valor</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>1</strong></td><td>Junho</td><td>30/06/2026</td><td>R$ 50,28</td><td><span class="status-badge status-paga">Paga</span></td></tr>
-              <tr><td><strong>2</strong></td><td>Julho</td><td>31/07/2026</td><td>R$ 50,28</td><td><span class="status-badge status-paga">Paga</span></td></tr>
-              <tr><td><strong>3</strong></td><td>Agosto</td><td>31/08/2026</td><td>R$ 50,28</td><td><span class="status-badge status-vencida">Vencida</span></td></tr>
-              <tr><td><strong>4</strong></td><td>Setembro</td><td>30/09/2026</td><td>R$ 51,94</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>5</strong></td><td>Outubro</td><td>30/10/2026</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>6</strong></td><td>Novembro</td><td>30/11/2026</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>7</strong></td><td>Dezembro</td><td>30/12/2026</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-            </tbody>
-          </table>
+        <div class="card">
+            <h2>📊 Resumo do Parcelamento</h2>
+            <div class="info-grid">
+                <div class="info-item"><label>✅ Pagas</label><p>2</p></div>
+                <div class="info-item"><label>⚠ Vencidas</label><p>1</p></div>
+                <div class="info-item"><label>🕐 A Vencer</label><p>53</p></div>
+            </div>
+            <p style="margin-top: 15px; font-weight: bold;">💡 Total: 56 parcelas | Valor Total: R$ 2.815,93</p>
         </div>
 
-        <!-- ABA: CRONOGRAMA 2027 -->
-        <div id="cronograma2027" class="tab-pane">
-          <div class="section-title">📅 Cronograma — 2027</div>
-          <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--rose); font-weight: 600;">12 parcelas | Total: R$ 603,36</p>
-          <table class="parcel-table">
-            <thead>
-              <tr>
-                <th style="width: 60px;">Parc.</th>
-                <th>Período</th>
-                <th>Vencimento</th>
-                <th>Valor</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>8</strong></td><td>Janeiro</td><td>31/01/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>9</strong></td><td>Fevereiro</td><td>28/02/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>10</strong></td><td>Março</td><td>30/03/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>11</strong></td><td>Abril</td><td>30/04/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>12</strong></td><td>Maio</td><td>30/05/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>13</strong></td><td>Junho</td><td>30/06/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>14</strong></td><td>Julho</td><td>31/07/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>15</strong></td><td>Agosto</td><td>30/08/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>16</strong></td><td>Setembro</td><td>30/09/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>17</strong></td><td>Outubro</td><td>31/10/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>18</strong></td><td>Novembro</td><td>30/11/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>19</strong></td><td>Dezembro</td><td>31/12/2027</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-            </tbody>
-          </table>
+        <div class="card">
+            <h2>📅 Cronograma — 2026</h2>
+            <table>
+                <thead>
+                    <tr><th>Parc.</th><th>Período</th><th>Vencimento</th><th>Valor</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Junho</td><td>30/06/2026</td><td>R$ 50,28</td><td><span class="badge badge-success">Paga</span></td></tr>
+                    <tr><td>2</td><td>Julho</td><td>31/07/2026</td><td>R$ 50,28</td><td><span class="badge badge-success">Paga</span></td></tr>
+                    <tr><td>3</td><td>Agosto</td><td>31/08/2026</td><td>R$ 50,28</td><td><span class="badge badge-danger">Vencida</span></td></tr>
+                    <tr><td>4</td><td>Setembro</td><td>30/09/2026</td><td>R$ 51,94</td><td><span class="badge badge-warning">A vencer</span></td></tr>
+                    <tr><td>5</td><td>Outubro</td><td>30/10/2026</td><td>R$ 50,28</td><td><span class="badge badge-warning">A vencer</span></td></tr>
+                    <tr><td>6</td><td>Novembro</td><td>30/11/2026</td><td>R$ 50,28</td><td><span class="badge badge-warning">A vencer</span></td></tr>
+                    <tr><td>7</td><td>Dezembro</td><td>30/12/2026</td><td>R$ 50,28</td><td><span class="badge badge-warning">A vencer</span></td></tr>
+                </tbody>
+            </table>
         </div>
 
-        <!-- ABA: CRONOGRAMA 2028 -->
-        <div id="cronograma2028" class="tab-pane">
-          <div class="section-title">📅 Cronograma — 2028</div>
-          <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--rose); font-weight: 600;">12 parcelas | Total: R$ 603,36</p>
-          <table class="parcel-table">
-            <thead>
-              <tr>
-                <th style="width: 60px;">Parc.</th>
-                <th>Período</th>
-                <th>Vencimento</th>
-                <th>Valor</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>20</strong></td><td>Janeiro</td><td>31/01/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>21</strong></td><td>Fevereiro</td><td>29/02/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>22</strong></td><td>Março</td><td>30/03/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>23</strong></td><td>Abril</td><td>30/04/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>24</strong></td><td>Maio</td><td>30/05/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>25</strong></td><td>Junho</td><td>30/06/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>26</strong></td><td>Julho</td><td>31/07/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>27</strong></td><td>Agosto</td><td>30/08/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>28</strong></td><td>Setembro</td><td>30/09/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>29</strong></td><td>Outubro</td><td>31/10/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>30</strong></td><td>Novembro</td><td>30/11/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>31</strong></td><td>Dezembro</td><td>31/12/2028</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-            </tbody>
-          </table>
+        <div class="footer">
+            <p>📱 WhatsApp (49) 9.9880-3552 | 📧 Email: contato@jaquelineferreiracontadora.com.br</p>
+            <p><strong>Jaqueline Ferreira Assessoria Contábil Ltda</strong> | CNPJ: 64.202.276/0001-35</p>
         </div>
-
-        <!-- ABA: CRONOGRAMA 2029 -->
-        <div id="cronograma2029" class="tab-pane">
-          <div class="section-title">📅 Cronograma — 2029</div>
-          <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--rose); font-weight: 600;">12 parcelas | Total: R$ 603,36</p>
-          <table class="parcel-table">
-            <thead>
-              <tr>
-                <th style="width: 60px;">Parc.</th>
-                <th>Período</th>
-                <th>Vencimento</th>
-                <th>Valor</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>32</strong></td><td>Janeiro</td><td>31/01/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>33</strong></td><td>Fevereiro</td><td>28/02/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>34</strong></td><td>Março</td><td>30/03/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>35</strong></td><td>Abril</td><td>30/04/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>36</strong></td><td>Maio</td><td>30/05/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>37</strong></td><td>Junho</td><td>30/06/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>38</strong></td><td>Julho</td><td>31/07/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>39</strong></td><td>Agosto</td><td>30/08/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>40</strong></td><td>Setembro</td><td>30/09/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>41</strong></td><td>Outubro</td><td>31/10/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>42</strong></td><td>Novembro</td><td>30/11/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>43</strong></td><td>Dezembro</td><td>31/12/2029</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- ABA: CRONOGRAMA 2030 -->
-        <div id="cronograma2030" class="tab-pane">
-          <div class="section-title">📅 Cronograma — 2030</div>
-          <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--rose); font-weight: 600;">12 parcelas | Total: R$ 603,36</p>
-          <table class="parcel-table">
-            <thead>
-              <tr>
-                <th style="width: 60px;">Parc.</th>
-                <th>Período</th>
-                <th>Vencimento</th>
-                <th>Valor</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>44</strong></td><td>Janeiro</td><td>31/01/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>45</strong></td><td>Fevereiro</td><td>28/02/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>46</strong></td><td>Março</td><td>30/03/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>47</strong></td><td>Abril</td><td>30/04/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>48</strong></td><td>Maio</td><td>30/05/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>49</strong></td><td>Junho</td><td>30/06/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>50</strong></td><td>Julho</td><td>31/07/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>51</strong></td><td>Agosto</td><td>30/08/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>52</strong></td><td>Setembro</td><td>30/09/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>53</strong></td><td>Outubro</td><td>31/10/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>54</strong></td><td>Novembro</td><td>30/11/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-              <tr><td><strong>55</strong></td><td>Dezembro</td><td>31/12/2030</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- ABA: CRONOGRAMA 2031 -->
-        <div id="cronograma2031" class="tab-pane">
-          <div class="section-title">📅 Cronograma — 2031</div>
-          <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--rose); font-weight: 600;">1 parcela | Total: R$ 50,28</p>
-          <table class="parcel-table">
-            <thead>
-              <tr>
-                <th style="width: 60px;">Parc.</th>
-                <th>Período</th>
-                <th>Vencimento</th>
-                <th>Valor</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>56</strong></td><td>Janeiro</td><td>31/01/2031</td><td>R$ 50,28</td><td><span class="status-badge status-avencer">A vencer</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="contact-footer">
-      <div class="contact-item">
-        <strong>📱 WhatsApp</strong>
-        <a href="https://wa.me/554999803552" target="_blank">(49) 9.9880-3552</a>
-      </div>
-      <div class="contact-item">
-        <strong>📧 Email</strong>
-        <a href="mailto:contato@jaquelineferreiracontadora.com.br">contato@jaquelineferreiracontadora.com.br</a>
-      </div>
-      <div class="contact-item">
-        <strong>🌐 Site</strong>
-        <a href="https://jaquelineferreiracontadora.com.br" target="_blank">jaquelineferreiracontadora.com.br</a>
-      </div>
-    </div>
-    <p><strong>Jaqueline Ferreira Assessoria Contábil Ltda</strong> | CNPJ: 64.202.276/0001-35</p>
-    <p id="footer-data" style="font-size: 0.8rem; margin-top: 1rem;">-</p>
-  </footer>
-
-  <script>
-    // Data de emissão
-    document.addEventListener('DOMContentLoaded', function() {
-      const hoje = new Date();
-      const dia = String(hoje.getDate()).padStart(2, '0');
-      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-      const ano = hoje.getFullYear();
-      const dataFormatada = `${dia}/${mes}/${ano}`;
-      document.getElementById('dataEmissao').textContent = dataFormatada;
-      document.getElementById('footer-data').textContent = `Emissão: ${dataFormatada}`;
-    });
-
-    // Mudar de aba
-    function mudarAba(event, abaId) {
-      const botoes = document.querySelectorAll('.tab-btn');
-      const abas = document.querySelectorAll('.tab-pane');
-
-      botoes.forEach(btn => btn.classList.remove('active'));
-      abas.forEach(aba => aba.classList.remove('active'));
-
-      event.target.classList.add('active');
-      document.getElementById(abaId).classList.add('active');
-    }
-
-    // Copiar código de barras
-    function copiarCodigoBarras(codigo) {
-      const codigoLimpo = codigo.replace(/\s+/g, '');
-      navigator.clipboard.writeText(codigoLimpo).then(() => {
-        alert('✓ Código de barras copiado!\nCole no seu aplicativo bancário para pagar.');
-      }).catch(() => {
-        const textarea = document.createElement('textarea');
-        textarea.value = codigoLimpo;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        alert('✓ Código de barras copiado!\nCole no seu aplicativo bancário para pagar.');
-      });
-    }
-  </script>
 </body>
 </html>
-
