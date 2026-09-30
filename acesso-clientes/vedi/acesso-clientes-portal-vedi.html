@@ -30,7 +30,7 @@
             transform: translate(-50%, -50%);
             width: 75vh; 
             height: 75vh;
-            background-image: url('../Jaqueline do Prado Ferreira - PNG-28.png');
+            background-image: url('Jaqueline do Prado Ferreira - PNG-28.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -153,23 +153,23 @@
         }
         .portal-card:hover .card-button { background: #a3824b; }
 
-        /* Sinalização de Férias Ativas */
+        /* 🎨 SINALIZAÇÃO EXCLUSIVA EM ROSÉ MAIS FORTE / ROSA-ANTIGO */
         .portal-card.alerta-ferias {
-            background: rgba(251, 238, 232, 0.95); 
-            border: 1px solid #eabda8;
-            box-shadow: 0 4px 15px rgba(234, 189, 168, 0.2);
+            background: rgba(229, 209, 205, 0.95); /* Rosé mais forte e imponente da sua paleta */
+            border: 1px solid #d1b2ac;
+            box-shadow: 0 4px 15px rgba(209, 178, 172, 0.3);
         }
         .portal-card.alerta-ferias:hover {
-            box-shadow: 0 10px 25px rgba(234, 189, 168, 0.4);
+            box-shadow: 0 10px 25px rgba(209, 178, 172, 0.5);
             border-color: #bd9a5f;
         }
         .portal-card.alerta-ferias .icon-circle {
-            background: #e74c3c; 
-            color: white;
+            background: #ffffff; 
+            color: #d1b2ac; /* Ícone no tom rosé forte */
         }
         .status-tag {
             display: block;
-            background: #e74c3c;
+            background: #d1b2ac; /* Etiqueta rosé em harmonia */
             color: white;
             font-size: 10px;
             font-weight: 700;
@@ -177,6 +177,12 @@
             border-radius: 4px;
             margin-bottom: 10px;
             text-transform: uppercase;
+        }
+        .portal-card.alerta-ferias .card-button {
+            background: #d1b2ac;
+        }
+        .portal-card.alerta-ferias:hover .card-button {
+            background: #bd9a5f;
         }
 
         /* Rodapé Institucional */
@@ -194,7 +200,6 @@
         @media (max-width: 580px) { 
             .menu-container { grid-template-columns: 1fr; gap: 15px; } 
             .header-card { flex-direction: column-reverse; text-align: center; border-left: none; border-top: 5px solid #bd9a5f; }
-            body::before { width: 45vh; height: 45vh; }
         }
     </style>
 </head>
@@ -208,7 +213,7 @@
             <div class="mes-tag">📅 Competência: Setembro / 2026</div>
         </div>
         <div class="header-logo">
-            <img src="../Jaqueline do Prado Ferreira - PNG-28.png" alt="Jaqueline Ferreira Assessoria Contábil">
+            <img src="Jaqueline do Prado Ferreira - PNG-28.png" alt="Jaqueline Ferreira Assessoria Contábil">
         </div>
     </div>
 
@@ -230,13 +235,13 @@
             <div class="card-button">Acessar Painel</div>
         </a>
 
-        <!-- Card 3: Férias -->
+        <!-- Card 3: Férias Funcionários (Rosé Forte + Nome Alterado) -->
         <a href="ferias-vedi.html" class="portal-card alerta-ferias">
             <div class="icon-circle">📅</div>
             <span class="status-tag">Afastamento Ativo</span>
-            <h2>Aviso de Férias</h2>
+            <h2>Férias Funcionários</h2>
             <p>Visualize períodos de aquisição, dias de gozo e valores de recibos.</p>
-            <div class="card-button" style="background: #e74c3c;">Acessar Painel</div>
+            <div class="card-button">Acessar Painel</div>
         </a>
 
         <!-- Card 4: Contabilidade -->
