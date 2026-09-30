@@ -9,33 +9,43 @@
         
         body { 
             font-family: 'Segoe UI', system-ui, sans-serif; 
-            /* Fundo rosé/rosa-antigo do seu site */
-            background: linear-gradient(135deg, #e5d1cd 0%, #cbd2df 100%); 
-            color: #333; 
+            background-color: #f7f1f0; /* Rosé suave da sua marca */
+            color: #4a4a4a; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             justify-content: center; 
             min-height: 100vh; 
-            padding: 20px; 
+            padding: 20px 20px 40px 20px; 
         }
         
-        /* Cabeçalho no azul-escuro corporativo da JF Assessoria */
+        /* Cabeçalho ajustado para incluir a logomarca */
         .header-card { 
-            background: #2a3a5c; 
+            background: #ffffff; 
             width: 100%; 
             max-width: 950px; 
-            padding: 30px; 
+            padding: 25px 30px; 
             border-radius: 12px; 
-            box-shadow: 0 10px 25px rgba(42, 58, 92, 0.15); 
-            border-bottom: 5px solid #c5a880; /* Linha de destaque em Dourado */
+            box-shadow: 0 4px 15px rgba(189, 154, 95, 0.06); 
+            border-left: 5px solid #bd9a5f; /* Dourado JF */
             margin-bottom: 25px;
-            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
         }
-        .header-card h1 { font-size: 22px; color: #ffffff; font-weight: 700; letter-spacing: -0.5px; }
-        .header-card p { font-size: 13px; color: #cbd2df; margin-top: 5px; font-weight: 500; }
+        .header-info h1 { font-size: 20px; color: #333333; font-weight: 600; letter-spacing: -0.3px; }
+        .header-info p { font-size: 13px; color: #8c8c8c; margin-top: 4px; font-weight: 500; }
+        
+        /* Estilização para o círculo da logomarca */
+        .header-logo img {
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
 
-        .menu-container { display: flex; gap: 20px; width: 100%; max-width: 950px; }
+        .menu-container { display: flex; gap: 20px; width: 100%; max-width: 950px; margin-bottom: 40px; }
         
         .portal-card { 
             flex: 1; 
@@ -44,9 +54,9 @@
             color: inherit; 
             padding: 40px 25px 30px 25px; 
             border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
             text-align: center; 
-            border: 1px solid #eef0f2; 
+            border: 1px solid #f2eceb; 
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
             display: flex; 
             flex-direction: column; 
@@ -54,14 +64,12 @@
             position: relative;
         }
         
-        /* Efeito ao passar o mouse */
         .portal-card:hover { 
-            transform: translateY(-6px); 
-            box-shadow: 0 15px 30px rgba(42, 58, 92, 0.2);
-            border-color: #c5a880;
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 25px rgba(189, 154, 95, 0.12);
+            border-color: #bd9a5f;
         }
         
-        /* Círculos dos ícones */
         .icon-circle {
             width: 65px;
             height: 65px;
@@ -69,57 +77,82 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 26px;
             margin-bottom: 20px;
-            background: #f4ece1; /* Bege suave */
-            color: #2a3a5c;      /* Azul Escuro */
-            transition: transform 0.3s ease;
+            background: #fbf7f6; 
+            color: #bd9a5f;      
+            transition: all 0.3s ease;
         }
         .portal-card:hover .icon-circle {
-            transform: scale(1.1);
-            background: #2a3a5c;
+            transform: scale(1.08);
+            background: #bd9a5f;
             color: #ffffff;
         }
 
-        .portal-card h2 { font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #2a3a5c; }
-        .portal-card p { font-size: 13px; color: #6c757d; line-height: 1.5; margin-bottom: 25px; flex-grow: 1; }
+        .portal-card h2 { font-size: 17px; font-weight: 600; margin-bottom: 10px; color: #333333; }
+        .portal-card p { font-size: 13px; color: #7a7a7a; line-height: 1.5; margin-bottom: 25px; flex-grow: 1; }
         
-        /* Botões em Dourado Corporativo */
         .card-button {
             width: 100%;
             padding: 12px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            background: #c5a880;
+            background: #bd9a5f;
             color: white;
             transition: all 0.2s ease;
         }
-        
         .portal-card:hover .card-button { 
-            background: #2a3a5c; 
-            box-shadow: 0 4px 10px rgba(42, 58, 92, 0.2);
+            background: #a3824b; 
+            box-shadow: 0 4px 12px rgba(163, 130, 75, 0.2);
+        }
+
+        /* Rodapé Institucional */
+        .footer-institucional {
+            text-align: center;
+            width: 100%;
+            max-width: 950px;
+            border-top: 1px solid #e1d5d2;
+            padding-top: 20px;
+            margin-top: 10px;
+        }
+        .footer-institucional p {
+            font-size: 12px;
+            color: #7a7a7a;
+            line-height: 1.6;
+        }
+        .footer-confidencial {
+            font-size: 11px !important;
+            color: #a39390 !important;
+            margin-top: 8px;
+            font-weight: 500;
         }
 
         @media (max-width: 768px) { 
+            .header-card { flex-direction: column-reverse; text-align: center; border-left: none; border-top: 5px solid #bd9a5f; }
             .menu-container { flex-direction: column; gap: 15px; } 
-            .header-card { text-align: center; border-bottom: 5px solid #c5a880; } 
+            .footer-institucional { padding: 20px 10px 0 10px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Bloco Superior Institucional -->
+    <!-- Cabeçalho com Informações e Logo Integrada -->
     <div class="header-card">
-        <h1>VEDI OPTICA E RELOJOARIA LTDA</h1>
-        <p>CNPJ: 85.375.731/0001-74 • Painel Exclusivo de Atendimento Contábil</p>
+        <div class="header-info">
+            <h1>VEDI OPTICA E RELOJOARIA LTDA</h1>
+            <p>CNPJ: 85.375.731/0001-74 • Painel Exclusivo de Atendimento Contábil</p>
+        </div>
+        <div class="header-logo">
+            <!-- Puxa a logo salva na mesma pasta com o nome logo-jf.png -->
+            <img src="logo-jf.png" alt="Logout Jaqueline Ferreira">
+        </div>
     </div>
 
-    <!-- Container direcionando para os arquivos que você já criou -->
+    <!-- Cards de Opções -->
     <div class="menu-container">
-        <!-- Card 1: Fiscal -->
         <a href="fiscal-vedi.html" class="portal-card">
             <div class="icon-circle">📊</div>
             <h2>Painel Fiscal</h2>
@@ -127,7 +160,6 @@
             <div class="card-button">Acessar Painel</div>
         </a>
 
-        <!-- Card 2: DP -->
         <a href="dp-vedi.html" class="portal-card">
             <div class="icon-circle">👥</div>
             <h2>Depto. Pessoal</h2>
@@ -135,13 +167,20 @@
             <div class="card-button">Acessar Painel</div>
         </a>
 
-        <!-- Card 3: Férias -->
         <a href="ferias-vedi.html" class="portal-card">
             <div class="icon-circle">📅</div>
             <h2>Aviso de Férias</h2>
             <p>Visualize períodos de aquisição, dias de gozo, salários base e valores líquidos de recibos.</p>
             <div class="card-button">Acessar Painel</div>
         </a>
+    </div>
+
+    <!-- Rodapé Oficial Jaqueline Ferreira Assessoria Contábil -->
+    <div class="footer-institucional">
+        <p>Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</p>
+        <p>Responsável Técnica: Jaqueline do Prado Ferreira | CRC SC-048028/O-0</p>
+        <p>Videira - SC | contato@jaquelineferreiracontadora.com.br | WhatsApp (49) 9.9980-3552</p>
+        <p class="footer-confidencial">Dashboard de Acesso Confidencial - Uso Exclusivo do Cliente</p>
     </div>
 
 </body>
