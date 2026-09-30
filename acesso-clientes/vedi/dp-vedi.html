@@ -38,7 +38,7 @@
             pointer-events: none; 
         }
 
-        /* CONTAINER QUE DIVIDE EM DUAS COLUNAS */
+        /* CONTAINER QUE DIVIDE EM DUAS COLUNAS (ARQUIVOS À ESQUERDA | PAINEL À DIREITA) */
         .wrapper {
             display: flex;
             gap: 25px;
@@ -111,7 +111,7 @@
             padding-left: 14px;
         }
 
-        /* 📊 SEU PAINEL ORIGINAL COMPLETO À DIREITA */
+        /* 📊 PAINEL ORIGINAL DA IMAGEM ALINHADO À DIREITA */
         .main-panel { 
             flex-grow: 1;
             background: rgba(255, 255, 255, 0.95); 
@@ -125,12 +125,12 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            border-bottom: 2px solid #bd9a5f; 
+            border-bottom: 1px solid #bd9a5f; 
             padding-bottom: 20px; 
             margin-bottom: 25px; 
         }
         .header h1 { font-size: 20px; color: #333333; font-weight: 600; letter-spacing: -0.3px; }
-        .header p { font-size: 13px; color: #8c8c8c; margin-top: 3px; font-weight: 500; }
+        .header p { font-size: 12px; color: #8c8c8c; margin-top: 3px; font-weight: 500; }
         
         .header-logo img {
             width: 60px;
@@ -138,18 +138,19 @@
             object-fit: contain;
         }
         
-        .section-title { font-size: 15px; font-weight: 600; color: #333333; margin: 25px 0 12px 0; display: flex; align-items: center; gap: 8px; border-left: 4px solid #bd9a5f; padding-left: 10px; }
+        .section-title { font-size: 14px; font-weight: 600; color: #333333; margin: 25px 0 15px 0; display: flex; align-items: center; gap: 8px; border-left: 4px solid #bd9a5f; padding-left: 10px; }
         
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .card { background: white; border: 1px solid #f2eceb; border-radius: 8px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); border-top: 4px solid #bd9a5f; }
         
         .card-label { font-size: 11px; text-transform: uppercase; color: #8c8c8c; font-weight: 600; }
         .card-value { font-size: 22px; font-weight: 700; color: #333333; margin: 6px 0 2px 0; }
         .card-sub { font-size: 12px; color: #7a7a7a; }
         
+        /* 🎨 BOTÃO DE VOLTAR CORRIGIDO PARA A MESMA PASTA EM DOURADO REFINADO */
         .btn-back { 
             display: inline-block; 
-            margin-top: 20px; 
+            margin-top: 30px; 
             text-decoration: none; 
             background-color: #bd9a5f; 
             color: white; 
@@ -164,6 +165,7 @@
         }
         .btn-back:hover {
             background-color: #a3824b;
+            box-shadow: 0 4px 15px rgba(163, 130, 75, 0.25);
             transform: translateY(-2px);
         }
 
@@ -178,10 +180,11 @@
 
 <div class="wrapper">
 
-    <!-- 📁 BARRA LATERAL ESQUERDA - TODOS OS SEUS PDFS REAIS -->
+    <!-- 📁 BARRA LATERAL ESQUERDA - TODOS OS SEUS PDFS ATIVOS -->
     <div class="sidebar">
         <div class="sidebar-title">📁 Arquivos em PDF</div>
         
+        <!-- Bloco 1 -->
         <div class="sidebar-section">
             <div class="sidebar-subtitle">Encargos Sociais</div>
             <div class="pdf-list">
@@ -191,6 +194,7 @@
             </div>
         </div>
         
+        <!-- Bloco 2 -->
         <div class="sidebar-section">
             <div class="sidebar-subtitle">Fechamentos eSocial</div>
             <div class="pdf-list">
@@ -201,6 +205,7 @@
             </div>
         </div>
         
+        <!-- Bloco 3 -->
         <div class="sidebar-section">
             <div class="sidebar-subtitle">Holerites Individuais</div>
             <div class="pdf-list">
@@ -213,7 +218,7 @@
         </div>
     </div>
 
-    <!-- 📊 SEU PAINEL ORIGINAL COMPLETO À DIREITA -->
+    <!-- 📊 CONTEÚDO ORIGINAL ANALÍTICO DA SUA IMAGEM INTEIRINHO DE VOLTA -->
     <div class="main-panel">
         <div class="header">
             <div>
@@ -226,6 +231,7 @@
             </div>
         </div>
 
+        <!-- Bloco 1 -->
         <div class="section-title">Resumo Geral da Empresa</div>
         <div class="grid-cards">
             <div class="card">
@@ -238,10 +244,3 @@
                 <div class="card-value">R$ 1.408,83</div>
                 <div class="card-sub">INSS + FGTS a Recolher</div>
             </div>
-            <div class="card">
-                <div class="card-label">Líquido a Pagar</div>
-                <div class="card-value">R$ 11.020,73</div>
-                <div class="card-sub">Funcionários + Sócios</div>
-            </div>
-        </div>
-        
