@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Societário - VEDI OPTICA E RELOJOARIA LTDA</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #F9FAFB; color: #1F2937; display: flex; }
+
+        /* SIDEBAR */
+        .sidebar-docs {
+            width: 220px;
+            background: white;
+            border-right: 1px solid #E5E7EB;
+            padding: 16px;
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 1px 0 3px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #C58A94;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #C5A059;
+        }
+
+        .doc-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #111827;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .doc-item:hover {
+            background: #F3F4F6;
+            color: #C58A94;
+        }
+
+        .doc-item-icon {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 220px;
+        }
+
+        .container { max-width: 100%; margin: 0; padding: 20px; }
+
+        /* HEADER */
+        .header {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border-left: 5px solid #C58A94;
+        }
+
+        .header-left h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .header-left p {
+            font-size: 13px;
+            color: #6B7280;
+            margin: 2px 0;
+        }
+
+        /* SEÇÃO TÍTULO */
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111827;
+            margin: 24px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        /* CARDS DOCUMENTOS - 2X2 */
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .doc-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .doc-card:hover {
+            border-color: #C58A94;
+            box-shadow: 0 4px 12px rgba(197, 138, 148, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .doc-card-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .doc-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .doc-card-desc {
+            font-size: 13px;
+            color: #6B7280;
+            margin-bottom: 16px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+
+        .doc-card-btn {
+            background: linear-gradient(135deg, #C58A94 0%, #b37684 100%);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .doc-card-btn:hover {
+            background: linear-gradient(135deg, #b37684 0%, #9d636f 100%);
+            transform: scale(1.02);
+        }
+
+        /* PAINEL INFORMAÇÕES SOCIETÁRIAS */
+        .panel {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .panel-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #F3F4F6;
+            padding-bottom: 12px;
+        }
+
+        /* INFO GRID */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-item {
+            padding: 12px;
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #6B7280;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .info-sub {
+            font-size: 12px;
+            color: #6B7280;
+            margin-top: 4px;
+        }
+
+        /* TABELAS */
+        .table-container {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .table-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead {
+            background: #F9FAFB;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        tbody tr:hover {
+            background: #F9FAFB;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* KPI CARDS RESUMO */
+        .kpis-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-left: 5px solid;
+            border-radius: 6px;
+            padding: 18px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .kpi-card.societario { border-left-color: #C58A94; }
+        .kpi-card.constituicao { border-left-color: #C5A059; }
+        .kpi-card.ativo { border-left-color: #10B981; }
+        .kpi-card.documentos { border-left-color: #6366F1; }
+
+        .kpi-label {
+            font-size: 11px;
+            color: #6B7280;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .kpi-sub {
+            font-size: 12px;
+            color: #6B7280;
+        }
+
+        /* BADGE STATUS */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-ativo {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .badge-inativo {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .badge-pendente {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        /* RODAPÉ */
+        .footer {
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            padding: 16px;
+            font-size: 11px;
+            color: #6B7280;
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .footer-line {
+            margin: 4px 0;
+        }
+
+        /* ALERTA */
+        .alert {
+            background: #F0F4FF;
+            border-left: 4px solid #6366F1;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            color: #111827;
+            line-height: 1.6;
+        }
+
+        .alert strong {
+            color: #4F46E5;
+        }
+
+        /* LINKS EXTERNOS */
+        .external-links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .external-link-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 16px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .external-link-card:hover {
+            border-color: #C58A94;
+            box-shadow: 0 4px 12px rgba(197, 138, 148, 0.15);
+        }
+
+        .external-link-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #C58A94;
+            margin-bottom: 6px;
+        }
+
+        .external-link-desc {
+            font-size: 12px;
+            color: #6B7280;
+            line-height: 1.4;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .docs-grid { grid-template-columns: 1fr; }
+            .kpis-grid { grid-template-columns: repeat(2, 1fr); }
+            .info-grid { grid-template-columns: repeat(2, 1fr); }
+            .external-links-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-docs { display: none; }
+            .main-content { margin-left: 0; }
+            .docs-grid { grid-template-columns: 1fr; }
+            .kpis-grid { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; align-items: flex-start; }
+            .external-links-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- SIDEBAR DOCUMENTOS -->
+    <aside class="sidebar-docs">
+        <a href="acesso-clientes-portal-vedi.html" style="display: block; padding: 10px; margin-bottom: 14px; background: #C58A94; color: white; border-radius: 4px; text-decoration: none; text-align: center; font-size: 11px; font-weight: 700; text-transform: uppercase; transition: background 0.2s;" onmouseover="this.style.background='#b37684'" onmouseout="this.style.background='#C58A94'">← Voltar ao Menu</a>
+
+        <div class="sidebar-title">📁 Documentos</div>
+
+        <a class="doc-item" href="[LINK_CONTRATO_SOCIAL]" target="_blank">
+            <span class="doc-item-icon">📄</span>
+            <span>Contrato Social</span>
+        </a>
+
+        <a class="doc-item" href="[LINK_ALTERACOES_CONTRATO]" target="_blank">
+            <span class="doc-item-icon">📋</span>
+            <span>Alterações Contratuais</span>
+        </a>
+
+        <a class="doc-item" href="[LINK_CARTAO_CNPJ]" target="_blank">
+            <span class="doc-item-icon">🏢</span>
+            <span>Cartão CNPJ</span>
+        </a>
+
+        <a class="doc-item" href="[LINK_CERTIDAO_CONSTITUICAO]" target="_blank">
+            <span class="doc-item-icon">✅</span>
+            <span>Certidão de Constituição</span>
+        </a>
+
+        <a class="doc-item" href="[LINK_REGISTRO_JC]" target="_blank">
+            <span class="doc-item-icon">📑</span>
+            <span>Registro Junta Comercial</span>
+        </a>
+
+        <a class="doc-item" href="[LINK_FICHA_CADASTRAL]" target="_blank">
+            <span class="doc-item-icon">📇</span>
+            <span>Ficha Cadastral</span>
+        </a>
+
+        <a class="doc-item" href="[LINK_QSA]" target="_blank">
+            <span class="doc-item-icon">👥</span>
+            <span>QSA - Sócios/Adm</span>
+        </a>
+
+        <div class="sidebar-title" style="margin-top: 20px;">⚖️ Jurídico</div>
+
+        <a class="doc-item" href="[LINK_PROCURACAO]" target="_blank">
+            <span class="doc-item-icon">✍️</span>
+            <span>Procurações</span>
+        </a>
+    </aside>
+
+    <div class="main-content">
+        <div class="container">
+            <!-- HEADER -->
+            <div class="header">
+                <div class="header-left">
+                    <h1>VEDI OPTICA E RELOJOARIA LTDA</h1>
+                    <p>CNPJ: 85.375.731/0001-74</p>
+                    <p>Acesso Societário e Documentação</p>
+                </div>
+            </div>
+
+            <!-- ALERTA -->
+            <div class="alert">
+                <strong>💡 Documentação Societária:</strong> Todos os documentos da empresa referentes a sua constituição, sociedade, administração e registros legais estão organizados nesta seção. Acesse os arquivos para consultar, conferir ou compartilhar com terceiros quando necessário.
+            </div>
+
+            <!-- DOCUMENTOS PRINCIPAIS - 2X2 -->
+            <div class="section-title">📄 Documentos Principais</div>
+            <div class="docs-grid">
+                <div class="doc-card">
+                    <div class="doc-card-icon">📄</div>
+                    <div class="doc-card-title">Contrato Social</div>
+                    <div class="doc-card-desc">
+                        Documento constitutivo da sociedade, contendo dados dos sócios, participações e regras de funcionamento da empresa.
+                    </div>
+                    <a href="[LINK_CONTRATO_SOCIAL]" target="_blank" class="doc-card-btn">
+                        <span>📥</span> Baixar
+                    </a>
+                </div>
+
+                <div class="doc-card">
+                    <div class="doc-card-icon">🏢</div>
+                    <div class="doc-card-title">Cartão CNPJ</div>
+                    <div class="doc-card-desc">
+                        Comprovante oficial de inscrição no CNPJ junto à Receita Federal do Brasil, contendo dados cadastrais principais.
+                    </div>
+                    <a href="[LINK_CARTAO_CNPJ]" target="_blank" class="doc-card-btn">
+                        <span>📥</span> Baixar
+                    </a>
+                </div>
+
+                <div class="doc-card">
+                    <div class="doc-card-icon">✅</div>
+                    <div class="doc-card-title">Certidão de Constituição</div>
+                    <div class="doc-card-desc">
+                        Documento expedido pela Junta Comercial certificando a constituição legal da empresa e sua data de criação.
+                    </div>
+                    <a href="[LINK_CERTIDAO_CONSTITUICAO]" target="_blank" class="doc-card-btn">
+                        <span>📥</span> Baixar
+                    </a>
+                </div>
+
+                <div class="doc-card">
+                    <div class="doc-card-icon">📑</div>
+                    <div class="doc-card-title">Registro Junta Comercial</div>
+                    <div class="doc-card-desc">
+                        Registro completo junto à Junta Comercial do Estado, documentando a constituição, alterações e situação da empresa.
+                    </div>
+                    <a href="[LINK_REGISTRO_JC]" target="_blank" class="doc-card-btn">
+                        <span>📥</span> Baixar
+                    </a>
+                </div>
+            </div>
+
+            <!-- RESUMO SOCIETÁRIO -->
+            <div class="section-title">📊 Resumo da Empresa</div>
+            <div class="kpis-grid">
+                <div class="kpi-card societario">
+                    <div class="kpi-label">Natureza Jurídica</div>
+                    <div class="kpi-value">Sociedade Limitada</div>
+                    <div class="kpi-sub">Enquadramento legal</div>
+                </div>
+                <div class="kpi-card constituicao">
+                    <div class="kpi-label">Data de Abertura</div>
+                    <div class="kpi-value">2025</div>
+                    <div class="kpi-sub">Empresa em operação</div>
+                </div>
+                <div class="kpi-card ativo">
+                    <div class="kpi-label">Situação Cadastral</div>
+                    <div class="kpi-value"><span class="badge badge-ativo">ATIVA</span></div>
+                    <div class="kpi-sub">Empresa em funcionamento</div>
+                </div>
+                <div class="kpi-card documentos">
+                    <div class="kpi-label">Regime Tributário</div>
+                    <div class="kpi-value">[PLACEHOLDER]</div>
+                    <div class="kpi-sub">Enquadramento fiscal</div>
+                </div>
+            </div>
+
+            <!-- INFORMAÇÕES CADASTRAIS -->
+            <div class="panel">
+                <div class="panel-title">🏢 Informações Cadastrais</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Razão Social</div>
+                        <div class="info-value">VEDI OPTICA E RELOJOARIA LTDA</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Nome Fantasia</div>
+                        <div class="info-value">VEDI</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">CNPJ</div>
+                        <div class="info-value">85.375.731/0001-74</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Inscrição Estadual</div>
+                        <div class="info-value">[PLACEHOLDER]</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Inscrição Municipal</div>
+                        <div class="info-value">[PLACEHOLDER]</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">CNAE Principal</div>
+                        <div class="info-value">[PLACEHOLDER]</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Endereço</div>
+                        <div class="info-value">Rua 500, 93, Centro</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">CEP</div>
+                        <div class="info-value">[PLACEHOLDER]</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Município - UF</div>
+                        <div class="info-value">Balneário Camboriú - SC</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SÓCIOS E ADMINISTRADORES -->
+            <div class="section-title">👥 Quadro de Sócios e Administradores (QSA)</div>
+            <div class="table-container">
+                <div class="table-title">Informações Societárias</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome / Razão Social</th>
+                            <th>Qualificação</th>
+                            <th class="text-right">Participação</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Data Entrada</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Paulo Dal Moro Junior</td>
+                            <td>Sócio-Administrador</td>
+                            <td class="text-right">50%</td>
+                            <td>[PLACEHOLDER]</td>
+                            <td>[PLACEHOLDER]</td>
+                            <td class="text-center"><span class="badge badge-ativo">ATIVO</span></td>
+                        </tr>
+                        <tr>
+                            <td>Kauana Menegon Cordeiro</td>
+                            <td>Sócia-Cotista</td>
+                            <td class="text-right">50%</td>
+                            <td>[PLACEHOLDER]</td>
+                            <td>[PLACEHOLDER]</td>
+                            <td class="text-center"><span class="badge badge-ativo">ATIVO</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="font-size: 11px; color: #6B7280; margin-top: 12px; line-height: 1.6;">
+                    <strong>Nota:</strong> Informações extraídas da Consulta de Quadro de Sócios e Administradores (QSA) junto à Receita Federal.
+                    Dados sujeitos a atualização conforme alterações cadastrais.
+                </div>
+            </div>
+
+            <!-- DADOS COMPLEMENTARES -->
+            <div class="panel">
+                <div class="panel-title">🔹 Dados Complementares</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Capital Social</div>
+                        <div class="info-value">[PLACEHOLDER]</div>
+                        <div class="info-sub">Investimento inicial</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Telefone</div>
+                        <div class="info-value">[PLACEHOLDER]</div>
+                        <div class="info-sub">Contato principal</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">E-mail</div>
+                        <div class="info-value">[PLACEHOLDER]</div>
+                        <div class="info-sub">Comunicação corporativa</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Responsável Técnico</div>
+                        <div class="info-value">Jaqueline do Prado Ferreira</div>
+                        <div class="info-sub">Contador responsável</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Optante Simples Nacional</div>
+                        <div class="info-value">[PLACEHOLDER]</div>
+                        <div class="info-sub">Desde [PLACEHOLDER]</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Contribuinte PIS/PASEP</div>
+                        <div class="info-value">[PLACEHOLDER]</div>
+                        <div class="info-sub">Inscrição [PLACEHOLDER]</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOCUMENTAÇÃO ADICIONAL -->
+            <div class="section-title">📋 Documentação Adicional</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Descrição</th>
+                            <th class="text-center">Disponível</th>
+                            <th class="text-center">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Alterações Contratuais</strong></td>
+                            <td>Histórico de alterações do Contrato Social e Estatuto Social</td>
+                            <td class="text-center">✅</td>
+                            <td class="text-center">
+                                <a href="[LINK_ALTERACOES_CONTRATO]" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600;">Acessar</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ficha Cadastral</strong></td>
+                            <td>Documentação cadastral completa junto aos órgãos competentes</td>
+                            <td class="text-center">✅</td>
+                            <td class="text-center">
+                                <a href="[LINK_FICHA_CADASTRAL]" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600;">Acessar</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>QSA - Sócios e Administradores</strong></td>
+                            <td>Consulta oficial de Quadro de Sócios e Administradores da Receita Federal</td>
+                            <td class="text-center">✅</td>
+                            <td class="text-center">
+                                <a href="[LINK_QSA]" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600;">Acessar</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Procurações</strong></td>
+                            <td>Procurações e poderes outorgados a representantes da empresa</td>
+                            <td class="text-center">✅</td>
+                            <td class="text-center">
+                                <a href="[LINK_PROCURACAO]" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600;">Acessar</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- CERTIDÕES E CONSULTAS EXTERNAS -->
+            <div class="section-title">🔗 Certidões e Consultas Externas</div>
+            <div style="font-size: 12px; color: #6B7280; margin-bottom: 16px; line-height: 1.6;">
+                <strong>Clique nos links abaixo para consultar certidões e informações oficiais junto aos órgãos competentes:</strong>
+            </div>
+            <div class="external-links-grid">
+                <a href="https://servicos.receitafederal.gov.br/servico/certidoes/#/home/cnpj" target="_blank" class="external-link-card">
+                    <div class="external-link-title">🔍 Certidão Negativa - Federal</div>
+                    <div class="external-link-desc">Consulte certidão negativa de débitos junto à Receita Federal do Brasil.</div>
+                </a>
+
+                <a href="https://sat.sef.sc.gov.br/tax.NET/Sat.CtaCte.Web/SolicitacaoCnd.aspx" target="_blank" class="external-link-card">
+                    <div class="external-link-title">🔍 Certidão Negativa - Estadual</div>
+                    <div class="external-link-desc">Consulte certidão negativa junto à Secretaria de Fazenda do Estado de Santa Catarina.</div>
+                </a>
+
+                <a href="https://sat.sef.sc.gov.br/tax.NET/Sat.CtaCte.Web/SolicitacaoCnd.aspx" target="_blank" class="external-link-card">
+                    <div class="external-link-title">🔍 Certidão Negativa - Municipal</div>
+                    <div class="external-link-desc">Consulte certidão negativa junto à Prefeitura de Balneário Camboriú.</div>
+                </a>
+
+                <a href="https://cndt-certidao.tst.jus.br/" target="_blank" class="external-link-card">
+                    <div class="external-link-title">⚖️ CNDT</div>
+                    <div class="external-link-desc">Certidão Negativa de Débitos Trabalhistas - Solicite junto ao TST.</div>
+                </a>
+
+                <a href="https://consulta-crf.caixa.gov.br/consultacrf/pages/consultaEmpregador.jsf" target="_blank" class="external-link-card">
+                    <div class="external-link-title">🏢 Certidão FGTS</div>
+                    <div class="external-link-desc">Consulte a Certificação de Regularidade do FGTS junto à Caixa Econômica.</div>
+                </a>
+
+                <a href="https://www.tjsc.jus.br/web/judicial/certidoes" target="_blank" class="external-link-card">
+                    <div class="external-link-title">⚖️ Falência/Recuperação</div>
+                    <div class="external-link-desc">Consulte processos de falência e recuperação judicial no TJSC.</div>
+                </a>
+
+                <a href="https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/" target="_blank" class="external-link-card">
+                    <div class="external-link-title">🔍 Cartão CNPJ</div>
+                    <div class="external-link-desc">Consulte o Cartão CNPJ e informações cadastrais na Receita Federal.</div>
+                </a>
+
+                <a href="https://www8.receita.fazenda.gov.br/simplesnacional/aplicacoes.aspx?id=21" target="_blank" class="external-link-card">
+                    <div class="external-link-title">💼 Consulta Optantes Simples</div>
+                    <div class="external-link-desc">Consulte se a empresa é optante pelo Regime de Tributação Simplificada.</div>
+                </a>
+            </div>
+
+            <!-- RODAPÉ -->
+            <div class="footer">
+                <div class="footer-line">Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</div>
+                <div class="footer-line">Responsável Técnica: Jaqueline do Prado Ferreira | CRC SC-048028/O-0</div>
+                <div class="footer-line">Videira - SC | contato@jaquelineferreiracontadora.com.br | (49) 9.9980-3552</div>
+                <div class="footer-line" style="margin-top: 8px; font-size: 10px; color: #9CA3AF;">
+                    Dashboard Acesso Societário Confidencial - Uso Exclusivo do Cliente
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
