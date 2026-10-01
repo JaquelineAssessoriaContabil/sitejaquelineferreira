@@ -408,9 +408,73 @@
             line-height: 1.4;
         }
 
+        /* ACESSO RÁPIDO GRID - 3 COLUNAS */
+        .quick-access-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .quick-access-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .quick-access-card:hover {
+            border-color: #C58A94;
+            box-shadow: 0 4px 12px rgba(197, 138, 148, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .quick-access-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .quick-access-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .quick-access-desc {
+            font-size: 13px;
+            color: #6B7280;
+            flex-grow: 1;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .quick-access-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #C58A94;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 13px;
+        }
+
+        .quick-access-card:hover .quick-access-link {
+            color: #b37684;
+        }
+
         /* RESPONSIVE */
         @media (max-width: 1024px) {
             .docs-grid { grid-template-columns: 1fr; }
+            .quick-access-grid { grid-template-columns: repeat(2, 1fr); }
             .kpis-grid { grid-template-columns: repeat(2, 1fr); }
             .info-grid { grid-template-columns: repeat(2, 1fr); }
             .external-links-grid { grid-template-columns: 1fr; }
@@ -493,53 +557,6 @@
                 <strong>💡 Documentação Societária:</strong> Todos os documentos da empresa referentes a sua constituição, sociedade, administração e registros legais estão organizados nesta seção. Acesse os arquivos para consultar, conferir ou compartilhar com terceiros quando necessário.
             </div>
 
-            <!-- DOCUMENTOS PRINCIPAIS - 2X2 -->
-            <div class="section-title">📄 Documentos Principais</div>
-            <div class="docs-grid">
-                <div class="doc-card">
-                    <div class="doc-card-icon">📄</div>
-                    <div class="doc-card-title">Contrato Social</div>
-                    <div class="doc-card-desc">
-                        Documento constitutivo da sociedade, contendo dados dos sócios, participações e regras de funcionamento da empresa.
-                    </div>
-                    <a href="[LINK_CONTRATO_SOCIAL]" target="_blank" class="doc-card-btn">
-                        <span>📥</span> Baixar
-                    </a>
-                </div>
-
-                <div class="doc-card">
-                    <div class="doc-card-icon">🏢</div>
-                    <div class="doc-card-title">Cartão CNPJ</div>
-                    <div class="doc-card-desc">
-                        Comprovante oficial de inscrição no CNPJ junto à Receita Federal do Brasil, contendo dados cadastrais principais.
-                    </div>
-                    <a href="[LINK_CARTAO_CNPJ]" target="_blank" class="doc-card-btn">
-                        <span>📥</span> Baixar
-                    </a>
-                </div>
-
-                <div class="doc-card">
-                    <div class="doc-card-icon">✅</div>
-                    <div class="doc-card-title">Certidão de Constituição</div>
-                    <div class="doc-card-desc">
-                        Documento expedido pela Junta Comercial certificando a constituição legal da empresa e sua data de criação.
-                    </div>
-                    <a href="[LINK_CERTIDAO_CONSTITUICAO]" target="_blank" class="doc-card-btn">
-                        <span>📥</span> Baixar
-                    </a>
-                </div>
-
-                <div class="doc-card">
-                    <div class="doc-card-icon">📑</div>
-                    <div class="doc-card-title">Registro Junta Comercial</div>
-                    <div class="doc-card-desc">
-                        Registro completo junto à Junta Comercial do Estado, documentando a constituição, alterações e situação da empresa.
-                    </div>
-                    <a href="[LINK_REGISTRO_JC]" target="_blank" class="doc-card-btn">
-                        <span>📥</span> Baixar
-                    </a>
-                </div>
-            </div>
 
             <!-- RESUMO SOCIETÁRIO -->
             <div class="section-title">📊 Resumo da Empresa</div>
@@ -735,51 +752,59 @@
                 </table>
             </div>
 
-            <!-- CERTIDÕES E CONSULTAS EXTERNAS -->
-            <div class="section-title">🔗 Certidões e Consultas Externas</div>
-            <div style="font-size: 12px; color: #6B7280; margin-bottom: 16px; line-height: 1.6;">
-                <strong>Clique nos links abaixo para consultar certidões e informações oficiais junto aos órgãos competentes:</strong>
-            </div>
-            <div class="external-links-grid">
-                <a href="https://servicos.receitafederal.gov.br/servico/certidoes/#/home/cnpj" target="_blank" class="external-link-card">
-                    <div class="external-link-title">🔍 Certidão Negativa - Federal</div>
-                    <div class="external-link-desc">Consulte certidão negativa de débitos junto à Receita Federal do Brasil.</div>
-                </a>
-
-                <a href="https://sat.sef.sc.gov.br/tax.NET/Sat.CtaCte.Web/SolicitacaoCnd.aspx" target="_blank" class="external-link-card">
-                    <div class="external-link-title">🔍 Certidão Negativa - Estadual</div>
-                    <div class="external-link-desc">Consulte certidão negativa junto à Secretaria de Fazenda do Estado de Santa Catarina.</div>
-                </a>
-
-                <a href="https://sat.sef.sc.gov.br/tax.NET/Sat.CtaCte.Web/SolicitacaoCnd.aspx" target="_blank" class="external-link-card">
-                    <div class="external-link-title">🔍 Certidão Negativa - Municipal</div>
-                    <div class="external-link-desc">Consulte certidão negativa junto à Prefeitura de Balneário Camboriú.</div>
-                </a>
-
-                <a href="https://cndt-certidao.tst.jus.br/" target="_blank" class="external-link-card">
-                    <div class="external-link-title">⚖️ CNDT</div>
-                    <div class="external-link-desc">Certidão Negativa de Débitos Trabalhistas - Solicite junto ao TST.</div>
-                </a>
-
-                <a href="https://consulta-crf.caixa.gov.br/consultacrf/pages/consultaEmpregador.jsf" target="_blank" class="external-link-card">
-                    <div class="external-link-title">🏢 Certidão FGTS</div>
-                    <div class="external-link-desc">Consulte a Certificação de Regularidade do FGTS junto à Caixa Econômica.</div>
-                </a>
-
-                <a href="https://www.tjsc.jus.br/web/judicial/certidoes" target="_blank" class="external-link-card">
-                    <div class="external-link-title">⚖️ Falência/Recuperação</div>
-                    <div class="external-link-desc">Consulte processos de falência e recuperação judicial no TJSC.</div>
-                </a>
-
-                <a href="https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/" target="_blank" class="external-link-card">
-                    <div class="external-link-title">🔍 Cartão CNPJ</div>
-                    <div class="external-link-desc">Consulte o Cartão CNPJ e informações cadastrais na Receita Federal.</div>
-                </a>
-
-                <a href="https://www8.receita.fazenda.gov.br/simplesnacional/aplicacoes.aspx?id=21" target="_blank" class="external-link-card">
-                    <div class="external-link-title">💼 Consulta Optantes Simples</div>
-                    <div class="external-link-desc">Consulte se a empresa é optante pelo Regime de Tributação Simplificada.</div>
-                </a>
+            <!-- LINKS EXTERNOS - CERTIDÕES E CONSULTAS -->
+            <div class="section-title">📋 Links Externos - Certidões e Consultas</div>
+            <div class="panel">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://servicos.receitafederal.gov.br/servico/certidoes/#/home/cnpj" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            🔍 Certidão Negativa - Federal
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte certidão negativa de débitos junto à Receita Federal do Brasil.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://sat.sef.sc.gov.br/tax.NET/Sat.CtaCte.Web/SolicitacaoCnd.aspx" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            🔍 Certidão Negativa - Estadual
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte certidão negativa junto à Secretaria de Fazenda do Estado de Santa Catarina.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://sat.sef.sc.gov.br/tax.NET/Sat.CtaCte.Web/SolicitacaoCnd.aspx" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            🔍 Certidão Negativa - Municipal
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte certidão negativa junto à Prefeitura de Balneário Camboriú.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://cndt-certidao.tst.jus.br/" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            ⚖️ CNDT (Débito Trabalhista)
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Certidão Negativa de Débitos Trabalhistas - Solicite junto ao TST.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://consulta-crf.caixa.gov.br/consultacrf/pages/consultaEmpregador.jsf" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            📋 Certidão FGTS
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte a Certificação de Regularidade do FGTS junto à Caixa Econômica.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://www.tjsc.jus.br/web/judicial/certidoes" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            ⚖️ Falência/Recuperação
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte processos de falência e recuperação judicial no TJSC.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            🔍 Cartão CNPJ/Comprovante
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte o Cartão CNPJ e informações cadastrais na Receita Federal.</p>
+                    </li>
+                    <li style="padding: 12px 0;">
+                        <a href="https://www8.receita.fazenda.gov.br/simplesnacional/aplicacoes.aspx?id=21" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            🏛️ Consulta Optantes Simples Nacional
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte se a empresa é optante pelo Regime de Tributação Simplificada.</p>
+                    </li>
+                </ul>
             </div>
 
             <!-- RODAPÉ -->
