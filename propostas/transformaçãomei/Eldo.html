@@ -409,15 +409,6 @@
               <p style="margin-top:0.5rem;font-size:0.9rem;color:#C9A15E;"><strong>Data Prevista: 01/11/2026</strong></p>
             </div>
           </div>
-
-          <div class="step">
-            <div class="step-number">7</div>
-            <div class="step-content">
-              <h4>LTDA Pronta para Operar</h4>
-              <p>Entrega de toda a documentação e início da assessoria contábil mensal.</p>
-              <p style="margin-top:0.5rem;font-weight:600;color:#C5A29E;">Data Prevista: <strong>31/10/2026</strong></p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -511,7 +502,18 @@
 
   <script>
     const WHATSAPP_NUMBER = '5549998803552';
+    const JAQUELINE_EMAIL = 'contato@jaquelineferreiracontadora.com.br';
+    const EMAILJS_SERVICE_ID = 'service_vjsqcqb';
+    const EMAILJS_TEMPLATE_ID = 'template_ph0ourc';
+    const EMAILJS_PUBLIC_KEY = 'NoWLln4bstrM9kt3J';
     let selectedPayment = '';
+
+    // Inicializar EmailJS quando a página carrega
+    window.addEventListener('load', function() {
+      if (typeof emailjs !== 'undefined') {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+      }
+    });
 
     function openTab(evt, tabName) {
       const tabContents = document.querySelectorAll('.tab-content');
@@ -528,7 +530,7 @@
         card.style.background = '#fff9f7';
         card.style.borderColor = '#e8d4cf';
         card.style.display = 'block';
-
+        
         const pTags = card.querySelectorAll('p');
         if (pTags.length >= 3) {
           pTags[0].style.color = '#C9A15E';
@@ -547,99 +549,116 @@
       document.getElementById('pagamento-selecionado').style.color = '#2d5016';
     }
 
-    const JAQUELINE_EMAIL = 'contato@jaquelineferreiracontadora.com.br';
-    const EMAILJS_SERVICE_ID = 'service_vjsqcqb';
-    const EMAILJS_TEMPLATE_ID = 'template_ph0ourc';
-    const EMAILJS_PUBLIC_KEY = 'NoWLln4bstrM9kt3J';
-
-    // Inicializar EmailJS quando disponível
-    window.addEventListener('load', function() {
-      if (typeof emailjs !== 'undefined') {
-        emailjs.init(EMAILJS_PUBLIC_KEY);
-      }
-    });
-
     async function gerarPDFAceite(nome, cpf, email, telefone, pagamento) {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-
+      
       const dataAceite = new Date().toLocaleDateString('pt-BR');
       const horaAceite = new Date().toLocaleTimeString('pt-BR');
-
+      
       // Cores do tema
       const corPrincipal = [197, 162, 158];
       const corOuro = [201, 161, 94];
-
-      // Cabeçalho
+      const corFundo = [255, 249, 247];
+      
+      // Fundo suave
+      doc.setFillColor(...corFundo);
+      doc.rect(0, 0, 210, 297, 'F');
+      
+      // Cabeçalho destacado
       doc.setFillColor(...corPrincipal);
-      doc.rect(0, 0, 210, 40, 'F');
+      doc.rect(0, 0, 210, 45, 'F');
       doc.setTextColor(255, 255, 255);
-      doc.setFontSize(18);
-      doc.text('COMPROVANTE DE ACEITE DE PROPOSTA', 105, 15, { align: 'center' });
-      doc.setFontSize(10);
-      doc.text('Transformação MEI para LTDA com Assessoria Contábil Mensal', 105, 25, { align: 'center' });
-
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+      doc.text('✓ ACEITE CONFIRMADO', 105, 20, { align: 'center' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      doc.text('Transformação MEI para LTDA com Assessoria Contábil', 105, 32, { align: 'center' });
+      
       // Dados da empresa
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(9);
-      doc.text('JAQUELINE FERREIRA ASSESSORIA CONTÁBIL LTDA', 15, 50);
-      doc.setFontSize(8);
-      doc.text('CNPJ: 64.202.276/0001-35 | CRC-SC-013019/O-4', 15, 56);
-
-      // Linha divisória
-      doc.setDrawColor(...corOuro);
-      doc.line(15, 60, 195, 60);
-
-      // Dados do Cliente
-      doc.setFontSize(11);
       doc.setTextColor(...corPrincipal);
-      doc.text('DADOS DO CLIENTE', 15, 70);
-
-      doc.setFontSize(9);
-      doc.setTextColor(0, 0, 0);
-      doc.text(`Nome: ${nome}`, 15, 80);
-      doc.text(`CPF: ${cpf}`, 15, 87);
-      doc.text(`E-mail: ${email}`, 15, 94);
-      doc.text(`Telefone: ${telefone}`, 15, 101);
-
-      // Dados do Aceite
-      doc.setFontSize(11);
-      doc.setTextColor(...corPrincipal);
-      doc.text('DADOS DO ACEITE', 15, 115);
-
-      doc.setFontSize(9);
-      doc.setTextColor(0, 0, 0);
-      doc.text(`Forma de Pagamento: ${pagamento}`, 15, 125);
-      doc.text(`Data do Aceite: ${dataAceite}`, 15, 132);
-      doc.text(`Hora do Aceite: ${horaAceite}`, 15, 139);
-
-      // Resumo dos serviços
-      doc.setFontSize(11);
-      doc.setTextColor(...corPrincipal);
-      doc.text('RESUMO DOS SERVIÇOS', 15, 153);
-
-      doc.setFontSize(8);
-      doc.setTextColor(0, 0, 0);
-      const servicos = [
-        '• Taxa de Transformação: R$ 1.300,00',
-        '• Assessoria Contábil Mensal: R$ 380,00',
-        '• Validade da Proposta: 7 dias'
-      ];
-      let yPos = 163;
-      servicos.forEach(srv => {
-        doc.text(srv, 15, yPos);
-        yPos += 7;
-      });
-
-      // Confirmação
+      doc.setFont('helvetica', 'bold');
       doc.setFontSize(10);
+      doc.text('JAQUELINE FERREIRA ASSESSORIA CONTÁBIL LTDA', 15, 58);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text('CNPJ: 64.202.276/0001-35 | CRC-SC-013019/O-4', 15, 65);
+      
+      // Linha divisória elegante
+      doc.setDrawColor(...corOuro);
+      doc.setLineWidth(0.8);
+      doc.line(15, 72, 195, 72);
+      
+      // Seção: Dados do Cliente
+      doc.setTextColor(...corPrincipal);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('👤 DADOS DO CLIENTE', 15, 85);
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(9);
+      doc.text(`${nome}`, 15, 98);
+      doc.setTextColor(80, 80, 80);
+      doc.setFontSize(8);
+      doc.text(`CPF: ${cpf}`, 15, 105);
+      doc.text(`E-mail: ${email}`, 15, 111);
+      doc.text(`Telefone: ${telefone}`, 15, 117);
+      
+      // Seção: Dados do Aceite
+      doc.setTextColor(...corPrincipal);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('💰 DADOS DO ACEITE', 15, 135);
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(9);
+      doc.text(`Forma de Pagamento: ${pagamento}`, 15, 148);
+      doc.setTextColor(80, 80, 80);
+      doc.setFontSize(8);
+      doc.text(`Data: ${dataAceite} | Hora: ${horaAceite}`, 15, 154);
+      
+      // Seção: Resumo dos serviços
+      doc.setTextColor(...corPrincipal);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('📋 RESUMO DOS SERVIÇOS', 15, 170);
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(8.5);
+      doc.text('Taxa de Transformação MEI → LTDA', 15, 182);
       doc.setTextColor(...corOuro);
-      doc.text('✓ PROPOSTA ACEITA E FORMALIZADA', 105, 200, { align: 'center' });
-
+      doc.setFont('helvetica', 'bold');
+      doc.text('R$ 1.300,00', 140, 182);
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      doc.text('Assessoria Contábil Mensal (primeira mensalidade)', 15, 190);
+      doc.setTextColor(...corOuro);
+      doc.setFont('helvetica', 'bold');
+      doc.text('R$ 380,00', 140, 190);
+      
+      // Rodapé confirmação
+      doc.setDrawColor(...corOuro);
+      doc.setLineWidth(1);
+      doc.line(15, 210, 195, 210);
+      
+      doc.setTextColor(...corOuro);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text('✓ PROPOSTA ACEITA E FIDELIZADA', 105, 225, { align: 'center' });
+      
+      doc.setTextColor(100, 100, 100);
+      doc.setFont('helvetica', 'normal');
       doc.setFontSize(7);
-      doc.setTextColor(150, 150, 150);
-      doc.text('Este é um comprovante automático de aceite. Para mais informações, entre em contato.', 105, 270, { align: 'center' });
-
+      doc.text('Comprovante automático de aceite da proposta comercial', 105, 250, { align: 'center' });
+      doc.text('Em caso de dúvidas, contate: contato@jaquelineferreiracontadora.com.br', 105, 256, { align: 'center' });
+      doc.text(`Gerado em ${dataAceite} às ${horaAceite}`, 105, 262, { align: 'center' });
+      
       return doc.output('blob');
     }
 
@@ -667,8 +686,8 @@
       try {
         // Gerar PDF do comprovante
         const pdfBlob = await gerarPDFAceite(nome, cpf, email, telefone, selectedPayment);
-
-        // Download automático do PDF como backup
+        
+        // Download automático do PDF
         const url = URL.createObjectURL(pdfBlob);
         const link = document.createElement('a');
         link.href = url;
@@ -693,10 +712,8 @@
             data_aceite: dataAceite,
             hora_aceite: horaAceite
           });
-        } else {
-          console.warn('EmailJS não carregado, email não foi enviado');
         }
-
+        
       } catch (erro) {
         console.error('Erro ao processar aceite:', erro);
       }
