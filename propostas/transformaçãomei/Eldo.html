@@ -451,6 +451,10 @@
             <p style="color:#666;font-size:0.85rem;margin-top:0.5rem;">Volte à aba "Investimento" e clique em uma opção de pagamento</p>
           </div>
 
+          <div style="margin-bottom:2rem;padding:1rem;background:#fff3f0;border-left:4px solid #C5A29E;border-radius:8px;">
+            <p style="color:#333;line-height:1.7;margin:0;font-size:0.95rem;"><strong>⏱️ Prazo de Execução:</strong> Após aceite desta proposta, o processo de transformação será iniciado em até 5 dias úteis, com conclusão estimada de <strong>até 30 dias úteis</strong>, conforme cronograma detalhado.</p>
+          </div>
+
           <div style="margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid #e8d4cf;">
             <h4 style="color:#C5A29E;font-size:1.1rem;margin-bottom:1.5rem;">✅ Confirmação do Aceite</h4>
             <div class="checkbox-group" style="gap:1rem;align-items:flex-start;">
@@ -459,7 +463,10 @@
             </div>
           </div>
 
-          <button type="submit" class="btn-submit" id="submit-btn">✅ Aceitar Proposta</button>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;">
+            <button type="submit" class="btn-submit" id="submit-btn" style="background:linear-gradient(135deg,#C5A29E 0%,#B8968F 100%);">✅ Aceitar Proposta</button>
+            <button type="button" onclick="recusarProposta()" style="background:#999;color:white;padding:1rem 2rem;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.3s ease;">❌ Recusar Proposta</button>
+          </div>
 
           <div style="margin-top:2rem;padding:1.5rem;background:#f0f9ff;border-left:4px solid #0284c7;border-radius:8px;">
             <h4 style="color:#0284c7;font-size:1.1rem;margin-bottom:1rem;font-weight:700;">📄 Próximas Etapas</h4>
@@ -537,6 +544,20 @@
       tabButtons.forEach(button => button.classList.remove('active'));
       document.getElementById(tabName).classList.add('active');
       evt.currentTarget.classList.add('active');
+    }
+
+    function recusarProposta() {
+      const nome = document.getElementById('aceite-nome').value;
+      const telefone = document.getElementById('aceite-telefone').value;
+
+      if (!nome || !telefone) {
+        alert('Por favor, preencha nome e telefone para registrar a recusa.');
+        return;
+      }
+
+      const mensagem = encodeURIComponent(`Oi! Gostaria de informar que RECUSO a proposta de transformação MEI para LTDA.\n\nCliente: ${nome}\nTelefone: ${telefone}\nData: ${new Date().toLocaleDateString('pt-BR')}`);
+      const linkWhatsApp = `https://wa.me/5549999803552?text=${mensagem}`;
+      window.open(linkWhatsApp, '_blank');
     }
 
     function selectPayment(element, paymentText) {
@@ -620,9 +641,31 @@
       doc.setTextColor(0, 0, 0);
       doc.setFontSize(8.5);
       doc.text(nome, marginLeft, y);
+
+      // Pontinhos para CPF
+      doc.setFontSize(7);
+      doc.setTextColor(150, 150, 150);
+      let dotX = marginLeft + 50;
+      while (dotX < 108) {
+        doc.text('.', dotX, y);
+        dotX += 2;
+      }
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(8.5);
       doc.text(cpf, 110, y);
       y += 4;
       doc.text(email, marginLeft, y);
+
+      // Pontinhos para Telefone
+      doc.setFontSize(7);
+      doc.setTextColor(150, 150, 150);
+      dotX = marginLeft + 50;
+      while (dotX < 108) {
+        doc.text('.', dotX, y);
+        dotX += 2;
+      }
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(8.5);
       doc.text(telefone, 110, y);
       y += 6;
       
@@ -657,19 +700,21 @@
       doc.text('Taxa de Transformação:', marginLeft, y);
       doc.setTextColor(...corOuro);
       doc.setFont('helvetica', 'bold');
-      doc.text('R$ 1.300,00', 125, y);
+      doc.text('R$ 1.300,00', 135, y, { align: 'right' });
       y += 4;
-      
+
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
       doc.text('Forma de Pagamento:', marginLeft, y);
-      doc.text(pagamento, 125, y);
+      doc.setTextColor(0, 0, 0);
+      doc.setFont('helvetica', 'normal');
+      doc.text(pagamento, 135, y, { align: 'right' });
       y += 4;
-      
+
       doc.text('Assessoria Contábil Mensal:', marginLeft, y);
       doc.setTextColor(...corOuro);
       doc.setFont('helvetica', 'bold');
-      doc.text('R$ 380,00/mês', 125, y);
+      doc.text('R$ 380,00/mês', 135, y, { align: 'right' });
       y += 6;
       
       // ===== CRONOGRAMA =====
@@ -804,23 +849,6 @@
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
 
-        
-        if (typeof emailjs !== 'undefined') {
-          const dataAceite = new Date().toLocaleDateString('pt-BR');
-          const horaAceite = new Date().toLocaleTimeString('pt-BR');
-
-          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-            to_email: JAQUELINE_EMAIL,
-            nome: nome,
-            cpf: cpf,
-            email: email,
-            telefone: telefone,
-            pagamento: selectedPayment,
-            data_aceite: dataAceite,
-            hora_aceite: horaAceite
-          });
-        }
-        
       } catch (erro) {
         console.error('Erro ao processar aceite:', erro);
       }
