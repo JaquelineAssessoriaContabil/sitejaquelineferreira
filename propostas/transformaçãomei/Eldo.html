@@ -876,7 +876,7 @@
       }).catch(() => {});
 
       setTimeout(() => {
-        const mensagem = `*NOVO ACEITE DE PROPOSTA*\n\n👤 *Cliente:* ${nome}\n📧 *E-mail:* ${email}\n📱 *Telefone:* ${telefone}\n💰 *Pagamento:* ${selectedPayment}\n\n✅ Comprovante foi gerado e está pronto para validação.`;
+        const mensagem = `*NOVO ACEITE DE PROPOSTA*\n\n*Cliente:* ${nome}\n*E-mail:* ${email}\n*Telefone:* ${telefone}\n*Pagamento:* ${selectedPayment}\n\nComprovante foi gerado e está pronto para validação.`;
         const urlWhatsApp = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
         window.open(urlWhatsApp, '_blank');
       }, 1500);
