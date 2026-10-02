@@ -575,63 +575,63 @@
       const corOuro = [201, 161, 94];
       
       const pageWidth = 210;
-      const marginLeft = 15;
-      const marginRight = 195;
+      const marginLeft = 20;
+      const marginRight = 190;
       const contentWidth = marginRight - marginLeft;
       
-      let y = 8;
+      let y = 12;
       
       // ===== CABEÇALHO =====
       doc.setFillColor(...corPrincipal);
       doc.rect(0, 0, pageWidth, 28, 'F');
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(16);
-      doc.text('✓ PROPOSTA ACEITA E FORMALIZADA', pageWidth / 2, 16, { align: 'center' });
-      y = 32;
+      doc.setFontSize(15);
+      doc.text('PROPOSTA ACEITA E FORMALIZADA', pageWidth / 2, 16, { align: 'center' });
+      y = 35;
       
       // ===== EMPRESA =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.text('JAQUELINE FERREIRA ASSESSORIA CONTÁBIL LTDA', marginLeft, y);
-      y += 3;
+      y += 4;
       
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(7);
       doc.setTextColor(80, 80, 80);
       doc.text('CNPJ: 64.202.276/0001-35 | CRC-SC-013019/O-4', marginLeft, y);
-      y += 6;
+      y += 7;
       
       // ===== LINHA OURO =====
       doc.setDrawColor(...corOuro);
       doc.setLineWidth(0.8);
       doc.line(marginLeft, y, marginRight, y);
-      y += 5;
+      y += 7;
       
       // ===== CLIENTE =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.text('CLIENTE', marginLeft, y);
-      y += 4;
+      y += 5;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
       doc.setFontSize(8.5);
       doc.text(nome, marginLeft, y);
-      doc.text(cpf, 105, y);
-      y += 3.5;
+      doc.text(cpf, 110, y);
+      y += 4;
       doc.text(email, marginLeft, y);
-      doc.text(telefone, 105, y);
-      y += 5;
+      doc.text(telefone, 110, y);
+      y += 6;
       
       // ===== TRANSFORMAÇÃO =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.text('TRANSFORMAÇÃO MEI PARA LTDA', marginLeft, y);
-      y += 3.5;
+      y += 5;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
@@ -640,16 +640,16 @@
       const linhasTransf = doc.splitTextToSize(textoTransf, contentWidth - 5);
       linhasTransf.forEach(linha => {
         doc.text(linha, marginLeft, y);
-        y += 3;
+        y += 3.5;
       });
-      y += 2;
+      y += 3;
       
       // ===== INVESTIMENTO =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.text('INVESTIMENTO', marginLeft, y);
-      y += 3.5;
+      y += 5;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
@@ -658,26 +658,26 @@
       doc.setTextColor(...corOuro);
       doc.setFont('helvetica', 'bold');
       doc.text('R$ 1.300,00', 125, y);
-      y += 3;
+      y += 4;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
       doc.text('Forma de Pagamento:', marginLeft, y);
       doc.text(pagamento, 125, y);
-      y += 3;
+      y += 4;
       
       doc.text('Assessoria Contábil Mensal:', marginLeft, y);
       doc.setTextColor(...corOuro);
       doc.setFont('helvetica', 'bold');
       doc.text('R$ 380,00/mês', 125, y);
-      y += 5;
+      y += 6;
       
       // ===== CRONOGRAMA =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.text('CRONOGRAMA', marginLeft, y);
-      y += 3;
+      y += 5;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
@@ -692,16 +692,16 @@
       ];
       cronograma.forEach(item => {
         doc.text(item, marginLeft + 3, y);
-        y += 2.5;
+        y += 3;
       });
-      y += 1;
+      y += 2;
       
       // ===== SERVIÇOS INCLUSOS =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.text('SERVIÇOS INCLUSOS NA TAXA', marginLeft, y);
-      y += 3;
+      y += 5;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
@@ -715,16 +715,16 @@
       ];
       servicos.forEach(item => {
         doc.text(item, marginLeft + 3, y);
-        y += 2.5;
+        y += 3;
       });
-      y += 1;
+      y += 2;
       
       // ===== DOCUMENTOS NECESSÁRIOS =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.text('DOCUMENTOS NECESSÁRIOS', marginLeft, y);
-      y += 3;
+      y += 5;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
@@ -737,35 +737,35 @@
       ];
       docs.forEach(item => {
         doc.text(item, marginLeft + 3, y);
-        y += 2.5;
+        y += 3;
       });
-      y += 2;
+      y += 3;
       
       // ===== LINHA OURO FINAL =====
       doc.setDrawColor(...corOuro);
       doc.setLineWidth(0.8);
       doc.line(marginLeft, y, marginRight, y);
-      y += 4;
+      y += 7;
       
       // ===== CONFIRMAÇÃO DO ACEITE =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.text('CONFIRMAÇÃO DO ACEITE', marginLeft, y);
-      y += 3;
+      y += 5;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
       doc.setFontSize(7.5);
       doc.text('Data: ' + dataAceite, marginLeft, y);
       doc.text('Hora: ' + horaAceite, 110, y);
-      y += 6;
+      y += 8;
       
       // ===== CONFIRMAÇÃO FINAL CENTRADA =====
       doc.setTextColor(...corOuro);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(13);
-      doc.text('✓ PROPOSTA ACEITA E FORMALIZADA', pageWidth / 2, y, { align: 'center' });
+      doc.text('PROPOSTA ACEITA E FORMALIZADA', pageWidth / 2, y, { align: 'center' });
       
       return doc.output('blob');
     }
@@ -804,7 +804,7 @@
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
 
-        // Enviar e-mail com os dados via EmailJS
+        
         if (typeof emailjs !== 'undefined') {
           const dataAceite = new Date().toLocaleDateString('pt-BR');
           const horaAceite = new Date().toLocaleTimeString('pt-BR');
