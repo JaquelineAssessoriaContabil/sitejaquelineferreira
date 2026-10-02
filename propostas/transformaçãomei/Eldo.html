@@ -574,112 +574,114 @@
       const corPrincipal = [197, 162, 158];
       const corOuro = [201, 161, 94];
       
-      let y = 10;
+      const pageWidth = 210;
+      const marginLeft = 15;
+      const marginRight = 195;
+      const contentWidth = marginRight - marginLeft;
+      
+      let y = 8;
       
       // ===== CABEÇALHO =====
       doc.setFillColor(...corPrincipal);
-      doc.rect(0, 0, 210, 32, 'F');
-      
+      doc.rect(0, 0, pageWidth, 28, 'F');
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(18);
-      doc.text('✓ PROPOSTA ACEITA E FORMALIZADA', 105, 18, { align: 'center' });
-      y = 38;
+      doc.setFontSize(16);
+      doc.text('✓ PROPOSTA ACEITA E FORMALIZADA', pageWidth / 2, 16, { align: 'center' });
+      y = 32;
       
       // ===== EMPRESA =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.text('JAQUELINE FERREIRA ASSESSORIA CONTÁBIL LTDA', 15, y);
-      y += 4;
+      doc.setFontSize(9);
+      doc.text('JAQUELINE FERREIRA ASSESSORIA CONTÁBIL LTDA', marginLeft, y);
+      y += 3;
       
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(7.5);
+      doc.setFontSize(7);
       doc.setTextColor(80, 80, 80);
-      doc.text('CNPJ: 64.202.276/0001-35 | CRC-SC-013019/O-4', 15, y);
+      doc.text('CNPJ: 64.202.276/0001-35 | CRC-SC-013019/O-4', marginLeft, y);
       y += 6;
       
       // ===== LINHA OURO =====
       doc.setDrawColor(...corOuro);
-      doc.setLineWidth(1);
-      doc.line(15, y, 195, y);
-      y += 7;
+      doc.setLineWidth(0.8);
+      doc.line(marginLeft, y, marginRight, y);
+      y += 5;
       
       // ===== CLIENTE =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.text('CLIENTE', 15, y);
-      y += 5;
-      
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
       doc.setFontSize(9);
-      doc.text(nome, 15, y);
-      doc.text(cpf, 110, y);
-      y += 4;
-      
-      doc.setFontSize(8);
-      doc.text(email, 15, y);
-      doc.text(telefone, 110, y);
-      y += 6;
-      
-      // ===== TRANSFORMAÇÃO =====
-      doc.setTextColor(...corPrincipal);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.text('TRANSFORMAÇÃO MEI PARA LTDA', 15, y);
-      y += 4;
-      
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(8);
-      const textoTransf = 'Transformação de seu MEI em uma LTDA estruturada, mantendo a atividade de Transporte Escolar com melhorias contábeis, fiscais e comerciais.';
-      const linhasTransf = doc.splitTextToSize(textoTransf, 170);
-      linhasTransf.forEach(linha => {
-        doc.text(linha, 15, y);
-        y += 3.5;
-      });
-      y += 3;
-      
-      // ===== INVESTIMENTO =====
-      doc.setTextColor(...corPrincipal);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.text('INVESTIMENTO', 15, y);
+      doc.text('CLIENTE', marginLeft, y);
       y += 4;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
       doc.setFontSize(8.5);
-      doc.text('Taxa de Transformação:', 15, y);
-      doc.setTextColor(...corOuro);
-      doc.setFont('helvetica', 'bold');
-      doc.text('R$ 1.300,00', 130, y);
-      y += 4;
+      doc.text(nome, marginLeft, y);
+      doc.text(cpf, 105, y);
+      y += 3.5;
+      doc.text(email, marginLeft, y);
+      doc.text(telefone, 105, y);
+      y += 5;
       
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
-      doc.text('Forma de Pagamento:', 15, y);
-      doc.text(pagamento, 130, y);
-      y += 4;
-      
-      doc.text('Assessoria Contábil Mensal:', 15, y);
-      doc.setTextColor(...corOuro);
-      doc.setFont('helvetica', 'bold');
-      doc.text('R$ 380,00/mês', 130, y);
-      y += 6;
-      
-      // ===== CRONOGRAMA =====
+      // ===== TRANSFORMAÇÃO =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.text('CRONOGRAMA', 15, y);
-      y += 4;
+      doc.setFontSize(9);
+      doc.text('TRANSFORMAÇÃO MEI PARA LTDA', marginLeft, y);
+      y += 3.5;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
       doc.setFontSize(7.5);
+      const textoTransf = 'Transformação de seu MEI em uma LTDA estruturada, mantendo a atividade de Transporte Escolar com melhorias contábeis, fiscais e comerciais.';
+      const linhasTransf = doc.splitTextToSize(textoTransf, contentWidth - 5);
+      linhasTransf.forEach(linha => {
+        doc.text(linha, marginLeft, y);
+        y += 3;
+      });
+      y += 2;
+      
+      // ===== INVESTIMENTO =====
+      doc.setTextColor(...corPrincipal);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text('INVESTIMENTO', marginLeft, y);
+      y += 3.5;
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(8);
+      doc.text('Taxa de Transformação:', marginLeft, y);
+      doc.setTextColor(...corOuro);
+      doc.setFont('helvetica', 'bold');
+      doc.text('R$ 1.300,00', 125, y);
+      y += 3;
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      doc.text('Forma de Pagamento:', marginLeft, y);
+      doc.text(pagamento, 125, y);
+      y += 3;
+      
+      doc.text('Assessoria Contábil Mensal:', marginLeft, y);
+      doc.setTextColor(...corOuro);
+      doc.setFont('helvetica', 'bold');
+      doc.text('R$ 380,00/mês', 125, y);
+      y += 5;
+      
+      // ===== CRONOGRAMA =====
+      doc.setTextColor(...corPrincipal);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text('CRONOGRAMA', marginLeft, y);
+      y += 3;
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(7);
       const cronograma = [
         '1. Aceite da Proposta',
         '2. Pagamento da Taxa',
@@ -689,21 +691,21 @@
         '6. LTDA Pronta para Operar - 01/11/2026'
       ];
       cronograma.forEach(item => {
-        doc.text(item, 18, y);
-        y += 3;
+        doc.text(item, marginLeft + 3, y);
+        y += 2.5;
       });
-      y += 2;
+      y += 1;
       
       // ===== SERVIÇOS INCLUSOS =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.text('SERVIÇOS INCLUSOS NA TAXA', 15, y);
-      y += 4;
+      doc.setFontSize(9);
+      doc.text('SERVIÇOS INCLUSOS NA TAXA', marginLeft, y);
+      y += 3;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
-      doc.setFontSize(7.5);
+      doc.setFontSize(7);
       const servicos = [
         '• Viabilidade Junta Comercial • DBE Redesim',
         '• Elaboração do Contrato Social',
@@ -712,21 +714,21 @@
         '• Ajuste Tributário e Fiscal do negócio'
       ];
       servicos.forEach(item => {
-        doc.text(item, 18, y);
-        y += 3;
+        doc.text(item, marginLeft + 3, y);
+        y += 2.5;
       });
-      y += 2;
+      y += 1;
       
       // ===== DOCUMENTOS NECESSÁRIOS =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.text('DOCUMENTOS NECESSÁRIOS', 15, y);
-      y += 4;
+      doc.setFontSize(9);
+      doc.text('DOCUMENTOS NECESSÁRIOS', marginLeft, y);
+      y += 3;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
-      doc.setFontSize(7.5);
+      doc.setFontSize(7);
       const docs = [
         '• RG ou CNH dos Sócios (frente e verso)',
         '• Título de Eleitor dos Sócios',
@@ -734,36 +736,36 @@
         '• Número do IPTU/Inscrição Imobiliária'
       ];
       docs.forEach(item => {
-        doc.text(item, 18, y);
-        y += 3;
+        doc.text(item, marginLeft + 3, y);
+        y += 2.5;
       });
-      y += 3;
+      y += 2;
       
       // ===== LINHA OURO FINAL =====
       doc.setDrawColor(...corOuro);
-      doc.setLineWidth(1);
-      doc.line(15, y, 195, y);
-      y += 5;
+      doc.setLineWidth(0.8);
+      doc.line(marginLeft, y, marginRight, y);
+      y += 4;
       
       // ===== CONFIRMAÇÃO DO ACEITE =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.text('CONFIRMAÇÃO DO ACEITE', 15, y);
-      y += 4;
+      doc.setFontSize(9);
+      doc.text('CONFIRMAÇÃO DO ACEITE', marginLeft, y);
+      y += 3;
       
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
-      doc.setFontSize(8);
-      doc.text('Data: ' + dataAceite, 15, y);
+      doc.setFontSize(7.5);
+      doc.text('Data: ' + dataAceite, marginLeft, y);
       doc.text('Hora: ' + horaAceite, 110, y);
-      y += 7;
+      y += 6;
       
-      // ===== CONFIRMAÇÃO FINAL =====
+      // ===== CONFIRMAÇÃO FINAL CENTRADA =====
       doc.setTextColor(...corOuro);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(14);
-      doc.text('✓ PROPOSTA ACEITA E FORMALIZADA', 105, y, { align: 'center' });
+      doc.setFontSize(13);
+      doc.text('✓ PROPOSTA ACEITA E FORMALIZADA', pageWidth / 2, y, { align: 'center' });
       
       return doc.output('blob');
     }
