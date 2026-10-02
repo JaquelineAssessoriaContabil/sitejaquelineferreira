@@ -648,10 +648,6 @@
       doc.text(telefone, 110, y);
       y += 8;
       
-      // ===== CARD: TRANSFORMAÇÃO =====
-      const yTransfStart = y - 3;
-      doc.setFillColor(249, 243, 241);
-      doc.rect(marginLeft - 2, yTransfStart, contentWidth + 4, 20, 'F');
       doc.setDrawColor(220, 190, 160);
       doc.setLineWidth(0.2);
       doc.rect(marginLeft - 2, yTransfStart, contentWidth + 4, 20);
@@ -673,13 +669,6 @@
         y += 3.5;
       });
       y += 3;
-      
-      // ===== CARD: INVESTIMENTO =====
-      const yInvestStart = y - 3;
-
-      doc.setDrawColor(220, 190, 160);
-      doc.setLineWidth(0.2);
-      doc.rect(marginLeft - 2, yInvestStart, contentWidth + 4, 18);
       
       // ===== INVESTIMENTO =====
       doc.setTextColor(...corPrincipal);
@@ -735,13 +724,6 @@
       });
       y += 4;
       
-      // ===== CARD: SERVIÇOS INCLUSOS =====
-      const yServStart = y - 3;
-
-      doc.setDrawColor(220, 190, 160);
-      doc.setLineWidth(0.2);
-      doc.rect(marginLeft - 2, yServStart, contentWidth + 4, 22);
-      
       // ===== SERVIÇOS INCLUSOS =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
@@ -764,13 +746,6 @@
         y += 3;
       });
       y += 4;
-      
-      // ===== CARD: DOCUMENTOS NECESSÁRIOS =====
-      const yDocStart = y - 3;
-
-      doc.setDrawColor(220, 190, 160);
-      doc.setLineWidth(0.2);
-      doc.rect(marginLeft - 2, yDocStart, contentWidth + 4, 20);
       
       // ===== DOCUMENTOS NECESSÁRIOS =====
       doc.setTextColor(...corPrincipal);
