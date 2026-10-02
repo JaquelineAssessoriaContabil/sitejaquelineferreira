@@ -642,30 +642,9 @@
       doc.setFontSize(8.5);
       doc.text(nome, marginLeft, y);
 
-      // Pontinhos para CPF
-      doc.setFontSize(7);
-      doc.setTextColor(150, 150, 150);
-      let dotX = marginLeft + 50;
-      while (dotX < 108) {
-        doc.text('.', dotX, y);
-        dotX += 2;
-      }
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(8.5);
       doc.text(cpf, 110, y);
       y += 4;
       doc.text(email, marginLeft, y);
-
-      // Pontinhos para Telefone
-      doc.setFontSize(7);
-      doc.setTextColor(150, 150, 150);
-      dotX = marginLeft + 50;
-      while (dotX < 108) {
-        doc.text('.', dotX, y);
-        dotX += 2;
-      }
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(8.5);
       doc.text(telefone, 110, y);
       y += 6;
       
@@ -809,7 +788,7 @@
       // ===== CONFIRMAÇÃO FINAL CENTRADA =====
       doc.setTextColor(...corOuro);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(13);
+      doc.setFontSize(18);
       doc.text('PROPOSTA ACEITA E FORMALIZADA', pageWidth / 2, y, { align: 'center' });
       
       return doc.output('blob');
@@ -868,7 +847,7 @@
       }).catch(() => {});
 
       setTimeout(() => {
-        const mensagem = `*NOVO ACEITE DE PROPOSTA*\n\n👤 *Cliente:* ${nome}\n📧 *E-mail:* ${email}\n📱 *Telefone:* ${telefone}\n💰 *Pagamento:* ${selectedPayment}\n\n✅ Comprovante foi enviado por e-mail.`;
+        const mensagem = `*NOVO ACEITE DE PROPOSTA*\n\n👤 *Cliente:* ${nome}\n📧 *E-mail:* ${email}\n📱 *Telefone:* ${telefone}\n💰 *Pagamento:* ${selectedPayment}\n\n✅ Comprovante foi gerado e está pronto para validação.`;
         const urlWhatsApp = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
         window.open(urlWhatsApp, '_blank');
       }, 1500);
