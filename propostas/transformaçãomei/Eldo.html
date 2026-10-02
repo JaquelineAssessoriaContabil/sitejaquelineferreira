@@ -646,7 +646,7 @@
       y += 4;
       doc.text(email, marginLeft, y);
       doc.text(telefone, 110, y);
-      y += 6;
+      y += 8;
       
       // ===== TRANSFORMAÇÃO =====
       doc.setTextColor(...corPrincipal);
@@ -694,7 +694,7 @@
       doc.setTextColor(...corOuro);
       doc.setFont('helvetica', 'bold');
       doc.text('R$ 380,00/mês', 135, y, { align: 'right' });
-      y += 6;
+      y += 8;
       
       // ===== CRONOGRAMA =====
       doc.setTextColor(...corPrincipal);
@@ -718,7 +718,7 @@
         doc.text(item, marginLeft + 3, y);
         y += 3;
       });
-      y += 2;
+      y += 4;
       
       // ===== SERVIÇOS INCLUSOS =====
       doc.setTextColor(...corPrincipal);
@@ -741,7 +741,7 @@
         doc.text(item, marginLeft + 3, y);
         y += 3;
       });
-      y += 2;
+      y += 4;
       
       // ===== DOCUMENTOS NECESSÁRIOS =====
       doc.setTextColor(...corPrincipal);
@@ -763,13 +763,13 @@
         doc.text(item, marginLeft + 3, y);
         y += 3;
       });
-      y += 3;
+      y += 5;
       
       // ===== LINHA OURO FINAL =====
       doc.setDrawColor(...corOuro);
       doc.setLineWidth(0.8);
       doc.line(marginLeft, y, marginRight, y);
-      y += 7;
+      y += 9;
       
       // ===== CONFIRMAÇÃO DO ACEITE =====
       doc.setTextColor(...corPrincipal);
