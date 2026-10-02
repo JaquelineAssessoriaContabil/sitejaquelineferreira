@@ -566,7 +566,7 @@
         card.style.background = '#fff9f7';
         card.style.borderColor = '#e8d4cf';
         card.style.display = 'block';
-        
+
         const pTags = card.querySelectorAll('p');
         if (pTags.length >= 3) {
           pTags[0].style.color = '#C9A15E';
@@ -588,129 +588,135 @@
     async function gerarPDFAceite(nome, cpf, email, telefone, pagamento) {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      
+
       const dataAceite = new Date().toLocaleDateString('pt-BR');
       const horaAceite = new Date().toLocaleTimeString('pt-BR');
-      
-      const corPrincipal = [197, 162, 158];
-      const corOuro = [201, 161, 94];
-      
+
+      const corPrincipal = [197, 162, 158];  // Rosé
+      const corOuro = [201, 161, 94];        // Dourado
+      const corTexto = [60, 60, 60];         // Cinza escuro
+
       const pageWidth = 210;
-      const marginLeft = 20;
+      const marginLeft = 16;
       const marginRight = 190;
       const contentWidth = marginRight - marginLeft;
-      
-      let y = 12;
-      
-      // ===== CABEÇALHO =====
+
+      let y = 10;
+
+      // ===== CABEÇALHO ELEGANTE =====
       doc.setFillColor(...corPrincipal);
-      doc.rect(0, 0, pageWidth, 28, 'F');
+      doc.rect(0, 0, pageWidth, 32, 'F');
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(15);
-      doc.text('PROPOSTA ACEITA E FORMALIZADA', pageWidth / 2, 16, { align: 'center' });
-      y = 35;
-      
+      doc.setFontSize(18);
+      doc.text('PROPOSTA ACEITA E FORMALIZADA', pageWidth / 2, 20, { align: 'center' });
+      y = 38;
+
       // ===== EMPRESA =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.text('JAQUELINE FERREIRA ASSESSORIA CONTÁBIL LTDA', marginLeft, y);
-      y += 4;
-      
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(7);
-      doc.setTextColor(80, 80, 80);
-      doc.text('CNPJ: 64.202.276/0001-35 | CRC-SC-013019/O-4', marginLeft, y);
-      y += 7;
-      
-      // ===== LINHA OURO =====
-      doc.setDrawColor(...corOuro);
-      doc.setLineWidth(0.8);
-      doc.line(marginLeft, y, marginRight, y);
-      y += 7;
-      
-      // ===== CLIENTE =====
-      doc.setTextColor(...corPrincipal);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.text('CLIENTE', marginLeft, y);
-      y += 5;
-      
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(8.5);
-      doc.text(nome, marginLeft, y);
+      doc.setFontSize(12);
+      doc.text('Jaqueline Ferreira Assessoria Contábil LTDA', marginLeft, y);
+      y += 6;
 
-      doc.text(cpf, 110, y);
-      y += 4;
-      doc.text(email, marginLeft, y);
-      doc.text(telefone, 110, y);
-      y += 8;
-      
-      doc.setDrawColor(220, 190, 160);
-      doc.setLineWidth(0.2);
-      doc.rect(marginLeft - 2, yTransfStart, contentWidth + 4, 20);
-      
-      // ===== TRANSFORMAÇÃO =====
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(...corTexto);
+      doc.text('CNPJ: 64.202.276/0001-35  |  CRC: SC-013019/O-4', marginLeft, y);
+      y += 10;
+
+      // ===== LINHA SEPARADORA =====
+      doc.setDrawColor(...corOuro);
+      doc.setLineWidth(0.6);
+      doc.line(marginLeft, y, marginRight, y);
+      y += 12;
+
+      // ===== CLIENTE CONTRATANTE =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.text('TRANSFORMAÇÃO MEI PARA LTDA', marginLeft, y);
-      y += 5;
-      
+      doc.setFontSize(11);
+      doc.text('CLIENTE CONTRATANTE', marginLeft, y);
+      y += 7;
+
       doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(7.5);
-      const textoTransf = 'Transformação de seu MEI em uma LTDA estruturada, mantendo a atividade de Transporte Escolar com melhorias contábeis, fiscais e comerciais.';
-      const linhasTransf = doc.splitTextToSize(textoTransf, contentWidth - 5);
-      linhasTransf.forEach(linha => {
+      doc.setTextColor(...corTexto);
+      doc.setFontSize(10);
+      doc.text(nome, marginLeft, y);
+      doc.text(cpf, marginLeft + 100, y);
+      y += 6;
+      doc.text(email, marginLeft, y);
+      doc.text(telefone, marginLeft + 100, y);
+      y += 12;
+
+      // ===== OBJETO DA CONTRATAÇÃO =====
+      doc.setTextColor(...corPrincipal);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('OBJETO DA CONTRATAÇÃO', marginLeft, y);
+      y += 7;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(...corTexto);
+      doc.setFontSize(9.5);
+      doc.text('Transformação de MEI para LTDA', marginLeft, y);
+      y += 5;
+
+      const descricao = 'Transformação de seu MEI em uma LTDA estruturada, mantendo a atividade de Transporte Escolar com melhorias contábeis, fiscais e comerciais.';
+      const linhasDesc = doc.splitTextToSize(descricao, contentWidth - 5);
+      doc.setFontSize(9);
+      linhasDesc.forEach(linha => {
         doc.text(linha, marginLeft, y);
-        y += 3.5;
+        y += 4;
       });
-      y += 3;
-      
+      y += 8;
+
       // ===== INVESTIMENTO =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
+      doc.setFontSize(11);
       doc.text('INVESTIMENTO', marginLeft, y);
-      y += 5;
-      
+      y += 7;
+
       doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(8);
+      doc.setTextColor(...corTexto);
+      doc.setFontSize(9);
+
+      // Taxa
       doc.text('Taxa de Transformação:', marginLeft, y);
       doc.setTextColor(...corOuro);
       doc.setFont('helvetica', 'bold');
-      doc.text('R$ 1.300,00', 135, y, { align: 'right' });
-      y += 4;
+      doc.setFontSize(11);
+      doc.text('R$ 1.300,00', marginLeft + 95, y);
+      y += 6;
 
+      // Pagamento
       doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor(...corTexto);
+      doc.setFontSize(9);
       doc.text('Forma de Pagamento:', marginLeft, y);
-      doc.setTextColor(0, 0, 0);
       doc.setFont('helvetica', 'normal');
-      doc.text(pagamento, 135, y, { align: 'right' });
-      y += 4;
+      doc.text(pagamento, marginLeft + 95, y);
+      y += 6;
 
+      // Assessoria
       doc.text('Assessoria Contábil Mensal:', marginLeft, y);
       doc.setTextColor(...corOuro);
       doc.setFont('helvetica', 'bold');
-      doc.text('R$ 380,00/mês', 135, y, { align: 'right' });
-      y += 8;
-      
-      // ===== CRONOGRAMA =====
+      doc.setFontSize(10);
+      doc.text('R$ 380,00/mês', marginLeft + 95, y);
+      y += 10;
+
+      // ===== ETAPAS DE FORMALIZAÇÃO =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.text('CRONOGRAMA', marginLeft, y);
-      y += 5;
-      
+      doc.setFontSize(11);
+      doc.text('ETAPAS DE FORMALIZAÇÃO', marginLeft, y);
+      y += 7;
+
       doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(7);
-      const cronograma = [
+      doc.setTextColor(...corTexto);
+      doc.setFontSize(9.5);
+      const etapas = [
         '1. Aceite da Proposta',
         '2. Pagamento da Taxa',
         '3. Envio de Documentos',
@@ -718,85 +724,72 @@
         '5. Processamento e Conclusão (até 30 dias úteis)',
         '6. LTDA Pronta para Operar - 01/11/2026'
       ];
-      cronograma.forEach(item => {
-        doc.text(item, marginLeft + 3, y);
-        y += 3;
+      etapas.forEach(etapa => {
+        doc.text(etapa, marginLeft + 5, y);
+        y += 5;
       });
-      y += 4;
-      
+      y += 8;
+
       // ===== SERVIÇOS INCLUSOS =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
+      doc.setFontSize(11);
       doc.text('SERVIÇOS INCLUSOS NA TAXA', marginLeft, y);
-      y += 5;
-      
+      y += 7;
+
       doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(7);
+      doc.setTextColor(...corTexto);
+      doc.setFontSize(8.5);
       const servicos = [
-        '• Viabilidade Junta Comercial • DBE Redesim',
+        '• Viabilidade Junta Comercial  • DBE Redesim',
         '• Elaboração do Contrato Social',
         '• Requerimento Eletrônico junto aos órgãos competentes',
         '• Processamento de Alvarás e Cadastros',
         '• Ajuste Tributário e Fiscal do negócio'
       ];
-      servicos.forEach(item => {
-        doc.text(item, marginLeft + 3, y);
-        y += 3;
+      servicos.forEach(servico => {
+        doc.text(servico, marginLeft + 5, y);
+        y += 4;
       });
-      y += 4;
-      
+      y += 6;
+
       // ===== DOCUMENTOS NECESSÁRIOS =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
+      doc.setFontSize(11);
       doc.text('DOCUMENTOS NECESSÁRIOS', marginLeft, y);
-      y += 5;
-      
+      y += 7;
+
       doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(7);
-      const docs = [
+      doc.setTextColor(...corTexto);
+      doc.setFontSize(8.5);
+      const documentos = [
         '• RG ou CNH dos Sócios (frente e verso)',
         '• Título de Eleitor dos Sócios',
         '• Comprovante de Endereço dos Sócios e Empresa',
         '• Número do IPTU/Inscrição Imobiliária'
       ];
-      docs.forEach(item => {
-        doc.text(item, marginLeft + 3, y);
-        y += 3;
+      documentos.forEach(doc_item => {
+        doc.text(doc_item, marginLeft + 5, y);
+        y += 4;
       });
-      y += 5;
-      
-      // ===== LINHA OURO FINAL =====
+      y += 8;
+
+      // ===== LINHA SEPARADORA FINAL =====
       doc.setDrawColor(...corOuro);
-      doc.setLineWidth(0.8);
+      doc.setLineWidth(0.6);
       doc.line(marginLeft, y, marginRight, y);
-      y += 9;
-      
-      // ===== CONFIRMAÇÃO DO ACEITE =====
+      y += 10;
+
+      // ===== CONFIRMAÇÃO - SEM DUPLICAÇÃO =====
       doc.setTextColor(...corPrincipal);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.text('CONFIRMAÇÃO DO ACEITE', marginLeft, y);
-      y += 5;
-      
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(7.5);
-      doc.text('Data: ' + dataAceite, marginLeft, y);
-      doc.text('Hora: ' + horaAceite, 110, y);
-      y += 8;
-      
-      // ===== CONFIRMAÇÃO FINAL CENTRADA =====
-      doc.setTextColor(...corOuro);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(18);
-      doc.text('PROPOSTA ACEITA E FORMALIZADA', pageWidth / 2, y, { align: 'center' });
-      
+      doc.setFontSize(10);
+      doc.text('Aceite registrado em: ' + dataAceite + '  •  ' + horaAceite, pageWidth / 2, y, { align: 'center' });
+
       return doc.output('blob');
     }
+
     document.getElementById('aceitar-form').addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -821,7 +814,7 @@
       try {
         // Gerar PDF do comprovante
         const pdfBlob = await gerarPDFAceite(nome, cpf, email, telefone, selectedPayment);
-        
+
         // Download automático do PDF
         const url = URL.createObjectURL(pdfBlob);
         const link = document.createElement('a');
