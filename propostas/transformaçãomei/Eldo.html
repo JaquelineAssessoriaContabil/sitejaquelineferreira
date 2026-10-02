@@ -530,6 +530,21 @@
     const EMAILJS_PUBLIC_KEY = 'NoWLln4bstrM9kt3J';
     let selectedPayment = '';
 
+    function gerarHashUnico(nome, cpf, data, hora) {
+      const dados = nome + cpf + data + hora;
+      let hash = 0;
+      for (let i = 0; i < dados.length; i++) {
+        const char = dados.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      const hexHash = Math.abs(hash).toString(16).toUpperCase().slice(-5).padStart(5, '0');
+      const primeiroNome = nome.split(' ')[0].toUpperCase();
+      const dataFormatada = data.replace(/\//g, '');
+      const horaFormatada = hora.replace(/:/g, '').slice(0, 4);
+      return `${primeiroNome}-${dataFormatada}-${horaFormatada}-${hexHash}`;
+    }
+
     // Inicializar EmailJS quando a página carrega
     window.addEventListener('load', function() {
       if (typeof emailjs !== 'undefined') {
@@ -585,12 +600,29 @@
       document.getElementById('pagamento-selecionado').style.color = '#2d5016';
     }
 
+    function gerarHashUnico(nome, cpf, data, hora) {
+      const dados = nome + cpf + data + hora;
+      let hash = 0;
+      for (let i = 0; i < dados.length; i++) {
+        const char = dados.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      const hexHash = Math.abs(hash).toString(16).toUpperCase().slice(-5).padStart(5, '0');
+      const primeiroNome = nome.split(' ')[0].toUpperCase();
+      const dataFormatada = data.replace(/\//g, '');
+      const horaFormatada = hora.replace(/:/g, '').slice(0, 4);
+      return `${primeiroNome}-${dataFormatada}-${horaFormatada}-${hexHash}`;
+    }
+
     async function gerarPDFAceite(nome, cpf, email, telefone, pagamento) {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
 
       const dataAceite = new Date().toLocaleDateString('pt-BR');
       const horaAceite = new Date().toLocaleTimeString('pt-BR');
+      const codigoReferencia = gerarHashUnico(nome, cpf, dataAceite, horaAceite);
+      window.ultimoCodigoReferencia = codigoReferencia;
 
       const corPrincipal = [167, 128, 120];  // Rosé mais intenso
       const corOuro = [201, 161, 94];        // Dourado
@@ -781,6 +813,13 @@
       doc.line(marginLeft, y, marginRight, y);
       y += 10;
 
+      // ===== IDENTIFICADOR ÚNICO =====
+      doc.setTextColor(...corOuro);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text('ID: ' + codigoReferencia, pageWidth / 2, y, { align: 'center' });
+      y += 5;
+
       // ===== CONFIRMAÇÃO - SEM DUPLICAÇÃO =====
       doc.setTextColor(185, 145, 80);
       doc.setFont('helvetica', 'bold');
@@ -844,7 +883,8 @@
       }).catch(() => {});
 
       setTimeout(() => {
-        const mensagem = `*NOVO ACEITE DE PROPOSTA*\n\n*Cliente:* ${nome}\n*E-mail:* ${email}\n*Telefone:* ${telefone}\n*Pagamento:* ${selectedPayment}\n\nComprovante foi gerado e está pronto para validação.`;
+        const codigoRef = window.ultimoCodigoReferencia || 'N/A';
+        const mensagem = `*NOVO ACEITE DE PROPOSTA*\n\n*Cliente:* ${nome}\n*E-mail:* ${email}\n*Telefone:* ${telefone}\n*Pagamento:* ${selectedPayment}\n\n*ID Comprovante:* ${codigoRef}\n\nComprovante foi gerado e está pronto para validação.`;
         const urlWhatsApp = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
         window.open(urlWhatsApp, '_blank');
       }, 1500);
