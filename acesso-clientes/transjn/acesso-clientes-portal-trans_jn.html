@@ -3,45 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRANS JN TRANSPORTES LTDA - Portal do Cliente</title>
+    <title>TRANS JN TRANSPORTE ESCOLAR LTDA - Portal do Cliente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; color: #333; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-        .header-card { background: white; width: 100%; max-width: 800px; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-left: 5px solid #2b3d52; margin-bottom: 30px; }
-        .header-card h1 { font-size: 20px; color: #1a2530; font-weight: 600; margin-bottom: 5px; }
-        .header-card p { font-size: 13px; color: #777; }
-        .menu-container { display: flex; gap: 20px; width: 100%; max-width: 800px; }
-        .portal-card { flex: 1; background: white; text-decoration: none; color: inherit; padding: 35px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eef0f2; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .portal-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .icon { font-size: 36px; margin-bottom: 15px; }
-        .portal-card h2 { font-size: 17px; font-weight: 600; margin-bottom: 8px; color: #1a2530; }
-        .portal-card p { font-size: 12.5px; color: #666; line-height: 1.4; }
-        .fiscal { border-top: 5px solid #2b3d52; }
-        .dp { border-top: 5px solid #bd9a5f; }
-        @media (max-width: 600px) { .menu-container { flex-direction: column; gap: 15px; } .header-card { text-align: center; border-left: none; border-top: 5px solid #2b3d52; } }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #faf8f7;
+            color: #3a3a3a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+
+        .header-card, .menu-container, .footer-institucional {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* CABEÇALHO DELICADO */
+        .header-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 950px;
+            padding: 28px 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #bd9a5f;
+            margin-bottom: 36px;
+            text-align: center;
+        }
+
+        .header-info h1 {
+            font-size: 22px;
+            color: #2d2d2d;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
+        }
+
+        .header-info p {
+            font-size: 13px;
+            color: #7a7a7a;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .mes-tag {
+            display: inline-block;
+            background: #fef5f2;
+            color: #a88170;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid #f0e8e3;
+            letter-spacing: 0.4px;
+        }
+
+
+        /* GRID DE 4 CARDS */
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            width: 100%;
+            max-width: 950px;
+            margin-bottom: 40px;
+        }
+
+        .portal-card {
+            background: #ffffff;
+            text-decoration: none;
+            color: inherit;
+            padding: 32px 20px 24px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #f0e8e3;
+            text-align: center;
+            transition: all 0.25s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(189, 154, 95, 0.08);
+            border-color: #e8dcd7;
+        }
+
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            background: #fef5f2;
+            color: #c5a680;
+            transition: all 0.25s ease-out;
+        }
+
+        .icon-circle svg {
+            width: 28px;
+            height: 28px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .portal-card:hover .icon-circle {
+            transform: scale(1.05);
+            background: #fdf0ea;
+            color: #bd9a5f;
+        }
+
+        .portal-card h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2d2d2d;
+        }
+
+        .portal-card p {
+            font-size: 13px;
+            color: #7a7a7a;
+            line-height: 1.5;
+            margin-bottom: 18px;
+            flex-grow: 1;
+            font-weight: 400;
+        }
+
+        .card-button {
+            width: 100%;
+            padding: 11px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            background: #e8dcd7;
+            color: #8b7355;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease-out;
+        }
+
+        .portal-card:hover .card-button {
+            background: #dcc9c1;
+            color: #7a6447;
+        }
+
+        /* CARD ESPECIAL FÉRIAS - ROSÉ DELICADO */
+        .portal-card.alerta-ferias {
+            background: #fcf3f0;
+            border: 1px solid #ead5ce;
+        }
+
+        .portal-card.alerta-ferias:hover {
+            box-shadow: 0 6px 16px rgba(209, 178, 172, 0.08);
+            border-color: #e0c5be;
+        }
+
+        .portal-card.alerta-ferias .icon-circle {
+            background: #fde8e1;
+            color: #c5a196;
+        }
+
+        .portal-card.alerta-ferias:hover .icon-circle {
+            background: #fce0d7;
+            color: #bd9a5f;
+        }
+
+        .status-tag {
+            display: inline-block;
+            background: #e0c5be;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .portal-card.alerta-ferias .card-button {
+            background: #dcc9c1;
+            color: #8b7355;
+        }
+
+        .portal-card.alerta-ferias:hover .card-button {
+            background: #d0bbb2;
+            color: #7a6447;
+        }
+
+        /* RODAPÉ INSTITUCIONAL */
+        .footer-institucional {
+            text-align: center;
+            width: 100%;
+            max-width: 950px;
+            border-top: 1px solid #e8dcd7;
+            padding-top: 20px;
+            margin-top: 16px;
+        }
+
+        .footer-institucional p {
+            font-size: 12px;
+            color: #8a8a8a;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .footer-confidencial {
+            font-size: 11px !important;
+            color: #a39390 !important;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 680px) {
+            .menu-container {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .header-card {
+                flex-direction: column-reverse;
+                text-align: center;
+                border-left: none;
+                border-top: 4px solid #bd9a5f;
+                padding: 20px 24px;
+            }
+
+            .header-info h1 {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
 
+    <!-- CABEÇALHO -->
     <div class="header-card">
-        <h1>TRANS JN TRANSPORTES LTDA</h1>
-        <p>CNPJ: 45.927.080/0001-17 • Portal Unificado de Atendimento</p>
+        <div class="header-info">
+            <h1>TRANS JN TRANSPORTE ESCOLAR LTDA</h1>
+            <p>CNPJ: 26.481.883/0001-92 • Painel de Atendimento Contábil</p>
+            <div class="mes-tag">📅 Competência: Outubro / 2026</div>
+        </div>
     </div>
 
+    <!-- CONTAINER DOS CARDS -->
     <div class="menu-container">
         <!-- Card 1: Fiscal -->
-        <a href="fiscal-trans-jn.html" class="portal-card fiscal">
-            <div class="icon">📊</div>
+        <a href="fiscal-trans-jn.html" class="portal-card">
+            <div class="icon-circle">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 3v18h18"></path>
+                    <path d="M7 11l3-3 3 3 3-3 3 3"></path>
+                    <circle cx="9" cy="8" r="1.5"></circle>
+                    <circle cx="15" cy="6" r="1.5"></circle>
+                </svg>
+            </div>
             <h2>Painel Fiscal</h2>
-            <p>Acesse o faturamento, evolução de carga tributária e guias de impostos como o DAS.</p>
+            <p>Acesse o faturamento, evolução tributária e guias de impostos como o DAS.</p>
+            <div class="card-button">Acessar Painel</div>
         </a>
 
         <!-- Card 2: DP -->
-        <a href="dp-trans-jn.html" class="portal-card dp">
-            <div class="icon">👥</div>
+        <a href="dp-trans-jn.html" class="portal-card">
+            <div class="icon-circle">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="3"></circle>
+                    <path d="M6 14c0-2 2.5-4 6-4s6 2 6 4v4H6z"></path>
+                </svg>
+            </div>
             <h2>Depto. Pessoal</h2>
-            <p>Confira o resumo da folha, encargos (INSS/FGTS), pró-labore e contagem de empregados.</p>
+            <p>Confira o resumo da folha, encargos (INSS/FGTS) e pró-labore.</p>
+            <div class="card-button">Acessar Painel</div>
         </a>
+
+        <!-- Card 3: Contabilidade -->
+        <a href="contabilidade-trans-jn.html" class="portal-card">
+            <div class="icon-circle">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7 3h10c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2z"></path>
+                    <line x1="9" y1="6" x2="15" y2="6"></line>
+                    <line x1="9" y1="10" x2="15" y2="10"></line>
+                    <line x1="9" y1="14" x2="15" y2="14"></line>
+                    <line x1="9" y1="18" x2="13" y2="18"></line>
+                </svg>
+            </div>
+            <h2>Contabilidade</h2>
+            <p>Consulte balancetes, demonstrações de resultado e relatórios contábeis da empresa.</p>
+            <div class="card-button">Acessar Painel</div>
+        </a>
+
+        <!-- Card 4: Acesso Societário -->
+        <a href="societario-trans-jn.html" class="portal-card">
+            <div class="icon-circle">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="8" cy="8" r="3"></circle>
+                    <circle cx="16" cy="8" r="3"></circle>
+                    <path d="M6 14c0-1.5 1.5-3 5-3s5 1.5 5 3v3H6z"></path>
+                    <path d="M14 14c0-1.5 1.5-3 4-3s4 1.5 4 3v3h-8z"></path>
+                </svg>
+            </div>
+            <h2>Acesso Societário</h2>
+            <p>Documentos da empresa, contrato social, CNPJ e consultas fiscais de sócios.</p>
+            <div class="card-button">Acessar Documentos</div>
+        </a>
+    </div>
+
+    <!-- RODAPÉ -->
+    <div class="footer-institucional">
+        <p>Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</p>
+        <p>Responsável Técnica: Jaqueline do Prado Ferreira | CRC SC-048028/O-0</p>
+        <p>Videira - SC | contato@jaquelineferreiracontadora.com.br | WhatsApp (49) 9.9980-3552</p>
+        <p class="footer-confidencial">Dashboard de Acesso Confidencial - Uso Exclusivo do Cliente</p>
     </div>
 
 </body>
