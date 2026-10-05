@@ -3,96 +3,618 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Fiscal - 🚌 TRANS JN TRANSPORTES LTDA</title>
+    <title>Dashboard Fiscal - TRANS JN TRANSPORTE ESCOLAR LTDA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #faf8f7;
+            color: #2d2d2d;
+            line-height: 1.6;
+        }
+
+        .wrapper {
+            display: flex;
             min-height: 100vh;
-            padding: 20px;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header-info {
+        /* SIDEBAR */
+        .sidebar {
+            width: 435px;
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-right: 1px solid #e8dcd7;
+            padding: 24px 16px;
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            box-shadow: 1px 0 3px rgba(0,0,0,0.03);
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #bd9a5f;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e8dcd7;
+            letter-spacing: 0.5px;
+        }
+
+        .download-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #fef5f2;
+            border-left: 3px solid #c5a196;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-item-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: #2d2d2d;
+            margin-bottom: 0;
+            display: block;
+            flex: 1;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 6px 10px;
+            background: #c5a196;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .download-btn:hover {
+            background: #b38f86;
+            transform: translateY(-1px);
+        }
+
+        .back-link {
+            display: block;
+            padding: 10px;
+            background: #bd9a5f;
+            color: white;
             text-align: center;
-            border-left: 4px solid #C58A94;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            transition: background 0.2s;
+        }
+
+        .back-link:hover {
+            background: #a8865a;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            margin-left: 435px;
+            padding: 32px;
+        }
+
+        /* HEADER */
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            border-left: 5px solid #bd9a5f;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header-info h1 {
-            font-size: 22px;
-            color: #C58A94;
-            margin-bottom: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d2d2d;
+            margin-bottom: 6px;
         }
 
         .header-info p {
-            color: #666;
             font-size: 13px;
-            margin: 4px 0;
+            color: #7a7a7a;
+            margin-bottom: 4px;
         }
 
-        .dashboard-container {
+        .header-badge {
+            display: inline-block;
+            background: #fef5f2;
+            color: #a88170;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 8px;
+            border: 1px solid #f0e8e3;
+        }
+
+        /* KPI CARDS */
+        .kpis-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-card {
             background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            border: 1px solid #f0e8e3;
+            border-top: 4px solid #bd9a5f;
+            text-align: left;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
 
-        iframe {
-            width: 100%;
-            height: 100vh;
-            border: none;
-            display: block;
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(189, 154, 95, 0.1);
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #999;
+        .kpi-label {
+            font-size: 10px;
+            color: #7a7a7a;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0;
+            letter-spacing: 0.3px;
+            flex: 1;
         }
 
-        .footer {
-            text-align: center;
+        .kpi-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d2d2d;
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+
+        .kpi-sub {
+            font-size: 10px;
+            color: #a39390;
+            margin-top: 0;
+        }
+
+        /* SECTION */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2d2d2d;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e8dcd7;
+            letter-spacing: -0.3px;
+        }
+
+        .section-title-icon {
+            margin-right: 8px;
+        }
+
+        /* CARDS GRID */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 10px;
             padding: 20px;
-            color: #999;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            border: 1px solid #f0e8e3;
+            border-left: 4px solid #c5a196;
+        }
+
+        .info-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d2d2d;
+            margin-bottom: 12px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5ede8;
+            font-size: 13px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #7a7a7a;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #2d2d2d;
+            font-weight: 600;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: white;
+            border-top: 1px solid #e8dcd7;
+            padding: 20px 32px;
+            margin-left: 435px;
+            text-align: center;
             font-size: 11px;
-            margin-top: 20px;
+            color: #7a7a7a;
+            line-height: 1.6;
+        }
+
+        .footer-confidencial {
+            font-size: 10px;
+            color: #a39390;
+            margin-top: 8px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; padding: 16px; }
+            .footer { margin-left: 0; }
+            .header { flex-direction: column; text-align: center; }
+            .kpis-container { grid-template-columns: repeat(2, 1fr); }
+            .cards-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-info">
-            <h1>🚌 🚌 TRANS JN TRANSPORTES LTDA</h1>
-            <p>Simples Nacional - Anexo III • Agosto 2026</p>
-            <p style="margin-top: 12px; font-size: 12px; color: #C58A94;">Dashboard Fiscal Confidencial - Uso Exclusivo</p>
-        </div>
+    <div class="wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <a href="acesso-clientes-portal-transjn.html" class="back-link">← Voltar ao Menu</a>
 
-        <div class="dashboard-container">
-            <div class="loading">
-                <p>Carregando dashboard...</p>
+            <div style="background: linear-gradient(135deg, #bd9a5f 0%, #c5a680 100%); border-radius: 8px; padding: 16px; margin-bottom: 20px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(189, 154, 95, 0.2); border: none;" onclick="var el = document.getElementById('das-item-sidebar'); if(el) el.scrollIntoView({behavior: 'smooth', block: 'center'})">
+                <div style="font-size: 12px; font-weight: 700; color: #2d2d2d; margin-bottom: 8px;">📋 GUIA PARA PAGAMENTO</div>
+                <div style="font-size: 11px; color: #2d2d2d; line-height: 1.6; font-weight: 500;">Valor: R$ 427,20 | Venc.: 20/10/2026</div>
             </div>
-            <iframe src="dashboards/trans-jn-agosto-2026.html" title="🚌 TRANS JN TRANSPORTES LTDA"></iframe>
-        </div>
 
-        <div class="footer">
-            <p><strong>Jaqueline Ferreira Assessoria Contábil</strong> | CRC SC-013019/O-4</p>
-            <p>Videira - SC | contato@jaquelineferreiracontadora.com.br</p>
-        </div>
+            <div class="sidebar-title">📥 Documentos - Setembro 2026</div>
+
+            <div class="download-item">
+                <span class="download-item-name">01. Protocolo Serviços Prestados</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/01.%20Protocolo%20Serviços%20Prestados%2009.2026.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+
+            <div class="download-item">
+                <span class="download-item-name">02. Protocolo Serviços Tomados</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/02.%20Protocolo%20Serviços%20Tomados%2009.2026.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+
+            <div class="download-item">
+                <span class="download-item-name">03. Entradas</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/03.%20Entradas%2009.2026.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+
+            <div class="download-item">
+                <span class="download-item-name">04. Serviços</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/04.%20Serviços%2009.2026.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+
+            <div class="download-item">
+                <span class="download-item-name">05. Resumo Acumulado</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/05.%20Resumo%20Acumulado%2009.2026.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+
+            <div class="download-item">
+                <span class="download-item-name">06. Faturamento 12 Meses</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/06.%20Faturamento%2012%20meses%2009.2026.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+
+            <div class="download-item">
+                <span class="download-item-name">07. Simples Nacional</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/07.%20Simples%20Nacional%2009.2026.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+
+            <div class="download-item">
+                <span class="download-item-name">07.1 Memória de Cálculo</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/07.1%20Simples%20Nacional%20-%20Memória%20de%20Cálculo%2009.2026.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+
+            <div class="download-item">
+                <span class="download-item-name">07.2 RBA - Folha 12 Meses</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/07.2%20Simples%20Nacional%20-%20RBA%20-%20Folha%2012%20meses%2009.2026.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+
+            <div class="download-item">
+                <span class="download-item-name">07.3 Alíquota Efetiva</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/07.3%20Simples%20Nacional%20-%20Alíquota%20Efetiva%20período%20seguinte%2009.2026.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+
+            <div class="download-item" id="das-item-sidebar">
+                <span class="download-item-name" style="cursor: pointer; display: block; padding: 4px 0;">08. DAS - Guia Pagamento</span>
+                <a class="download-btn" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/fiscal/09.2026/08.%20DAS%2009.2026%20-%20Guia%20Pagamento.pdf" target="_blank" download>📥 Baixar</a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- HEADER -->
+            <div class="header">
+                <div class="header-info">
+                    <h1>TRANS JN TRANSPORTE ESCOLAR LTDA</h1>
+                    <p>CNPJ: 26.481.883/0001-92</p>
+                    <p>Simples Nacional | Competência: Setembro 2026</p>
+                    <div class="header-badge">📅 Setembro / 2026</div>
+                </div>
+            </div>
+
+            <!-- KPIs -->
+            <div class="kpis-container">
+                <div class="kpi-card">
+                    <div class="kpi-label">Faturamento</div>
+                    <div class="kpi-value">R$ 7.120,00</div>
+                    <div class="kpi-sub">Mês de setembro</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">DAS a Recolher</div>
+                    <div class="kpi-value">R$ 427,20</div>
+                    <div class="kpi-sub">Venc. 20/10/2026</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Carga Tributária</div>
+                    <div class="kpi-value">6,00%</div>
+                    <div class="kpi-sub">Anexo III Transporte</div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO FINANCEIRA -->
+            <div class="section" id="das-pagamento">
+                <div class="section-title">
+                    <span class="section-title-icon">💳</span>Painel Financeiro - Guias e Pagamentos
+                </div>
+
+                <div class="cards-grid">
+                    <div class="info-card" id="das-card-simples">
+                        <div class="info-card-title">💳 DAS Simples Nacional</div>
+                        <div class="info-row">
+                            <span class="info-label">Valor Total:</span>
+                            <span class="info-value">R$ 427,20</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Vencimento:</span>
+                            <span class="info-value">20/10/2026</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Documento:</span>
+                            <span class="info-value">07.20.26278.641794-3</span>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-card-title">📊 Composição do DAS</div>
+                        <div class="info-row">
+                            <span class="info-label">IRPJ:</span>
+                            <span class="info-value">R$ 17,09</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">CSLL:</span>
+                            <span class="info-value">R$ 14,95</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">COFINS:</span>
+                            <span class="info-value">R$ 54,77</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">PIS:</span>
+                            <span class="info-value">R$ 11,88</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">INSS (TNSS):</span>
+                            <span class="info-value">R$ 185,40</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">ISS (Videira):</span>
+                            <span class="info-value">R$ 143,11</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO RBA -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="section-title-icon">📊</span>Receita Bruta Acumulada (RBA)
+                </div>
+
+                <div class="cards-grid">
+                    <div class="info-card">
+                        <div class="info-card-title">RBA - Período 09/2025 à 08/2026</div>
+                        <div style="font-size: 24px; font-weight: 700; color: #bd9a5f; margin: 12px 0;">R$ 95.086,85</div>
+                        <div style="font-size: 11px; color: #7a7a7a; line-height: 1.6;">
+                            Receita bruta acumulada no período de apuração
+                        </div>
+                    </div>
+
+                </div>
+
+                <div style="background: white; border: 1px solid #f0e8e3; border-radius: 10px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); margin-top: 16px;">
+                    <div style="font-size: 13px; font-weight: 700; color: #2d2d2d; margin-bottom: 16px;">Histórico de Faturamento</div>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; font-size: 12px;">
+                        <!-- Linha 1 -->
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Nov/2025</div>
+                            <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">R$ 7.359,45</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Dez/2025</div>
+                            <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">R$ 7.359,50</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Jan/2026</div>
+                            <div style="font-weight: 700; color: #d17200; font-size: 14px;">R$ 0,00</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Fev/2026</div>
+                            <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">R$ 11.265,00</div>
+                        </div>
+                        <!-- Linha 2 -->
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Mar/2026</div>
+                            <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">R$ 10.510,00</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Abr/2026</div>
+                            <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">R$ 9.090,00</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Mai/2026</div>
+                            <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">R$ 9.924,00</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Jun/2026</div>
+                            <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">R$ 8.110,00</div>
+                        </div>
+                        <!-- Linha 3 -->
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Jul/2026</div>
+                            <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">R$ 7.000,00</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Ago/2026</div>
+                            <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">R$ 9.750,00</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: #fef5f2; border-left: 3px solid #c5a196; border-radius: 6px;">
+                            <div style="color: #7a7a7a; font-size: 10px; font-weight: 600; margin-bottom: 8px;">Set/2026</div>
+                            <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">R$ 7.120,00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO RESULTADO -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="section-title-icon">📈</span>Receitas e Despesas
+                </div>
+
+                <div class="cards-grid">
+                    <div class="info-card">
+                        <div class="info-card-title">💰 Receitas - Setembro</div>
+                        <div class="info-row">
+                            <span class="info-label">Prestação de Serviços:</span>
+                            <span class="info-value">R$ 7.120,00</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Base ISS:</span>
+                            <span class="info-value">R$ 7.120,00</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">ISS Recolhido:</span>
+                            <span class="info-value">R$ 143,11</span>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-card-title">💸 Despesas - Setembro</div>
+                        <div class="info-row">
+                            <span class="info-label">Serviços:</span>
+                            <span class="info-value">R$ 460,00</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Peças/Manutenção:</span>
+                            <span class="info-value">R$ 675,00</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Combustível/Lubr.:</span>
+                            <span class="info-value">R$ 2.479,21</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label" style="font-weight: 700; border-top: 1px solid #f5ede8; padding-top: 8px;">Total Despesas:</span>
+                            <span class="info-value" style="font-weight: 700; border-top: 1px solid #f5ede8; padding-top: 8px;">R$ 3.614,21</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px; background: #fef5f2; border-left: 4px solid #c5a196; padding: 16px; border-radius: 6px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #2d2d2d; margin-bottom: 8px;">Resultado Bruto do Período:</div>
+                    <div style="font-size: 18px; font-weight: 700; color: #1a6e35;">R$ 3.505,79</div>
+                    <div style="font-size: 11px; color: #7a7a7a; margin-top: 4px;">Receita (R$ 7.120,00) - Despesas (R$ 3.614,21)</div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO APURAÇÃO -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="section-title-icon">📊</span>Apuração e Controle
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <div style="background: white; border: 1px solid #f0e8e3; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                        <div style="font-size: 11px; color: #7a7a7a; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">PGDAS-D</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #1a6e35;">✓ Transmitido</div>
+                    </div>
+                    <div style="background: white; border: 1px solid #f0e8e3; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                        <div style="font-size: 11px; color: #7a7a7a; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">Apuração DAS</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #1a6e35;">✓ Realizada</div>
+                    </div>
+                    <div style="background: white; border: 1px solid #f0e8e3; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                        <div style="font-size: 11px; color: #7a7a7a; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">Notas Fiscais</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #1a6e35;">✓ Conferidas</div>
+                    </div>
+                    <div style="background: white; border: 1px solid #f0e8e3; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                        <div style="font-size: 11px; color: #7a7a7a; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">Despesas</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #1a6e35;">✓ Escrituradas</div>
+                    </div>
+                    <div style="background: white; border: 1px solid #f0e8e3; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                        <div style="font-size: 11px; color: #7a7a7a; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">Limite RBT12</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #1a6e35;">✓ Regular</div>
+                    </div>
+                    <div style="background: white; border: 1px solid #f0e8e3; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                        <div style="font-size: 11px; color: #7a7a7a; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">Obrigações</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #1a6e35;">✓ Em dia</div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div>Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</div>
+        <div>Responsável Técnica: Jaqueline do Prado Ferreira | CRC SC-048028/O-0</div>
+        <div>Videira - SC | contato@jaquelineferreiracontadora.com.br | WhatsApp (49) 9.9980-3552</div>
+        <div class="footer-confidencial">Dashboard Fiscal Confidencial - Uso Exclusivo do Cliente</div>
+    </footer>
 </body>
 </html>
