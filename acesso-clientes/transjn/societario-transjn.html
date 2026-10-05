@@ -3,338 +3,634 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRANS JN TRANSPORTE ESCOLAR LTDA - Portal do Cliente</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Acesso Societário - TRANS JN TRANSPORTE ESCOLAR LTDA</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #F9FAFB; color: #1F2937; display: flex; }
 
-        body {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #faf8f7;
-            color: #3a3a3a;
+        /* SIDEBAR */
+        .sidebar-docs {
+            width: 220px;
+            background: white;
+            border-right: 1px solid #E5E7EB;
+            padding: 16px;
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 1px 0 3px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #C58A94;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #C5A059;
+        }
+
+        .doc-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-            position: relative;
-            overflow-x: hidden;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #111827;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
         }
 
-
-        .header-card, .menu-container, .footer-institucional {
-            position: relative;
-            z-index: 1;
+        .doc-item:hover {
+            background: #F3F4F6;
+            color: #C58A94;
         }
 
-        /* CABEÇALHO DELICADO */
-        .header-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 950px;
-            padding: 28px 32px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid #bd9a5f;
-            margin-bottom: 36px;
-            text-align: center;
+        .doc-item-icon {
+            margin-right: 8px;
+            font-size: 14px;
         }
 
-        .header-info h1 {
-            font-size: 22px;
-            color: #2d2d2d;
+        .main-content {
+            flex: 1;
+            margin-left: 220px;
+        }
+
+        .container { max-width: 100%; margin: 0; padding: 20px; }
+
+        /* HEADER */
+        .header {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border-left: 5px solid #C58A94;
+        }
+
+        .header-left h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .header-left p {
+            font-size: 13px;
+            color: #6B7280;
+            margin: 2px 0;
+        }
+
+        /* SEÇÃO TÍTULO */
+        .section-title {
+            font-size: 15px;
             font-weight: 600;
-            letter-spacing: -0.3px;
+            color: #111827;
+            margin: 24px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        /* PAINEL INFORMAÇÕES SOCIETÁRIAS */
+        .panel {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .panel-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #F3F4F6;
+            padding-bottom: 12px;
+        }
+
+        /* INFO GRID */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-item {
+            padding: 12px;
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #6B7280;
+            text-transform: uppercase;
+            font-weight: 600;
             margin-bottom: 6px;
         }
 
-        .header-info p {
-            font-size: 13px;
-            color: #7a7a7a;
-            margin-bottom: 10px;
-            font-weight: 400;
-        }
-
-        .mes-tag {
-            display: inline-block;
-            background: #fef5f2;
-            color: #a88170;
-            font-size: 11px;
+        .info-value {
+            font-size: 15px;
             font-weight: 600;
-            text-transform: uppercase;
-            padding: 5px 12px;
-            border-radius: 20px;
-            border: 1px solid #f0e8e3;
-            letter-spacing: 0.4px;
+            color: #111827;
         }
 
-
-        /* GRID DE 4 CARDS */
-        .menu-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 18px;
-            width: 100%;
-            max-width: 950px;
-            margin-bottom: 40px;
-        }
-
-        .portal-card {
-            background: #ffffff;
-            text-decoration: none;
-            color: inherit;
-            padding: 32px 20px 24px 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: 1px solid #f0e8e3;
-            text-align: center;
-            transition: all 0.25s ease-out;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .portal-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 16px rgba(189, 154, 95, 0.08);
-            border-color: #e8dcd7;
-        }
-
-        .icon-circle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 14px;
-            background: #fef5f2;
-            color: #c5a680;
-            transition: all 0.25s ease-out;
-        }
-
-        .icon-circle svg {
-            width: 28px;
-            height: 28px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .portal-card:hover .icon-circle {
-            transform: scale(1.05);
-            background: #fdf0ea;
-            color: #bd9a5f;
-        }
-
-        .portal-card h2 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #2d2d2d;
-        }
-
-        .portal-card p {
-            font-size: 13px;
-            color: #7a7a7a;
-            line-height: 1.5;
-            margin-bottom: 18px;
-            flex-grow: 1;
-            font-weight: 400;
-        }
-
-        .card-button {
-            width: 100%;
-            padding: 11px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            background: #e8dcd7;
-            color: #8b7355;
-            border: none;
-            cursor: pointer;
-            transition: all 0.25s ease-out;
-        }
-
-        .portal-card:hover .card-button {
-            background: #dcc9c1;
-            color: #7a6447;
-        }
-
-        /* CARD ESPECIAL FÉRIAS - ROSÉ DELICADO */
-        .portal-card.alerta-ferias {
-            background: #fcf3f0;
-            border: 1px solid #ead5ce;
-        }
-
-        .portal-card.alerta-ferias:hover {
-            box-shadow: 0 6px 16px rgba(209, 178, 172, 0.08);
-            border-color: #e0c5be;
-        }
-
-        .portal-card.alerta-ferias .icon-circle {
-            background: #fde8e1;
-            color: #c5a196;
-        }
-
-        .portal-card.alerta-ferias:hover .icon-circle {
-            background: #fce0d7;
-            color: #bd9a5f;
-        }
-
-        .status-tag {
-            display: inline-block;
-            background: #e0c5be;
-            color: #ffffff;
-            font-size: 10px;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .portal-card.alerta-ferias .card-button {
-            background: #dcc9c1;
-            color: #8b7355;
-        }
-
-        .portal-card.alerta-ferias:hover .card-button {
-            background: #d0bbb2;
-            color: #7a6447;
-        }
-
-        /* RODAPÉ INSTITUCIONAL */
-        .footer-institucional {
-            text-align: center;
-            width: 100%;
-            max-width: 950px;
-            border-top: 1px solid #e8dcd7;
-            padding-top: 20px;
-            margin-top: 16px;
-        }
-
-        .footer-institucional p {
+        .info-sub {
             font-size: 12px;
-            color: #8a8a8a;
+            color: #6B7280;
+            margin-top: 4px;
+        }
+
+        /* TABELAS */
+        .table-container {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .table-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead {
+            background: #F9FAFB;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        tbody tr:hover {
+            background: #F9FAFB;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* KPI CARDS RESUMO */
+        .kpis-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-left: 5px solid;
+            border-radius: 6px;
+            padding: 18px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .kpi-card.societario { border-left-color: #C58A94; }
+        .kpi-card.constituicao { border-left-color: #C5A059; }
+        .kpi-card.ativo { border-left-color: #10B981; }
+        .kpi-card.documentos { border-left-color: #6366F1; }
+
+        .kpi-label {
+            font-size: 11px;
+            color: #6B7280;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .kpi-sub {
+            font-size: 12px;
+            color: #6B7280;
+        }
+
+        /* BADGE STATUS */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-ativo {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .badge-inativo {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .badge-pendente {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        /* RODAPÉ */
+        .footer {
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            padding: 16px;
+            font-size: 11px;
+            color: #6B7280;
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .footer-line {
+            margin: 4px 0;
+        }
+
+        /* ALERTA */
+        .alert {
+            background: #F0F4FF;
+            border-left: 4px solid #6366F1;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            color: #111827;
             line-height: 1.6;
-            font-weight: 400;
         }
 
-        .footer-confidencial {
-            font-size: 11px !important;
-            color: #a39390 !important;
-            margin-top: 8px;
-            font-weight: 400;
+        .alert strong {
+            color: #4F46E5;
         }
 
-        /* RESPONSIVO */
-        @media (max-width: 680px) {
-            .menu-container {
-                grid-template-columns: 1fr;
-                gap: 14px;
-            }
+        /* LINKS EXTERNOS */
+        .external-links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
 
-            .header-card {
-                flex-direction: column-reverse;
-                text-align: center;
-                border-left: none;
-                border-top: 4px solid #bd9a5f;
-                padding: 20px 24px;
-            }
+        .external-link-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 16px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
 
-            .header-info h1 {
-                font-size: 20px;
-            }
+        .external-link-card:hover {
+            border-color: #C58A94;
+            box-shadow: 0 4px 12px rgba(197, 138, 148, 0.15);
+        }
+
+        .external-link-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #C58A94;
+            margin-bottom: 6px;
+        }
+
+        .external-link-desc {
+            font-size: 12px;
+            color: #6B7280;
+            line-height: 1.4;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .kpis-grid { grid-template-columns: repeat(2, 1fr); }
+            .info-grid { grid-template-columns: repeat(2, 1fr); }
+            .external-links-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-docs { display: none; }
+            .main-content { margin-left: 0; }
+            .kpis-grid { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; align-items: flex-start; }
+            .external-links-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+    <!-- SIDEBAR DOCUMENTOS -->
+    <aside class="sidebar-docs">
+        <a href="acesso-clientes-portal-transjn.html" style="display: block; padding: 10px; margin-bottom: 14px; background: #C58A94; color: white; border-radius: 4px; text-decoration: none; text-align: center; font-size: 11px; font-weight: 700; text-transform: uppercase; transition: background 0.2s;" onmouseover="this.style.background='#b37684'" onmouseout="this.style.background='#C58A94'">← Voltar ao Menu</a>
 
-    <!-- CABEÇALHO -->
-    <div class="header-card">
-        <div class="header-info">
-            <h1>TRANS JN TRANSPORTE ESCOLAR LTDA</h1>
-            <p>CNPJ: 26.481.883/0001-92 • Painel de Atendimento Contábil</p>
-            <div class="mes-tag">📅 Competência: Outubro / 2026</div>
+        <div class="sidebar-title">📁 Documentos</div>
+
+        <a class="doc-item" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/societario/Cartão%20CNPJ%20Trans%20JN%20Transporte%20Escolar%20Ltda.pdf" target="_blank">
+            <span class="doc-item-icon">🏢</span>
+            <span>Cartão CNPJ</span>
+        </a>
+
+        <a class="doc-item" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/societario/Instrumento%20de%20Alteração%20de%20Empresário%20Individual%20em%20Sociedade%20Limitada.pdf" target="_blank">
+            <span class="doc-item-icon">📄</span>
+            <span>Contrato Social</span>
+        </a>
+
+        <a class="doc-item" href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/societario/QSA%20Trans%20JN%20Transporte%20Escolar%20Ltda.pdf" target="_blank">
+            <span class="doc-item-icon">👥</span>
+            <span>QSA - Sócios/Adm</span>
+        </a>
+
+        <div class="sidebar-title" style="margin-top: 20px;">⚖️ Jurídico</div>
+
+    </aside>
+
+    <div class="main-content">
+        <div class="container">
+            <!-- HEADER -->
+            <div class="header">
+                <div class="header-left">
+                    <h1>TRANS JN TRANSPORTE ESCOLAR LTDA</h1>
+                    <p>CNPJ: 26.481.883/0001-92</p>
+                    <p>Acesso Societário e Documentação</p>
+                </div>
+            </div>
+
+            <!-- ALERTA -->
+            <div class="alert">
+                <strong>💡 Documentação Societária:</strong> Todos os documentos da empresa referentes a sua constituição, sociedade, administração e registros legais estão organizados nesta seção. Acesse os arquivos para consultar, conferir ou compartilhar com terceiros quando necessário.
+            </div>
+
+
+            <!-- RESUMO SOCIETÁRIO -->
+            <div class="section-title">📊 Resumo da Empresa</div>
+            <div class="kpis-grid">
+                <div class="kpi-card societario">
+                    <div class="kpi-label">Natureza Jurídica</div>
+                    <div class="kpi-value">Sociedade Limitada</div>
+                    <div class="kpi-sub">Enquadramento legal</div>
+                </div>
+                <div class="kpi-card constituicao">
+                    <div class="kpi-label">Data de Abertura</div>
+                    <div class="kpi-value">04/11/2016</div>
+                    <div class="kpi-sub">Empresa em operação</div>
+                </div>
+                <div class="kpi-card ativo">
+                    <div class="kpi-label">Situação Cadastral</div>
+                    <div class="kpi-value"><span class="badge badge-ativo">ATIVA</span></div>
+                    <div class="kpi-sub">Empresa em funcionamento</div>
+                </div>
+                <div class="kpi-card documentos">
+                    <div class="kpi-label">Regime Tributário</div>
+                    <div class="kpi-value">Simples Nacional</div>
+                    <div class="kpi-sub">Enquadramento fiscal</div>
+                </div>
+            </div>
+
+            <!-- INFORMAÇÕES CADASTRAIS -->
+            <div class="panel">
+                <div class="panel-title">🏢 Informações Cadastrais</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Razão Social</div>
+                        <div class="info-value">TRANS JN TRANSPORTE ESCOLAR LTDA</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Nome Fantasia</div>
+                        <div class="info-value">TRANS JN TRANSPORTE ESCOLAR</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">CNPJ</div>
+                        <div class="info-value">26.481.883/0001-92</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">CNAE Principal</div>
+                        <div class="info-value">49.24-8-00 - Transporte escolar</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Inscrição Municipal</div>
+                        <div class="info-value">32.307-54</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Inscrição Estadual</div>
+                        <div class="info-value">Isento</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Endereço</div>
+                        <div class="info-value">R Manoel de Oliveira, 30, Nossa Sra Aparecida</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">CEP</div>
+                        <div class="info-value">89.562-784</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Município - UF</div>
+                        <div class="info-value">Videira - SC</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SÓCIOS E ADMINISTRADORES -->
+            <div class="section-title">👥 Quadro de Sócios e Administradores (QSA)</div>
+            <div class="table-container">
+                <div class="table-title">Informações Societárias</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome / Razão Social</th>
+                            <th>Qualificação</th>
+                            <th class="text-right">Participação</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Data Entrada</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ITACIR DO PRADO FERREIRA</td>
+                            <td>Sócio-Administrador</td>
+                            <td class="text-right">100%</td>
+                            <td>575.490.109-78</td>
+                            <td>04/11/2016</td>
+                            <td class="text-center"><span class="badge badge-ativo">ATIVO</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="font-size: 11px; color: #6B7280; margin-top: 12px; line-height: 1.6;">
+                    <strong>Nota:</strong> Informações extraídas da Consulta de Quadro de Sócios e Administradores (QSA) junto à Receita Federal.
+                    Dados sujeitos a atualização conforme alterações cadastrais.
+                </div>
+            </div>
+
+            <!-- DADOS COMPLEMENTARES -->
+            <div class="panel">
+                <div class="panel-title">🔹 Dados Complementares</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Telefone</div>
+                        <div class="info-value">(49) 9934-8895</div>
+                        <div class="info-sub">Contato principal</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">E-mail</div>
+                        <div class="info-value">itacirdoprado18@gmail.com</div>
+                        <div class="info-sub">Comunicação corporativa</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Responsável Técnico</div>
+                        <div class="info-value">Jaqueline do Prado Ferreira</div>
+                        <div class="info-sub">Contador responsável</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Optante Simples Nacional</div>
+                        <div class="info-value">Sim</div>
+                        <div class="info-sub">Desde 04/11/2016</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOCUMENTAÇÃO ADICIONAL -->
+            <div class="section-title">📋 Documentação Adicional</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Descrição</th>
+                            <th class="text-center">Disponível</th>
+                            <th class="text-center">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cartão CNPJ</strong></td>
+                            <td>Comprovante de Inscrição e Situação Cadastral da Receita Federal</td>
+                            <td class="text-center">✅</td>
+                            <td class="text-center">
+                                <a href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/societario/Cartão%20CNPJ%20Trans%20JN%20Transporte%20Escolar%20Ltda.pdf" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600;">Acessar</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Contrato Social</strong></td>
+                            <td>Instrumento de Alteração de Empresário Individual em Sociedade Limitada</td>
+                            <td class="text-center">✅</td>
+                            <td class="text-center">
+                                <a href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/societario/Instrumento%20de%20Alteração%20de%20Empresário%20Individual%20em%20Sociedade%20Limitada.pdf" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600;">Acessar</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>QSA - Sócios e Administradores</strong></td>
+                            <td>Consulta oficial de Quadro de Sócios e Administradores da Receita Federal</td>
+                            <td class="text-center">✅</td>
+                            <td class="text-center">
+                                <a href="https://jaquelineferreiracontadora.com.br/acesso-clientes/transjn/documentos-transjn/societario/QSA%20Trans%20JN%20Transporte%20Escolar%20Ltda.pdf" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600;">Acessar</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- LINKS EXTERNOS - CERTIDÕES E CONSULTAS -->
+            <div class="section-title">📋 Links Externos - Certidões e Consultas</div>
+            <div class="panel">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://servicos.receitafederal.gov.br/servico/certidoes/#/home/cnpj" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            🔍 Certidão Negativa - Federal
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte certidão negativa de débitos junto à Receita Federal do Brasil.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://sat.sef.sc.gov.br/tax.NET/Sat.CtaCte.Web/SolicitacaoCnd.aspx" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            🔍 Certidão Negativa - Estadual
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte certidão negativa junto à Secretaria de Fazenda do Estado de Santa Catarina.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://www.videira.sc.gov.br/" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            🔍 Certidão Negativa - Municipal
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte certidão negativa junto à Prefeitura Municipal de Videira.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://cndt-certidao.tst.jus.br/" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            ⚖️ CNDT (Débito Trabalhista)
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Certidão Negativa de Débitos Trabalhistas - Solicite junto ao TST.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://consulta-crf.caixa.gov.br/consultacrf/pages/consultaEmpregador.jsf" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            📋 Certidão FGTS
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte a Certificação de Regularidade do FGTS junto à Caixa Econômica.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://www.tjsc.jus.br/web/judicial/certidoes" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            ⚖️ Falência/Recuperação
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte processos de falência e recuperação judicial no TJSC.</p>
+                    </li>
+                    <li style="padding: 12px 0; border-bottom: 1px solid #E5E7EB;">
+                        <a href="https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            🔍 Cartão CNPJ/Comprovante
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte o Cartão CNPJ e informações cadastrais na Receita Federal.</p>
+                    </li>
+                    <li style="padding: 12px 0;">
+                        <a href="https://www8.receita.fazenda.gov.br/simplesnacional/aplicacoes.aspx?id=21" target="_blank" style="color: #C58A94; text-decoration: none; font-weight: 600; font-size: 14px;">
+                            🏛️ Consulta Optantes Simples Nacional
+                        </a>
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #6B7280; font-weight: 400;">Consulte se a empresa é optante pelo Regime de Tributação Simplificada.</p>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- RODAPÉ -->
+            <div class="footer">
+                <div class="footer-line">Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</div>
+                <div class="footer-line">Responsável Técnica: Jaqueline do Prado Ferreira | CRC SC-048028/O-0</div>
+                <div class="footer-line">Videira - SC | contato@jaquelineferreiracontadora.com.br | (49) 9.9980-3552</div>
+                <div class="footer-line" style="margin-top: 8px; font-size: 10px; color: #9CA3AF;">
+                    Dashboard Acesso Societário Confidencial - Uso Exclusivo do Cliente
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- CONTAINER DOS CARDS -->
-    <div class="menu-container">
-        <!-- Card 1: Fiscal -->
-        <a href="fiscal-trans-jn.html" class="portal-card">
-            <div class="icon-circle">
-                <svg viewBox="0 0 24 24">
-                    <path d="M3 3v18h18"></path>
-                    <path d="M7 11l3-3 3 3 3-3 3 3"></path>
-                    <circle cx="9" cy="8" r="1.5"></circle>
-                    <circle cx="15" cy="6" r="1.5"></circle>
-                </svg>
-            </div>
-            <h2>Painel Fiscal</h2>
-            <p>Acesse o faturamento, evolução tributária e guias de impostos como o DAS.</p>
-            <div class="card-button">Acessar Painel</div>
-        </a>
-
-        <!-- Card 2: DP -->
-        <a href="dp-trans-jn.html" class="portal-card">
-            <div class="icon-circle">
-                <svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="8" r="3"></circle>
-                    <path d="M6 14c0-2 2.5-4 6-4s6 2 6 4v4H6z"></path>
-                </svg>
-            </div>
-            <h2>Depto. Pessoal</h2>
-            <p>Confira o resumo da folha, encargos (INSS/FGTS) e pró-labore.</p>
-            <div class="card-button">Acessar Painel</div>
-        </a>
-
-        <!-- Card 3: Contabilidade -->
-        <a href="contabilidade-trans-jn.html" class="portal-card">
-            <div class="icon-circle">
-                <svg viewBox="0 0 24 24">
-                    <path d="M7 3h10c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2z"></path>
-                    <line x1="9" y1="6" x2="15" y2="6"></line>
-                    <line x1="9" y1="10" x2="15" y2="10"></line>
-                    <line x1="9" y1="14" x2="15" y2="14"></line>
-                    <line x1="9" y1="18" x2="13" y2="18"></line>
-                </svg>
-            </div>
-            <h2>Contabilidade</h2>
-            <p>Consulte balancetes, demonstrações de resultado e relatórios contábeis da empresa.</p>
-            <div class="card-button">Acessar Painel</div>
-        </a>
-
-        <!-- Card 4: Acesso Societário -->
-        <a href="societario-transjn.html" class="portal-card">
-            <div class="icon-circle">
-                <svg viewBox="0 0 24 24">
-                    <circle cx="8" cy="8" r="3"></circle>
-                    <circle cx="16" cy="8" r="3"></circle>
-                    <path d="M6 14c0-1.5 1.5-3 5-3s5 1.5 5 3v3H6z"></path>
-                    <path d="M14 14c0-1.5 1.5-3 4-3s4 1.5 4 3v3h-8z"></path>
-                </svg>
-            </div>
-            <h2>Acesso Societário</h2>
-            <p>Documentos da empresa, contrato social, CNPJ e consultas fiscais de sócios.</p>
-            <div class="card-button">Acessar Documentos</div>
-        </a>
-    </div>
-
-    <!-- RODAPÉ -->
-    <div class="footer-institucional">
-        <p>Jaqueline Ferreira Assessoria Contábil Ltda | CRC SC-013019/O-4</p>
-        <p>Responsável Técnica: Jaqueline do Prado Ferreira | CRC SC-048028/O-0</p>
-        <p>Videira - SC | contato@jaquelineferreiracontadora.com.br | WhatsApp (49) 9.9980-3552</p>
-        <p class="footer-confidencial">Dashboard de Acesso Confidencial - Uso Exclusivo do Cliente</p>
-    </div>
-
 </body>
 </html>
