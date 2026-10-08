@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <title>Proposta de Regularização Retroativa - Dra. Aracelli</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
@@ -226,6 +227,7 @@
 
   <script>
     const GOOGLE_SCRIPT_URL = '[COLE_AQUI_SUA_URL_DO_SCRIPT]';
+    const WHATSAPP_NUMBER = '5549998803552';
 
     function openTab(evt, tabName){
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -243,17 +245,147 @@
       document.getElementById('forma-escolhida').value = valor;
     }
 
-    function handleFormSubmit(event){
+    function gerarHashUnico(nome, cpf, data, hora) {
+      const dados = nome + cpf + data + hora;
+      let hash = 0;
+      for (let i = 0; i < dados.length; i++) {
+        hash = ((hash << 5) - hash) + dados.charCodeAt(i);
+        hash = hash & hash;
+      }
+      const hexHash = Math.abs(hash).toString(16).toUpperCase().slice(-5).padStart(5, '0');
+      return `${nome.split(' ')[0].toUpperCase()}-${data.replace(/\//g, '')}-${hora.replace(/:/g, '').slice(0, 4)}-${hexHash}`;
+    }
+
+    async function gerarPDFAceite(nome, cpf, email, telefone, pagamento) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const dataAceite = new Date().toLocaleDateString('pt-BR');
+      const horaAceite = new Date().toLocaleTimeString('pt-BR');
+      const codigo = gerarHashUnico(nome, cpf, dataAceite, horaAceite);
+      window.ultimoCodigoReferencia = codigo;
+
+      const cPrinc = [167, 128, 120], cOuro = [201, 161, 94], cTexto = [40, 40, 40];
+      const W = 210, mL = 16, mR = 194;
+      let y = 44;
+
+      doc.setFillColor(...cPrinc);
+      doc.rect(0, 0, W, 32, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text('PROPOSTA ACEITA E FORMALIZADA', W / 2, 20, { align: 'center' });
+
+      function titulo(t) {
+        doc.setTextColor(...cPrinc); doc.setFont('helvetica', 'bold'); doc.setFontSize(11.5);
+        doc.text(t, mL, y); y += 7;
+      }
+      function texto(t, size = 10) {
+        doc.setTextColor(...cTexto); doc.setFont('helvetica', 'normal'); doc.setFontSize(size);
+        doc.splitTextToSize(t, mR - mL).forEach(l => { doc.text(l, mL, y); y += 5; });
+      }
+      function separador() {
+        doc.setDrawColor(...cOuro); doc.setLineWidth(0.6); doc.line(mL, y, mR, y); y += 10;
+      }
+
+      titulo('CLIENTE CONTRATANTE');
+      texto(`${nome}  |  CPF: ${cpf}`);
+      texto(`${email}  |  ${telefone}`);
+      y += 4;
+
+      titulo('EMPRESA');
+      texto('ARACELLI ELIZA ALVES MARQUES SOCIEDADE INDIVIDUAL DE ADVOCACIA');
+      texto('CNPJ: 54.459.294/0001-43  |  Regime: Lucro Presumido');
+      y += 4;
+
+      titulo('OBJETO DA CONTRATAÇÃO');
+      texto('Regularização retroativa de obrigações fiscais e contábeis, em 4 blocos de trabalho (2022-2023, 2024, 2025 e 2026).');
+      y += 4;
+
+      titulo('INVESTIMENTO');
+      texto('Valor total: R$ 2.200,00');
+      texto(`Forma de pagamento escolhida: ${pagamento}`);
+      y += 6;
+
+      separador();
+      doc.setTextColor(...cOuro); doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+      doc.text('ID: ' + codigo, W / 2, y, { align: 'center' }); y += 5;
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+      doc.text('Aceite registrado em: ' + dataAceite + '  •  ' + horaAceite, W / 2, y, { align: 'center' });
+
+      return doc.output('blob');
+    }
+
+    async function handleFormSubmit(event) {
       event.preventDefault();
-      const data = {};
-      new FormData(event.target).forEach((v, k) => data[k] = v);
-      data['outra_pagamento'] = document.getElementById('outra-pagamento').value;
-      fetch(GOOGLE_SCRIPT_URL, { method:'POST', body: new URLSearchParams(data) })
-        .then(() => {
-          document.getElementById('successMessage').classList.add('show');
-          document.getElementById('submit-btn').disabled = true;
-        })
-        .catch(err => console.error('Erro:', err));
+
+      const nome = document.getElementById('nome').value;
+      const cpf = document.getElementById('cpf').value;
+      const email = document.getElementById('email').value;
+      const telefone = document.getElementById('telefone').value;
+      const forma = document.getElementById('forma-escolhida').value;
+      const outra = document.getElementById('outra-pagamento').value;
+
+      if (!forma) { alert('Por favor, escolha uma forma de pagamento.'); return; }
+      if (forma === 'outra' && !outra.trim()) { alert('Descreva a forma de pagamento que você consegue.'); return; }
+
+      const pagamento =
+        forma === 'avista' ? 'À vista — R$ 2.200,00' :
+        forma === '1+3' ? 'Entrada + 3 parcelas de R$ 550,00 (a cada 30 dias)' :
+        'Outra forma: ' + outra;
+
+      // Abre a aba do WhatsApp já no clique, para o navegador não bloquear
+      const janelaWhats = window.open('about:blank', '_blank');
+
+      document.getElementById('submit-btn').disabled = true;
+      document.getElementById('successMessage').classList.add('show');
+
+      let pdfBlob = null;
+      try {
+        pdfBlob = await gerarPDFAceite(nome, cpf, email, telefone, pagamento);
+      } catch (erro) {
+        console.error('Erro ao gerar PDF:', erro);
+      }
+
+      const codigo = window.ultimoCodigoReferencia || 'N/A';
+      const nomeArquivo = `COMPROVANTE-ACEITE-ARACELLI-${new Date().toISOString().slice(0, 10)}.pdf`;
+      const mensagem = `*NOVO ACEITE DE PROPOSTA*\n\n*Cliente:* ${nome}\n*CPF:* ${cpf}\n*E-mail:* ${email}\n*Telefone:* ${telefone}\n*Pagamento:* ${pagamento}\n\n*ID Comprovante:* ${codigo}\n\nSegue o comprovante em PDF para validação.`;
+      const urlWhatsApp = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+
+      // Registro na planilha (Google Apps Script)
+      const dados = { nome, cpf, email, telefone, pagamento, codigo_referencia: codigo };
+      fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: new URLSearchParams(dados) })
+        .catch(err => console.error('Erro ao registrar aceite:', err));
+
+      // 1) Celular: envia o PDF direto pelo WhatsApp
+      if (pdfBlob && navigator.canShare) {
+        const arquivo = new File([pdfBlob], nomeArquivo, { type: 'application/pdf' });
+        if (navigator.canShare({ files: [arquivo] })) {
+          try {
+            await navigator.share({ files: [arquivo], title: 'Comprovante de aceite', text: mensagem });
+            if (janelaWhats) janelaWhats.close();
+            return;
+          } catch (err) {
+            // Cancelado ou não suportado: segue para a alternativa
+          }
+        }
+      }
+
+      // 2) Computador: baixa o PDF e abre o WhatsApp com a mensagem e o ID
+      if (pdfBlob) {
+        const url = URL.createObjectURL(pdfBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = nomeArquivo;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+      }
+      if (janelaWhats) {
+        janelaWhats.location.href = urlWhatsApp;
+      } else {
+        window.open(urlWhatsApp, '_blank');
+      }
     }
   </script>
 </body>
