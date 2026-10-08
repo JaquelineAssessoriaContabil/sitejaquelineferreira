@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Proposta de Regularização Retroativa - Dra. Aracelli</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:linear-gradient(135deg,#f5e6e1 0%,#f9f5f3 100%);min-height:100vh;display:flex;flex-direction:column;color:#333;}
+    header{padding:2rem;background:linear-gradient(135deg,#f5e6e1 0%,#f9f5f3 100%);border-bottom:4px solid #C5A29E;display:flex;gap:2rem;align-items:flex-start;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    .logo-box{min-width:140px;display:flex;align-items:center;justify-content:center;}
+    .logo-box img{width:140px;height:140px;border-radius:50%;filter:drop-shadow(0 2px 6px rgba(197,162,158,0.25));}
+    header h1{font-size:1.8rem;margin-bottom:0.5rem;color:#333;}
+    header p{font-size:0.9rem;color:#333;margin-bottom:0.5rem;}
+    main{flex:1;padding:2rem 1rem;max-width:1200px;width:100%;margin:0 auto;}
+    .tabs-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.75rem;margin-bottom:1.5rem;}
+    .tab-button{background:white;border:2px solid #e8d4cf;border-radius:12px;padding:1rem 0.8rem;cursor:pointer;font-size:0.85rem;font-weight:500;color:#333;transition:all 0.3s ease;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0.3rem;}
+    .tab-button:hover{border-color:#C5A29E;box-shadow:0 4px 12px rgba(197,162,158,0.15);transform:translateY(-2px);}
+    .tab-button.active{background:linear-gradient(135deg,#C9A15E 0%,#B8905C 100%);color:white;border-color:#C9A15E;box-shadow:0 6px 16px rgba(197,162,158,0.2);}
+    .tab-icon{font-size:1.5rem;}
+    .tab-content{display:none;animation:fadeIn 0.3s ease;}
+    .tab-content.active{display:block;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    .content-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;}
+    .content-card{background:white;border-radius:12px;padding:1.2rem;box-shadow:0 4px 12px rgba(0,0,0,0.08);border-top:4px solid #C5A29E;}
+    .content-card h3{color:#C5A29E;font-size:1.1rem;margin-bottom:0.75rem;}
+    .content-card p{color:#555;line-height:1.5;margin-bottom:0.5rem;}
+    .content-card ul{margin-left:1.5rem;color:#555;line-height:1.6;}
+    .content-card li{margin-bottom:0.5rem;}
+    .info-box{background:#f9f3f1;border-left:4px solid #C9A15E;padding:0.75rem;border-radius:4px;margin-top:0.75rem;}
+    .info-box p{font-size:0.9rem;}
+    .full-width{grid-column:1 / -1 !important;}
+    .payment-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1rem;}
+    .payment-option{background:#f9f3f1;border:2px solid #e8d4cf;border-radius:8px;padding:1.2rem;text-align:center;}
+    .payment-option.selected{background:linear-gradient(135deg,#C9A15E 0%,#B8905C 100%);border-color:#C9A15E;color:white;}
+    .payment-option.selected h4,.payment-option.selected p{color:white;}
+    .payment-option h4{color:#C5A29E;font-size:1rem;margin-bottom:0.5rem;}
+    .payment-option .valor{font-size:1.1rem;color:#000;font-weight:bold;margin:0.4rem 0;}
+    .block-valor{display:inline-block;background:#f9f3f1;border:1px solid #e8d4cf;border-radius:6px;padding:0.3rem 0.7rem;color:#000;font-weight:bold;margin-top:0.5rem;}
+    .steps-timeline{position:relative;padding:1rem 0;}
+    .step{display:flex;gap:1.5rem;margin-bottom:1.5rem;position:relative;}
+    .step::before{content:'';position:absolute;left:24px;top:50px;width:2px;height:calc(100% + 10px);background:#C5A29E;}
+    .step:last-child::before{display:none;}
+    .step-number{display:flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#C9A15E 0%,#B8905C 100%);color:white;font-weight:bold;flex-shrink:0;position:relative;z-index:1;}
+    .step-content h4{color:#C5A29E;font-size:1rem;margin-bottom:0.3rem;}
+    .step-content p{color:#555;font-size:0.95rem;}
+    .accept-form{background:white;border-radius:12px;padding:2rem;box-shadow:0 4px 12px rgba(0,0,0,0.08);border-top:4px solid #C5A29E;}
+    .form-group{margin-bottom:1.5rem;}
+    .form-group label{display:block;color:#C5A29E;font-weight:600;margin-bottom:0.5rem;font-size:0.95rem;}
+    .form-group input{width:100%;padding:0.75rem;border:1px solid #C5A29E;border-radius:4px;font-family:inherit;font-size:0.95rem;color:#333;}
+    .checkbox-group{display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1.5rem;}
+    .checkbox-group input[type="checkbox"]{width:auto;margin-top:0.3rem;cursor:pointer;}
+    .checkbox-group label{margin-bottom:0;font-weight:normal;cursor:pointer;color:#555;}
+    .btn-submit{background:linear-gradient(135deg,#C5A29E 0%,#B8968F 100%);color:white;padding:1rem 2rem;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;width:100%;}
+    .btn-submit:disabled{opacity:0.5;cursor:not-allowed;}
+    .success-message{display:none;background:#C5A29E;color:white;padding:2rem;border-radius:8px;margin-top:1rem;text-align:center;}
+    .success-message.show{display:block;}
+    footer{background:linear-gradient(135deg,rgba(245,230,225,0.6) 0%,rgba(249,245,243,0.6) 100%);color:#000;padding:3rem 1rem 1.5rem;margin-top:auto;border-top:2px solid rgba(197,162,158,0.12);}
+    footer p{margin:1rem 0 0;text-align:center;font-size:0.8rem;opacity:0.8;border-top:1px solid rgba(197,162,158,0.1);padding-top:1rem;color:#333;}
+    .contact-footer{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin-bottom:2rem;text-align:center;}
+    .contact-item{background:rgba(197,162,158,0.06);padding:1.5rem;border-radius:12px;border:1px solid rgba(197,162,158,0.12);}
+    .contact-item strong{display:block;margin-bottom:0.5rem;color:#000;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+    .contact-item a{color:#000;text-decoration:none;font-weight:500;}
+    .contact-item a:hover{text-decoration:underline;}
+    @media (max-width:768px){
+      header{flex-direction:column;align-items:center;text-align:center;padding:1.5rem 1rem;}
+      header h1{font-size:1.5rem;}
+      main{padding:1rem;}
+      .content-grid{grid-template-columns:1fr;}
+      .payment-options{grid-template-columns:1fr;}
+      .contact-footer{grid-template-columns:1fr;}
+      .card-2col{grid-template-columns:1fr !important;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-box">
+      <img src="logo-jaqueline.png" alt="Logo Jaqueline Ferreira Assessoria Contábil" onerror="this.style.display='none'">
+    </div>
+    <div style="flex:1;">
+      <h1>Proposta de Regularização Retroativa</h1>
+      <p><strong>Responsável Técnica:</strong> Jaqueline do Prado Ferreira | CRC-SC048028/O-0</p>
+      <p><strong>Cliente:</strong> Dra. Aracelli</p>
+      <p><strong>Razão social:</strong> ARACELLI ELIZA ALVES MARQUES SOCIEDADE INDIVIDUAL DE ADVOCACIA</p>
+      <p><strong>CNPJ (matriz):</strong> 54.459.294/0001-43 | <strong>Situação cadastral:</strong> ATIVA desde 07/10/2026</p>
+      <p><strong>Data de abertura:</strong> 23/05/2022 | <strong>Porte:</strong> Demais</p>
+      <p><strong>Natureza jurídica:</strong> 232-1 Sociedade Unipessoal de Advocacia</p>
+      <p><strong>Atividade principal:</strong> 69.11-7-01 Serviços advocatícios</p>
+      <p><strong>Endereço:</strong> R Saul Brandalise, 336, Andar 1, Centro, Videira/SC, CEP 89.560-170</p>
+      <p><strong>Telefone:</strong> (49) 9941-1430 | <strong>E-mail:</strong> ARACELLI.MARQUES09@GMAIL.COM</p>
+      <p><strong>Regime tributário:</strong> Lucro Presumido</p>
+      <p><strong>Data da proposta:</strong> 08/10/2026 | <strong>Validade:</strong> 7 dias (até 15/10/2026)</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="tabs-container">
+      <button class="tab-button active" onclick="openTab(event,'diagnostico')"><span class="tab-icon">🔎</span><span>Diagnóstico</span></button>
+      <button class="tab-button" onclick="openTab(event,'blocos')"><span class="tab-icon">🧩</span><span>Blocos de Trabalho</span></button>
+      <button class="tab-button" onclick="openTab(event,'investimento')"><span class="tab-icon">💰</span><span>Investimento</span></button>
+      <button class="tab-button" onclick="openTab(event,'proximos')"><span class="tab-icon">🚀</span><span>Próximos Passos</span></button>
+      <button class="tab-button" onclick="openTab(event,'aceitar')"><span class="tab-icon">✔️</span><span>Aceitar Proposta</span></button>
+    </div>
+
+    <!-- DIAGNÓSTICO -->
+    <div id="diagnostico" class="tab-content active">
+      <div class="content-grid">
+        <div class="content-card full-width">
+          <h3>✅ Primeiro passo concluído</h3>
+          <p>Após a análise do diagnóstico fiscal emitido pela Receita Federal, o CNPJ da empresa já se encontra <strong>ATIVO</strong> novamente.</p>
+          <div class="info-box">
+            <p><strong>Data do diagnóstico analisado:</strong> 08/10/2026</p>
+          </div>
+        </div>
+        <div class="content-card full-width">
+          <h3>⚠️ Ponto de atenção</h3>
+          <p>Para que a empresa fique <strong>100% regularizada</strong> e livre de novos bloqueios fiscais, é necessário sanar as obrigações retroativas do período em que a empresa operou sem acompanhamento contábil no regime do Lucro Presumido.</p>
+          <p>Essas obrigações estão organizadas em quatro blocos de trabalho, na aba <strong>Blocos de Trabalho</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCOS DE TRABALHO -->
+    <div id="blocos" class="tab-content">
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>📅 Bloco 1 — Período sem Movimento (2022 e 2023)</h3>
+          <p><strong>Trabalho:</strong> Auditoria e transmissão das declarações de inatividade obrigatórias perante a Receita Federal, para regularizar o início da empresa.</p>
+          <span class="block-valor">Valor: R$ 300,00 (taxa única)</span>
+        </div>
+        <div class="content-card">
+          <h3>📅 Bloco 2 — Ano da Inaptidão (2024)</h3>
+          <p><strong>Trabalho:</strong> Transmissão em atraso das obrigações acessórias do Lucro Presumido (DCTF, EFD-Contribuições e ECF) que geraram o bloqueio do CNPJ.</p>
+          <span class="block-valor">Valor: R$ 600,00 (taxa única)</span>
+        </div>
+        <div class="content-card">
+          <h3>📅 Bloco 3 — Reconstrução Fiscal e Contábil (2025)</h3>
+          <p><strong>Trabalho:</strong> Importação e cálculo dos impostos federais (11,33%) sobre as notas emitidas em 2025; emissão dos DARFs retroativos com juros e multa; implantação do Balanço de Abertura e escrituração contábil no sistema.</p>
+          <span class="block-valor">Valor: R$ 800,00 (taxa única)</span>
+        </div>
+        <div class="content-card">
+          <h3>📅 Bloco 4 — Ano Corrente (2026, até o mês atual)</h3>
+          <p><strong>Trabalho:</strong> Levantamento e cálculo dos impostos em atraso sobre as notas de 2026; conciliação bancária da conta jurídica até o momento atual; regularização das declarações mensais deste ano.</p>
+          <span class="block-valor">Valor: R$ 500,00 (taxa única)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVESTIMENTO -->
+    <div id="investimento" class="tab-content">
+      <div class="content-grid">
+        <div class="content-card full-width">
+          <h3>💰 Valor Total da Regularização: R$ 2.200,00</h3>
+          <p style="margin-bottom:1rem;"><strong>Escolha uma forma de pagamento:</strong></p>
+          <div class="payment-options">
+            <div class="payment-option" onclick="selectPayment(this,'avista')"><h4>💰 À vista</h4><p class="valor">R$ 2.200,00</p><p>Pagamento único</p></div>
+            <div class="payment-option" onclick="selectPayment(this,'1+3')"><h4>📅 Entrada + 3 parcelas</h4><p class="valor">1+3 de R$ 550,00</p><p>1ª parcela de entrada e mais 3 parcelas a cada 30 dias</p></div>
+            <div class="payment-option" onclick="selectPayment(this,'outra')"><h4>✍️ Outra forma</h4><p>Descreva abaixo a forma de pagamento que você consegue</p></div>
+          </div>
+          <div id="outra-box" style="display:none;margin-bottom:1rem;">
+            <label for="outra-pagamento" style="color:#C5A29E;font-weight:600;display:block;margin-bottom:0.5rem;">Descreva sua forma de pagamento</label>
+            <textarea id="outra-pagamento" name="outra_pagamento" rows="3" style="width:100%;padding:0.75rem;border:1px solid #C5A29E;border-radius:4px;font-family:inherit;"></textarea>
+          </div>
+          <div class="info-box">
+            <p><strong>ℹ️ Nota sobre multas:</strong> A entrega destas declarações gerou multas por atraso da Receita Federal. As guias já estão em mãos. Realizando o pagamento em até 30 dias, há desconto de 50% sobre o valor mínimo de cada uma delas. [VERIFICAR FUNDAMENTO LEGAL ANTES DO ENVIO]</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRÓXIMOS PASSOS -->
+    <div id="proximos" class="tab-content">
+      <div class="steps-timeline">
+        <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Aceite da Proposta</h4><p>Confirmação de aprovação pelo formulário de aceite.</p></div></div>
+        <div class="step"><div class="step-number">2</div><div class="step-content"><h4>Pagamento das Parcelas</h4><p>Parcelas de R$ 550,00, conforme a evolução das entregas do serviço.</p></div></div>
+        <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Execução dos Blocos</h4><p>Execução dos Blocos 1 a 4, com acompanhamento da evolução de cada entrega.</p></div></div>
+        <div class="step"><div class="step-number">4</div><div class="step-content"><h4>Pagamento das Guias com Desconto</h4><p>Pagamento das guias de multa em até 30 dias, para aplicação do desconto informado.</p></div></div>
+      </div>
+    </div>
+
+    <!-- ACEITAR PROPOSTA -->
+    <div id="aceitar" class="tab-content">
+      <form class="accept-form" onsubmit="handleFormSubmit(event)">
+        <h3 style="color:#C5A29E;margin-bottom:2rem;text-align:center;">Aceite da Proposta</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-bottom:2rem;">
+          <div class="form-group"><label for="nome">Nome completo do responsável *</label><input type="text" id="nome" name="nome" required></div>
+          <div class="form-group"><label for="cpf">CPF *</label><input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required></div>
+          <div class="form-group"><label for="email">E-mail *</label><input type="email" id="email" name="email" required></div>
+          <div class="form-group"><label for="telefone">Telefone/WhatsApp *</label><input type="tel" id="telefone" name="telefone" placeholder="(00) 99999-9999" required></div>
+        </div>
+        <div class="form-group"><label for="forma-escolhida">Forma de pagamento escolhida *</label>
+          <select id="forma-escolhida" name="forma_pagamento" required>
+            <option value="">Selecione (ou escolha acima na aba Investimento)</option>
+            <option value="avista">À vista — R$ 2.200,00</option>
+            <option value="1+3">Entrada + 3 parcelas de R$ 550,00 (a cada 30 dias)</option>
+            <option value="outra">Outra forma (descrita na aba Investimento)</option>
+          </select>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="termos" name="termos" required>
+          <label for="termos">Declaro que li e estou de acordo com as condições apresentadas nesta proposta, incluindo os blocos de trabalho, valores e forma de pagamento.</label>
+        </div>
+        <button type="submit" class="btn-submit" id="submit-btn">Aceitar Proposta</button>
+        <div id="successMessage" class="success-message">
+          <h3>✅ Proposta aceita com sucesso!</h3>
+          <p>Seu aceite foi registrado. Em breve entraremos em contato para os próximos passos.</p>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <div class="contact-footer">
+      <div class="contact-item"><strong>📋 CNPJ</strong>64.202.276/0001-35</div>
+      <div class="contact-item"><strong>✓ CRC</strong>SC-013019/O-4</div>
+      <div class="contact-item"><strong>💬 WhatsApp</strong><a href="https://wa.me/5549998803552" target="_blank">(49) 9.9880-3552</a></div>
+    </div>
+    <div class="contact-footer">
+      <div class="contact-item"><strong>✉️ E-mail</strong><a href="mailto:contato@jaquelineferreiracontadora.com.br">contato@jaquelineferreiracontadora.com.br</a></div>
+      <div class="contact-item"><strong>🌐 Site</strong><a href="https://jaquelineferreiracontadora.com.br" target="_blank">jaquelineferreiracontadora.com.br</a></div>
+      <div class="contact-item"><strong>🕐 Horário</strong>Seg-Sex | 09h-17h</div>
+    </div>
+    <p>&copy;2026 Jaqueline Ferreira Assessoria Contábil Ltda - Todos os direitos reservados</p>
+  </footer>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = '[COLE_AQUI_SUA_URL_DO_SCRIPT]';
+
+    function openTab(evt, tabName){
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabName).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    let formaEscolhida = '';
+    function selectPayment(el, valor){
+      document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      formaEscolhida = valor;
+      document.getElementById('outra-box').style.display = valor === 'outra' ? 'block' : 'none';
+      document.getElementById('forma-escolhida').value = valor;
+    }
+
+    function handleFormSubmit(event){
+      event.preventDefault();
+      const data = {};
+      new FormData(event.target).forEach((v, k) => data[k] = v);
+      data['outra_pagamento'] = document.getElementById('outra-pagamento').value;
+      fetch(GOOGLE_SCRIPT_URL, { method:'POST', body: new URLSearchParams(data) })
+        .then(() => {
+          document.getElementById('successMessage').classList.add('show');
+          document.getElementById('submit-btn').disabled = true;
+        })
+        .catch(err => console.error('Erro:', err));
+    }
+  </script>
+</body>
+</html>
