@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <title>Proposta de Assessoria Contábil Mensal - Dra. Aracelli</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:linear-gradient(135deg,#f5e6e1 0%,#f9f5f3 100%);min-height:100vh;display:flex;flex-direction:column;color:#333;}
+    header{padding:2rem;background:linear-gradient(135deg,#f5e6e1 0%,#f9f5f3 100%);border-bottom:4px solid #C5A29E;display:flex;gap:2rem;align-items:flex-start;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+        .logo-box{position:relative;width:140px;height:140px;}
+    .logo-fallback{width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,#C5A29E 0%,#C9A15E 100%);color:white;display:flex;align-items:center;justify-content:center;font-size:2.6rem;font-weight:600;letter-spacing:3px;box-shadow:0 2px 6px rgba(197,162,158,0.25);}
+    .logo-box img{position:absolute;width:140px;height:140px;border-radius:50%;}
+    header h1{font-size:1.8rem;margin-bottom:0.5rem;color:#333;}
+    header p{font-size:0.9rem;color:#333;margin-bottom:0.5rem;}
+    .proposal-info{background:white;border-radius:12px;padding:1.2rem;box-shadow:0 4px 12px rgba(0,0,0,0.08);border-left:4px solid #C5A29E;}
+    .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0.9rem 1.5rem;}
+    .info-item{padding:0.2rem 0;}
+    .info-label{font-size:0.72rem;color:#C5A29E;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+    .info-value{font-size:0.92rem;color:#333;margin-top:0.2rem;line-height:1.4;overflow-wrap:anywhere;}
+    main{flex:1;padding:2rem 1rem;max-width:1200px;width:100%;margin:0 auto;}
+    .tabs-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.75rem;margin-bottom:1.5rem;}
+    .tab-button{background:white;border:2px solid #e8d4cf;border-radius:12px;padding:1rem 0.8rem;cursor:pointer;font-size:0.85rem;font-weight:500;color:#333;transition:all 0.3s ease;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0.3rem;}
+    .tab-button:hover{border-color:#C5A29E;box-shadow:0 4px 12px rgba(197,162,158,0.15);transform:translateY(-2px);}
+    .tab-button.active{background:linear-gradient(135deg,#C9A15E 0%,#B8905C 100%);color:white;border-color:#C9A15E;box-shadow:0 6px 16px rgba(197,162,158,0.2);}
+    .tab-icon{font-size:1.5rem;}
+    .tab-content{display:none;animation:fadeIn 0.3s ease;}
+    .tab-content.active{display:block;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    .content-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;}
+    .content-card{background:white;border-radius:12px;padding:1.2rem;box-shadow:0 4px 12px rgba(0,0,0,0.08);border-top:4px solid #C5A29E;}
+    .content-card h3{color:#C5A29E;font-size:1.1rem;margin-bottom:0.75rem;}
+    .content-card p{color:#555;line-height:1.5;margin-bottom:0.5rem;}
+    .content-card ul{margin-left:1.5rem;color:#555;line-height:1.6;}
+    .content-card li{margin-bottom:0.5rem;}
+    .info-box{background:#f9f3f1;border-left:4px solid #C9A15E;padding:0.75rem;border-radius:4px;margin-top:0.75rem;}
+    .info-box p{font-size:0.9rem;}
+    .full-width{grid-column:1 / -1 !important;}
+    .payment-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1rem;}
+    .payment-option{background:#f9f3f1;border:2px solid #e8d4cf;border-radius:8px;padding:1.2rem;text-align:center;}
+    .payment-option.selected{background:linear-gradient(135deg,#C9A15E 0%,#B8905C 100%);border-color:#C9A15E;color:white;}
+    .payment-option.selected h4,.payment-option.selected p{color:white;}
+    .payment-option h4{color:#C5A29E;font-size:1rem;margin-bottom:0.5rem;}
+    .payment-option .valor{font-size:1.1rem;color:#000;font-weight:bold;margin:0.4rem 0;}
+    .block-valor{display:inline-block;background:#f9f3f1;border:1px solid #e8d4cf;border-radius:6px;padding:0.3rem 0.7rem;color:#000;font-weight:bold;margin-top:0.5rem;}
+    .steps-timeline{position:relative;padding:1rem 0;}
+    .step{display:flex;gap:1.5rem;margin-bottom:1.5rem;position:relative;}
+    .step::before{content:'';position:absolute;left:24px;top:50px;width:2px;height:calc(100% + 10px);background:#C5A29E;}
+    .step:last-child::before{display:none;}
+    .step-number{display:flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#C9A15E 0%,#B8905C 100%);color:white;font-weight:bold;flex-shrink:0;position:relative;z-index:1;}
+    .step-content h4{color:#C5A29E;font-size:1rem;margin-bottom:0.3rem;}
+    .step-content p{color:#555;font-size:0.95rem;}
+    .accept-form{background:white;border-radius:12px;padding:2rem;box-shadow:0 4px 12px rgba(0,0,0,0.08);border-top:4px solid #C5A29E;}
+    .form-group{margin-bottom:1.5rem;}
+    .form-group label{display:block;color:#C5A29E;font-weight:600;margin-bottom:0.5rem;font-size:0.95rem;}
+    .form-group input{width:100%;padding:0.75rem;border:1px solid #C5A29E;border-radius:4px;font-family:inherit;font-size:0.95rem;color:#333;}
+    .checkbox-group{display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1.5rem;}
+    .checkbox-group input[type="checkbox"]{width:auto;margin-top:0.3rem;cursor:pointer;}
+    .checkbox-group label{margin-bottom:0;font-weight:normal;cursor:pointer;color:#555;}
+    .btn-submit{background:linear-gradient(135deg,#C5A29E 0%,#B8968F 100%);color:white;padding:1rem 2rem;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;width:100%;}
+    .btn-submit:disabled{opacity:0.5;cursor:not-allowed;}
+    .success-message{display:none;background:#C5A29E;color:white;padding:2rem;border-radius:8px;margin-top:1rem;text-align:center;}
+    .success-message.show{display:block;}
+    footer{background:linear-gradient(135deg,rgba(245,230,225,0.6) 0%,rgba(249,245,243,0.6) 100%);color:#000;padding:3rem 1rem 1.5rem;margin-top:auto;border-top:2px solid rgba(197,162,158,0.12);}
+    footer p{margin:1rem 0 0;text-align:center;font-size:0.8rem;opacity:0.8;border-top:1px solid rgba(197,162,158,0.1);padding-top:1rem;color:#333;}
+    .contact-footer{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin-bottom:2rem;text-align:center;}
+    .contact-item{background:rgba(197,162,158,0.06);padding:1.5rem;border-radius:12px;border:1px solid rgba(197,162,158,0.12);}
+    .contact-item strong{display:block;margin-bottom:0.5rem;color:#000;font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+    .contact-item a{color:#000;text-decoration:none;font-weight:500;}
+    .contact-item a:hover{text-decoration:underline;}
+    @media (max-width:768px){
+      header{flex-direction:column;align-items:center;text-align:center;padding:1.5rem 1rem;}
+      header h1{font-size:1.5rem;}
+      main{padding:1rem;}
+      .content-grid{grid-template-columns:1fr;}
+      .payment-options{grid-template-columns:1fr;}
+      .contact-footer{grid-template-columns:1fr;}
+      .card-2col{grid-template-columns:1fr !important;}
+    }
+    .blocos-grid{grid-template-columns:repeat(2,1fr);}
+    @media (max-width:768px){.blocos-grid{grid-template-columns:1fr;}}
+.proximos-grid{grid-template-columns:repeat(2,1fr);align-items:start;}
+    @media (max-width:768px){.proximos-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <header style="display:block;padding:2rem 1rem;">
+    <div style="flex:1;min-width:0;max-width:1200px;margin:0 auto;">
+      <h1>Proposta de Assessoria Contábil Mensal</h1>
+      <div class="proposal-info" style="margin-top:1rem;margin-bottom:0;">
+        <div class="info-grid">
+          <div class="info-item" style="grid-column:1 / -1;"><div class="info-label">Cliente</div><div class="info-value">ARACELLI ELIZA ALVES MARQUES</div></div>
+          <div class="info-item"><div class="info-label">Responsável Técnica</div><div class="info-value">Jaqueline do Prado Ferreira | CRC-SC048028/O-0</div></div>
+          <div class="info-item"><div class="info-label">CNPJ (matriz)</div><div class="info-value">54.459.294/0001-43</div></div>
+          <div class="info-item" style="grid-column:1 / -1;"><div class="info-label">Razão social</div><div class="info-value">ARACELLI ELIZA ALVES MARQUES SOCIEDADE INDIVIDUAL DE ADVOCACIA</div></div>
+          <div class="info-item"><div class="info-label">CNAE principal</div><div class="info-value">69.11-7-01 Serviços advocatícios</div></div>
+          <div class="info-item"><div class="info-label">Regime tributário</div><div class="info-value">Lucro Presumido</div></div>
+          <div class="info-item"><div class="info-label">Início da assessoria</div><div class="info-value">01/10/2026 (contabilidade regularizada)</div></div>
+          <div class="info-item"><div class="info-label">Data da proposta</div><div class="info-value">08/10/2026</div></div>
+          <div class="info-item"><div class="info-label">Validade</div><div class="info-value">7 dias (até 15/10/2026)</div></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tabs-container">
+      <button class="tab-button active" onclick="openTab(event,'resumo')"><span class="tab-icon">📝</span><span>Resumo</span></button>
+      <button class="tab-button" onclick="openTab(event,'servicos')"><span class="tab-icon">✅</span><span>Serviços</span></button>
+      <button class="tab-button" onclick="openTab(event,'investimento')"><span class="tab-icon">💰</span><span>Investimento</span></button>
+      <button class="tab-button" onclick="openTab(event,'proximos')"><span class="tab-icon">🚀</span><span>Próximos Passos</span></button>
+      <button class="tab-button" onclick="openTab(event,'aceitar')"><span class="tab-icon">✔️</span><span>Aceitar Proposta</span></button>
+    </div>
+
+    <div id="resumo" class="tab-content active">
+      <div class="content-grid">
+        <div class="content-card" style="grid-column:1 / -1;"><h3>📌 Resumo da assessoria</h3><p style="line-height:1.7;">Assessoria contábil mensal para a empresa, com <strong>início em 01/10/2026</strong>, já com a contabilidade regularizada. A assessoria acompanha a escrituração, a apuração de impostos, as obrigações fiscais e a regularidade da empresa, com suporte e dashboard de gestão.</p></div>
+      </div>
+    </div>
+
+    <div id="servicos" class="tab-content">
+      <div class="content-grid blocos-grid">
+        <div class="content-card"><h3>✅ Inclusos na assessoria mensal</h3><ul style="margin-left:1.2rem;color:#555;line-height:1.7;"><li style="margin-bottom:0.4rem;">Acompanhamento contábil mensal</li><li style="margin-bottom:0.4rem;">Escrituração contábil</li><li style="margin-bottom:0.4rem;">Apuração dos impostos e acompanhamento fiscal</li><li style="margin-bottom:0.4rem;">Acompanhamento do faturamento, RBT12 e enquadramento tributário</li><li style="margin-bottom:0.4rem;">Controle das obrigações fiscais e contábeis</li><li style="margin-bottom:0.4rem;">Orientação e acompanhamento do pró-labore</li><li style="margin-bottom:0.4rem;">Acompanhamento da regularidade da empresa</li><li style="margin-bottom:0.4rem;">Suporte via WhatsApp, em horário comercial</li><li style="margin-bottom:0.4rem;">Dashboard de gestão com informações da empresa</li></ul></div><div class="content-card"><h3>❌ Não inclusos na mensalidade</h3><p style="margin-bottom:0.6rem;color:#666;">Serão realizados mediante orçamento específico:</p><ul style="margin-left:1.2rem;color:#555;line-height:1.7;"><li style="margin-bottom:0.4rem;">Alterações contratuais e societárias, de endereço, CNAEs, quadro societário ou capital</li><li style="margin-bottom:0.4rem;">Mudança de regime tributário e regularizações fiscais extraordinárias</li><li style="margin-bottom:0.4rem;">Parcelamento de débitos e processos de (re)enquadramento</li><li style="margin-bottom:0.4rem;">Certificados digitais e custos de terceiros</li><li style="margin-bottom:0.4rem;">Atendimento fora do horário comercial</li></ul></div><div class="content-card" style="grid-column:1 / -1;"><h3>🏛️ Reforma tributária</h3><p style="line-height:1.7;">A empresa terá acompanhamento das mudanças da Reforma Tributária, de forma gradual, conforme o cronograma de implementação e a regulamentação aplicável a cada período.</p></div><div class="content-card" style="grid-column:1 / -1;"><h3>👥 Funcionários</h3><p style="line-height:1.7;">A inclusão de funcionários poderá gerar honorários adicionais, previamente informados e aprovados antes do início dos serviços.</p></div>
+      </div>
+    </div>
+
+    <div id="investimento" class="tab-content">
+      <div class="content-grid">
+        <div class="content-card" style="grid-column:1 / -1;"><h3>💰 Mensalidade</h3><p style="margin-bottom:1rem;">Escolha a condição de pagamento mensal:</p><div class="payment-options"><div class="payment-option" onclick="selectPayment(this,'ate10')"><h4>✓ Pagar até o 10º dia útil</h4><p class="valor" style="font-size:1.1rem;color:#000;font-weight:bold;margin:0.4rem 0;">R$ 500,00/mês</p><p>Melhor condição de pagamento</p></div><div class="payment-option" onclick="selectPayment(this,'apos10')"><h4>Pagar após o 10º dia útil</h4><p class="valor" style="font-size:1.1rem;color:#000;font-weight:bold;margin:0.4rem 0;">R$ 550,00/mês</p><p>Mesmos serviços, com vencimento após o 10º dia útil</p></div></div></div><div class="content-card" style="grid-column:1 / -1;"><h3>🎁 13º honorário</h3><p style="margin-bottom:0.5rem;"><strong>Em 2026:</strong> R$ 150,00 (referente a 3 meses).</p><p><strong>A partir de 2027:</strong> uma mensalidade cobrada em dezembro.</p></div><div class="content-card" style="grid-column:1 / -1;"><h3>📅 Início da assessoria</h3><p><strong>Início: 01/10/2026</strong>, com a contabilidade regularizada.</p><p style="margin-top:0.6rem;"><strong>1ª mensalidade: 11/2026.</strong></p></div>
+      </div>
+    </div>
+
+    <div id="proximos" class="tab-content">
+      <div class="steps-timeline">
+        <div class="step"><div class="step-number">1</div><div class="step-content"><h4>Aceite da proposta</h4><p>Confirmação de aprovação pelo formulário de aceite.</p></div></div>
+        <div class="step"><div class="step-number">2</div><div class="step-content"><h4>Início da assessoria</h4><p>A assessoria contábil mensal começa em 01/10/2026.</p></div></div>
+        <div class="step"><div class="step-number">3</div><div class="step-content"><h4>Mensalidade</h4><p>A primeira mensalidade é cobrada em 11/2026. Depois, R$ 500,00 até o 10º dia útil, ou R$ 550,00 após o 10º dia útil, conforme a opção escolhida.</p></div></div>
+        <div class="step"><div class="step-number">4</div><div class="step-content"><h4>13º honorário</h4><p>Em dezembro: R$ 150,00 em 2026 (referente a 3 meses) e uma mensalidade a partir de 2027.</p></div></div>
+      </div>
+    </div>
+
+<div id="aceitar" class="tab-content">
+      <form id="aceitar-form" class="accept-form" onsubmit="handleFormSubmit(event)">
+        <h3 style="color:#C5A29E;margin-bottom:2rem;text-align:center;">Aceite da Proposta</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-bottom:2rem;">
+          <div class="form-group"><label for="nome">Nome completo do responsável *</label><input type="text" id="nome" name="nome" required></div>
+          <div class="form-group"><label for="cpf">CPF *</label><input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required></div>
+          <div class="form-group"><label for="email">E-mail *</label><input type="email" id="email" name="email" required></div>
+          <div class="form-group"><label for="telefone">Telefone/WhatsApp *</label><input type="tel" id="telefone" name="telefone" placeholder="(00) 99999-9999" required></div>
+        </div>
+        <div class="form-group"><label for="forma-escolhida">Forma de pagamento escolhida *</label>
+          <select id="forma-escolhida" name="forma_pagamento" required><option value="">Selecione</option><option value="ate10">Pagar até o 10º dia útil: R$ 500,00/mês</option><option value="apos10">Pagar após o 10º dia útil: R$ 550,00/mês</option></select>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="termos" name="termos" required>
+          <label for="termos">Declaro que li e estou de acordo com as condições apresentadas nesta proposta, incluindo os blocos de trabalho, valores e forma de pagamento.</label>
+        </div>
+        <button type="submit" class="btn-submit" id="submit-btn">Aceitar Proposta</button>
+        <div id="successMessage" class="success-message">
+          <h3>✅ Proposta aceita com sucesso!</h3>
+          <p>Seu aceite foi registrado. Em breve entraremos em contato para os próximos passos.</p>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <div class="contact-footer">
+      <div class="contact-item"><strong>📋 CNPJ</strong>64.202.276/0001-35</div>
+      <div class="contact-item"><strong>✓ CRC</strong>SC-013019/O-4</div>
+      <div class="contact-item"><strong>💬 WhatsApp</strong><a href="https://wa.me/5549999803552" target="_blank">(49) 9.9980-3552</a></div>
+    </div>
+    <div class="contact-footer">
+      <div class="contact-item"><strong>✉️ E-mail</strong><a href="mailto:contato@jaquelineferreiracontadora.com.br">contato@jaquelineferreiracontadora.com.br</a></div>
+      <div class="contact-item"><strong>🌐 Site</strong><a href="https://jaquelineferreiracontadora.com.br" target="_blank">jaquelineferreiracontadora.com.br</a></div>
+      <div class="contact-item"><strong>🕐 Horário</strong>Seg-Sex | 09h-17h</div>
+    </div>
+    <p>&copy;2026 Jaqueline Ferreira Assessoria Contábil Ltda - Todos os direitos reservados</p>
+  </footer>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = '[COLE_AQUI_SUA_URL_DO_SCRIPT]';
+    // Versão da proposta: ao refazer a proposta, troque para 'v2', 'v3'... para liberar o formulário novamente
+    const VERSAO_PROPOSTA = 'v1';
+    const LOCK_KEY = 'aceite_assessoria_aracelli_' + VERSAO_PROPOSTA;
+    const DRAFT_KEY = 'rascunho_assessoria_aracelli_' + VERSAO_PROPOSTA;
+    const WHATSAPP_NUMBER = '5549999803552';
+
+    function openTab(evt, tabName){
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabName).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    let formaEscolhida = '';
+    function selectPayment(el, valor){
+      document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      formaEscolhida = valor;
+      document.getElementById('forma-escolhida').value = valor;
+      salvarRascunho();
+    }
+
+    function gerarHashUnico(nome, cpf, data, hora) {
+      const dados = nome + cpf + data + hora;
+      let hash = 0;
+      for (let i = 0; i < dados.length; i++) {
+        hash = ((hash << 5) - hash) + dados.charCodeAt(i);
+        hash = hash & hash;
+      }
+      const hexHash = Math.abs(hash).toString(16).toUpperCase().slice(-5).padStart(5, '0');
+      return `${nome.split(' ')[0].toUpperCase()}-${data.replace(/\//g, '')}-${hora.replace(/:/g, '').slice(0, 4)}-${hexHash}`;
+    }
+
+    async function gerarPDFAceite(nome, cpf, email, telefone, pagamento) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const dataAceite = new Date().toLocaleDateString('pt-BR');
+      const horaAceite = new Date().toLocaleTimeString('pt-BR');
+      const codigo = gerarHashUnico(nome, cpf, dataAceite, horaAceite);
+      window.ultimoCodigoReferencia = codigo;
+
+      const cPrinc = [167, 128, 120], cOuro = [201, 161, 94], cTexto = [40, 40, 40];
+      const W = 210, mL = 16, mR = 194;
+      let y = 44;
+
+      doc.setFillColor(...cPrinc);
+      doc.rect(0, 0, W, 32, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text('PROPOSTA ACEITA E FORMALIZADA', W / 2, 20, { align: 'center' });
+
+      function titulo(t) {
+        doc.setTextColor(...cPrinc); doc.setFont('helvetica', 'bold'); doc.setFontSize(11.5);
+        doc.text(t, mL, y); y += 7;
+      }
+      function texto(t, size = 10) {
+        doc.setTextColor(...cTexto); doc.setFont('helvetica', 'normal'); doc.setFontSize(size);
+        doc.splitTextToSize(t, mR - mL).forEach(l => { doc.text(l, mL, y); y += 5; });
+      }
+      function separador() {
+        doc.setDrawColor(...cOuro); doc.setLineWidth(0.6); doc.line(mL, y, mR, y); y += 10;
+      }
+
+      titulo('CLIENTE CONTRATANTE');
+      texto(`${nome}  |  CPF: ${cpf}`);
+      texto(`${email}  |  ${telefone}`);
+      y += 4;
+
+      titulo('EMPRESA');
+      texto('ARACELLI ELIZA ALVES MARQUES SOCIEDADE INDIVIDUAL DE ADVOCACIA');
+      texto('CNPJ: 54.459.294/0001-43  |  Regime: Lucro Presumido');
+      y += 4;
+
+      titulo('OBJETO DA CONTRATAÇÃO');
+      texto('Assessoria contábil mensal, com início em 01/10/2026 (contabilidade regularizada).');
+      y += 4;
+
+      titulo('INVESTIMENTO');
+      texto('Mensalidade: R$ 500,00 (até o 10º dia útil) ou R$ 550,00 (após o 10º dia útil)');
+      texto(`Forma de pagamento escolhida: ${pagamento}`);
+      y += 6;
+
+      separador();
+      doc.setTextColor(...cOuro); doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+      doc.text('ID: ' + codigo, W / 2, y, { align: 'center' }); y += 5;
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+      doc.text('Aceite registrado em: ' + dataAceite + '  •  ' + horaAceite, W / 2, y, { align: 'center' });
+
+      return doc.output('blob');
+    }
+
+    const CAMPOS_FORM = ['nome', 'cpf', 'email', 'telefone', 'forma-escolhida', 'outra-pagamento'];
+
+    function lerStorage(chave) {
+      try { return JSON.parse(localStorage.getItem(chave)); } catch (e) { return null; }
+    }
+    function gravarStorage(chave, valor) {
+      try { localStorage.setItem(chave, JSON.stringify(valor)); } catch (e) {}
+    }
+
+    function salvarRascunho() {
+      if (lerStorage(LOCK_KEY)) return;
+      const d = {};
+      CAMPOS_FORM.forEach(id => { const el = document.getElementById(id); if (el) d[id] = el.value; });
+      const t = document.getElementById('termos');
+      if (t) d.termos = t.checked;
+      gravarStorage(DRAFT_KEY, d);
+    }
+
+    function carregarRascunho() {
+      const lock = lerStorage(LOCK_KEY);
+      if (lock) { mostrarTravado(lock); return; }
+      const d = lerStorage(DRAFT_KEY);
+      if (!d) return;
+      CAMPOS_FORM.forEach(id => { const el = document.getElementById(id); if (el && d[id] !== undefined) el.value = d[id]; });
+      const t = document.getElementById('termos');
+      if (t) t.checked = !!d.termos;
+      const forma = document.getElementById('forma-escolhida').value;
+      if (forma) {
+        document.querySelectorAll('.payment-option').forEach(c => {
+          if ((c.getAttribute('onclick') || '').includes("'" + forma + "'")) c.classList.add('selected');
+        });
+      }
+    }
+
+    function travarAceite(nome, cpf, email, telefone, pagamento) {
+      const lock = { nome, cpf, email, telefone, pagamento, codigo: '', dataHora: new Date().toLocaleString('pt-BR') };
+      gravarStorage(LOCK_KEY, lock);
+      mostrarTravado(lock);
+    }
+
+    function atualizarCodigoTravado(codigo) {
+      const lock = lerStorage(LOCK_KEY);
+      if (lock) { lock.codigo = codigo; gravarStorage(LOCK_KEY, lock); const el = document.getElementById('id-travado'); if (el) el.textContent = codigo; }
+    }
+
+    function mostrarTravado(lock) {
+      const d = lerStorage(DRAFT_KEY) || {};
+      ['nome', 'cpf', 'email', 'telefone'].forEach(id => { const el = document.getElementById(id); if (el) el.value = lock[id] || ''; });
+      const sel = document.getElementById('forma-escolhida'); if (sel && d['forma-escolhida']) sel.value = d['forma-escolhida'];
+      const ot = document.getElementById('outra-pagamento'); if (ot && d['outra-pagamento']) ot.value = d['outra-pagamento'];
+      const t = document.getElementById('termos'); if (t) t.checked = true;
+      document.querySelectorAll('#aceitar-form input, #aceitar-form select, #aceitar-form textarea, #aceitar-form button').forEach(el => { el.disabled = true; });
+      document.querySelectorAll('.payment-option').forEach(c => { c.style.pointerEvents = 'none'; c.style.opacity = '0.85'; });
+      if (sel && sel.value) {
+        document.querySelectorAll('.payment-option').forEach(c => {
+          if ((c.getAttribute('onclick') || '').includes("'" + sel.value + "'")) c.classList.add('selected');
+        });
+      }
+      const btn = document.getElementById('submit-btn');
+      if (btn) btn.textContent = '✅ Aceite registrado';
+      if (!document.getElementById('aceite-travado')) {
+        const box = document.createElement('div');
+        box.id = 'aceite-travado';
+        box.style.cssText = 'background:#e9f5e9;border-left:4px solid #2d5016;padding:1rem;border-radius:6px;margin-bottom:1.5rem;color:#2d5016;';
+        box.innerHTML = '<strong>✅ Aceite registrado.</strong><br>Data: ' + lock.dataHora +
+          '<br>ID do comprovante: <span id="id-travado">' + (lock.codigo || '—') + '</span>' +
+          '<br><span style="font-size:0.9rem;">Os dados foram confirmados e não podem mais ser alterados.</span>';
+        document.getElementById('aceitar-form').insertBefore(box, document.getElementById('aceitar-form').firstChild);
+      }
+      const sm = document.getElementById('successMessage');
+      if (sm) sm.classList.add('show');
+    }
+
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const nome = document.getElementById('nome').value;
+      const cpf = document.getElementById('cpf').value;
+      const email = document.getElementById('email').value;
+      const telefone = document.getElementById('telefone').value;
+      const forma = document.getElementById('forma-escolhida').value;
+
+      if (!forma) { alert('Por favor, escolha uma forma de pagamento.'); return; }
+
+      const pagamento = forma === 'ate10'
+        ? 'Pagar até o 10º dia útil: R$ 500,00/mês'
+        : 'Pagar após o 10º dia útil: R$ 550,00/mês';
+
+      // Abre a aba do WhatsApp já no clique, para o navegador não bloquear
+      const janelaWhats = window.open('about:blank', '_blank');
+
+      document.getElementById('submit-btn').disabled = true;
+      document.getElementById('successMessage').classList.add('show');
+      travarAceite(nome, cpf, email, telefone, pagamento);
+
+      let pdfBlob = null;
+      try {
+        pdfBlob = await gerarPDFAceite(nome, cpf, email, telefone, pagamento);
+      } catch (erro) {
+        console.error('Erro ao gerar PDF:', erro);
+      }
+
+      const codigo = window.ultimoCodigoReferencia || 'N/A';
+      atualizarCodigoTravado(codigo);
+      const nomeArquivo = `COMPROVANTE-ASSESSORIA-ARACELLI-${new Date().toISOString().slice(0, 10)}.pdf`;
+      const mensagem = `*NOVO ACEITE DE PROPOSTA*\n\n*Cliente:* ${nome}\n*CPF:* ${cpf}\n*E-mail:* ${email}\n*Telefone:* ${telefone}\n*Pagamento:* ${pagamento}\n\n*ID Comprovante:* ${codigo}\n\nSegue o comprovante em PDF para validação.`;
+      const urlWhatsApp = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+
+      // Registro na planilha (Google Apps Script)
+      const dados = { nome, cpf, email, telefone, pagamento, codigo_referencia: codigo };
+      fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: new URLSearchParams(dados) })
+        .catch(err => console.error('Erro ao registrar aceite:', err));
+
+      // 1) Celular: envia o PDF direto pelo WhatsApp
+      if (pdfBlob && navigator.canShare) {
+        const arquivo = new File([pdfBlob], nomeArquivo, { type: 'application/pdf' });
+        if (navigator.canShare({ files: [arquivo] })) {
+          try {
+            await navigator.share({ files: [arquivo], title: 'Comprovante de aceite', text: mensagem });
+            if (janelaWhats) janelaWhats.close();
+            return;
+          } catch (err) {
+            // Cancelado ou não suportado: segue para a alternativa
+          }
+        }
+      }
+
+      // 2) Computador: baixa o PDF e abre o WhatsApp com a mensagem e o ID
+      if (pdfBlob) {
+        const url = URL.createObjectURL(pdfBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = nomeArquivo;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+      }
+      if (janelaWhats) {
+        janelaWhats.location.href = urlWhatsApp;
+      } else {
+        window.open(urlWhatsApp, '_blank');
+      }
+    }
+    document.addEventListener('input', salvarRascunho);
+    document.addEventListener('change', salvarRascunho);
+    document.addEventListener('DOMContentLoaded', carregarRascunho);
+  </script>
+</body>
+</html>
