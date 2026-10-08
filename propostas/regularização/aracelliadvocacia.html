@@ -9,10 +9,16 @@
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:linear-gradient(135deg,#f5e6e1 0%,#f9f5f3 100%);min-height:100vh;display:flex;flex-direction:column;color:#333;}
     header{padding:2rem;background:linear-gradient(135deg,#f5e6e1 0%,#f9f5f3 100%);border-bottom:4px solid #C5A29E;display:flex;gap:2rem;align-items:flex-start;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-    .logo-box{min-width:140px;display:flex;align-items:center;justify-content:center;}
-    .logo-box img{width:140px;height:140px;border-radius:50%;filter:drop-shadow(0 2px 6px rgba(197,162,158,0.25));}
+        .logo-box{position:relative;width:140px;height:140px;}
+    .logo-fallback{width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,#C5A29E 0%,#C9A15E 100%);color:white;display:flex;align-items:center;justify-content:center;font-size:2.6rem;font-weight:600;letter-spacing:3px;box-shadow:0 2px 6px rgba(197,162,158,0.25);}
+    .logo-box img{position:absolute;width:140px;height:140px;border-radius:50%;}
     header h1{font-size:1.8rem;margin-bottom:0.5rem;color:#333;}
     header p{font-size:0.9rem;color:#333;margin-bottom:0.5rem;}
+    .proposal-info{background:white;border-radius:12px;padding:1.2rem;box-shadow:0 4px 12px rgba(0,0,0,0.08);border-left:4px solid #C5A29E;}
+    .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0.9rem 1.5rem;}
+    .info-item{padding:0.2rem 0;}
+    .info-label{font-size:0.72rem;color:#C5A29E;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+    .info-value{font-size:0.92rem;color:#333;margin-top:0.2rem;line-height:1.4;overflow-wrap:anywhere;}
     main{flex:1;padding:2rem 1rem;max-width:1200px;width:100%;margin:0 auto;}
     .tabs-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.75rem;margin-bottom:1.5rem;}
     .tab-button{background:white;border:2px solid #e8d4cf;border-radius:12px;padding:1rem 0.8rem;cursor:pointer;font-size:0.85rem;font-weight:500;color:#333;transition:all 0.3s ease;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0.3rem;}
@@ -75,23 +81,28 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo-box">
-      <img src="logo-jaqueline.png" alt="Logo Jaqueline Ferreira Assessoria Contábil" onerror="this.style.display='none'">
-    </div>
-    <div style="flex:1;">
+  <header style="display:block;">
+    <div style="flex:1;min-width:0;">
       <h1>Proposta de Regularização Retroativa</h1>
-      <p><strong>Responsável Técnica:</strong> Jaqueline do Prado Ferreira | CRC-SC048028/O-0</p>
-      <p><strong>Cliente:</strong> Dra. Aracelli</p>
-      <p><strong>Razão social:</strong> ARACELLI ELIZA ALVES MARQUES SOCIEDADE INDIVIDUAL DE ADVOCACIA</p>
-      <p><strong>CNPJ (matriz):</strong> 54.459.294/0001-43 | <strong>Situação cadastral:</strong> ATIVA desde 07/10/2026</p>
-      <p><strong>Data de abertura:</strong> 23/05/2022 | <strong>Porte:</strong> Demais</p>
-      <p><strong>Natureza jurídica:</strong> 232-1 Sociedade Unipessoal de Advocacia</p>
-      <p><strong>Atividade principal:</strong> 69.11-7-01 Serviços advocatícios</p>
-      <p><strong>Endereço:</strong> R Saul Brandalise, 336, Andar 1, Centro, Videira/SC, CEP 89.560-170</p>
-      <p><strong>Telefone:</strong> (49) 9941-1430 | <strong>E-mail:</strong> ARACELLI.MARQUES09@GMAIL.COM</p>
-      <p><strong>Regime tributário:</strong> Lucro Presumido</p>
-      <p><strong>Data da proposta:</strong> 08/10/2026 | <strong>Validade:</strong> 7 dias (até 15/10/2026)</p>
+      <div class="proposal-info" style="margin-top:1rem;margin-bottom:0;">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">Responsável Técnica</div><div class="info-value">Jaqueline do Prado Ferreira | CRC-SC048028/O-0</div></div>
+          <div class="info-item" style="grid-column:1 / -1;"><div class="info-label">Cliente</div><div class="info-value">ARACELLI ELIZA ALVES MARQUES</div></div>
+          <div class="info-item" style="grid-column:1 / -1;"><div class="info-label">Razão social</div><div class="info-value">ARACELLI ELIZA ALVES MARQUES SOCIEDADE INDIVIDUAL DE ADVOCACIA</div></div>
+          <div class="info-item"><div class="info-label">CNPJ (matriz)</div><div class="info-value">54.459.294/0001-43</div></div>
+          <div class="info-item"><div class="info-label">Situação cadastral</div><div class="info-value">ATIVA desde 07/10/2026</div></div>
+          <div class="info-item"><div class="info-label">Data de abertura</div><div class="info-value">23/05/2022</div></div>
+          <div class="info-item"><div class="info-label">Porte</div><div class="info-value">Demais</div></div>
+          <div class="info-item"><div class="info-label">Natureza jurídica</div><div class="info-value">232-1 Sociedade Unipessoal de Advocacia</div></div>
+          <div class="info-item"><div class="info-label">Atividade principal</div><div class="info-value">69.11-7-01 Serviços advocatícios</div></div>
+          <div class="info-item"><div class="info-label">Regime tributário</div><div class="info-value">Lucro Presumido</div></div>
+          <div class="info-item" style="grid-column:1 / -1;"><div class="info-label">Endereço</div><div class="info-value">R Saul Brandalise, 336, Andar 1, Centro, Videira/SC, CEP 89.560-170</div></div>
+          <div class="info-item"><div class="info-label">Telefone</div><div class="info-value">(49) 9941-1430</div></div>
+          <div class="info-item" style="grid-column:1 / -1;"><div class="info-label">E-mail</div><div class="info-value">ARACELLI.MARQUES09@GMAIL.COM</div></div>
+          <div class="info-item"><div class="info-label">Data da proposta</div><div class="info-value">08/10/2026</div></div>
+          <div class="info-item"><div class="info-label">Validade</div><div class="info-value">7 dias (até 15/10/2026)</div></div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -215,7 +226,7 @@
     <div class="contact-footer">
       <div class="contact-item"><strong>📋 CNPJ</strong>64.202.276/0001-35</div>
       <div class="contact-item"><strong>✓ CRC</strong>SC-013019/O-4</div>
-      <div class="contact-item"><strong>💬 WhatsApp</strong><a href="https://wa.me/5549998803552" target="_blank">(49) 9.9880-3552</a></div>
+      <div class="contact-item"><strong>💬 WhatsApp</strong><a href="https://wa.me/5549999803552" target="_blank">(49) 9.9980-3552</a></div>
     </div>
     <div class="contact-footer">
       <div class="contact-item"><strong>✉️ E-mail</strong><a href="mailto:contato@jaquelineferreiracontadora.com.br">contato@jaquelineferreiracontadora.com.br</a></div>
@@ -227,7 +238,7 @@
 
   <script>
     const GOOGLE_SCRIPT_URL = '[COLE_AQUI_SUA_URL_DO_SCRIPT]';
-    const WHATSAPP_NUMBER = '5549998803552';
+    const WHATSAPP_NUMBER = '5549999803552';
 
     function openTab(evt, tabName){
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
