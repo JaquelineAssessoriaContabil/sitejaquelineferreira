@@ -110,6 +110,7 @@
     <div class="tabs-container">
       <button class="tab-button active" onclick="openTab(event,'diagnostico')"><span class="tab-icon">🔎</span><span>Diagnóstico</span></button>
       <button class="tab-button" onclick="openTab(event,'blocos')"><span class="tab-icon">🧩</span><span>Blocos de Trabalho</span></button>
+      <button class="tab-button" onclick="openTab(event,'servicos')"><span class="tab-icon">✅</span><span>Serviços</span></button>
       <button class="tab-button" onclick="openTab(event,'investimento')"><span class="tab-icon">💰</span><span>Investimento</span></button>
       <button class="tab-button" onclick="openTab(event,'proximos')"><span class="tab-icon">🚀</span><span>Próximos Passos</span></button>
       <button class="tab-button" onclick="openTab(event,'aceitar')"><span class="tab-icon">✔️</span><span>Aceitar Proposta</span></button>
@@ -159,7 +160,22 @@
       </div>
     </div>
 
-    <!-- INVESTIMENTO -->
+    <!-- SERVIÇOS -->
+    <div id="servicos" class="tab-content">
+      <div class="content-grid">
+        <div class="content-card" style="grid-column:1 / -1;">
+          <h3>✅ Serviços Incluídos na Regularização</h3>
+          <div style="margin-bottom:1.2rem;"><p style="color:#C5A29E;font-weight:600;margin-bottom:0.4rem;">Bloco 1 — Período sem Movimento (2022 e 2023)</p><ul><li style="margin-bottom:0.6rem;">Auditoria das informações de 2022 e 2023</li><li style="margin-bottom:0.6rem;">Transmissão das declarações de inatividade obrigatórias perante a Receita Federal</li></ul></div><div style="margin-bottom:1.2rem;"><p style="color:#C5A29E;font-weight:600;margin-bottom:0.4rem;">Bloco 2 — Ano da Inaptidão (2024)</p><ul><li style="margin-bottom:0.6rem;">Transmissão em atraso das obrigações acessórias do Lucro Presumido: DCTF, EFD-Contribuições e ECF</li></ul></div><div style="margin-bottom:1.2rem;"><p style="color:#C5A29E;font-weight:600;margin-bottom:0.4rem;">Bloco 3 — Reconstrução Fiscal e Contábil (2025)</p><ul><li style="margin-bottom:0.6rem;">Importação e cálculo dos impostos federais (11,33%) sobre as notas emitidas em 2025</li><li style="margin-bottom:0.6rem;">Emissão dos DARFs retroativos, com juros e multa</li><li style="margin-bottom:0.6rem;">Implantação do Balanço de Abertura e escrituração contábil no sistema</li></ul></div><div style="margin-bottom:1.2rem;"><p style="color:#C5A29E;font-weight:600;margin-bottom:0.4rem;">Bloco 4 — Ano Corrente (2026, até o mês atual)</p><ul><li style="margin-bottom:0.6rem;">Levantamento e cálculo dos impostos em atraso sobre as notas de 2026</li><li style="margin-bottom:0.6rem;">Conciliação bancária da conta jurídica até o momento atual</li><li style="margin-bottom:0.6rem;">Regularização das declarações mensais de 2026</li></ul></div>
+        </div>
+        <div class="content-card" style="grid-column:1 / -1;">
+          <h3>❌ Não Incluídos</h3>
+          <p style="margin-bottom:0.8rem;color:#666;">Os serviços abaixo não estão incluídos e, quando necessários, serão realizados mediante orçamento específico:</p>
+          <ul style="margin-left:1.5rem;color:#555;line-height:1.9;"><li style="margin-bottom:0.6rem;">Alterações de contrato social e demais atos societários</li><li style="margin-bottom:0.6rem;">Mudança de regime tributário</li><li style="margin-bottom:0.6rem;">Parcelamento e negociação de débitos</li><li style="margin-bottom:0.6rem;">Atendimento ou serviços realizados fora do horário comercial</li><li style="margin-bottom:0.6rem;">Outros serviços não previstos expressamente nesta proposta</li></ul>
+        </div>
+      </div>
+    </div>
+
+        <!-- INVESTIMENTO -->
     <div id="investimento" class="tab-content">
       <div class="content-grid">
         <div class="content-card full-width">
