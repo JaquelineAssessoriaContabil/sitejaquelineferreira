@@ -543,7 +543,7 @@
       const urlWhatsApp = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
 
       // Registro na planilha (Google Apps Script)
-      const dados = { nome, cpf, email, telefone, pagamento, codigo_referencia: codigo };
+      const dados = { proposta: 'Regularização retroativa', nome, cpf, email, telefone, pagamento, codigo_referencia: codigo };
       fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: new URLSearchParams(dados) })
         .catch(err => console.error('Erro ao registrar aceite:', err));
 
