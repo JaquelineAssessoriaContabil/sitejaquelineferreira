@@ -157,6 +157,7 @@
           <label for="termos">Declaro que li e estou de acordo com as condições apresentadas nesta proposta, incluindo os blocos de trabalho, valores e forma de pagamento.</label>
         </div>
         <button type="submit" class="btn-submit" id="submit-btn">Aceitar Proposta</button>
+        <button type="button" onclick="recusarProposta()" style="background:#999;color:white;padding:1rem 2rem;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;width:100%;margin-top:0.8rem;">❌ Não aceito a proposta</button>
         <div id="successMessage" class="success-message">
           <h3>✅ Proposta aceita com sucesso!</h3>
           <p>Seu aceite foi registrado. Em breve entraremos em contato para os próximos passos.</p>
@@ -332,18 +333,95 @@
         });
       }
       const btn = document.getElementById('submit-btn');
-      if (btn) btn.textContent = '✅ Aceite registrado';
+      if (btn) btn.textContent = lock.status === 'recusada' ? '❌ Proposta não aceita' : '✅ Aceite registrado';
       if (!document.getElementById('aceite-travado')) {
         const box = document.createElement('div');
         box.id = 'aceite-travado';
         box.style.cssText = 'background:#e9f5e9;border-left:4px solid #2d5016;padding:1rem;border-radius:6px;margin-bottom:1.5rem;color:#2d5016;';
-        box.innerHTML = '<strong>✅ Aceite registrado.</strong><br>Data: ' + lock.dataHora +
+        box.innerHTML = lock.status === 'recusada'
+          ? '<strong>❌ Proposta não aceita.</strong><br>Registrado em: ' + lock.dataHora + '<br><span style="font-size:0.9rem;">Os dados ficaram bloqueados.</span>'
+          : '<strong>✅ Aceite registrado.</strong><br>Data: ' + lock.dataHora +
           '<br>ID do comprovante: <span id="id-travado">' + (lock.codigo || '—') + '</span>' +
           '<br><span style="font-size:0.9rem;">Os dados foram confirmados e não podem mais ser alterados.</span>';
         document.getElementById('aceitar-form').insertBefore(box, document.getElementById('aceitar-form').firstChild);
       }
       const sm = document.getElementById('successMessage');
-      if (sm) sm.classList.add('show');
+      if (sm && lock.status !== 'recusada') sm.classList.add('show');
+    }
+
+    const OBJETO_PROPOSTA = 'Assessoria contábil mensal, com início em 01/10/2026 (contabilidade regularizada).';
+
+    async function gerarPDFRecusa(nome, cpf, email, telefone) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const dataRec = new Date().toLocaleDateString('pt-BR');
+      const horaRec = new Date().toLocaleTimeString('pt-BR');
+      const codigo = 'RECUSA-' + gerarHashUnico(nome, cpf || 'SEMCPF', dataRec, horaRec);
+      window.ultimoCodigoRecusa = codigo;
+      const cPrinc = [167, 128, 120], cOuro = [201, 161, 94], cTexto = [40, 40, 40];
+      const W = 210, mL = 16, mR = 194;
+      let y = 44;
+      doc.setFillColor(...cPrinc);
+      doc.rect(0, 0, W, 32, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text('PROPOSTA NÃO ACEITA', W / 2, 20, { align: 'center' });
+      function titulo(t) { doc.setTextColor(...cPrinc); doc.setFont('helvetica', 'bold'); doc.setFontSize(11.5); doc.text(t, mL, y); y += 7; }
+      function texto(t, size = 10) { doc.setTextColor(...cTexto); doc.setFont('helvetica', 'normal'); doc.setFontSize(size); doc.splitTextToSize(t, mR - mL).forEach(l => { doc.text(l, mL, y); y += 5; }); }
+      titulo('CLIENTE');
+      texto(nome);
+      if (cpf) texto('CPF: ' + cpf);
+      texto(email + '  |  ' + telefone);
+      y += 4;
+      titulo('PROPOSTA');
+      texto(OBJETO_PROPOSTA);
+      y += 4;
+      texto('O cliente informou que NÃO ACEITA esta proposta, em ' + dataRec + ' às ' + horaRec + '.');
+      y += 8;
+      doc.setTextColor(...cOuro); doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+      doc.text('ID: ' + codigo, W / 2, y, { align: 'center' });
+      return doc.output('blob');
+    }
+
+    async function recusarProposta() {
+      const nome = document.getElementById('nome').value.trim();
+      const cpf = document.getElementById('cpf').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      if (!nome || !telefone) { alert('Preencha nome e telefone para registrar a recusa.'); return; }
+      if (!confirm('Confirma que você NÃO aceita esta proposta?')) return;
+
+      const janelaWhats = window.open('about:blank', '_blank');
+      let pdfBlob = null;
+      try { pdfBlob = await gerarPDFRecusa(nome, cpf, email, telefone); } catch (erro) { console.error('Erro ao gerar PDF:', erro); }
+      const codigo = window.ultimoCodigoRecusa || 'N/A';
+
+      gravarStorage(LOCK_KEY, { status: 'recusada', nome, cpf, email, telefone, pagamento: '', codigo, dataHora: new Date().toLocaleString('pt-BR') });
+      mostrarTravado(lerStorage(LOCK_KEY));
+
+      const nomeArquivo = 'PROPOSTA-NAO-ACEITA-' + nome.replace(/\s/g, '-') + '-' + new Date().toISOString().slice(0, 10) + '.pdf';
+      const mensagem = '*PROPOSTA NÃO ACEITA*\n\n*Cliente:* ' + nome + '\n*CPF:* ' + cpf + '\n*E-mail:* ' + email + '\n*Telefone:* ' + telefone + '\n\n*ID:* ' + codigo + '\n\nSegue o registro em PDF.';
+      const urlWhats = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(mensagem);
+
+      if (pdfBlob && navigator.canShare) {
+        const arquivo = new File([pdfBlob], nomeArquivo, { type: 'application/pdf' });
+        if (navigator.canShare({ files: [arquivo] })) {
+          try {
+            await navigator.share({ files: [arquivo], title: 'Proposta não aceita', text: mensagem });
+            if (janelaWhats) janelaWhats.close();
+            return;
+          } catch (err) { }
+        }
+      }
+      if (pdfBlob) {
+        const url = URL.createObjectURL(pdfBlob);
+        const link = document.createElement('a');
+        link.href = url; link.download = nomeArquivo;
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+      }
+      if (janelaWhats) { janelaWhats.location.href = urlWhats; } else { window.open(urlWhats, '_blank'); }
     }
 
     async function handleFormSubmit(event) {
